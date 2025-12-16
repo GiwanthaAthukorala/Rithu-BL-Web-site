@@ -23,51 +23,51 @@ const connectDB = async () => {
 
 const facebookLinks = [
   {
-    url: "https://www.facebook.com/profile.php?id=100094860487319&mibextid=wwXIfr&mibextid=wwXIfr",
+    url: "https://web.facebook.com/profile.php?id=61584723406867",
     title:
-      "Tech View Computers - පෙජ් එක ලයික් (Like) or ෆලෝ (follwer) කරන්න  ",
+      "Maths With Sulochana - පෙජ් එක ලයික් (Like) or ෆලෝ (follwer) කරන්න  ",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/r/17MkdhXp7V/?mibextid=wwXIfr",
+    url: "https://www.facebook.com/share/p/1UcrUmBWrE/?mibextid=wwXIfr",
     title: "පොස්ට් ලයික් කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/r/1Fuc8aL7eS/?mibextid=wwXIfr",
+    url: "https://www.facebook.com/share/p/1DBXWiLj8T/?mibextid=wwXIfr",
     title: "පොස්ට් ලයික් කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/p/1AfsEvfKNt/",
+    url: "https://www.facebook.com/share/p/1C31wcKV5H/?mibextid=wwXIfr",
     title: "පොස්ට් ලයික් කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/r/1Erw99X9dR/?mibextid=wwXIfr",
+    url: "https://www.facebook.com/share/p/1JE8Poky2z/?mibextid=wwXIfr",
     title: "පොස්ට් ලයික් කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/r/1Ma2aWT5dK/?mibextid=wwXIfr",
+    url: "https://www.facebook.com/share/p/1EqeJHcscc/?mibextid=wwXIfr",
     title: "පොස්ට් ලයික් කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/r/1BtLcAGE4W/?mibextid=wwXIfr",
-    title: "පොස්ට් ලයික් කරන්න",
+    url: "https://www.facebook.com/share/15Rp3UonXbu/",
+    title: "Fancy Planet - පෙජ් එක ලයික් (Like) or ෆලෝ (follwer) කරන්න  ",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/p/1FsfuLAvFt/?mibextid=wwXIfr",
-    title: "පොස්ට් ලයික් කරන්න",
+    url: "https://www.facebook.com/share/1FQWbyyLfk/",
+    title: "Dineth Furniture - පෙජ් එක ලයික් (Like) or ෆලෝ (follwer) කරන්න  ",
     platform: "facebook",
     earnings: 1.0,
   },
