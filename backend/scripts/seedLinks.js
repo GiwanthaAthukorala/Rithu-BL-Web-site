@@ -23,51 +23,50 @@ const connectDB = async () => {
 
 const facebookLinks = [
   {
-    url: "https://web.facebook.com/profile.php?id=61584723406867",
-    title:
-      "Maths With Sulochana - පෙජ් එක ලයික් (Like) or ෆලෝ (follwer) කරන්න  ",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/share/p/1UcrUmBWrE/?mibextid=wwXIfr",
+    url: "https://www.facebook.com/share/p/14RfG6g1wKK/?mibextid=wwXIfr",
     title: "පොස්ට් ලයික් කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/p/1DBXWiLj8T/?mibextid=wwXIfr",
+    url: "https://www.facebook.com/share/p/1Yz5GwB9DN/?mibextid=wwXIfr",
     title: "පොස්ට් ලයික් කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/p/1C31wcKV5H/?mibextid=wwXIfr",
+    url: "https://www.facebook.com/share/p/17eq9ViZEY/?mibextid=wwXIfr",
     title: "පොස්ට් ලයික් කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/p/1JE8Poky2z/?mibextid=wwXIfr",
+    url: "https://www.facebook.com/share/p/17h7thyrVT/?mibextid=wwXIfr",
     title: "පොස්ට් ලයික් කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/p/1EqeJHcscc/?mibextid=wwXIfr",
+    url: "https://www.facebook.com/share/r/1AKctpR91V/?mibextid=wwXIfr",
     title: "පොස්ට් ලයික් කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/15Rp3UonXbu/",
-    title: "Fancy Planet - පෙජ් එක ලයික් (Like) or ෆලෝ (follwer) කරන්න  ",
+    url: "https://www.facebook.com/share/r/1AdivRT6LD/",
+    title: "පොස්ට් ලයික් කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/1FQWbyyLfk/",
-    title: "Dineth Furniture - පෙජ් එක ලයික් (Like) or ෆලෝ (follwer) කරන්න  ",
+    url: "https://www.facebook.com/share/r/14TRy5j9vqi/",
+    title: "පොස්ට් ලයික් කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/share/r/1CZUppmsxw/",
+    title: "පොස්ට් ලයික් කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
@@ -76,7 +75,7 @@ const facebookLinks = [
   /*
   {
     url: "https://www.facebook.com/share/1ARA89E5H1/",
-    title: "Cylora Fashion - පෙජ් එක ලයික් (Like) කරන්න  ",
+    title: "Cylora Fashion - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න  ",
     platform: "facebook",
     earnings: 1.0,
   },*/
