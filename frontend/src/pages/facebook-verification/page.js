@@ -1,15 +1,13 @@
-// app/facebook-verification/page.js
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import {
   Upload,
   ExternalLink,
   CheckCircle,
-  X,
+  Clock,
   Camera,
   Image,
-  Trash2,
 } from "lucide-react";
 import Header from "@/components/Header/Header";
 import api from "@/lib/api";
@@ -20,8 +18,8 @@ import Link from "next/link";
 import { MdRateReview } from "react-icons/md";
 
 export default function FbVerificationTask() {
-  const [files, setFiles] = useState([]);
-  const [previews, setPreviews] = useState([]);
+  const [file, setFile] = useState(null);
+  const [preview, setPreview] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [error, setError] = useState(null);
@@ -31,8 +29,6 @@ export default function FbVerificationTask() {
   const [previousSubmissionDate, setPreviousSubmissionDate] = useState("");
   const [selectedLinkId, setSelectedLinkId] = useState(null);
   const [linkClickCounts, setLinkClickCounts] = useState({});
-  const [batchResult, setBatchResult] = useState(null);
-  const fileInputRef = useRef(null);
 
   // Mobile detection
   const isMobile = () => {
@@ -46,75 +42,31 @@ export default function FbVerificationTask() {
   };
 
   const handleFileChange = (e) => {
-    const selectedFiles = Array.from(e.target.files);
+    const selectedFile = e.target.files[0];
+    if (!selectedFile) return;
 
-    // Check total files limit
-    if (files.length + selectedFiles.length > 6) {
-      setError("Maximum 6 screenshots allowed");
+    // Validate file type
+    const validTypes = ["image/jpeg", "image/png", "image/jpg"];
+    if (!validTypes.includes(selectedFile.type)) {
+      setError("Only JPEG, JPG, and PNG images are allowed");
       return;
     }
 
-    // Validate each file
-    const validFiles = [];
-    const invalidFiles = [];
-
-    selectedFiles.forEach((file) => {
-      // Validate file type
-      const validTypes = ["image/jpeg", "image/png", "image/jpg"];
-      if (!validTypes.includes(file.type)) {
-        invalidFiles.push({ file, error: "Invalid file type" });
-        return;
-      }
-
-      // Validate file size (5MB max)
-      if (file.size > 5 * 1024 * 1024) {
-        invalidFiles.push({ file, error: "File too large (max 5MB)" });
-        return;
-      }
-
-      validFiles.push(file);
-    });
-
-    if (invalidFiles.length > 0) {
-      setError(
-        `${invalidFiles.length} file(s) rejected: ${invalidFiles
-          .map((f) => f.error)
-          .join(", ")}`
-      );
+    // Validate file size (5MB max)
+    if (selectedFile.size > 5 * 1024 * 1024) {
+      setError("Image size must be less than 5MB");
+      return;
     }
 
-    if (validFiles.length === 0) return;
-
-    // Add valid files to state
-    setFiles((prev) => [...prev, ...validFiles]);
+    setFile(selectedFile);
     setError(null);
 
-    // Create previews
-    validFiles.forEach((file) => {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreviews((prev) => [
-          ...prev,
-          {
-            id: Date.now() + Math.random(),
-            url: reader.result,
-            name: file.name,
-            size: file.size,
-          },
-        ]);
-      };
-      reader.readAsDataURL(file);
-    });
-
-    // Reset file input
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
-    }
-  };
-
-  const removeFile = (index) => {
-    setFiles((prev) => prev.filter((_, i) => i !== index));
-    setPreviews((prev) => prev.filter((_, i) => i !== index));
+    // Create preview
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setPreview(reader.result);
+    };
+    reader.readAsDataURL(selectedFile);
   };
 
   const handleLinkClick = (linkId, clickCount) => {
@@ -139,7 +91,7 @@ export default function FbVerificationTask() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (files.length === 0 || !user) return;
+    if (!file || !user) return;
 
     // Validate link clicks if a link is selected
     /*if (selectedLinkId && linkClickCounts[selectedLinkId] < 2) {
@@ -153,22 +105,16 @@ export default function FbVerificationTask() {
 
     setIsSubmitting(true);
     setError(null);
-    setBatchResult(null);
 
     try {
       const formData = new FormData();
-
-      // Add all files
-      files.forEach((file) => {
-        formData.append("screenshots", file);
-      });
-
+      formData.append("screenshot", file);
       formData.append("platform", "facebook");
 
-      /*if (selectedLinkId) {
+      /*  if (selectedLinkId) {
         formData.append("linkId", selectedLinkId);
-      }*/
-
+      }
+*/
       const token = localStorage.getItem("token");
 
       if (!token) {
@@ -179,12 +125,11 @@ export default function FbVerificationTask() {
         process.env.NEXT_PUBLIC_API_URL ||
         "https://rithu-bl-web-side.vercel.app";
       console.log("Submitting to:", `${apiUrl}/api/submissions`);
-      console.log("Number of files:", files.length);
-
+      console.log("Token exists:", !!token);
       const response = await fetch(`${apiUrl}/api/submissions`, {
         method: "POST",
         body: formData,
-        credentials: "include",
+        credentials: "include", // Important for cookies/auth
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -219,28 +164,24 @@ export default function FbVerificationTask() {
       const result = await response.json();
       console.log("Success response:", result);
 
-      setBatchResult(result.data);
-
       // Mark link as submitted if we have one
-      /*if (selectedLinkId) {
+      /* if (selectedLinkId) {
         try {
           await api.post(`/links/${selectedLinkId}/submit`);
           console.log("Link marked as submitted");
         } catch (submitError) {
           console.error("Failed to mark link as submitted:", submitError);
+          // Don't fail the whole submission for this
         }
       }*/
 
       setIsSubmitted(true);
-
-      // Clear files after successful submission
-      setFiles([]);
-      setPreviews([]);
+      //setSelectedLinkId(null);
 
       // Navigate to profile after success
       setTimeout(() => {
         router.push("/Profile/page");
-      }, 5000);
+      }, 2000);
     } catch (error) {
       console.error("Submission error:", error);
       if (!error.message.includes("too similar")) {
@@ -250,6 +191,24 @@ export default function FbVerificationTask() {
       setIsSubmitting(false);
     }
   };
+
+  // Handle camera capture (optional feature)
+  /*const handleCameraCapture = () => {
+    // Create a separate input for camera capture
+    const cameraInput = document.createElement("input");
+    cameraInput.type = "file";
+    cameraInput.accept = "image/*";
+    cameraInput.capture = "environment"; // This opens camera
+
+    cameraInput.onchange = (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        handleFileChange({ target: { files: [file] } });
+      }
+    };
+
+    cameraInput.click();
+  };*/
 
   if (isAuthLoading || !user) {
     return (
@@ -262,71 +221,24 @@ export default function FbVerificationTask() {
     );
   }
 
-  if (isSubmitted && batchResult) {
+  if (isSubmitted) {
     return (
       <div className="min-h-screen bg-gray-50">
         <Header />
-        <div className="max-w-2xl mx-auto p-6">
+        <div className="max-w-md mx-auto p-6">
           <div className="bg-white p-8 rounded-xl shadow-sm text-center">
-            <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-              <CheckCircle className="w-12 h-12 text-green-500" />
+            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <CheckCircle className="w-8 h-8 text-green-500" />
             </div>
-            <h2 className="text-3xl font-bold mb-4 text-green-600">
-              Batch Submission Successful!
-            </h2>
-
-            <div className="bg-gray-50 p-6 rounded-lg mb-6">
-              <div className="grid grid-cols-2 gap-4 mb-4">
-                <div className="bg-green-100 p-4 rounded-lg">
-                  <div className="text-2xl font-bold text-green-700">
-                    {batchResult.successful.length}
-                  </div>
-                  <div className="text-green-600">Approved</div>
-                </div>
-                <div className="bg-red-100 p-4 rounded-lg">
-                  <div className="text-2xl font-bold text-red-700">
-                    {batchResult.rejected.length}
-                  </div>
-                  <div className="text-red-600">Rejected</div>
-                </div>
-              </div>
-
-              <div className="bg-blue-100 p-4 rounded-lg">
-                <div className="text-2xl font-bold text-blue-700">
-                  Rs {batchResult.totalEarned.toFixed(2)}
-                </div>
-                <div className="text-blue-600">Total Earned</div>
-              </div>
-            </div>
-
-            {/* Show rejected images reasons */}
-            {batchResult.rejected.length > 0 && (
-              <div className="mb-6 text-left">
-                <h3 className="font-bold text-lg mb-2 text-red-600">
-                  Rejected Images:
-                </h3>
-                <ul className="space-y-2">
-                  {batchResult.rejected.map((rejected, index) => (
-                    <li
-                      key={index}
-                      className="text-red-600 bg-red-50 p-3 rounded"
-                    >
-                      <strong>Image {rejected.index}:</strong> {rejected.reason}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
+            <h2 className="text-2xl font-bold mb-2">Submission Successful!</h2>
             <p className="text-gray-600 mb-6">
-              You've earned Rs {batchResult.totalEarned.toFixed(2)}! Your
-              balance has been updated. Redirecting to profile in 5 seconds...
+              You've earned Rs 1.00! Your balance has been updated.
             </p>
             <button
-              onClick={() => router.push("/Profile/page")}
-              className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium"
+              onClick={() => router.push("/facebook-verification/page")}
+              className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
             >
-              Go to Profile Now
+              View Your Earnings
             </button>
           </div>
         </div>
@@ -337,7 +249,7 @@ export default function FbVerificationTask() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
       <Header />
-      <div className="max-w-6xl mx-auto p-4">
+      <div className="max-w-4xl mx-auto p-4">
         {/* Enhanced Header */}
         <div className="relative overflow-hidden bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-600 rounded-t-2xl shadow-lg">
           {/* Background Pattern */}
@@ -366,37 +278,26 @@ export default function FbVerificationTask() {
               <div className="flex-1 text-center sm:text-left">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-3 mb-2">
                   <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
-                    Facebook Batch Verification
+                    Facebook Verification
                   </h1>
-                  <div className="mt-2 sm:mt-0 px-4 py-2 bg-gradient-to-r from-green-500 to-emerald-500 text-white text-sm font-semibold rounded-full shadow-md animate-pulse">
-                    Rs {files.length * 1}.00 Total
+                  <div className="mt-2 sm:mt-0 px-3 py-1 bg-green-500 text-white text-sm font-semibold rounded-full shadow-md animate-bounce w-max mx-auto sm:mx-0">
+                    Rs 1.00
                   </div>
                 </div>
 
                 <p className="text-blue-100 text-base sm:text-lg font-medium">
-                  Upload up to 6 screenshots at once and earn Rs 1.00 per
-                  approved image
+                  Earn money by engaging with Facebook pages
                 </p>
 
                 <div className="flex flex-col sm:flex-row items-center sm:items-center justify-center sm:justify-start space-y-2 sm:space-y-0 sm:space-x-4 mt-3">
                   <div className="flex items-center space-x-2 text-blue-200">
                     <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                    <span className="text-sm">Batch Upload Available</span>
+                    <span className="text-sm">Active Task</span>
                   </div>
                   <div className="flex items-center space-x-2 text-blue-200">
                     <CheckCircle className="w-4 h-4" />
                     <span className="text-sm">Instant Payout</span>
                   </div>
-                </div>
-              </div>
-
-              {/* Files counter */}
-              <div className="mt-4 sm:mt-0">
-                <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 text-center">
-                  <div className="text-3xl font-bold text-white">
-                    {files.length}/6
-                  </div>
-                  <div className="text-blue-200 text-sm">Screenshots</div>
                 </div>
               </div>
             </div>
@@ -429,67 +330,15 @@ export default function FbVerificationTask() {
 
         {/* Main Content */}
         <div className="bg-white rounded-b-2xl shadow-xl border-t-0">
+          {/* Instructions Section */}
           <div className="p-6">
-            {/* Files Preview Section */}
-            {files.length > 0 && (
-              <div className="mb-8">
-                <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center justify-between">
-                  <span>Selected Screenshots ({files.length}/6)</span>
-                  <button
-                    onClick={() => {
-                      setFiles([]);
-                      setPreviews([]);
-                    }}
-                    className="text-sm bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600 transition-colors flex items-center space-x-1"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                    <span>Clear All</span>
-                  </button>
-                </h3>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {previews.map((preview, index) => (
-                    <div
-                      key={preview.id}
-                      className="relative border rounded-lg overflow-hidden shadow-sm"
-                    >
-                      <img
-                        src={preview.url}
-                        alt={`Screenshot ${index + 1}`}
-                        className="w-full h-48 object-cover"
-                      />
-                      <div className="p-3 bg-gray-50">
-                        <div className="flex justify-between items-center">
-                          <div className="text-sm font-medium text-gray-700 truncate">
-                            {preview.name}
-                          </div>
-                          <button
-                            onClick={() => removeFile(index)}
-                            className="text-red-500 hover:text-red-700"
-                          >
-                            <X className="w-5 h-5" />
-                          </button>
-                        </div>
-                        <div className="text-xs text-gray-500">
-                          {(preview.size / (1024 * 1024)).toFixed(2)} MB
-                        </div>
-                        <div className="mt-2 px-2 py-1 bg-blue-100 text-blue-700 text-xs font-medium rounded inline-block">
-                          Image {index + 1}
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Instructions Section */}
             <div className="mb-8">
               <h2 className="text-xl font-bold text-gray-800 mb-6 flex items-center space-x-2">
                 <div className="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">
                   <MdRateReview />
                 </div>
-                <span>Batch Upload Instructions</span>
+
+                <span>Instructions</span>
               </h2>
               <div className="bg-gray-50 p-6 rounded-xl">
                 <ol className="list-decimal list-inside space-y-3 text-gray-700">
@@ -497,124 +346,254 @@ export default function FbVerificationTask() {
                     <span className="flex-shrink-0 w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold">
                       1
                     </span>
-                    <span>
-                      Click on Facebook page links below and like/follow them
-                    </span>
+                    <span>Click on a Facebook page link below</span>
                   </li>
                   <li className="flex items-start space-x-3">
                     <span className="flex-shrink-0 w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold">
                       2
                     </span>
-                    <span>Take screenshots of each liked/followed page</span>
+                    <span>Like or follow the page on Facebook</span>
                   </li>
                   <li className="flex items-start space-x-3">
                     <span className="flex-shrink-0 w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold">
                       3
                     </span>
-                    <span>
-                      Select up to 6 different screenshots (no duplicates)
-                    </span>
+                    <span>Click the link 2 times to track your engagement</span>
                   </li>
                   <li className="flex items-start space-x-3">
                     <span className="flex-shrink-0 w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold">
                       4
                     </span>
-                    <span>Each approved screenshot earns Rs 1.00</span>
+                    <span>Take a screenshot showing your like/follow</span>
                   </li>
                   <li className="flex items-start space-x-3">
                     <span className="flex-shrink-0 w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold">
                       5
                     </span>
-                    <span>Submit all at once for faster processing</span>
+                    <span>Upload the screenshot to earn Rs 1.00</span>
                   </li>
                 </ol>
+              </div>
+            </div>
+            <h2 className="text-xl font-bold text-gray-800 mb-6 flex items-center space-x-2">
+              <div className="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold"></div>
 
-                {/* Earnings calculation */}
-                <div className="mt-6 p-4 bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-lg">
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <div className="text-lg font-bold text-gray-800">
-                        Rs {files.length * 1}.00
-                      </div>
-                      <div className="text-sm text-gray-600">
-                        Potential earnings ({files.length} screenshots × Rs
-                        1.00)
-                      </div>
+              <span>Facebook pages Review Section</span>
+            </h2>
+            {/** Facebook pages Review and Comment Section */}
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto mb-12">
+              <Link href="/FbPageReview/pages">
+                <div className="cursor-pointer bg-white shadow-md rounded-lg p-6 border-0 hover:shadow-lg transition">
+                  <div className="flex items-center mb-4">
+                    <div className="w-16 h-16 flex items-center justify-center mr-3 overflow-hidden">
+                      <img
+                        src="/review.png"
+                        alt="youtube Icon"
+                        className="w-16 h-16 object-contain"
+                      />
                     </div>
-                    <div className="text-green-600 font-medium">
-                      {files.length} of 6 slots filled
-                    </div>
+                    <h3 className="text-lg font-semibold text-gray-900">
+                      Facebook Page Review Section
+                    </h3>
                   </div>
-                  <div className="mt-2 h-2 bg-gray-200 rounded-full overflow-hidden">
-                    <div
-                      className="h-full bg-gradient-to-r from-green-400 to-emerald-500"
-                      style={{ width: `${(files.length / 6) * 100}%` }}
-                    ></div>
+                  <p className="text-[#000000] font-bold mb-4 text-[18px]">
+                    Page Review
+                  </p>
+                  <div className="text-sm text-[#000000] font-medium">
+                    Rs 30/= • Page Review
                   </div>
+                </div>
+              </Link>
+            </div>
+
+            {/* Facebook Pages Links */}
+            <div className="mb-8 bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-xl border border-blue-200">
+              <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center space-x-2">
+                <ExternalLink className="w-5 h-5 text-blue-600" />
+                <span>Facebook Pages to Follow or Likr and Shares Post</span>
+              </h3>
+
+              <TaskLinks platform="facebook" onLinkClick={handleLinkClick} />
+
+              {selectedLinkId && linkClickCounts[selectedLinkId] && (
+                <div className="mt-4 p-4 bg-blue-100 border border-blue-300 rounded-lg">
+                  <div className="flex items-center justify-between">
+                    <p className="text-blue-700 font-medium">
+                      ✓ Link selected - Progress:{" "}
+                      {linkClickCounts[selectedLinkId]}/10 clicks
+                    </p>
+                    {linkClickCounts[selectedLinkId] >= 10 && (
+                      <CheckCircle className="w-5 h-5 text-green-600" />
+                    )}
+                  </div>
+                  {linkClickCounts[selectedLinkId] >= 10 ? (
+                    <p className="text-green-700 text-sm mt-1">
+                      Ready to submit! Upload your screenshot below.
+                    </p>
+                  ) : (
+                    <p className="text-blue-600 text-sm mt-1">
+                      Click {10 - linkClickCounts[selectedLinkId]} more times to
+                      complete
+                    </p>
+                  )}
+                </div>
+              )}
+            </div>
+
+            {/* Screenshot Requirements */}
+            <div className="mb-8 bg-gradient-to-r from-yellow-50 to-orange-50 p-6 rounded-xl border border-yellow-200">
+              <h3 className="text-lg font-semibold text-yellow-800 mb-4 flex items-center space-x-2">
+                <div className="w-6 h-6 bg-yellow-600 text-white rounded-full flex items-center justify-center text-sm">
+                  !
+                </div>
+                <span>Screenshot Requirements</span>
+              </h3>
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="flex items-center space-x-3">
+                  <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
+                  <span className="text-yellow-800">
+                    Must clearly show the liked/followed page
+                  </span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
+                  <span className="text-yellow-800">
+                    Must show your profile or browser context
+                  </span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
+                  <span className="text-yellow-800">
+                    No edited or cropped images
+                  </span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
+                  <span className="text-yellow-800">File size under 5MB</span>
                 </div>
               </div>
             </div>
 
-            {/* ... Rest of the component remains similar until the Upload Section ... */}
+            {/* Mobile-specific instructions */}
+            {isMobile() && (
+              <div className="mb-8 bg-gradient-to-r from-purple-50 to-pink-50 p-6 rounded-xl border border-purple-200">
+                <h3 className="text-lg font-semibold text-purple-800 mb-4 flex items-center space-x-2">
+                  <span className="text-xl">📱</span>
+                  <span>Mobile Instructions</span>
+                </h3>
+                <div className="space-y-3 text-purple-700">
+                  <p className="flex items-start space-x-2">
+                    <span className="text-purple-600 font-bold">•</span>
+                    <span>
+                      Links will open in new tabs or redirect you to Facebook
+                    </span>
+                  </p>
+                  <p className="flex items-start space-x-2">
+                    <span className="text-purple-600 font-bold">•</span>
+                    <span>
+                      Use your browser's back button to return here after liking
+                    </span>
+                  </p>
+                  <p className="flex items-start space-x-2">
+                    <span className="text-purple-600 font-bold">•</span>
+                    <span>
+                      Take screenshots using your device's screenshot function
+                      (usually Power + Volume Down)
+                    </span>
+                  </p>
+                  <p className="flex items-start space-x-2">
+                    <span className="text-purple-600 font-bold">•</span>
+                    <span>Screenshots will be saved to your photo gallery</span>
+                  </p>
+                </div>
+              </div>
+            )}
 
             {/* Upload Section */}
             <div>
               <h3 className="text-xl font-bold text-gray-800 mb-6 flex items-center space-x-2">
                 <Upload className="w-6 h-6 text-blue-600" />
-                <span>Upload Screenshots ({files.length}/6)</span>
+                <span>Upload Screenshot</span>
               </h3>
               <form onSubmit={handleSubmit}>
                 <div className="mb-6">
                   <label className="block text-sm font-medium text-gray-700 mb-4">
-                    Select Screenshots
+                    Screenshot File
                   </label>
 
-                  <div className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-blue-400 hover:bg-blue-50 transition-all duration-300">
-                    <div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                      {files.length === 0 ? (
-                        <Upload className="w-10 h-10 text-blue-600" />
-                      ) : (
-                        <div className="text-2xl font-bold text-blue-600">
-                          {files.length}
-                        </div>
-                      )}
-                    </div>
-                    <p className="text-gray-600 mb-2 text-lg font-medium">
-                      {isMobile()
-                        ? "Select screenshots from gallery"
-                        : "Drag and drop screenshots here or click to browse"}
-                    </p>
-                    <p className="text-sm text-gray-500 mb-6">
-                      Upload up to 6 screenshots. Each approved image earns Rs
-                      1.00
-                    </p>
-
-                    <label className="inline-block bg-gradient-to-r from-blue-600 to-blue-700 text-white px-8 py-3 rounded-xl cursor-pointer hover:from-blue-700 hover:to-blue-800 transition-all duration-300 transform hover:scale-105 shadow-lg font-semibold">
-                      <Image className="w-5 h-5 inline mr-2" />
-                      {isMobile() ? "Choose from Gallery" : "Choose Files"}
-                      <input
-                        ref={fileInputRef}
-                        type="file"
-                        accept="image/*"
-                        onChange={handleFileChange}
-                        multiple
-                        className="hidden"
-                        disabled={files.length >= 6}
+                  {preview ? (
+                    <div className="border-2 border-dashed border-green-300 bg-green-50 rounded-xl p-6 text-center">
+                      <img
+                        src={preview}
+                        alt="Screenshot preview"
+                        className="max-h-64 mx-auto mb-4 rounded-lg shadow-md"
                       />
-                    </label>
+                      <div className="bg-white p-4 rounded-lg inline-block shadow-sm">
+                        <p className="text-green-700 font-semibold mb-2">
+                          {file.name}
+                        </p>
+                        <p className="text-sm text-gray-600 mb-3">
+                          File size: {(file.size / (1024 * 1024)).toFixed(2)} MB
+                        </p>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setFile(null);
+                            setPreview(null);
+                          }}
+                          className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
+                        >
+                          Remove file
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="space-y-4">
+                      {/* Main file upload area */}
+                      <div className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-blue-400 hover:bg-blue-50 transition-all duration-300">
+                        <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                          <Upload className="w-8 h-8 text-blue-600" />
+                        </div>
+                        <p className="text-gray-600 mb-2 text-lg font-medium">
+                          {isMobile()
+                            ? "Select your screenshot from gallery"
+                            : "Drag and drop your screenshot here or click to browse"}
+                        </p>
+                        <p className="text-sm text-gray-500 mb-6">
+                          Supported formats: PNG, JPG, JPEG (max 5MB)
+                        </p>
 
-                    {files.length > 0 && files.length < 6 && (
-                      <p className="mt-4 text-blue-600 text-sm">
-                        You can add {6 - files.length} more screenshot(s)
-                      </p>
-                    )}
+                        {/* File selection buttons */}
+                        <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
+                          {/* Gallery/File picker - Main option */}
+                          <label className="inline-block bg-gradient-to-r from-blue-600 to-blue-700 text-white px-8 py-3 rounded-xl cursor-pointer hover:from-blue-700 hover:to-blue-800 transition-all duration-300 transform hover:scale-105 shadow-lg font-semibold">
+                            <Image className="w-5 h-5 inline mr-2" />
+                            {isMobile() ? "Choose from Gallery" : "Choose File"}
+                            <input
+                              type="file"
+                              accept="image/*"
+                              onChange={handleFileChange}
+                              className="hidden"
+                              // REMOVED: capture attribute to prevent forcing camera
+                            />
+                          </label>
 
-                    {files.length >= 6 && (
-                      <p className="mt-4 text-red-600 text-sm font-medium">
-                        Maximum 6 screenshots reached. Remove some to add more.
-                      </p>
-                    )}
-                  </div>
+                          {/* Camera option for mobile (optional) */}
+                        </div>
+
+                        {/* Mobile help text */}
+                        {isMobile() && (
+                          <div className="mt-4 p-3 bg-gray-100 rounded-lg">
+                            <p className="text-xs text-gray-600">
+                              <strong>Tip:</strong> If you already took a
+                              screenshot, use "Choose from Gallery". If you want
+                              to take a new photo, use "Take Photo".
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
 
                   {error && (
                     <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg">
@@ -625,15 +604,28 @@ export default function FbVerificationTask() {
                   )}
                 </div>
 
+                {/* Submission validation messages */}
+                {selectedLinkId &&
+                  linkClickCounts[selectedLinkId] &&
+                  linkClickCounts[selectedLinkId] < 5 && (
+                    <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                      <p className="text-yellow-800 font-medium">
+                        ⚠️ Please complete{" "}
+                        {10 - linkClickCounts[selectedLinkId]} more clicks on
+                        your selected link before submitting.
+                      </p>
+                    </div>
+                  )}
+
                 <button
                   type="submit"
                   disabled={
-                    files.length === 0 ||
+                    !file ||
                     isSubmitting ||
                     (selectedLinkId && linkClickCounts[selectedLinkId] < 10)
                   }
                   className={`w-full py-4 rounded-xl font-bold text-lg transition-all duration-300 transform hover:scale-[1.02] ${
-                    files.length > 0 &&
+                    file &&
                     (!selectedLinkId || linkClickCounts[selectedLinkId] >= 10)
                       ? "bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white shadow-lg hover:shadow-xl"
                       : "bg-gray-300 text-gray-500 cursor-not-allowed"
@@ -642,19 +634,26 @@ export default function FbVerificationTask() {
                   {isSubmitting ? (
                     <div className="flex items-center justify-center space-x-2">
                       <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-white"></div>
-                      <span>Processing {files.length} screenshots...</span>
+                      <span>Submitting...</span>
                     </div>
                   ) : (
                     <div className="flex items-center justify-center space-x-2">
                       <Upload className="w-5 h-5" />
-                      <span>
-                        Submit {files.length} Screenshot
-                        {files.length !== 1 ? "s" : ""} & Earn Rs{" "}
-                        {files.length * 1}.00
-                      </span>
+                      <span>Submit Screenshot & Earn Rs 1.00</span>
                     </div>
                   )}
                 </button>
+
+                {/* Mobile-specific submission note */}
+                {isMobile() && (
+                  <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                    <p className="text-blue-700 text-sm">
+                      📱 <strong>Mobile Tip:</strong> After submitting, you'll
+                      be redirected to your profile page to see your updated
+                      earnings.
+                    </p>
+                  </div>
+                )}
               </form>
             </div>
           </div>
@@ -665,15 +664,15 @@ export default function FbVerificationTask() {
           <DuplicateWarningModal
             onClose={() => {
               setShowDuplicateModal(false);
-              setFiles([]);
-              setPreviews([]);
+              setFile(null);
+              setPreview(null);
             }}
             previousDate={previousSubmissionDate}
           />
         )}
       </div>
 
-      {/* Mobile-specific styles */}
+      {/* Add mobile-specific styles */}
       <style jsx>{`
         @media (max-width: 768px) {
           .task-link:active {
@@ -690,11 +689,13 @@ export default function FbVerificationTask() {
             touch-action: manipulation;
           }
 
+          /* Ensure file inputs work properly on mobile */
           input[type="file"] {
             -webkit-appearance: none;
             appearance: none;
           }
 
+          /* Better button styling for mobile */
           button,
           label {
             min-height: 44px;
@@ -702,6 +703,7 @@ export default function FbVerificationTask() {
           }
         }
 
+        /* Hide file input styling across all devices */
         input[type="file"] {
           position: absolute;
           opacity: 0;

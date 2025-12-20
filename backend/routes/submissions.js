@@ -1,4 +1,3 @@
-// routes/submissions.js
 const express = require("express");
 const router = express.Router();
 const { protect, admin } = require("../middleware/authMiddleware");
@@ -9,12 +8,13 @@ const {
   rejectSubmission,
 } = require("../controllers/submissionController");
 const uploadFile = require("../middleware/uploadMiddleware");
+//const submissionRateLimiter = require("../middleware/rateLimiter");
 
-// User routes - changed to upload.array for multiple files
-router.post("/", protect, uploadFile.array("screenshots", 6), createSubmission);
+// User routes
+router.post("/", protect, uploadFile.single("screenshot"), createSubmission);
 router.get("/my-submissions", protect, getUserSubmissions);
 
-// Admin routes remain the same
+// Admin routes
 router.put("/:id/approve", protect, admin, approveSubmission);
 router.put("/:id/reject", protect, admin, rejectSubmission);
 
