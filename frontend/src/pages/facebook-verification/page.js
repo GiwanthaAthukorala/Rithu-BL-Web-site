@@ -180,7 +180,7 @@ export default function FbVerificationTask() {
 
       // Navigate to profile after success
       setTimeout(() => {
-        router.push("/Profile/page");
+        router.push("/facebook-verification/page");
       }, 2000);
     } catch (error) {
       console.error("Submission error:", error);
