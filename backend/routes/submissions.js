@@ -11,7 +11,7 @@ const uploadFile = require("../middleware/uploadMiddleware");
 //const submissionRateLimiter = require("../middleware/rateLimiter");
 
 // User routes
-router.post("/", protect, uploadFile.single("screenshot"), createSubmission);
+router.post("/", protect, uploadMultiple, createSubmission);
 router.get("/my-submissions", protect, getUserSubmissions);
 
 // Admin routes

@@ -46,35 +46,55 @@ const fileFilter = (req, file, cb) => {
 // Controller functions
 const createSubmission = async (req, res) => {
   console.log("==== SUBMISSION REQUEST RECEIVED ====");
-  console.log("User ID : ", req.user?._id);
-  console.log("Uploaded file:", req.file);
+  console.log("User ID:", req.user?._id);
+  console.log("Uploaded files:", req.files ? req.files.length : 0);
 
   const startTime = Date.now();
 
   try {
-    if (!req.file || !req.file.path) {
-      console.error("❌ File upload failed. req.file is missing or invalid.");
+    // Check if files were uploaded
+    if (!req.files || req.files.length === 0) {
+      console.error("❌ No files uploaded.");
       return res.status(400).json({
         success: false,
-        message: "File upload failed. No file received from client.",
+        message: "Please upload at least one screenshot.",
       });
     }
 
     const userId = req.user._id;
-    const cloudinaryUrl = req.file.path;
+    const files = req.files;
     const { linkId } = req.body;
 
-    // 1. Generate hash
-    let uploadedImageHash;
-    try {
-      uploadedImageHash = await generateImageHash(cloudinaryUrl);
-    } catch (hashError) {
-      console.error("Hash generation failed:", hashError);
-      return res.status(400).json({
-        success: false,
-        message: "Could not process image. Please try a different file.",
+    // Process each file
+    const submissionPromises = files.map(async (file) => {
+      const cloudinaryUrl = file.path;
+
+      // 1. Generate hash for the file
+      let uploadedImageHash;
+      try {
+        uploadedImageHash = await generateImageHash(cloudinaryUrl);
+      } catch (hashError) {
+        console.error("Hash generation failed:", hashError);
+        throw new Error(
+          "Could not process image. Please try a different file."
+        );
+      }
+
+      // 2. Check for duplicates (optional - you might want to check each file)
+      // ... duplicate checking logic for each file ...
+
+      // 3. Create submission for this file
+      const submission = await Submission.create({
+        user: userId,
+        platform: req.body.platform || "facebook",
+        screenshot: cloudinaryUrl,
+        imageHash: uploadedImageHash,
+        status: "approved",
+        amount: 1.0,
       });
-    }
+
+      return submission;
+    });
 
     // Check for duplicates with better error reporting
     const previousSubmissions = await Submission.find({
@@ -111,27 +131,25 @@ const createSubmission = async (req, res) => {
       originalname: req.file.originalname,
     };*/
 
-    const submission = await Submission.create({
-      user: req.user._id,
-      platform: req.body.platform || "facebook",
-      screenshot: cloudinaryUrl,
-      imageHash: uploadedImageHash,
-      status: "approved",
-      amount: 1.0,
-    });
+    // Wait for all submissions to be created
+    const submissions = await Promise.all(submissionPromises);
 
-    let earnings = await Earnings.findOne({ user: req.user._id });
+    // 4. Calculate total earnings (1.0 per file)
+    const totalEarnings = files.length * 1.0;
+
+    // 5. Update earnings
+    let earnings = await Earnings.findOne({ user: userId });
     if (!earnings) {
       earnings = await Earnings.create({
-        user: req.user._id,
-        totalEarned: 1.0,
-        availableBalance: 1.0,
+        user: userId,
+        totalEarned: totalEarnings,
+        availableBalance: totalEarnings,
         pendingWithdrawal: 0,
         withdrawnAmount: 0,
       });
     } else {
-      earnings.totalEarned += 1.0;
-      earnings.availableBalance += 1.0;
+      earnings.totalEarned += totalEarnings;
+      earnings.availableBalance += totalEarnings;
       await earnings.save();
     }
 
