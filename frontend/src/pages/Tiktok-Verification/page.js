@@ -384,7 +384,7 @@ export default function TikTokVerificationTask() {
                     Like Video #1 - ටික් ටොක් විඩියෝ එකට ලයික් කරන්න
                   </h4>
                   <a
-                    href="https://vt.tiktok.com/ZSPpg2nLr/"
+                    href="https://vt.tiktok.com/ZSPGR6edE/"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium group-hover:underline text-xs sm:text-sm"
