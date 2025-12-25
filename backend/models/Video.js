@@ -45,7 +45,7 @@ const videoSchema = new mongoose.Schema(
     },
     rewardAmount: {
       type: Number,
-      default: 1,
+      default: 0.5,
       required: true,
     },
     isActive: {

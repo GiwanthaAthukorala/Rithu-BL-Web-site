@@ -40,13 +40,12 @@ const sampleVideos = [
     title: "Induwara Wickramarachchi - hitha (හිත) Official Music Video",
     description:
       "Induwara Wickramarachchi -  hitha (හිත) Official Music Video  Watch for 1 minute to earn Rs 1.",
-    videoUrl: "https://www.youtube.com/watch?v=CsYM4vPKXxs?si=Z4-5yKv1_p19V2fF",
-    embedUrl: "https://www.youtube.com/watch?v=CsYM4vPKXxs?si=Z4-5yKv1_p19V2fF",
-    thumbnailUrl:
-      "https://www.youtube.com/watch?v=CsYM4vPKXxs?si=Z4-5yKv1_p19V2fF",
+    videoUrl: "https://youtu.be/VXsnevrcEJk?si=B28-wFlLbEvWRFP9",
+    embedUrl: "https://youtu.be/VXsnevrcEJk?si=B28-wFlLbEvWRFP9",
+    thumbnailUrl: "https://youtu.be/VXsnevrcEJk?si=B28-wFlLbEvWRFP9",
     platform: "youtube",
     duration: 60,
-    rewardAmount: 1,
+    rewardAmount: 0.5,
     isActive: true,
   },
 
