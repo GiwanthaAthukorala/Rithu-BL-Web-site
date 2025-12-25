@@ -23,63 +23,61 @@ const connectDB = async () => {
 
 const facebookLinks = [
   {
-    url: "https://www.facebook.com/share/1QL9QHFEPn/",
+    url: "https://www.facebook.com/share/p/1ApXsX1VB7/?mibextid=wwXIfr",
     title: "පොස්ට් ලයික් කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/1ALRhnAjc4/",
+    url: "https://www.facebook.com/share/p/1ABzYEgAKo/?mibextid=wwXIfr",
     title: "පොස්ට් ලයික් කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/v/1GT1WuDY9a/?mibextid=wwXIfr",
+    url: "https://www.facebook.com/share/r/1EhCdDXtSc/?mibextid=wwXIfr",
     title: "පොස්ට් ලයික් කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/r/14TgopwvEeJ/",
+    url: "https://www.facebook.com/share/r/16mzizqBJ1/",
     title: "පොස්ට් ලයික් කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/r/18v4ATe3uY/",
+    url: "https://www.facebook.com/share/p/1Arg3iv2Yc/?mibextid=wwXIfr",
     title: "පොස්ට් ලයික් කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/r/1Cge9RXPcR/",
+    url: "https://www.facebook.com/share/r/17jGS1kyzj/",
     title: "පොස්ට් ලයික් කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/r/1DDPdzCNa1/",
+    url: "https://www.facebook.com/share/r/1G2vR3p42o/",
     title: "පොස්ට් ලයික් කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/sarasicomputersmathugama?mibextid=wwXIfr&mibextid=wwXIfr",
-    title:
-      "Sarasi Computer House - Mathugama - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න  ",
+    url: "https://www.facebook.com/share/r/15SSsdEGbuo/?mibextid=wwXIfr",
+    title: "පොස්ට් ලයික් කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/17axJxVJkn/",
-    title:
-      "Dilshan Lakshitha - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න  ",
+    url: "https://www.facebook.com/share/r/1BkXn7YrLD/?mibextid=wwXIfr",
+    title: "පොස්ට් ලයික් කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/r/1AYq9CEE2a/",
+    url: "https://www.facebook.com/share/p/1DHAVfv4sK/?mibextid=wwXIfr",
     title: "පොස්ට් ලයික් කරන්න",
     platform: "facebook",
     earnings: 1.0,
