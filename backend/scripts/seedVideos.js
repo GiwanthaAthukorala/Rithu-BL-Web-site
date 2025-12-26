@@ -37,12 +37,13 @@ const extractYouTubeShortsId = (url) => {
 
 const sampleVideos = [
   {
-    title: "Induwara Wickramarachchi - hitha (හිත) Official Music Video",
+    title:
+      "සිතුවිලි ගිනිපුපුරු (Sithuvili Gini Pupuru) | Official Music Video Vishwa Oudarika ",
     description:
-      "Induwara Wickramarachchi -  hitha (හිත) Official Music Video  Watch for 1 minute to earn Rs 1.",
-    videoUrl: "https://youtu.be/VXsnevrcEJk?si=B28-wFlLbEvWRFP9",
+      "සිතුවිලි ගිනිපුපුරු (Sithuvili Gini Pupuru) | Official Music Video Vishwa Oudarika   Watch for 0.50 minute to earn Rs 0.50.",
+    videoUrl: "https://www.youtube.com/watch?v=VXsnevrcEJk",
     embedUrl: "https://youtu.be/VXsnevrcEJk?si=B28-wFlLbEvWRFP9",
-    thumbnailUrl: "https://youtu.be/VXsnevrcEJk?si=B28-wFlLbEvWRFP9",
+    thumbnailUrl: "https://img.youtube.com/vi/VXsnevrcEJk/hqdefault.jpg",
     platform: "youtube",
     duration: 60,
     rewardAmount: 0.5,
