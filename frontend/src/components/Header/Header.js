@@ -75,7 +75,7 @@ export default function Header() {
               {[
                 { href: "#how-it-works", label: "How It Works" },
                 { href: "#platforms", label: "Platforms" },
-                { href: "#faq", label: "FAQ" },
+                { href: "../../components/FAQ.js", label: "FAQ" },
                 { href: "#contact", label: "Contact" },
               ].map((item) => (
                 <Link
@@ -189,7 +189,7 @@ export default function Header() {
               {[
                 { href: "#how-it-works", label: "How It Works" },
                 { href: "#platforms", label: "Platforms" },
-                { href: "#faq", label: "FAQ" },
+                { href: "../../components/FAQ.js", label: "FAQ" },
                 { href: "#contact", label: "Contact" },
               ].map((item, index) => (
                 <Link
