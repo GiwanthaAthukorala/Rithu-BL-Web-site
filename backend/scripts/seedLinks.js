@@ -23,43 +23,43 @@ const connectDB = async () => {
 
 const facebookLinks = [
   {
-    url: "https://www.facebook.com/share/14Nu4xSMFKp/",
-    title: "Vishwa Oudarika - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න  ",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/share/r/1BkXn7YrLD/?mibextid=wwXIfr",
+    url: "https://www.facebook.com/share/p/1C1egWMcjr/?mibextid=wwXIfr",
     title: "පොස්ට් ලයික් කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/v/14R2vqe83Z2/",
+    url: "https://www.facebook.com/share/r/1KFqKuM89c/?mibextid=wwXIfr",
     title: "පොස්ට් ලයික් කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/v/14RXUz6AHDA/",
+    url: "https://www.facebook.com/share/p/17VnpefohF/?mibextid=wwXIfr",
     title: "පොස්ට් ලයික් කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/p/1BjtYxprEL/",
+    url: "https://www.facebook.com/share/r/1HGsfsvDb2/?mibextid=wwXIfr",
     title: "පොස්ට් ලයික් කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/r/14TjcLW3AaL/?mibextid=wwXIfr",
+    url: "https://www.facebook.com/share/r/18GkVXy5HB/?mibextid=wwXIfr",
     title: "පොස්ට් ලයික් කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/r/1FWaFXQSy5/",
+    url: "https://www.facebook.com/share/p/19Jusqiz3v/?mibextid=wwXIfr",
+    title: "පොස්ට් ලයික් කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/share/v/1FF1VCbpLU/",
     title: "පොස්ට් ලයික් කරන්න",
     platform: "facebook",
     earnings: 1.0,
