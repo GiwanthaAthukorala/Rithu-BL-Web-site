@@ -73,10 +73,10 @@ export default function Header() {
             {/* Desktop Navigation Links */}
             <nav className="hidden md:flex space-x-1 lg:space-x-2">
               {[
-                { href: "#how-it-works", label: "How It Works" },
-                { href: "#platforms", label: "Platforms" },
-                { href: "../../components/FAQ.js", label: "FAQ" },
-                { href: "#contact", label: "Contact" },
+                { href: "/how-it-works/page", label: "How It Works" },
+                { href: "/platforms/page", label: "Platforms" },
+                { href: "/faq/page", label: "FAQ" },
+                { href: "/contact/page", label: "Contact" },
               ].map((item) => (
                 <Link
                   key={item.href}
