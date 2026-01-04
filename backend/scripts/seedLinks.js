@@ -23,37 +23,43 @@ const connectDB = async () => {
 
 const facebookLinks = [
   {
-    url: "https://www.facebook.com/share/p/16piWnfFhm/?mibextid=wwXIfr",
+    url: "https://www.facebook.com/share/p/17GF5CAB7e/?mibextid=wwXIfr",
     title: "පොස්ට් ලයික් කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/p/1CB3FNenyU/?mibextid=wwXIfr",
+    url: "https://www.facebook.com/share/p/1DYmhB43bA/?mibextid=wwXIfr",
     title: "පොස්ට් ලයික් කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/p/1byag7QCbx/?mibextid=wwXIfr",
+    url: "https://www.facebook.com/share/v/1DTYsKSfSD/?mibextid=wwXIfr",
     title: "පොස්ට් ලයික් කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/p/1HxKTvTdQ5/?mibextid=wwXIfr",
+    url: "https://www.facebook.com/share/r/17yuvuBDwW/?mibextid=wwXIfr",
     title: "පොස්ට් ලයික් කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/r/1ByYQmvRsj/?mibextid=wwXIfr",
-    title: "පොස්ට් ලයික් කරන්න",
+    url: "https://www.facebook.com/share/1NbxMVdhPK/?mibextid=wwXIfr",
+    title: "HK SMART - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න  ",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/r/14RfeTKGMfm/?mibextid=wwXIfr",
+    url: "https://www.facebook.com/share/181vmKcrwV/?mibextid=wwXIfr",
+    title: "San Diaries - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න  ",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/share/r/16iWg8hkzN/?mibextid=wwXIfr",
     title: "පොස්ට් ලයික් කරන්න",
     platform: "facebook",
     earnings: 1.0,
