@@ -23,44 +23,33 @@ const connectDB = async () => {
 
 const facebookLinks = [
   {
-    url: "https://www.facebook.com/share/p/17GF5CAB7e/?mibextid=wwXIfr",
+    url: "https://www.facebook.com/share/r/17osTkKvzs/?mibextid=wwXIfr",
     title: "පොස්ට් ලයික් කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/p/1DYmhB43bA/?mibextid=wwXIfr",
+    url: "https://www.facebook.com/share/r/1CVaAXoqQS/?mibextid=wwXIfr",
     title: "පොස්ට් ලයික් කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/v/1DTYsKSfSD/?mibextid=wwXIfr",
+    url: "https://www.facebook.com/share/p/14QWA1jfjX1/?mibextid=wwXIfr",
     title: "පොස්ට් ලයික් කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/r/17yuvuBDwW/?mibextid=wwXIfr",
+    url: "https://www.facebook.com/share/r/1AfBF1Tjue/?mibextid=wwXIfr",
     title: "පොස්ට් ලයික් කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
+
   {
-    url: "https://www.facebook.com/share/1NbxMVdhPK/?mibextid=wwXIfr",
-    title: "HK SMART - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න  ",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/share/181vmKcrwV/?mibextid=wwXIfr",
-    title: "San Diaries - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න  ",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/share/r/16iWg8hkzN/?mibextid=wwXIfr",
-    title: "පොස්ට් ලයික් කරන්න",
+    url: "https://www.facebook.com/profile.php?id=61585696847895",
+    title: " FCC සති අන්තේ - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න  ",
     platform: "facebook",
     earnings: 1.0,
   },
