@@ -23,33 +23,34 @@ const connectDB = async () => {
 
 const facebookLinks = [
   {
-    url: "https://www.facebook.com/share/r/17osTkKvzs/?mibextid=wwXIfr",
+    url: "https://m.facebook.com/story.php?story_fbid=pfbid02JmmH4LJLz6C1Su8ECeBeyhKGLLQ61HnVYQzEYR4cYFA4RsECfwmHrrwLfot4Y4aFl&id=100086974065051&mibextid=wwXIfr",
     title: "පොස්ට් ලයික් කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/r/1CVaAXoqQS/?mibextid=wwXIfr",
+    url: "https://m.facebook.com/story.php?story_fbid=pfbid0uU545uwnZ4VTeVFuW9oMUBxtgRzjyZNAo3XDzFPYJfJB6tok2rsJweiWoebRtXaZl&id=100086974065051&mibextid=wwXIfr",
     title: "පොස්ට් ලයික් කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/p/14QWA1jfjX1/?mibextid=wwXIfr",
-    title: "පොස්ට් ලයික් කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/share/r/1AfBF1Tjue/?mibextid=wwXIfr",
+    url: "https://www.facebook.com/share/p/1A9sHBbnc6/?mibextid=wwXIfr",
     title: "පොස්ට් ලයික් කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
 
   {
-    url: "https://www.facebook.com/profile.php?id=61585696847895",
-    title: " FCC සති අන්තේ - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න  ",
+    url: "https://www.facebook.com/share/1NbxMVdhPK/?mibextid=wwXIfr",
+    title: "HK SMART - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න  ",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/profile.php?id=100094860487319&mibextid=wwXIfr&mibextid=wwXIfr",
+    title:
+      "Tech View Computers  - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න  ",
     platform: "facebook",
     earnings: 1.0,
   },
