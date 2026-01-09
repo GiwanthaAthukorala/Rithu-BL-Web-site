@@ -23,45 +23,47 @@ const connectDB = async () => {
 
 const facebookLinks = [
   {
-    url: "https://www.facebook.com/share/1B1i4M9P1b/",
+    url: "https://www.facebook.com/share/17yBAaUhvZ/",
+    title: "Swara Naada - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/share/1DVAzBdovp/",
+    title: "Kaushalya Fernando - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/share/p/1GvCPoyNQa/?mibextid=wwXIfr",
     title: "පොස්ට් ලයික් කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/p/17j5PPxxHJ/?mibextid=wwXIfr",
+    url: "https://www.facebook.com/share/r/17qJZu93Uv/?mibextid=wwXIfr",
     title: "පොස්ට් ලයික් කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/r/1Afe5fNWTs/?mibextid=wwXIfr",
-    title: "පොස්ට් ලයික් කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/share/p/1B29khtgNE/?mibextid=wwXIfr",
-    title: "පොස්ට් ලයික් කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/share/v/18C6MsY8fL/",
-    title: "පොස්ට් ලයික් කරන්න",
+    url: "https://www.facebook.com/share/18547JK7LE/?mibextid=wwXIfr",
+    title:
+      "Nishu Korean Cosmetic.lk - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
 
   {
-    url: "https://www.facebook.com/share/1WLzPUzsBV/",
-    title: "KGK Shocks Tech LK - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    url: "https://www.facebook.com/share/17kMbUzvZi/?mibextid=wwXIfr",
+    title: "Ayu Mantra - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/vevorawellness",
-    title: "Vevora Wellness  - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    url: "https://www.facebook.com/share/17g7TAkgyd/",
+    title:
+      "Dasun Mallawaaarachchi - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
