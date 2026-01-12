@@ -23,45 +23,21 @@ const connectDB = async () => {
 
 const facebookLinks = [
   {
-    url: "https://www.facebook.com/share/r/1HAEc6Jocv/?mibextid=wwXIfr",
+    url: "https://www.facebook.com/share/r/1Fds987tHH/?mibextid=wwXIfr",
     title: "පොස්ට් ලයික් කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/r/17HCYmT5Sc/?mibextid=wwXIfr",
-    title: "පොස්ට් ලයික් කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-
-  {
-    url: "https://www.facebook.com/share/r/1MvXdvPvMw/?mibextid=wwXIfr",
+    url: "https://www.facebook.com/share/p/1AHUEGNfUi/?mibextid=wwXIfr",
     title: "පොස්ට් ලයික් කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/p/17MMkGPw8m/?mibextid=wwXIfr",
-    title: "පොස්ට් ලයික් කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/share/v/1Ai1JR9xDB/?mibextid=wwXIfr",
-    title: "පොස්ට් ලයික් කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/share/r/187x1fZbgo/",
-    title: "පොස්ට් ලයික් කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/share/v/181GikJCR6/?mibextid=wwXIfr",
-    title: "පොස්ට් ලයික් කරන්න",
+    url: "https://www.facebook.com/profile.php?id=61582119544774",
+    title:
+      "The Vatican Bungalow - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
@@ -70,7 +46,7 @@ const facebookLinks = [
   /*
   {
     url: "https://www.facebook.com/share/1ARA89E5H1/",
-    title: "Cylora Fashion - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න  ",
+    title: "Cylora Fashion - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },*/

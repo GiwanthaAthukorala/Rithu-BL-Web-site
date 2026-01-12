@@ -38,12 +38,12 @@ const extractYouTubeShortsId = (url) => {
 const sampleVideos = [
   {
     title:
-      "සිතුවිලි ගිනිපුපුරු (Sithuvili Gini Pupuru) | Official Music Video Vishwa Oudarika ",
+      "tashinavoices Tashina | Tiktok Video  | Official Music Video Vishwa Oudarika ",
     description:
-      "සිතුවිලි ගිනිපුපුරු (Sithuvili Gini Pupuru) | Official Music Video Vishwa Oudarika   Watch for 0.50 minute to earn Rs 0.50.",
-    videoUrl: "https://www.youtube.com/watch?v=VXsnevrcEJk",
-    embedUrl: "https://youtu.be/VXsnevrcEJk?si=B28-wFlLbEvWRFP9",
-    thumbnailUrl: "https://img.youtube.com/vi/VXsnevrcEJk/hqdefault.jpg",
+      "tashinavoices Tashina | Tiktok Video   Watch for 0.50 minute to earn Rs 0.50.",
+    videoUrl: "https://vm.tiktok.com/ZNRhB7gD1/",
+    embedUrl: "https://vm.tiktok.com/ZNRhB7gD1/",
+    thumbnailUrl: "https://vm.tiktok.com/ZNRhB7gD1.jpg",
     platform: "youtube",
     duration: 60,
     rewardAmount: 0.5,
