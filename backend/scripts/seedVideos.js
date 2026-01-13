@@ -35,54 +35,82 @@ const extractYouTubeShortsId = (url) => {
   return match ? match[1] : null;
 };
 
+// Function to extract TikTok video ID
+const extractTikTokId = (url) => {
+  // Handle various TikTok URL formats
+  const patterns = [
+    /tiktok\.com\/@[^/]+\/video\/(\d+)/, // Regular video URL
+    /tiktok\.com\/(?:@[^/]+\/)?video\/(\d+)/, // Alternative format
+    /vm\.tiktok\.com\/([^/]+)/, // Shortened URL (will need redirect resolution)
+    /vt\.tiktok\.com\/([^/]+)/, // Another shortened format
+  ];
+
+  for (const pattern of patterns) {
+    const match = url.match(pattern);
+    if (match && match[1]) {
+      return match[1];
+    }
+  }
+
+  // Try to extract from URL parameters
+  const urlObj = new URL(url);
+  const pathSegments = urlObj.pathname.split("/");
+  const videoId = pathSegments.find((segment) => /^\d+$/.test(segment));
+
+  return videoId || null;
+};
+
 const sampleVideos = [
   {
-    title:
-      "tashinavoices Tashina | Tiktok Video  | Official Music Video Vishwa Oudarika ",
-    description:
-      "tashinavoices Tashina | Tiktok Video   Watch for 0.50 minute to earn Rs 0.50.",
+    title: "TikTok Dance Challenge",
+    description: "Latest viral dance trend on TikTok",
     videoUrl: "https://vm.tiktok.com/ZNRhB7gD1/",
-    embedUrl: "https://vm.tiktok.com/ZNRhB7gD1/",
-    thumbnailUrl: "https://vm.tiktok.com/ZNRhB7gD1.jpg",
+    platform: "tiktok",
+    duration: 60,
+    rewardAmount: 0.5,
+    isActive: true,
+  },
+  /*
+  {
+    title:
+      "සිතුවිලි ගිනිපුපුරු (Sithuvili Gini Pupuru) | Official Music Video Vishwa Oudarika ",
+    description:
+      "සිතුවිලි ගිනිපුපුරු (Sithuvili Gini Pupuru) | Official Music Video Vishwa Oudarika   Watch for 0.50 minute to earn Rs 0.50.",
+    videoUrl: "https://www.youtube.com/watch?v=VXsnevrcEJk",
+    embedUrl: "https://youtu.be/VXsnevrcEJk?si=B28-wFlLbEvWRFP9",
+    thumbnailUrl: "https://img.youtube.com/vi/VXsnevrcEJk/hqdefault.jpg",
     platform: "youtube",
     duration: 60,
     rewardAmount: 0.5,
     isActive: true,
   },
-
-  /* {
-    title: "Motivational Success Story",
-    description: "Inspirational story about achieving business success.",
-    videoUrl:
-      "https://assets.mixkit.co/videos/preview/mixkit-tree-with-yellow-flowers-1173-large.mp4",
-    embedUrl:
-      "https://assets.mixkit.co/videos/preview/mixkit-tree-with-yellow-flowers-1173-large.mp4",
-    thumbnailUrl:
-      "https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=225&fit=crop",
-    platform: "custom",
-    duration: 60,
-    rewardAmount: 1,
+  // TikTok video example
+  {
+    title: "Funny TikTok Compilation",
+    description: "Daily dose of laughter with these funny TikTok videos",
+    videoUrl: "https://www.tiktok.com/@creator/video/7324198321545415978",
+    platform: "tiktok",
+    duration: 45,
+    rewardAmount: 0.75,
     isActive: true,
   },
+  
+  // Another TikTok example
   {
-    title: "Technology Innovation",
-    description: "Latest trends in technology and innovation.",
-    videoUrl:
-      "https://videos.pexels.com/video-files/855565/855565-hd_1920_1080_25fps.mp4",
-    embedUrl:
-      "https://videos.pexels.com/video-files/855565/855565-hd_1920_1080_25fps.mp4",
-    thumbnailUrl:
-      "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400&h=225&fit=crop",
-    platform: "custom",
+    title: "Cooking Tips on TikTok",
+    description: "Quick and easy cooking hacks you need to know",
+    videoUrl: "https://www.tiktok.com/@cheflife/video/7325199421584518186",
+    platform: "tiktok",
     duration: 60,
-    rewardAmount: 1,
+    rewardAmount: 1.0,
     isActive: true,
   },*/
 ];
 
-// Process YouTube URLs to ensure proper embed format
+// Process videos to ensure proper embed format
 const processVideos = (videos) => {
   return videos.map((video) => {
+    // Handle YouTube videos
     if (video.platform === "youtube") {
       let videoId = null;
 
@@ -103,6 +131,31 @@ const processVideos = (videos) => {
         };
       }
     }
+    // Handle TikTok videos
+    else if (video.platform === "tiktok") {
+      const videoId = extractTikTokId(video.videoUrl);
+
+      if (videoId) {
+        return {
+          ...video,
+          embedUrl: `https://www.tiktok.com/embed/v2/${videoId}`,
+          // Note: TikTok doesn't provide direct thumbnail URLs through a simple pattern
+          // You might need to use TikTok's API or a third-party service for thumbnails
+          thumbnailUrl: `https://placehold.co/400x225/FF0050/FFFFFF?text=TikTok+Video&font=montserrat`,
+        };
+      } else {
+        // For shortened URLs or if ID extraction fails, use the original URL in embed
+        return {
+          ...video,
+          embedUrl: `https://www.tiktok.com/embed/v2?url=${encodeURIComponent(
+            video.videoUrl
+          )}`,
+          thumbnailUrl: `https://placehold.co/400x225/FF0050/FFFFFF?text=TikTok+Video&font=montserrat`,
+        };
+      }
+    }
+
+    // Return original video for custom/platforms
     return video;
   });
 };
@@ -129,6 +182,11 @@ const seedVideos = async () => {
         `- ${video.title} (${video.platform}) - ${video.duration}s - Rs ${video.rewardAmount}`
       );
       console.log(`  Embed URL: ${video.embedUrl}`);
+      if (video.platform === "tiktok") {
+        console.log(
+          `  Note: TikTok videos require proper oEmbed/API setup for full functionality`
+        );
+      }
     });
 
     process.exit(0);
