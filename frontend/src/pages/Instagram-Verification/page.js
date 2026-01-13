@@ -375,7 +375,7 @@ export default function InstagramVerificationTask() {
                     </a>
                   </div>{" "}
                    */}
-                  <div className="mt-6 bg-gradient-to-r from-pink-500 via-rose-500 to-red-500 p-6 rounded-2xl shadow-xl">
+                  {/* <div className="mt-6 bg-gradient-to-r from-pink-500 via-rose-500 to-red-500 p-6 rounded-2xl shadow-xl">
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                       <div className="flex-1">
                         <h4 className="font-black text-white mb-2 text-lg flex items-center gap-2">
@@ -397,7 +397,7 @@ export default function InstagramVerificationTask() {
                       </a>
                     </div>
                   </div>{" "}
-                  {/* <div className="mt-6 bg-gradient-to-r from-pink-500 via-rose-500 to-red-500 p-6 rounded-2xl shadow-xl">
+                   <div className="mt-6 bg-gradient-to-r from-pink-500 via-rose-500 to-red-500 p-6 rounded-2xl shadow-xl">
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                       <div className="flex-1">
                         <h4 className="font-black text-white mb-2 text-lg flex items-center gap-2">

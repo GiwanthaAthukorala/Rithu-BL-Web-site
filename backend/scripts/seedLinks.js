@@ -23,21 +23,27 @@ const connectDB = async () => {
 
 const facebookLinks = [
   {
-    url: "https://www.facebook.com/share/r/1Fds987tHH/?mibextid=wwXIfr",
+    url: "https://www.facebook.com/share/v/15TniTfGbKg/?mibextid=wwXIfr",
     title: "පොස්ට් ලයික් කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/p/1AHUEGNfUi/?mibextid=wwXIfr",
+    url: "https://www.facebook.com/share/v/1JqWGkC185/?mibextid=wwXIfr",
     title: "පොස්ට් ලයික් කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/profile.php?id=61582119544774",
+    url: "https://www.facebook.com/share/1DM118HKnR/",
     title:
-      "The Vatican Bungalow - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+      "Priyantha sirikumara - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/share/1F9gKWvgzx/",
+    title: "Deva - දේවා - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
