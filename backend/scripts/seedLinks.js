@@ -23,27 +23,58 @@ const connectDB = async () => {
 
 const facebookLinks = [
   {
-    url: "https://www.facebook.com/share/v/15TniTfGbKg/?mibextid=wwXIfr",
+    url: "https://m.facebook.com/story.php?story_fbid=pfbid0SJwMgRSSuuW7AdKPDYdEVL9JZmpY2q6G8c4w4MaPFsQxjSU4mjKbvVP3rVDGkX6pl&id=100066466585174&mibextid=Nif5oz",
     title: "පොස්ට් ලයික් කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/v/1JqWGkC185/?mibextid=wwXIfr",
+    url: "https://www.facebook.com/share/r/17vzyqhREx/?mibextid=wwXIfr",
     title: "පොස්ට් ලයික් කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/1DM118HKnR/",
+    url: "https://www.facebook.com/share/p/1DTNDuUbE6/?mibextid=wwXIfr",
+    title: "පොස්ට් ලයික් කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/share/r/17cx65tzeg/?mibextid=wwXIfr",
+    title: "පොස්ට් ලයික් කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/share/v/1BubYGpUby/?mibextid=wwXIfr",
+    title: "පොස්ට් ලයික් කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/share/p/1B1vvsZsX6/?mibextid=wwXIfr",
+    title: "පොස්ට් ලයික් කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/SerendibSriLankaCricketInTver/",
     title:
-      "Priyantha sirikumara - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+      "SERENDIB - Sri Lanka Cricket in Tver - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/1F9gKWvgzx/",
-    title: "Deva - දේවා - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    url: "https://www.facebook.com/share/14PsdPxRtpa/",
+    title: "Ceylon Blend - දේවා - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/share/1AV9jNKrQW/?mibextid=wwXIfr",
+    title:
+      "GTS Computer Store - දේවා - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
