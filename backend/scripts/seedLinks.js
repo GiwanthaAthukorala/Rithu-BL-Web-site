@@ -23,14 +23,8 @@ const connectDB = async () => {
 
 const facebookLinks = [
   {
-    url: "https://m.facebook.com/story.php?story_fbid=pfbid0SJwMgRSSuuW7AdKPDYdEVL9JZmpY2q6G8c4w4MaPFsQxjSU4mjKbvVP3rVDGkX6pl&id=100066466585174&mibextid=Nif5oz",
-    title: "පොස්ට් ලයික් කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/share/r/17vzyqhREx/?mibextid=wwXIfr",
-    title: "පොස්ට් ලයික් කරන්න",
+    url: "https://www.facebook.com/share/p/198keJLvQC/",
+    title: "පොස්ට් සෙයා(Shara) කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
@@ -41,40 +35,34 @@ const facebookLinks = [
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/r/17cx65tzeg/?mibextid=wwXIfr",
+    url: "https://www.facebook.com/share/r/1AZHcxK9ex/",
     title: "පොස්ට් ලයික් කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/v/1BubYGpUby/?mibextid=wwXIfr",
+    url: "https://www.facebook.com/share/p/1DX8pcFQjS/",
     title: "පොස්ට් ලයික් කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/p/1B1vvsZsX6/?mibextid=wwXIfr",
+    url: "https://www.facebook.com/share/p/169ETfd8ow/",
+    title: "පොස්ට් ලයික් කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+
+  {
+    url: "https://www.facebook.com/share/p/1ANiveeDaD/",
     title: "පොස්ට් ලයික් කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/SerendibSriLankaCricketInTver/",
+    url: "https://www.facebook.com/share/1ZQbEQpgZJ/",
     title:
-      "SERENDIB - Sri Lanka Cricket in Tver - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/share/14PsdPxRtpa/",
-    title: "Ceylon Blend - දේවා - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/share/1AV9jNKrQW/?mibextid=wwXIfr",
-    title:
-      "GTS Computer Store - දේවා - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+      "Hansani Maddumaarachchi - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
