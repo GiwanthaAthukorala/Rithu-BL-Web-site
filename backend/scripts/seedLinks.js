@@ -23,46 +23,64 @@ const connectDB = async () => {
 
 const facebookLinks = [
   {
-    url: "https://www.facebook.com/share/p/198keJLvQC/",
-    title: "පොස්ට් සෙයා(Shara) කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/share/p/1DTNDuUbE6/?mibextid=wwXIfr",
+    url: "https://www.facebook.com/share/p/17ryvTVNjU/",
     title: "පොස්ට් ලයික් කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/r/1AZHcxK9ex/",
+    url: "https://www.facebook.com/share/r/1ASeem2WGG/",
     title: "පොස්ට් ලයික් කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/p/1DX8pcFQjS/",
+    url: "https://www.facebook.com/share/r/17mMDH6tYy/",
     title: "පොස්ට් ලයික් කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/p/169ETfd8ow/",
+    url: "https://www.facebook.com/share/r/1F9caMSAbr/",
     title: "පොස්ට් ලයික් කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
 
   {
-    url: "https://www.facebook.com/share/p/1ANiveeDaD/",
+    url: "https://www.facebook.com/share/p/17hK9xLqmR/",
     title: "පොස්ට් ලයික් කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/1ZQbEQpgZJ/",
+    url: "https://www.facebook.com/share/r/1AyjvGcj3B/",
+    title: "පොස්ට් ලයික් කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/share/r/1C6WJexPx3/",
+    title: "පොස්ට් ලයික් කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/share/1Cy8sKsJxQ/",
     title:
-      "Hansani Maddumaarachchi - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+      "S.N Engineering - PVT Ltd- පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/share/17dj5MMoyE/?mibextid=wwXIfr",
+    title: "RUSH Education - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/share/1AH6PiwsuC/",
+    title: "Dinindu Apparels - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
