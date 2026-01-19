@@ -379,13 +379,13 @@ export default function TikTokVerificationTask() {
               </div>
                */}
               {/* Video Links */}
-              {/*   <div className="grid gap-3 sm:gap-4">
+              <div className="grid gap-3 sm:gap-4">
                 <div className="bg-gradient-to-br from-purple-50 to-pink-50 p-3 sm:p-4 rounded-lg sm:rounded-xl border border-purple-200 hover:shadow-md transition-all duration-300 group">
                   <h4 className="font-semibold text-gray-800 mb-2 text-sm sm:text-base">
                     Like Video #1 - ටික් ටොක් විඩියෝ එකට ලයික් කරන්න
                   </h4>
                   <a
-                    href="https://www.tiktok.com/@wedamadura29/video/7593373576099597576?is_from_webapp=1&sender_device=pc&web_id=7593369052820833810"
+                    href="https://vt.tiktok.com/ZSaRNgf98/"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium group-hover:underline text-xs sm:text-sm"
@@ -398,13 +398,13 @@ export default function TikTokVerificationTask() {
                   </a>
                 </div>
               </div>
-             <div className="grid gap-3 sm:gap-4">
+              <div className="grid gap-3 sm:gap-4">
                 <div className="bg-gradient-to-br from-purple-50 to-pink-50 p-3 sm:p-4 rounded-lg sm:rounded-xl border border-purple-200 hover:shadow-md transition-all duration-300 group">
                   <h4 className="font-semibold text-gray-800 mb-2 text-sm sm:text-base">
                     Like Video #1 - ටික් ටොක් විඩියෝ එකට ලයික් කරන්න
                   </h4>
                   <a
-                    href="https://vt.tiktok.com/ZS5pnne96/"
+                    href="https://vt.tiktok.com/ZSaLWnqTG/"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium group-hover:underline text-xs sm:text-sm"
@@ -417,7 +417,7 @@ export default function TikTokVerificationTask() {
                   </a>
                 </div>
               </div>{" "}
-               <div className="grid gap-3 sm:gap-4">
+              {/*  <div className="grid gap-3 sm:gap-4">
                 <div className="bg-gradient-to-br from-purple-50 to-pink-50 p-3 sm:p-4 rounded-lg sm:rounded-xl border border-purple-200 hover:shadow-md transition-all duration-300 group">
                   <h4 className="font-semibold text-gray-800 mb-2 text-sm sm:text-base">
                     Like Video #1 - ටික් ටොක් විඩියෝ එකට ලයික් කරන්න

@@ -383,11 +383,12 @@ export default function InstagramVerificationTask() {
                           Follow Our Main Account
                         </h4>
                         <p className="text-white/90 text-sm">
-                          ඉන්ස්ට්‍රග්‍රෑම් එකවුන්ට් එක ෆලෝ කරන්න • renzbinu
+                          ඉන්ස්ට්‍රග්‍රෑම් එකවුන්ට් එක ෆලෝ කරන්න • Home Stuff
+                          Colombo
                         </p>
                       </div>
                       <a
-                        href="https://www.instagram.com/renzbinu?igsh=NTA5MmppZnJ6d2dk&utm_source=qr"
+                        href="https://www.instagram.com/_home_stuff_colombo?utm_source=qr&igsh=YmE0YXlwd3J6enIy"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex items-center justify-center bg-white text-pink-600 px-6 py-3 rounded-xl hover:bg-pink-50 transition-all duration-200 font-bold shadow-lg hover:shadow-xl transform hover:scale-105"
@@ -397,7 +398,7 @@ export default function InstagramVerificationTask() {
                       </a>
                     </div>
                   </div>{" "}
-                  {/*<div className="mt-6 bg-gradient-to-r from-pink-500 via-rose-500 to-red-500 p-6 rounded-2xl shadow-xl">
+                  <div className="mt-6 bg-gradient-to-r from-pink-500 via-rose-500 to-red-500 p-6 rounded-2xl shadow-xl">
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                       <div className="flex-1">
                         <h4 className="font-black text-white mb-2 text-lg flex items-center gap-2">
@@ -405,12 +406,11 @@ export default function InstagramVerificationTask() {
                           Follow Our Main Account
                         </h4>
                         <p className="text-white/90 text-sm">
-                          ඉන්ස්ට්‍රග්‍රෑම් එකවුන්ට් එක ෆලෝ කරන්න • Kiss Mobile
-                          Pvt LTD
+                          ඉන්ස්ට්‍රග්‍රෑම් එකවුන්ට් එක ෆලෝ කරන්න • Media Passion
                         </p>
                       </div>
                       <a
-                        href="https://www.instagram.com/kissmobile_321?igsh=ejI3bzdrd3hnMmFw"
+                        href="https://www.instagram.com/mediapassionlk?igsh=MW5ldmo0NG5rd2dxYw=="
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex items-center justify-center bg-white text-pink-600 px-6 py-3 rounded-xl hover:bg-pink-50 transition-all duration-200 font-bold shadow-lg hover:shadow-xl transform hover:scale-105"
@@ -420,7 +420,7 @@ export default function InstagramVerificationTask() {
                       </a>
                     </div>
                   </div>
-                   */}
+                  {/*  */}
                 </div>
               </div>
 
