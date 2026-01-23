@@ -23,44 +23,58 @@ const connectDB = async () => {
 
 const facebookLinks = [
   {
-    url: "https://www.facebook.com/share/v/1MyrdnHgb6/",
+    url: "https://www.facebook.com/share/p/183UjtrptU/",
     title: "පොස්ට් ලයික් කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/v/1BmN7nZZcT/",
+    url: "https://www.facebook.com/share/p/14XZUGwSWz4/",
     title: "පොස්ට් ලයික් කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/r/1DmoXXL6hH/",
-    title: "පොස්ට් ලයික් කරන්න",
+    url: "https://www.facebook.com/share/17VdtedGit/?mibextid=wwXIfr",
+    title: "SKNN 11 - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+
+  {
+    url: "https://www.facebook.com/share/1ALQoA1YVo/?mibextid=wwXIfr",
+    title: "Shine original - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/181FYE9fUt",
-    title: "Nature Along - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    url: "https://www.facebook.com/share/1K96vuTD8B",
+    title: "RNR Motors - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/1G76AKV4TS/?mibextid=wwXIfr",
-    title: "Hansa gunawardhana - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    url: "https://www.facebook.com/share/1C78DRuimA/?mibextid=wwXIfr",
+    title: "Shri Mandir - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/17uJMWMEWm",
-    title: "RoyalHug - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    url: "https://web.facebook.com/live24webnews",
+    title: "Live 24- පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/1Aip1SZpLD/?mibextid=wwXIfr",
-    title: "J.sana - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    url: "https://web.facebook.com/profile.php?id=100086969000103&rdid=kggORP7e5ME2Sxnr&share_url=https%3A%2F%2Fweb.facebook.com%2Fshare%2F17Ssj5DftW%3F_rdc%3D1%26_rdr",
+    title: "cosmetical world - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/share/17fg8tRcTf",
+    title:
+      "My lovely skin care pvt ltd - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
