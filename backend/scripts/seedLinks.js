@@ -23,58 +23,64 @@ const connectDB = async () => {
 
 const facebookLinks = [
   {
-    url: "https://www.facebook.com/share/p/183UjtrptU/",
+    url: "https://www.facebook.com/share/v/17tddCn5yS/",
     title: "පොස්ට් ලයික් කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/p/14XZUGwSWz4/",
+    url: "https://www.facebook.com/share/p/1DdUy9Nw86/?mibextid=wwXIfr",
     title: "පොස්ට් ලයික් කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/17VdtedGit/?mibextid=wwXIfr",
-    title: "SKNN 11 - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    url: "https://www.facebook.com/share/p/16nrkpi7Ra/?mibextid=wwXIfr",
+    title: "පොස්ට් ලයික් කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/share/r/1Ngpox4XTH/?mibextid=wwXIfr",
+    title: "පොස්ට් ලයික් කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/share/r/1DZDEDuG7h/?mibextid=wwXIfr",
+    title: "පොස්ට් ලයික් කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/share/p/17ioQnKNzP/?mibextid=wwXIfr",
+    title: "පොස්ට් ලයික් කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
 
   {
-    url: "https://www.facebook.com/share/1ALQoA1YVo/?mibextid=wwXIfr",
-    title: "Shine original - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    url: "https://www.facebook.com/share/r/1HRNXqarV3/?mibextid=wwXIfr",
+    title: "පොස්ට් ලයික් කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/1K96vuTD8B",
-    title: "RNR Motors - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    url: "https://www.facebook.com/share/p/1848siS9T2/?mibextid=wwXIfr",
+    title: "පොස්ට් ලයික් කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/1C78DRuimA/?mibextid=wwXIfr",
-    title: "Shri Mandir - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    url: "https://www.facebook.com/share/p/1HPE2BXcHA/?mibextid=wwXIfr",
+    title: "පොස්ට් ලයික් කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://web.facebook.com/live24webnews",
-    title: "Live 24- පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://web.facebook.com/profile.php?id=100086969000103&rdid=kggORP7e5ME2Sxnr&share_url=https%3A%2F%2Fweb.facebook.com%2Fshare%2F17Ssj5DftW%3F_rdc%3D1%26_rdr",
-    title: "cosmetical world - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/share/17fg8tRcTf",
+    url: "https://www.facebook.com/share/187EeksLWo",
     title:
-      "My lovely skin care pvt ltd - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+      "International Human Rights Organization IHRO Sri-Lanka - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
