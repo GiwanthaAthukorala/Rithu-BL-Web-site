@@ -60,7 +60,7 @@ const adminLogin = async (req, res) => {
     const token = jwt.sign(
       { id: user._id, role: user.role },
       process.env.JWT_SECRET,
-      { expiresIn: "24h" }
+      { expiresIn: "24h" },
     );
 
     // Return user data without password
@@ -243,29 +243,29 @@ const getAllSubmissions = async (req, res) => {
         ...sub,
         platformType: "Instrgram", // ✅ Changed from "Instrgram"
         submissionType: "page",
-        combinedId: `instagram_${sub._id}`,
-        _id: `instagram_${sub._id}`,
+        combinedId: `Instrgram_page_${sub._id}`,
+        _id: `Instrgram_page_${sub._id}`,
       })),
       ...tiktokSubmission.map((sub) => ({
         ...sub,
         platformType: "Tiktok", // ✅ Changed from "Tiktok"
         submissionType: "page",
-        combinedId: `tiktok_${sub._id}`,
-        _id: `tiktok_${sub._id}`,
+        combinedId: `Tiktok_page_${sub._id}`,
+        _id: `Tiktok_page_${sub._id}`,
       })),
     ].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
     let filteredSubmissions = allSubmissions;
     if (platform && platform !== "all") {
       filteredSubmissions = allSubmissions.filter(
-        (sub) => sub.platformType === platform
+        (sub) => sub.platformType === platform,
       );
     }
 
     // Apply status filter
     if (status && status !== "all") {
       filteredSubmissions = filteredSubmissions.filter(
-        (sub) => sub.status === status
+        (sub) => sub.status === status,
       );
     }
 
@@ -274,7 +274,7 @@ const getAllSubmissions = async (req, res) => {
     const endIndex = startIndex + limitNum;
     const paginatedSubmissions = filteredSubmissions.slice(
       startIndex,
-      endIndex
+      endIndex,
     );
 
     // Get counts for statistics

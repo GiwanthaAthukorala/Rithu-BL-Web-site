@@ -23,7 +23,7 @@ adminApi.interceptors.request.use(
   },
   (error) => {
     return Promise.reject(error);
-  }
+  },
 );
 
 // Handle auth errors
@@ -38,7 +38,7 @@ adminApi.interceptors.response.use(
       }
     }
     return Promise.reject(error);
-  }
+  },
 );
 
 // Add named exports
@@ -70,14 +70,14 @@ export const updateSubmissionStatus = async (data) => {
 
 export const deleteSubmission = async (platformType, submissionId) => {
   const response = await adminApi.delete(
-    `/admin/submissions/${platformType}/${submissionId}`
+    `/admin/submissions/${platformType}/${submissionId}`,
   );
   return response.data;
 };
 
 export const getSubmissionDetail = async (platformType, submissionId) => {
   const response = await adminApi.get(
-    `/admin/submissions/${platformType}/${submissionId}`
+    `/admin/submissions/${platformType}/${submissionId}`,
   );
   return response.data;
 };

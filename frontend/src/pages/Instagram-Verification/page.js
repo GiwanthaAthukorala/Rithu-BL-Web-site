@@ -353,7 +353,7 @@ export default function InstagramVerificationTask() {
                     <span className="text-3xl">📱</span>
                     Complete These Tasks
                   </h3>{" "}
-                  <div className="space-y-4">
+                  {/*  <div className="space-y-4">
                     <a
                       href="https://www.instagram.com/reel/DTSxEvogtgu/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=="
                       target="_blank"
@@ -374,8 +374,8 @@ export default function InstagramVerificationTask() {
                       <ExternalLink className="w-6 h-6 text-pink-400 group-hover:text-pink-600 transition-colors" />
                     </a>
                   </div>{" "}
-                  {/*  */}
-                  <div className="mt-6 bg-gradient-to-r from-pink-500 via-rose-500 to-red-500 p-6 rounded-2xl shadow-xl">
+                 */}
+                  {/* <div className="mt-6 bg-gradient-to-r from-pink-500 via-rose-500 to-red-500 p-6 rounded-2xl shadow-xl">
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                       <div className="flex-1">
                         <h4 className="font-black text-white mb-2 text-lg flex items-center gap-2">
@@ -397,7 +397,7 @@ export default function InstagramVerificationTask() {
                       </a>
                     </div>
                   </div>{" "}
-                  {/* <div className="mt-6 bg-gradient-to-r from-pink-500 via-rose-500 to-red-500 p-6 rounded-2xl shadow-xl">
+                 <div className="mt-6 bg-gradient-to-r from-pink-500 via-rose-500 to-red-500 p-6 rounded-2xl shadow-xl">
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                       <div className="flex-1">
                         <h4 className="font-black text-white mb-2 text-lg flex items-center gap-2">

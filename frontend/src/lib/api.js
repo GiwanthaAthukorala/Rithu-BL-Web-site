@@ -27,7 +27,7 @@ api.interceptors.request.use(
 
   (error) => {
     return Promise.reject(error);
-  }
+  },
 );
 
 // Response interceptor
@@ -49,7 +49,7 @@ api.interceptors.response.use(
     }
 
     return Promise.reject(error);
-  }
+  },
 );
 
 export const endpoints = {
@@ -85,7 +85,7 @@ export const register = async (userData) => {
     // Enhance error with server response if available
     if (error.response?.data) {
       const serverError = new Error(
-        error.response.data.message || "Registration failed"
+        error.response.data.message || "Registration failed",
       );
       serverError.errorType = error.response.data.errorType;
       throw serverError;

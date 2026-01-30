@@ -100,12 +100,30 @@ export default function AdminDashboard() {
   const updateSubmissionStatus = async (
     combinedId,
     status,
-    rejectionReason = ""
+    rejectionReason = "",
   ) => {
     setActionLoading(combinedId);
     try {
+      // Parse combinedId to match what backend expects in deleteSubmission
+      const parts = combinedId.split("_");
+      let backendCombinedId;
+
+      if (parts.length === 2) {
+        // Convert "instagram_<id>" to "Instrgram_page_<id>"
+        // Convert "tiktok_<id>" to "Tiktok_page_<id>"
+        if (parts[0] === "instagram") {
+          backendCombinedId = `Instrgram_page_${parts[1]}`;
+        } else if (parts[0] === "tiktok") {
+          backendCombinedId = `Tiktok_page_${parts[1]}`;
+        } else {
+          backendCombinedId = combinedId;
+        }
+      } else {
+        backendCombinedId = combinedId;
+      }
+
       await adminApi.put("/admin/submissions/status", {
-        combinedId,
+        combinedId: backendCombinedId,
         status,
         rejectionReason,
       });
@@ -116,28 +134,62 @@ export default function AdminDashboard() {
       } else {
         fetchSubmissions();
       }
+
+      alert(`Submission ${status} successfully!`);
     } catch (error) {
       console.error("Failed to update submission:", error);
       alert(
         "Failed to update submission: " +
-          (error.response?.data?.message || error.message)
+          (error.response?.data?.message || error.message),
       );
     } finally {
       setActionLoading(null);
     }
   };
-
   const deleteSubmission = async (combinedId) => {
     if (!confirm("Are you sure you want to delete this submission?")) return;
 
+    console.log("Delete clicked with combinedId:", combinedId);
+
     setActionLoading(combinedId);
     try {
-      // Parse the combinedId to get platformType
-      const [platform, type, ...idParts] = combinedId.split("_");
-      const platformType = `${platform}_${type}`;
-      const actualId = idParts.join("_");
+      // Parse the combinedId
+      const parts = combinedId.split("_");
 
-      await adminApi.delete(`/admin/submissions/${platformType}/${actualId}`);
+      // Handle different formats
+      let platformType, submissionId;
+
+      if (parts.length === 2) {
+        // Format: "instagram_<id>" or "tiktok_<id>"
+        // But backend route expects "Instrgram" or "Tiktok" as platformType
+        if (parts[0] === "instagram") {
+          platformType = "Instrgram"; // Match backend
+        } else if (parts[0] === "tiktok") {
+          platformType = "Tiktok"; // Match backend
+        } else {
+          platformType = parts[0];
+        }
+        submissionId = parts[1];
+      } else if (parts.length >= 3) {
+        // Format: "facebook_page_<id>" or "youtube_video_<id>"
+        // Backend expects "facebook_page" as platformType
+        platformType = `${parts[0]}_${parts[1]}`;
+        submissionId = parts.slice(2).join("_");
+      } else {
+        throw new Error(`Invalid combinedId format: ${combinedId}`);
+      }
+
+      console.log(
+        `Constructing URL with: platformType=${platformType}, submissionId=${submissionId}`,
+      );
+      console.log(
+        `Full URL: /admin/submissions/${platformType}/${submissionId}`,
+      );
+
+      // Send to backend
+      await adminApi.delete(
+        `/admin/submissions/${platformType}/${submissionId}`,
+      );
 
       // Refresh data
       if (activeTab === "dashboard") {
@@ -145,12 +197,21 @@ export default function AdminDashboard() {
       } else {
         fetchSubmissions();
       }
+
+      alert("Submission deleted successfully!");
     } catch (error) {
       console.error("Failed to delete submission:", error);
-      alert(
-        "Failed to delete submission: " +
-          (error.response?.data?.message || error.message)
-      );
+      console.error("Full error:", error);
+      console.error("Error response data:", error.response?.data);
+
+      let errorMessage = "Failed to delete submission";
+      if (error.response?.data?.message) {
+        errorMessage += ": " + error.response.data.message;
+      } else if (error.message) {
+        errorMessage += ": " + error.message;
+      }
+
+      alert(errorMessage);
     } finally {
       setActionLoading(null);
     }
@@ -709,7 +770,7 @@ export default function AdminDashboard() {
                                     <div className="flex items-center space-x-2 mb-2">
                                       {getPlatformIcon(
                                         submission.platformType,
-                                        submission.submissionType
+                                        submission.submissionType,
                                       )}
                                       <span className="text-sm font-medium text-gray-900 capitalize">
                                         {submission.platformType}{" "}
@@ -717,7 +778,7 @@ export default function AdminDashboard() {
                                       </span>
                                       <span
                                         className={getStatusBadge(
-                                          submission.status
+                                          submission.status,
                                         )}
                                       >
                                         {submission.status}
@@ -748,7 +809,7 @@ export default function AdminDashboard() {
                                         Submitted:
                                       </span>{" "}
                                       {new Date(
-                                        submission.createdAt
+                                        submission.createdAt,
                                       ).toLocaleDateString()}
                                     </div>
                                     <div>
@@ -781,7 +842,7 @@ export default function AdminDashboard() {
                                         updateSubmissionStatus(
                                           submission.combinedId ||
                                             submission._id,
-                                          "approved"
+                                          "approved",
                                         )
                                       }
                                       disabled={
@@ -805,7 +866,7 @@ export default function AdminDashboard() {
                                             submission.combinedId ||
                                               submission._id,
                                             "rejected",
-                                            reason
+                                            reason,
                                           );
                                         }
                                       }}
@@ -834,7 +895,7 @@ export default function AdminDashboard() {
                                 <button
                                   onClick={() =>
                                     deleteSubmission(
-                                      submission.combinedId || submission._id
+                                      submission.combinedId || submission._id,
                                     )
                                   }
                                   disabled={

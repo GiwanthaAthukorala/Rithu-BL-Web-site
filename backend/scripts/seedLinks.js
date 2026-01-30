@@ -23,39 +23,21 @@ const connectDB = async () => {
 
 const facebookLinks = [
   {
-    url: "https://www.facebook.com/share/p/1EeFNigJJt/?mibextid=wwXIfr",
+    url: "https://www.facebook.com/share/v/1BtiSDhQYm/",
     title: "පොස්ට් ලයික් කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/p/1BarrT11XD/?mibextid=wwXIfr",
-    title: "පොස්ට් ලයික් කරන්න",
+    url: "https://www.facebook.com/share/1AfxwuQNWN",
+    title: "PRISM progression - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/v/18344kuDMe/",
-    title: "පොස්ට් ලයික් කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/profile.php?id=61584455690385",
+    url: "https://www.facebook.com/share/17pvQjKvm4",
     title:
-      "Sugath Land & Properties - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/profile.php?id=61556724655431",
-    title: "shanu gems - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/share/1CPE5szDZ7",
-    title: "MIV Photography - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+      "නුග ගහක් - An Oak Tree - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
