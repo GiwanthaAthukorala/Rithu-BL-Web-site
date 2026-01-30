@@ -25,7 +25,7 @@ export default function FacebookComment() {
     return (
       typeof window !== "undefined" &&
       (/Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-        navigator.userAgent
+        navigator.userAgent,
       ) ||
         window.innerWidth <= 768)
     );
@@ -113,7 +113,7 @@ export default function FacebookComment() {
 
       const apiUrl =
         process.env.NEXT_PUBLIC_API_URL ||
-        "https://rithu-bl-web-side.vercel.app";
+        "https://rithu-bl-web-site.vercel.app";
       console.log("Submitting to:", `${apiUrl}/api/fb-comments`);
       console.log("Token exists:", !!token);
       const response = await fetch(`${apiUrl}/api/fb-comments`, {

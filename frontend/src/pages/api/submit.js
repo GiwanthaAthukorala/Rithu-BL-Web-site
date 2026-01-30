@@ -2,7 +2,7 @@ export default async function handler(req, res) {
   if (req.method === "POST") {
     try {
       const response = await fetch(
-        "https://rithu-bl-web-side.vercel.app/api/submissions",
+        "https://rithu-bl-web-site.vercel.app/api/submissions",
         {
           method: "POST",
           body: req.body,
@@ -10,7 +10,7 @@ export default async function handler(req, res) {
             Authorization: req.headers.authorization,
             "Content-Type": req.headers["content-type"],
           },
-        }
+        },
       );
 
       const data = await response.json();
