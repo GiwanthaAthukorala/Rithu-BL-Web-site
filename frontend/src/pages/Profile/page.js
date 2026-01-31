@@ -125,7 +125,7 @@ export default function Profile() {
     setError(null);
 
     try {
-      const response = await api.post("/earnings/withdraw", { amount });
+      const response = await api.post("/api/earnings/withdraw", { amount });
       if (response.data.success) {
         const updatedEarnings = response.data.earnings;
         const transaction = response.data.transaction;
