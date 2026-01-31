@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API_URL =
-  process.env.NEXT_PUBLIC_API_URL || "https://rithu-bl-web-site.vercel.app";
+  process.env.NEXT_PUBLIC_API_URL || "https://rithu-bl-web-site.vercel.app/api";
 
 // Create axios instance
 const api = axios.create({
@@ -53,18 +53,18 @@ api.interceptors.response.use(
 );
 
 export const endpoints = {
-  login: "/api/users/login",
-  register: "/api/users/register",
-  profile: "/api/users/profile",
-  submissions: "/api/submissions", // Note: Changed from /submissions to /api/submissions
-  earnings: "/api/earnings",
-  youtubeSubmission: "/api/youtubeSubmissions",
-  fbReviews: "/api/fb-reviews",
-  FacebookComments: "/api/fb-comments",
-  instagram: "/api/instagram",
-  Tiktok: "/api/tiktok",
-  videos: "/api/videos",
-  videoSessions: "/api/videos/session",
+  login: "/users/login",
+  register: "/users/register",
+  profile: "/users/profile",
+  submissions: "/submissions", // Note: Changed from /submissions to /api/submissions
+  earnings: "/earnings",
+  youtubeSubmission: "/youtubeSubmissions",
+  fbReviews: "/fb-reviews",
+  FacebookComments: "/fb-comments",
+  instagram: "/instagram",
+  Tiktok: "/tiktok",
+  videos: "/videos",
+  videoSessions: "/videos/session",
 };
 
 export const register = async (userData) => {

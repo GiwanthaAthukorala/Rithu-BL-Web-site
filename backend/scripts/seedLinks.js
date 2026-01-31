@@ -41,6 +41,39 @@ const facebookLinks = [
     platform: "facebook",
     earnings: 1.0,
   },
+  {
+    url: "https://www.facebook.com/share/1CA46ZWKiU/?mibextid=wwXIfr",
+    title: "අපි - An Oak Tree - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/share/1CDUz454Cp",
+    title:
+      "Ruuceylon.lk sri lanka - An Oak Tree - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/share/1AUqHBMedC",
+    title:
+      "Ai Design Lab Architectural innovative - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/share/1DtcRvqmZK/?mibextid=wwXIfr",
+    title: "BoldFit Clothing - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/share/16oV5mAUVL",
+    title:
+      "Studio Thilina Maharachchige - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
 
   // Removed duplicate URL that was causing the error
   /*
