@@ -51,7 +51,7 @@ export default function Profile() {
       setIsFetching(true);
       setError(null);
 
-      const response = await api.get("/earnings");
+      const response = await api.get("/api/earnings");
 
       if (response.data?.success) {
         setEarnings(
@@ -60,7 +60,7 @@ export default function Profile() {
             availableBalance: 0,
             pendingWithdrawal: 0,
             withdrawnAmount: 0,
-          }
+          },
         );
       } else {
         throw new Error(response.data?.message || "Invalid earnings data");
@@ -136,7 +136,7 @@ export default function Profile() {
 
         // Show immediate success message
         setSuccess(
-          `Withdrawal of Rs ${amount} processed successfully! Funds will be transferred to your bank account.`
+          `Withdrawal of Rs ${amount} processed successfully! Funds will be transferred to your bank account.`,
         );
         setTimeout(() => setSuccess(null), 8000);
 
@@ -165,7 +165,7 @@ export default function Profile() {
       user?.lastName?.charAt(0) || ""
     }`;
     return `https://ui-avatars.com/api/?name=${encodeURIComponent(
-      initials
+      initials,
     )}&background=3B82F6&color=ffffff&size=400`;
   };
 
@@ -696,7 +696,7 @@ export default function Profile() {
                   max={earnings.availableBalance}
                   className="w-full pl-12 pr-4 py-4 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-lg font-semibold transition-all duration-200"
                   placeholder={`Max: Rs${formatCurrency(
-                    earnings.availableBalance
+                    earnings.availableBalance,
                   )}`}
                 />
               </div>

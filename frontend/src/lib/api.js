@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API_URL =
-  process.env.NEXT_PUBLIC_API_URL || "https://rithu-bl-web-site.vercel.app/api";
+  process.env.NEXT_PUBLIC_API_URL || "https://rithu-bl-web-site.vercel.app";
 
 // Create axios instance
 const api = axios.create({
@@ -24,7 +24,6 @@ api.interceptors.request.use(
     }
     return config;
   },
-
   (error) => {
     return Promise.reject(error);
   },
@@ -53,28 +52,28 @@ api.interceptors.response.use(
 );
 
 export const endpoints = {
-  login: "/users/login",
-  register: "/users/register",
-  profile: "/users/profile",
-  submissions: "/submissions", // Note: Changed from /submissions to /api/submissions
-  earnings: "/earnings",
-  youtubeSubmission: "/youtubeSubmissions",
-  fbReviews: "/fb-reviews",
-  FacebookComments: "/fb-comments",
-  instagram: "/instagram",
-  Tiktok: "/tiktok",
-  videos: "/videos",
-  videoSessions: "/videos/session",
+  login: "/api/users/login", // Add /api prefix here
+  register: "/api/users/register", // Add /api prefix here
+  profile: "/api/users/profile", // Add /api prefix here
+  submissions: "/api/submissions", // Add /api prefix here
+  earnings: "/api/earnings",
+  youtubeSubmission: "/api/youtubeSubmissions",
+  fbReviews: "/api/fb-reviews",
+  FacebookComments: "/api/fb-comments",
+  instagram: "/api/instagram",
+  Tiktok: "/api/tiktok",
+  videos: "/api/videos",
+  videoSessions: "/api/videos/session",
 };
 
+// Or better yet, update all your API functions to use the endpoints object:
 export const register = async (userData) => {
   try {
-    const response = await api.post("/api/users/register", userData);
+    const response = await api.post(endpoints.register, userData);
 
     if (response.data.success) {
       return response.data;
     } else {
-      // Handle specific backend validation errors
       const error = new Error(response.data.message || "Registration failed");
       error.errorType = response.data.errorType;
       throw error;
@@ -82,7 +81,6 @@ export const register = async (userData) => {
   } catch (error) {
     console.error("Registration error:", error.response?.data || error.message);
 
-    // Enhance error with server response if available
     if (error.response?.data) {
       const serverError = new Error(
         error.response.data.message || "Registration failed",
@@ -97,7 +95,7 @@ export const register = async (userData) => {
 
 export const login = async (credentials) => {
   try {
-    const response = await api.post("/api/users/login", credentials);
+    const response = await api.post(endpoints.login, credentials);
     return response.data;
   } catch (error) {
     console.error("Login error:", error);
@@ -107,7 +105,7 @@ export const login = async (credentials) => {
 
 export const getProfile = async () => {
   try {
-    const response = await api.get("/api/users/profile");
+    const response = await api.get(endpoints.profile);
     return response.data;
   } catch (error) {
     console.error("Profile error:", error);
