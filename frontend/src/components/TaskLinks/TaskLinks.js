@@ -27,7 +27,7 @@ export default function TaskLinks({ platform, onLinkClick }) {
     try {
       setLoading(true);
       setError(null);
-      const response = await api.get(`/links/${platform}`);
+      const response = await api.get(`/api/links/${platform}`);
 
       if (response.data.success) {
         setLinks(response.data.data);
@@ -48,7 +48,7 @@ export default function TaskLinks({ platform, onLinkClick }) {
 
     try {
       // Track the click
-      const response = await api.post(`/links/${link._id}/click`);
+      const response = await api.post(`/api/links/${link._id}/click`);
 
       if (response.data.success) {
         // Update the link with new click count
@@ -67,7 +67,7 @@ export default function TaskLinks({ platform, onLinkClick }) {
         // Mobile-friendly link opening
         const isMobile =
           /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-            navigator.userAgent
+            navigator.userAgent,
           ) || window.innerWidth <= 768;
 
         if (isMobile) {
@@ -95,7 +95,7 @@ export default function TaskLinks({ platform, onLinkClick }) {
         // Even if tracking fails, still open the link
         const isMobile =
           /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-            navigator.userAgent
+            navigator.userAgent,
           ) || window.innerWidth <= 768;
 
         if (isMobile) {
@@ -104,7 +104,7 @@ export default function TaskLinks({ platform, onLinkClick }) {
           window.open(link.url, "_blank", "noopener,noreferrer");
         }
         alert(
-          "There was an error tracking your click, but the link has been opened."
+          "There was an error tracking your click, but the link has been opened.",
         );
       }
     }
