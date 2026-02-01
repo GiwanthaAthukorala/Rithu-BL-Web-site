@@ -35,48 +35,51 @@ const facebookLinks = [
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/1AfxwuQNWN",
-    title: "PRISM progression - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    url: "https://www.facebook.com/share/1CEoxZZ5W7",
+    title: "𝚅𝚎𝚕𝚟𝚎𝚝 𝚅𝚒𝚋𝚎 - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/17pvQjKvm4",
+    url: "https://www.facebook.com/share/17xPg8oiBt",
+    title: "Suboda Salgadu - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/share/1GWjz7uwmu",
+    title: "Ganesh Tv - Media - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/profile.php?id=61559522332251&mibextid=wwXIfr&mibextid=wwXIfr",
+    title: "MODish Unisex Salon - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/barberking.lk?mibextid=JRoKGi",
+    title: "barberking.lk - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/share/1ARZzRf2ZX/?mibextid=wwXIfr",
     title:
-      "නුග ගහක් - An Oak Tree - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+      "Sachin Rathnapriya - Physics - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/1CA46ZWKiU/?mibextid=wwXIfr",
-    title: "අපි - An Oak Tree - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    url: "https://www.facebook.com/profile.php?id=61587341190791&mibextid=ZbWKwL",
+    title: "AdZone Lanka - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/1CDUz454Cp",
-    title:
-      "Ruuceylon.lk sri lanka - An Oak Tree - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/share/1AUqHBMedC",
-    title:
-      "Ai Design Lab Architectural innovative - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/share/1DtcRvqmZK/?mibextid=wwXIfr",
-    title: "BoldFit Clothing - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/share/16oV5mAUVL",
-    title:
-      "Studio Thilina Maharachchige - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    url: "https://www.facebook.com/share/1BvQ321EQU/?mibextid=wwXIfr",
+    title: "Shashi Wijesundara - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
