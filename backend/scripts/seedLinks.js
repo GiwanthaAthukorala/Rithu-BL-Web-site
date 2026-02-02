@@ -23,18 +23,6 @@ const connectDB = async () => {
 
 const facebookLinks = [
   {
-    url: "https://www.facebook.com/share/r/1DasAYFWjW/",
-    title: "පොස්ට් ලයික් කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/share/v/1BtiSDhQYm/",
-    title: "පොස්ට් ලයික් කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
     url: "https://www.facebook.com/share/1CEoxZZ5W7",
     title: "𝚅𝚎𝚕𝚟𝚎𝚝 𝚅𝚒𝚋𝚎 - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
     platform: "facebook",

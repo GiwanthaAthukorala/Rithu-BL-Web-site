@@ -66,7 +66,7 @@ export default function YouTubeVerificationTask() {
 
       const apiUrl =
         process.env.NEXT_PUBLIC_API_URL ||
-        "https://rithu-bl-web-side.vercel.app";
+        "https://rithu-bl-web-site.vercel.app";
       console.log("Submitting to:", `${apiUrl}/api/youtubeSubmissions`);
       console.log("Token exists:", !!token);
       const response = await fetch(`${apiUrl}/api/youtubeSubmissions`, {
