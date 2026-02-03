@@ -87,7 +87,7 @@ const createSubmission = async (req, res) => {
         return res.status(400).json({
           success: false,
           message: `This screenshot is too similar to one you submitted on ${new Date(
-            submission.createdAt
+            submission.createdAt,
           ).toLocaleDateString()}. Please upload a different screenshot.`,
           errorType: "DUPLICATE_IMAGE",
           previousDate: new Date(submission.createdAt).toLocaleDateString(),

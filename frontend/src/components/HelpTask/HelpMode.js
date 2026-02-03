@@ -23,12 +23,12 @@ export default function HelpMode() {
       number: 4,
       title: "Earn Money",
       description:
-        "Get paid 80¢ for every like your content receives across platforms.",
+        "Get paid Rs 1 /= or Rs30,Rs40,Rs15 in Comment,Google Review and Facebook Review for every like your content receives across platforms.",
     },
   ];
 
   const paymentFeatures = [
-    "Earn 80¢ for every like across all platforms",
+    "Earn Rs 1 /= for every like across all platforms",
     "Weekly payments via PayPal, Venmo, or direct deposit",
     "No minimum payout threshold",
     "Track earnings in real-time on your dashboard",
@@ -105,7 +105,7 @@ export default function HelpMode() {
           {/* Price Highlight */}
           <div className="text-center mb-8">
             <div className="flex items-baseline justify-center mb-2">
-              <span className="text-6xl font-bold text-blue-600">80¢</span>
+              <span className="text-6xl font-bold text-blue-600">Rs 1 /=</span>
               <span className="text-xl text-gray-600 ml-2">per like</span>
             </div>
             <p className="text-gray-600 text-lg">

@@ -370,6 +370,15 @@ const getSubmissionById = async (req, res) => {
     if (!submission) {
       return res.status(404).json({
         success: false,
+        validTypes: [
+          "facebook_page",
+          "youtube_video",
+          "facebook_review",
+          "facebook_comment",
+          "google_review",
+          "Instrgram",
+          "Tiktok",
+        ],
         message: "Submission not found",
       });
     }
@@ -519,6 +528,15 @@ const deleteSubmission = async (req, res) => {
         console.error(`Invalid platform type: ${platformType}`);
         return res.status(400).json({
           success: false,
+          validTypes: [
+            "facebook_page",
+            "youtube_video",
+            "facebook_review",
+            "facebook_comment",
+            "google_review",
+            "Instrgram",
+            "Tiktok",
+          ],
           message: `Invalid platform type: ${platformType}`,
         });
     }

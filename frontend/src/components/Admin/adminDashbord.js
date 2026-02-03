@@ -153,28 +153,23 @@ export default function AdminDashboard() {
 
     setActionLoading(combinedId);
     try {
-      // Parse the combinedId
+      // Parse the combinedId correctly
       const parts = combinedId.split("_");
+      console.log("Parts:", parts);
 
-      // Handle different formats
       let platformType, submissionId;
 
-      if (parts.length === 2) {
-        // Format: "instagram_<id>" or "tiktok_<id>"
-        // But backend route expects "Instrgram" or "Tiktok" as platformType
-        if (parts[0] === "instagram") {
-          platformType = "Instrgram"; // Match backend
-        } else if (parts[0] === "tiktok") {
-          platformType = "Tiktok"; // Match backend
-        } else {
-          platformType = parts[0];
-        }
-        submissionId = parts[1];
-      } else if (parts.length >= 3) {
-        // Format: "facebook_page_<id>" or "youtube_video_<id>"
-        // Backend expects "facebook_page" as platformType
-        platformType = `${parts[0]}_${parts[1]}`;
+      if (parts.length >= 3) {
+        // Format: "Tiktok_page_<id>" or "Instrgram_page_<id>"
+        // Extract just "Tiktok" or "Instrgram" for platformType
+        platformType = parts[0]; // This gives "Tiktok" or "Instrgram"
+        // The ID starts from the third part onward (skip platform and type)
         submissionId = parts.slice(2).join("_");
+      } else if (parts.length === 2) {
+        // Format: "instagram_<id>" or "tiktok_<id>" (from other submissions)
+        // Capitalize first letter to match backend model names
+        platformType = parts[0].charAt(0).toUpperCase() + parts[0].slice(1);
+        submissionId = parts[1];
       } else {
         throw new Error(`Invalid combinedId format: ${combinedId}`);
       }
@@ -203,6 +198,7 @@ export default function AdminDashboard() {
       console.error("Failed to delete submission:", error);
       console.error("Full error:", error);
       console.error("Error response data:", error.response?.data);
+      console.error("Error response status:", error.response?.status);
 
       let errorMessage = "Failed to delete submission";
       if (error.response?.data?.message) {

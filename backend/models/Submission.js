@@ -36,7 +36,7 @@ const submissionSchema = new mongoose.Schema(
     //default: Date.now,
   },
 
-  { timestamps: true }
+  { timestamps: true },
 );
 
 //submissionSchema.index({ user: 1, createdAt: -1 });

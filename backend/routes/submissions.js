@@ -1,3 +1,4 @@
+// routes/submissions.js
 const express = require("express");
 const router = express.Router();
 const { protect, admin } = require("../middleware/authMiddleware");
@@ -7,11 +8,29 @@ const {
   approveSubmission,
   rejectSubmission,
 } = require("../controllers/submissionController");
-const uploadFile = require("../middleware/uploadMiddleware");
-//const submissionRateLimiter = require("../middleware/rateLimiter");
+const {
+  createMultipleSubmissions,
+} = require("../controllers/multipleSubmissionController");
 
-// User routes
-router.post("/", protect, uploadFile.single("screenshot"), createSubmission);
+// Import upload middleware CORRECTLY
+const uploadMiddleware = require("../middleware/uploadMiddleware");
+
+// User routes - Single submission
+router.post(
+  "/",
+  protect,
+  uploadMiddleware.single("screenshot"),
+  createSubmission,
+);
+
+// User routes - Multiple submissions
+router.post(
+  "/multiple",
+  protect,
+  uploadMiddleware.array("screenshots", 5),
+  createMultipleSubmissions,
+);
+
 router.get("/my-submissions", protect, getUserSubmissions);
 
 // Admin routes
