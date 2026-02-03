@@ -23,51 +23,49 @@ const connectDB = async () => {
 
 const facebookLinks = [
   {
-    url: "https://www.facebook.com/share/1CEoxZZ5W7",
-    title: "𝚅𝚎𝚕𝚟𝚎𝚝 𝚅𝚒𝚋𝚎 - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/share/17xPg8oiBt",
-    title: "Suboda Salgadu - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/share/1GWjz7uwmu",
-    title: "Ganesh Tv - Media - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/profile.php?id=61559522332251&mibextid=wwXIfr&mibextid=wwXIfr",
-    title: "MODish Unisex Salon - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/barberking.lk?mibextid=JRoKGi",
-    title: "barberking.lk - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/share/1ARZzRf2ZX/?mibextid=wwXIfr",
+    url: "https://www.facebook.com/share/1NNGJpYSCT",
     title:
-      "Sachin Rathnapriya - Physics - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+      "Signature Gold House - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/profile.php?id=61587341190791&mibextid=ZbWKwL",
-    title: "AdZone Lanka - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    url: "https://www.facebook.com/share/1FmLCXH6hU",
+    title: "Chamara Dilshan - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/1BvQ321EQU/?mibextid=wwXIfr",
-    title: "Shashi Wijesundara - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    url: "https://www.facebook.com/share/1DSFRqaB5G",
+    title:
+      "Apexaura Wellness product with gimhani - Media - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://web.facebook.com/profile.php?id=100063634343067",
+    title:
+      "Akalanka Karunarathna Photography - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/share/1QxWfTuuJy/?mibextid=wwXIfr",
+    title:
+      "Soft Gallery Digital - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://web.facebook.com/profile.php?id=61578106467661",
+    title:
+      "බත්තිරන් Food Village & Caterers - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://web.facebook.com/profile.php?id=61587547283948&rdid=oV43XcqtVZFQbNeR&share_url=https%3A%2F%2Fweb.facebook.com%2Fshare%2F1CMJBjfKNj%2F%3F_rdc%3D1%26_rdr",
+    title: "Twinkle in korea - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
