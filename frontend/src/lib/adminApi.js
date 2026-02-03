@@ -1,13 +1,13 @@
 import axios from "axios";
 
-const API_URL =
-  process.env.NEXT_PUBLIC_API_URL || "https://rithu-bl-web-site.vercel.app/api";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
 
 const adminApi = axios.create({
   baseURL: API_URL,
   headers: {
     "Content-Type": "application/json",
   },
+  timeout: 30000, // 30 seconds timeout
 });
 
 // Add token to requests
@@ -37,6 +37,15 @@ adminApi.interceptors.response.use(
         window.location.href = "/admin/login";
       }
     }
+
+    // Log detailed error for debugging
+    console.error("API Error:", {
+      status: error.response?.status,
+      data: error.response?.data,
+      message: error.message,
+      url: error.config?.url,
+    });
+
     return Promise.reject(error);
   },
 );
@@ -58,9 +67,24 @@ export const getAdminStats = async () => {
 };
 
 export const getAdminSubmissions = async (filters = {}) => {
-  const params = new URLSearchParams(filters).toString();
-  const response = await adminApi.get(`/admin/submissions?${params}`);
-  return response.data;
+  try {
+    const params = new URLSearchParams();
+
+    // Convert filters to URL params
+    Object.entries(filters).forEach(([key, value]) => {
+      if (value !== undefined && value !== "") {
+        params.append(key, value);
+      }
+    });
+
+    const response = await adminApi.get(
+      `/admin/submissions?${params.toString()}`,
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching submissions:", error);
+    throw error;
+  }
 };
 
 export const updateSubmissionStatus = async (data) => {
@@ -70,7 +94,6 @@ export const updateSubmissionStatus = async (data) => {
 
 export const deleteSubmission = async (platformType, submissionId) => {
   try {
-    console.log(`Deleting: ${platformType}/${submissionId}`);
     const response = await adminApi.delete(
       `/admin/submissions/${platformType}/${submissionId}`,
     );

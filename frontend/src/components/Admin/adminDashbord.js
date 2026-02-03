@@ -4,10 +4,8 @@ import { useAdminAuth } from "@/Context/AdminAuthContext";
 import { useRouter } from "next/navigation";
 import adminApi from "@/lib/adminApi";
 
-// Icons - Fixed import (removed Google, added Chrome)
 import {
   Users,
-  DollarSign,
   CheckCircle,
   Clock,
   XCircle,
@@ -16,7 +14,6 @@ import {
   Youtube,
   MessageSquare,
   Star,
-  Filter,
   Search,
   Download,
   Eye,
@@ -28,7 +25,8 @@ import {
   MessageCircle,
   StarIcon,
   Instagram,
-  Chrome, // Use Chrome icon for Google
+  Chrome,
+  RefreshCw,
 } from "lucide-react";
 
 export default function AdminDashboard() {
@@ -46,7 +44,7 @@ export default function AdminDashboard() {
   const [filter, setFilter] = useState({
     platform: "all",
     status: "all",
-    page: 100,
+    page: 1,
     search: "",
     dateFrom: "",
     dateTo: "",
@@ -54,44 +52,71 @@ export default function AdminDashboard() {
   const [selectedSubmission, setSelectedSubmission] = useState(null);
   const [showImageModal, setShowImageModal] = useState(false);
   const [actionLoading, setActionLoading] = useState(null);
+  const [error, setError] = useState(null);
+  const [retryCount, setRetryCount] = useState(0);
 
   useEffect(() => {
-    if (isAuthenticated()) {
-      if (activeTab === "dashboard") {
-        fetchStatistics();
-      } else {
-        fetchSubmissions();
-      }
-    } else {
+    if (!isAuthenticated()) {
       router.push("/admin/login");
+      return;
     }
-  }, [adminUser, filter, activeTab, isAuthenticated, router]);
+
+    const loadData = async () => {
+      if (activeTab === "dashboard") {
+        await fetchStatistics();
+      } else {
+        await fetchSubmissions();
+      }
+    };
+
+    loadData();
+  }, [activeTab, filter, isAuthenticated, router, retryCount]);
 
   const fetchStatistics = async () => {
     try {
+      setError(null);
       const response = await adminApi.get("/admin/stats");
       setStatistics(response.data.data);
     } catch (error) {
       console.error("Failed to fetch statistics:", error);
+      setError("Failed to load dashboard statistics");
     }
   };
 
   const fetchSubmissions = async () => {
     setLoading(true);
+    setError(null);
     try {
-      const params = new URLSearchParams();
-      if (filter.platform !== "all") params.append("platform", filter.platform);
-      if (filter.status !== "all") params.append("status", filter.status);
-      if (filter.search) params.append("search", filter.search);
-      if (filter.dateFrom) params.append("dateFrom", filter.dateFrom);
-      if (filter.dateTo) params.append("dateTo", filter.dateTo);
-      params.append("page", filter.page.toString());
-      params.append("limit", "100");
+      // Clean filter object - remove empty values
+      const cleanFilter = {};
+      Object.keys(filter).forEach((key) => {
+        if (filter[key] && filter[key] !== "") {
+          cleanFilter[key] = filter[key];
+        }
+      });
 
-      const response = await adminApi.get(`/admin/submissions?${params}`);
-      setSubmissions(response.data.data);
+      const response = await adminApi.get("/admin/submissions", {
+        params: cleanFilter,
+      });
+
+      if (response.data.success) {
+        setSubmissions(response.data.data);
+      } else {
+        setError(response.data.message || "Failed to load submissions");
+      }
     } catch (error) {
       console.error("Failed to fetch submissions:", error);
+
+      // Show more specific error message
+      if (error.response?.data?.message) {
+        setError(`Server Error: ${error.response.data.message}`);
+      } else if (error.message.includes("timeout")) {
+        setError("Request timed out. Please try again.");
+      } else if (error.response?.status === 500) {
+        setError("Server error. Please check the server logs.");
+      } else {
+        setError("Failed to load submissions. Please try again.");
+      }
     } finally {
       setLoading(false);
     }
@@ -104,35 +129,17 @@ export default function AdminDashboard() {
   ) => {
     setActionLoading(combinedId);
     try {
-      // Parse combinedId to match what backend expects in deleteSubmission
-      const parts = combinedId.split("_");
-      let backendCombinedId;
-
-      if (parts.length === 2) {
-        // Convert "instagram_<id>" to "Instrgram_page_<id>"
-        // Convert "tiktok_<id>" to "Tiktok_page_<id>"
-        if (parts[0] === "instagram") {
-          backendCombinedId = `Instrgram_page_${parts[1]}`;
-        } else if (parts[0] === "tiktok") {
-          backendCombinedId = `Tiktok_page_${parts[1]}`;
-        } else {
-          backendCombinedId = combinedId;
-        }
-      } else {
-        backendCombinedId = combinedId;
-      }
-
       await adminApi.put("/admin/submissions/status", {
-        combinedId: backendCombinedId,
+        combinedId,
         status,
         rejectionReason,
       });
 
       // Refresh data
       if (activeTab === "dashboard") {
-        fetchStatistics();
+        await fetchStatistics();
       } else {
-        fetchSubmissions();
+        await fetchSubmissions();
       }
 
       alert(`Submission ${status} successfully!`);
@@ -146,59 +153,40 @@ export default function AdminDashboard() {
       setActionLoading(null);
     }
   };
+
   const deleteSubmission = async (combinedId) => {
     if (!confirm("Are you sure you want to delete this submission?")) return;
 
-    console.log("Delete clicked with combinedId:", combinedId);
+    // Parse the combinedId to get platformType and submissionId
+    const parts = combinedId.split("_");
+    if (parts.length < 3) {
+      alert("Invalid submission ID format");
+      return;
+    }
+
+    const platformType = parts[0] + "_" + parts[1];
+    const submissionId = parts.slice(2).join("_");
 
     setActionLoading(combinedId);
     try {
-      // Parse the combinedId correctly
-      const parts = combinedId.split("_");
-      console.log("Parsed parts:", parts);
-
-      let platformType, submissionId;
-
-      if (parts.length >= 3) {
-        // Format: "Tiktok_page_<id>" or "Instrgram_page_<id>"
-        platformType = parts[0]; // "Tiktok" or "Instrgram"
-        submissionId = parts.slice(2).join("_");
-      } else if (parts.length === 2) {
-        // Format: "facebook_page_<id>" or "youtube_video_<id>"
-        platformType = parts[0] + "_" + parts[1]; // "facebook_page" or "youtube_video"
-        submissionId = parts[2] || "";
-      } else {
-        throw new Error(`Invalid combinedId format: ${combinedId}`);
-      }
-
-      console.log(
-        `Final values: platformType=${platformType}, submissionId=${submissionId}`,
-      );
-
-      // Send to backend
       await adminApi.delete(
         `/admin/submissions/${platformType}/${submissionId}`,
       );
 
       // Refresh data
       if (activeTab === "dashboard") {
-        fetchStatistics();
+        await fetchStatistics();
       } else {
-        fetchSubmissions();
+        await fetchSubmissions();
       }
 
       alert("Submission deleted successfully!");
     } catch (error) {
       console.error("Failed to delete submission:", error);
-
-      let errorMessage = "Failed to delete submission";
-      if (error.response?.data?.message) {
-        errorMessage += ": " + error.response.data.message;
-      } else if (error.message) {
-        errorMessage += ": " + error.message;
-      }
-
-      alert(errorMessage);
+      alert(
+        "Failed to delete submission: " +
+          (error.response?.data?.message || error.message),
+      );
     } finally {
       setActionLoading(null);
     }
@@ -224,20 +212,6 @@ export default function AdminDashboard() {
         return <MessageSquare className="w-4 h-4 text-gray-600" />;
     }
   };
-  const getSubmissionTypeIcon = (submissionType) => {
-    switch (submissionType) {
-      case "page":
-        return <ThumbsUp className="w-4 h-4 text-green-600" />;
-      case "review":
-        return <StarIcon className="w-4 h-4 text-yellow-600" />;
-      case "comment":
-        return <MessageCircle className="w-4 h-4 text-blue-600" />;
-      case "video":
-        return <Youtube className="w-4 h-4 text-red-600" />;
-      default:
-        return <FileImage className="w-4 h-4 text-gray-600" />;
-    }
-  };
 
   const getStatusBadge = (status) => {
     const baseClasses = "px-2 py-1 rounded-full text-xs font-medium";
@@ -254,12 +228,10 @@ export default function AdminDashboard() {
   };
 
   const getAmountByType = (submission) => {
-    // Use the actual amount from submission data if available
     if (submission.amount) {
       return `Rs ${submission.amount.toFixed(2)}`;
     }
 
-    // Fallback to type-based amounts
     switch (submission.submissionType) {
       case "page":
         return "Rs 1.00";
@@ -314,6 +286,10 @@ export default function AdminDashboard() {
     a.download = `submissions-${new Date().toISOString().split("T")[0]}.csv`;
     a.click();
     window.URL.revokeObjectURL(url);
+  };
+
+  const handleRetry = () => {
+    setRetryCount((prev) => prev + 1);
   };
 
   if (!isAuthenticated()) {
@@ -374,6 +350,7 @@ export default function AdminDashboard() {
                 onClick={() => {
                   setActiveTab(tab.id);
                   setFilter((prev) => ({ ...prev, page: 1 }));
+                  setError(null);
                 }}
                 className={`flex items-center px-3 py-4 text-sm font-medium border-b-2 transition-colors ${
                   activeTab === tab.id
@@ -391,6 +368,24 @@ export default function AdminDashboard() {
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {error && (
+          <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-md">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between">
+              <div className="flex items-center mb-2 sm:mb-0">
+                <AlertCircle className="w-5 h-5 text-red-500 mr-2" />
+                <span className="text-red-700">{error}</span>
+              </div>
+              <button
+                onClick={handleRetry}
+                className="flex items-center text-sm bg-red-100 text-red-700 px-3 py-1 rounded hover:bg-red-200 transition-colors"
+              >
+                <RefreshCw className="w-3 h-3 mr-1" />
+                Retry
+              </button>
+            </div>
+          </div>
+        )}
+
         {activeTab === "dashboard" && (
           <div>
             <div className="flex justify-between items-center mb-6">
@@ -400,7 +395,7 @@ export default function AdminDashboard() {
               </div>
             </div>
 
-            {statistics && (
+            {statistics ? (
               <>
                 {/* Stats Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
@@ -551,6 +546,11 @@ export default function AdminDashboard() {
                   </div>
                 )}
               </>
+            ) : (
+              <div className="text-center py-12">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                <p className="text-gray-600">Loading statistics...</p>
+              </div>
             )}
           </div>
         )}
@@ -564,7 +564,8 @@ export default function AdminDashboard() {
               <div className="flex space-x-3">
                 <button
                   onClick={exportSubmissions}
-                  className="flex items-center space-x-2 bg-green-600 text-white px-4 py-2 rounded-md text-sm hover:bg-green-700 transition-colors"
+                  disabled={loading || submissions.submissions?.length === 0}
+                  className="flex items-center space-x-2 bg-green-600 text-white px-4 py-2 rounded-md text-sm hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <Download className="w-4 h-4" />
                   <span>Export CSV</span>
@@ -592,9 +593,8 @@ export default function AdminDashboard() {
                   >
                     <option value="all">All Platforms</option>
                     <option value="facebook">Facebook</option>
-                    <option value="Instrgram">Instagrm</option>
+                    <option value="Instrgram">Instagram</option>
                     <option value="Tiktok">Tiktok</option>
-                    <option value="comment">Comment</option>
                     <option value="youtube">YouTube</option>
                     <option value="google">Google</option>
                   </select>
@@ -629,7 +629,7 @@ export default function AdminDashboard() {
                       setFilter({
                         ...filter,
                         dateFrom: e.target.value,
-                        page: 50,
+                        page: 1,
                       })
                     }
                     className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm"
@@ -666,7 +666,7 @@ export default function AdminDashboard() {
                         setFilter({
                           ...filter,
                           search: e.target.value,
-                          page: 50,
+                          page: 1,
                         })
                       }
                       className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md text-sm"
@@ -715,6 +715,17 @@ export default function AdminDashboard() {
             {loading ? (
               <div className="flex justify-center items-center py-12">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+              </div>
+            ) : error ? (
+              <div className="text-center py-12">
+                <AlertCircle className="w-16 h-16 text-red-400 mx-auto mb-4" />
+                <p className="text-gray-600">{error}</p>
+                <button
+                  onClick={handleRetry}
+                  className="mt-4 bg-blue-600 text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700 transition-colors"
+                >
+                  Try Again
+                </button>
               </div>
             ) : (
               <div className="bg-white shadow overflow-hidden sm:rounded-md">
