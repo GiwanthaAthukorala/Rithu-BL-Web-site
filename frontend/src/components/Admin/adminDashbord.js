@@ -155,30 +155,24 @@ export default function AdminDashboard() {
     try {
       // Parse the combinedId correctly
       const parts = combinedId.split("_");
-      console.log("Parts:", parts);
+      console.log("Parsed parts:", parts);
 
       let platformType, submissionId;
 
       if (parts.length >= 3) {
         // Format: "Tiktok_page_<id>" or "Instrgram_page_<id>"
-        // Extract just "Tiktok" or "Instrgram" for platformType
-        platformType = parts[0]; // This gives "Tiktok" or "Instrgram"
-        // The ID starts from the third part onward (skip platform and type)
+        platformType = parts[0]; // "Tiktok" or "Instrgram"
         submissionId = parts.slice(2).join("_");
       } else if (parts.length === 2) {
-        // Format: "instagram_<id>" or "tiktok_<id>" (from other submissions)
-        // Capitalize first letter to match backend model names
-        platformType = parts[0].charAt(0).toUpperCase() + parts[0].slice(1);
-        submissionId = parts[1];
+        // Format: "facebook_page_<id>" or "youtube_video_<id>"
+        platformType = parts[0] + "_" + parts[1]; // "facebook_page" or "youtube_video"
+        submissionId = parts[2] || "";
       } else {
         throw new Error(`Invalid combinedId format: ${combinedId}`);
       }
 
       console.log(
-        `Constructing URL with: platformType=${platformType}, submissionId=${submissionId}`,
-      );
-      console.log(
-        `Full URL: /admin/submissions/${platformType}/${submissionId}`,
+        `Final values: platformType=${platformType}, submissionId=${submissionId}`,
       );
 
       // Send to backend
@@ -196,9 +190,6 @@ export default function AdminDashboard() {
       alert("Submission deleted successfully!");
     } catch (error) {
       console.error("Failed to delete submission:", error);
-      console.error("Full error:", error);
-      console.error("Error response data:", error.response?.data);
-      console.error("Error response status:", error.response?.status);
 
       let errorMessage = "Failed to delete submission";
       if (error.response?.data?.message) {

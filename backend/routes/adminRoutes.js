@@ -1,47 +1,46 @@
 const express = require("express");
 const router = express.Router();
-const { adminAuth, superAdminAuth } = require("../middleware/adminAuth");
-const adminController = require("../controllers/adminController");
+const { protect, admin } = require("../middleware/authMiddleware");
 
-// Admin authentication routes
-router.post("/login", adminController.adminLogin);
-router.post("/logout", adminAuth, adminController.adminLogout);
+const {
+  adminLogin,
+  adminLogout,
+  getAllSubmissions,
+  getSubmissionById,
+  updateSubmissionStatus,
+  deleteSubmission,
+  getAdminStats,
+  getAllUsers,
+  toggleUserStatus,
+  createAdminUser,
+  getSystemStats,
+} = require("../controllers/adminController");
 
-// Admin dashboard routes
-router.get("/stats", adminAuth, adminController.getAdminStats);
-router.get("/submissions", adminAuth, adminController.getAllSubmissions);
+// Admin Auth Routes
+router.post("/login", adminLogin);
+router.post("/logout", protect, admin, adminLogout);
+
+// Admin Dashboard Routes
+router.get("/stats", protect, admin, getAdminStats);
+router.get("/submissions", protect, admin, getAllSubmissions);
 router.get(
   "/submissions/:platformType/:submissionId",
-  adminAuth,
-  adminController.getSubmissionById
+  protect,
+  admin,
+  getSubmissionById,
 );
-
-// Admin actions
-router.put(
-  "/submissions/status",
-  adminAuth,
-  adminController.updateSubmissionStatus
-);
+router.put("/submissions/status", protect, admin, updateSubmissionStatus);
 router.delete(
   "/submissions/:platformType/:submissionId",
-  adminAuth,
-  adminController.deleteSubmission
+  protect,
+  admin,
+  deleteSubmission,
 );
 
-// User management (super admin only)
-router.get("/users", superAdminAuth, adminController.getAllUsers);
-router.put(
-  "/users/:userId/status",
-  superAdminAuth,
-  adminController.toggleUserStatus
-);
-router.post(
-  "/users/create-admin",
-  superAdminAuth,
-  adminController.createAdminUser
-);
-
-// System management (super admin only)
-//router.get("/system/stats", superAdminAuth, adminController.getSystemStats);
+// User Management (Super Admin only)
+router.get("/users", protect, admin, getAllUsers);
+router.put("/users/:userId/toggle-status", protect, admin, toggleUserStatus);
+router.post("/users/create-admin", protect, admin, createAdminUser);
+router.get("/system-stats", protect, admin, getSystemStats);
 
 module.exports = router;

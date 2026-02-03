@@ -493,13 +493,12 @@ const deleteSubmission = async (req, res) => {
   try {
     const { platformType, submissionId } = req.params;
 
+    console.log(
+      `Delete request: platformType=${platformType}, submissionId=${submissionId}`,
+    );
+
     let Model;
     let actualId = submissionId;
-
-    console.log(`Attempting to delete submission:`, {
-      platformType,
-      submissionId,
-    });
 
     // Determine which model to use based on platform type
     switch (platformType) {
@@ -515,10 +514,10 @@ const deleteSubmission = async (req, res) => {
       case "facebook_comment":
         Model = FbCommentSubmission;
         break;
-      case "Instrgram": // ✅ Fixed: removed extra space
+      case "Instrgram": // ✅ Fixed
         Model = Instrgram;
         break;
-      case "Tiktok": // ✅ Fixed: lowercase to match route
+      case "Tiktok": // ✅ Fixed
         Model = TiktokSubmission;
         break;
       case "google_review":
@@ -541,7 +540,7 @@ const deleteSubmission = async (req, res) => {
         });
     }
 
-    console.log(`Using model: ${Model.modelName}, ID: ${actualId}`);
+    console.log(`Using model: ${Model.modelName}`);
 
     const submission = await Model.findByIdAndDelete(actualId);
 
@@ -553,7 +552,7 @@ const deleteSubmission = async (req, res) => {
       });
     }
 
-    console.log(`Successfully deleted submission:`, submission._id);
+    console.log(`Successfully deleted submission: ${submission._id}`);
 
     res.json({
       success: true,
@@ -561,6 +560,7 @@ const deleteSubmission = async (req, res) => {
     });
   } catch (error) {
     console.error("Delete submission error:", error);
+    console.error("Error details:", error.message);
     res.status(500).json({
       success: false,
       message: "Failed to delete submission",

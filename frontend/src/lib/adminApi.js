@@ -69,10 +69,19 @@ export const updateSubmissionStatus = async (data) => {
 };
 
 export const deleteSubmission = async (platformType, submissionId) => {
-  const response = await adminApi.delete(
-    `/admin/submissions/${platformType}/${submissionId}`,
-  );
-  return response.data;
+  try {
+    console.log(`Deleting: ${platformType}/${submissionId}`);
+    const response = await adminApi.delete(
+      `/admin/submissions/${platformType}/${submissionId}`,
+    );
+    return response.data;
+  } catch (error) {
+    console.error(
+      `Delete error for ${platformType}/${submissionId}:`,
+      error.response?.data || error.message,
+    );
+    throw error;
+  }
 };
 
 export const getSubmissionDetail = async (platformType, submissionId) => {
