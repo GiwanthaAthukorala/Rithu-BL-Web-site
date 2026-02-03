@@ -44,7 +44,7 @@ export default function AdminDashboard() {
   const [filter, setFilter] = useState({
     platform: "all",
     status: "all",
-    page: 1,
+    page: 200,
     search: "",
     dateFrom: "",
     dateTo: "",
