@@ -10,6 +10,10 @@ import {
   Image,
   X,
   AlertCircle,
+  Star,
+  Zap,
+  Award,
+  TrendingUp,
 } from "lucide-react";
 import Header from "@/components/Header/Header";
 import api from "@/lib/api";
@@ -21,8 +25,8 @@ import { MdRateReview } from "react-icons/md";
 import SubmissionSummaryModal from "@/components/SubmissionSummaryModal";
 
 export default function FbVerificationTask() {
-  const [files, setFiles] = useState([]); // Changed from single file to array
-  const [previews, setPreviews] = useState([]); // Changed from single preview to array
+  const [files, setFiles] = useState([]);
+  const [previews, setPreviews] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [error, setError] = useState(null);
@@ -34,7 +38,6 @@ export default function FbVerificationTask() {
   const [linkClickCounts, setLinkClickCounts] = useState({});
   const [submissionSummary, setSubmissionSummary] = useState(null);
 
-  // Mobile detection
   const isMobile = () => {
     return (
       typeof window !== "undefined" &&
@@ -47,22 +50,17 @@ export default function FbVerificationTask() {
 
   const handleFileChange = (e) => {
     const selectedFiles = Array.from(e.target.files);
-
-    // Reset error
     setError(null);
 
-    // Validate number of files
     if (selectedFiles.length > 5) {
       setError("You can only upload up to 5 screenshots at once");
       return;
     }
 
-    // Validate each file
     const validFiles = [];
     const errors = [];
 
     selectedFiles.forEach((file, index) => {
-      // Validate file type
       const validTypes = ["image/jpeg", "image/png", "image/jpg"];
       if (!validTypes.includes(file.type)) {
         errors.push(
@@ -71,7 +69,6 @@ export default function FbVerificationTask() {
         return;
       }
 
-      // Validate file size (5MB max)
       if (file.size > 5 * 1024 * 1024) {
         errors.push(`File ${index + 1}: Image size must be less than 5MB`);
         return;
@@ -85,7 +82,6 @@ export default function FbVerificationTask() {
       return;
     }
 
-    // Combine with existing files if any
     const allFiles = [...files, ...validFiles];
     if (allFiles.length > 5) {
       setError("Maximum 5 screenshots allowed. Remove some files first.");
@@ -94,7 +90,6 @@ export default function FbVerificationTask() {
 
     setFiles(allFiles);
 
-    // Create previews for new files
     const newPreviewsPromises = validFiles.map((file) => {
       return new Promise((resolve) => {
         const reader = new FileReader();
@@ -119,10 +114,8 @@ export default function FbVerificationTask() {
   const removeFile = (index) => {
     const newFiles = [...files];
     const newPreviews = [...previews];
-
     newFiles.splice(index, 1);
     newPreviews.splice(index, 1);
-
     setFiles(newFiles);
     setPreviews(newPreviews);
   };
@@ -133,20 +126,15 @@ export default function FbVerificationTask() {
   };
 
   const handleLinkClick = (linkId, clickCount) => {
-    console.log(`Link ${linkId} clicked ${clickCount} times`);
-
     setLinkClickCounts((prev) => ({
       ...prev,
       [linkId]: clickCount,
     }));
 
-    // Set as selected link for the first click
     if (clickCount === 1) {
       setSelectedLinkId(linkId);
-      console.log(`Selected link: ${linkId}`);
     }
 
-    // Provide feedback for mobile users
     if (isMobile() && navigator.vibrate) {
       navigator.vibrate(50);
     }
@@ -155,7 +143,6 @@ export default function FbVerificationTask() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validate files
     if (!files.length || !user) {
       setError(
         files.length === 0
@@ -165,7 +152,6 @@ export default function FbVerificationTask() {
       return;
     }
 
-    // Validate link clicks if a link is selected
     if (selectedLinkId && linkClickCounts[selectedLinkId] < 2) {
       setError(
         `You need to click the link at least 2 times before submitting (current: ${linkClickCounts[selectedLinkId] || 0})`,
@@ -179,9 +165,8 @@ export default function FbVerificationTask() {
     try {
       const formData = new FormData();
 
-      // Append all files
       files.forEach((file) => {
-        formData.append("screenshots", file); // Use same field name for all files
+        formData.append("screenshots", file);
       });
 
       formData.append("platform", "facebook");
@@ -200,20 +185,15 @@ export default function FbVerificationTask() {
       const apiUrl =
         process.env.NEXT_PUBLIC_API_URL ||
         "https://rithu-bl-web-site.vercel.app";
-      console.log("Submitting to:", `${apiUrl}/api/submissions/multiple`);
-      console.log("Number of files:", files.length);
 
       const response = await fetch(`${apiUrl}/api/submissions/multiple`, {
         method: "POST",
         body: formData,
-        credentials: "include", // Important for cookies/auth
+        credentials: "include",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
-          // Don't set Content-Type - let browser set it for FormData
         },
       });
-
-      console.log("Response status:", response.status);
 
       if (!response.headers.get("content-type")?.includes("application/json")) {
         const text = await response.text();
@@ -223,7 +203,6 @@ export default function FbVerificationTask() {
       if (!response.ok) {
         const errorData = await response.json();
 
-        // Handle duplicate image case
         if (errorData.message?.includes("too similar")) {
           const dateMatch = errorData.message.match(/\d{1,2}\/\d{1,2}\/\d{4}/);
           setPreviousSubmissionDate(dateMatch ? dateMatch[0] : "previously");
@@ -240,22 +219,17 @@ export default function FbVerificationTask() {
       }
 
       const result = await response.json();
-      console.log("Success response:", result);
 
-      // Mark link as submitted if we have one
       if (selectedLinkId) {
         try {
           await api.post(`/links/${selectedLinkId}/submit`);
-          console.log("Link marked as submitted");
         } catch (submitError) {
           console.error("Failed to mark link as submitted:", submitError);
-          // Don't fail the whole submission for this
         }
       }
 
       setIsSubmitted(true);
 
-      // Set submission summary if available
       if (result.data) {
         setSubmissionSummary({
           successful: result.data.successful || 0,
@@ -266,7 +240,6 @@ export default function FbVerificationTask() {
         });
       }
 
-      // Navigate to profile after success
       setTimeout(() => {
         router.push("/facebook-verification/page");
       }, 3000);
@@ -282,10 +255,15 @@ export default function FbVerificationTask() {
 
   if (isAuthLoading || !user) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
         <Header />
         <div className="min-h-screen flex items-center justify-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+          <div className="relative">
+            <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-600"></div>
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+              <div className="w-8 h-8 bg-blue-600 rounded-full animate-pulse"></div>
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -293,7 +271,7 @@ export default function FbVerificationTask() {
 
   if (isSubmitted && submissionSummary) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
         <Header />
         <SubmissionSummaryModal
           summary={submissionSummary}
@@ -307,415 +285,379 @@ export default function FbVerificationTask() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
       <Header />
-      <div className="max-w-4xl mx-auto p-4">
-        {/* Enhanced Header */}
-        <div className="relative overflow-hidden bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-600 rounded-t-2xl shadow-lg">
-          {/* Background Pattern */}
-          <div className="absolute inset-0 opacity-10">
-            <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent transform -skew-y-6 origin-top-left"></div>
-            <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full transform translate-x-16 -translate-y-16"></div>
-            <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/10 rounded-full transform -translate-x-12 translate-y-12"></div>
+
+      <div className="max-w-7xl mx-auto px-4 py-8">
+        {/* Hero Section */}
+        <div className="relative overflow-hidden bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 rounded-3xl shadow-2xl mb-8">
+          {/* Animated Background */}
+          <div className="absolute inset-0 opacity-20">
+            <div className="absolute top-0 left-0 w-72 h-72 bg-white rounded-full mix-blend-overlay filter blur-3xl animate-blob"></div>
+            <div className="absolute top-0 right-0 w-72 h-72 bg-yellow-200 rounded-full mix-blend-overlay filter blur-3xl animate-blob animation-delay-2000"></div>
+            <div className="absolute bottom-0 left-1/2 w-72 h-72 bg-pink-200 rounded-full mix-blend-overlay filter blur-3xl animate-blob animation-delay-4000"></div>
           </div>
 
-          {/* Content */}
-          <div className="relative z-10 p-6 sm:p-8">
-            <div className="flex flex-col sm:flex-row items-center sm:items-start sm:space-x-6 space-y-4 sm:space-y-0">
-              {/* Facebook Icon */}
-              <div className="relative flex-shrink-0">
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-blue-300 rounded-2xl blur-sm opacity-60 animate-pulse"></div>
-                <div className="relative w-16 h-16 sm:w-20 sm:h-20 bg-white rounded-2xl flex items-center justify-center shadow-lg transform hover:scale-105 transition-transform duration-300">
-                  <img
-                    src="/facebook.png"
-                    alt="Facebook Icon"
-                    className="w-12 h-12 sm:w-16 sm:h-16 object-contain"
-                  />
+          <div className="relative z-10 p-8 md:p-12">
+            <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
+              {/* Left Side - Icon & Title */}
+              <div className="flex flex-col sm:flex-row items-center gap-6 text-center sm:text-left">
+                <div className="relative group">
+                  <div className="absolute inset-0 bg-white rounded-3xl blur-xl opacity-50 group-hover:opacity-75 transition-opacity"></div>
+                  <div className="relative w-24 h-24 bg-white rounded-3xl flex items-center justify-center shadow-2xl transform group-hover:scale-110 transition-transform duration-300">
+                    <img
+                      src="/facebook.png"
+                      alt="Facebook"
+                      className="w-16 h-16 object-contain"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <h1 className="text-4xl md:text-5xl font-black text-white mb-2 tracking-tight">
+                    Facebook Verification
+                  </h1>
+                  <p className="text-xl text-blue-100 font-medium">
+                    Earn while engaging with Facebook pages
+                  </p>
                 </div>
               </div>
 
-              {/* Title Section */}
-              <div className="flex-1 text-center sm:text-left">
-                <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-3 mb-2">
-                  <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
-                    Facebook Verification
-                  </h1>
-                  <div className="mt-2 sm:mt-0 px-3 py-1 bg-green-500 text-white text-sm font-semibold rounded-full shadow-md animate-bounce w-max mx-auto sm:mx-0">
-                    Rs 1.00 per screenshot
+              {/* Right Side - Stats Cards */}
+              <div className="grid grid-cols-2 gap-4 w-full lg:w-auto">
+                <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20">
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="w-10 h-10 bg-yellow-400 rounded-xl flex items-center justify-center">
+                      <Star className="w-5 h-5 text-yellow-900" />
+                    </div>
+                    <div className="text-left">
+                      <p className="text-3xl font-bold text-white">Rs 1.00</p>
+                      <p className="text-sm text-blue-100">Per Screenshot</p>
+                    </div>
                   </div>
                 </div>
 
-                <p className="text-blue-100 text-base sm:text-lg font-medium">
-                  Upload up to 5 screenshots at once
-                </p>
-
-                <div className="flex flex-col sm:flex-row items-center sm:items-center justify-center sm:justify-start space-y-2 sm:space-y-0 sm:space-x-4 mt-3">
-                  <div className="flex items-center space-x-2 text-blue-200">
-                    <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                    <span className="text-sm">Active Task</span>
-                  </div>
-                  <div className="flex items-center space-x-2 text-blue-200">
-                    <CheckCircle className="w-4 h-4" />
-                    <span className="text-sm">Instant Payout</span>
-                  </div>
-                  <div className="flex items-center space-x-2 text-blue-200">
-                    <Upload className="w-4 h-4" />
-                    <span className="text-sm">Multiple Uploads</span>
+                <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20">
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="w-10 h-10 bg-green-400 rounded-xl flex items-center justify-center">
+                      <Zap className="w-5 h-5 text-green-900" />
+                    </div>
+                    <div className="text-left">
+                      <p className="text-3xl font-bold text-white">Up to 5</p>
+                      <p className="text-sm text-blue-100">Screenshots</p>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* Bottom Wave */}
-          <div className="absolute bottom-0 left-0 right-0">
-            <svg
-              className="w-full h-4 text-white"
-              viewBox="0 0 1200 120"
-              preserveAspectRatio="none"
-            >
-              <path
-                d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z"
-                opacity=".25"
-                fill="currentColor"
-              ></path>
-              <path
-                d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z"
-                opacity=".5"
-                fill="currentColor"
-              ></path>
-              <path
-                d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z"
-                fill="currentColor"
-              ></path>
-            </svg>
+            {/* Feature Pills */}
+            <div className="flex flex-wrap gap-3 mt-8 justify-center lg:justify-start">
+              <div className="flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full border border-white/30">
+                <CheckCircle className="w-4 h-4 text-green-300" />
+                <span className="text-sm text-white font-medium">
+                  Instant Payout
+                </span>
+              </div>
+              <div className="flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full border border-white/30">
+                <Upload className="w-4 h-4 text-blue-300" />
+                <span className="text-sm text-white font-medium">
+                  Bulk Upload
+                </span>
+              </div>
+              <div className="flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full border border-white/30">
+                <Award className="w-4 h-4 text-yellow-300" />
+                <span className="text-sm text-white font-medium">
+                  Easy Tasks
+                </span>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Main Content */}
-        <div className="bg-white rounded-b-2xl shadow-xl border-t-0">
-          {/* Instructions Section */}
-          <div className="p-6">
-            <div className="mb-8">
-              <h2 className="text-xl font-bold text-gray-800 mb-6 flex items-center space-x-2">
-                <div className="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">
-                  <MdRateReview />
+        <div className="grid lg:grid-cols-3 gap-8">
+          {/* Left Column - Instructions & Links */}
+          <div className="lg:col-span-2 space-y-6">
+            {/* Instructions Card */}
+            <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
+              <div className="bg-gradient-to-r from-blue-500 to-indigo-500 p-6">
+                <h2 className="text-2xl font-bold text-white flex items-center gap-3">
+                  <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
+                    <MdRateReview className="w-6 h-6" />
+                  </div>
+                  How It Works
+                </h2>
+              </div>
+
+              <div className="p-6">
+                <div className="space-y-4">
+                  {[
+                    {
+                      step: 1,
+                      text: "Click on a Facebook page link below",
+                      icon: "🔗",
+                    },
+                    {
+                      step: 2,
+                      text: "Like or follow the page on Facebook",
+                      icon: "👍",
+                    },
+                    {
+                      step: 3,
+                      text: "Click the link 2 times to track your engagement",
+                      icon: "🔄",
+                    },
+                    {
+                      step: 4,
+                      text: "Take up to 5 different screenshots showing your likes/follows",
+                      icon: "📸",
+                    },
+                    {
+                      step: 5,
+                      text: "Upload all screenshots at once to earn Rs 1.00 each",
+                      icon: "💰",
+                    },
+                  ].map((item) => (
+                    <div
+                      key={item.step}
+                      className="flex items-start gap-4 group"
+                    >
+                      <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center text-white font-bold shadow-lg group-hover:scale-110 transition-transform">
+                        {item.step}
+                      </div>
+                      <div className="flex-1 pt-2">
+                        <p className="text-gray-700 font-medium">{item.text}</p>
+                      </div>
+                      <div className="text-3xl">{item.icon}</div>
+                    </div>
+                  ))}
                 </div>
 
-                <span>Instructions</span>
-              </h2>
-              <div className="bg-gray-50 p-6 rounded-xl">
-                <ol className="list-decimal list-inside space-y-3 text-gray-700">
-                  <li className="flex items-start space-x-3">
-                    <span className="flex-shrink-0 w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold">
-                      1
-                    </span>
-                    <span>Click on a Facebook page link below</span>
-                  </li>
-                  <li className="flex items-start space-x-3">
-                    <span className="flex-shrink-0 w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold">
-                      2
-                    </span>
-                    <span>Like or follow the page on Facebook</span>
-                  </li>
-                  <li className="flex items-start space-x-3">
-                    <span className="flex-shrink-0 w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold">
-                      3
-                    </span>
-                    <span>Click the link 2 times to track your engagement</span>
-                  </li>
-                  <li className="flex items-start space-x-3">
-                    <span className="flex-shrink-0 w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold">
-                      4
-                    </span>
-                    <span>
-                      Take up to 5 different screenshots showing your
-                      likes/follows
-                    </span>
-                  </li>
-                  <li className="flex items-start space-x-3">
-                    <span className="flex-shrink-0 w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold">
-                      5
-                    </span>
-                    <span>
-                      Upload all screenshots at once to earn Rs 1.00 each
-                    </span>
-                  </li>
-                </ol>
-
-                {/* Multiple Upload Info */}
-                <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                  <div className="flex items-start">
-                    <div className="flex-shrink-0 mt-0.5">
-                      <div className="w-5 h-5 bg-blue-600 text-white rounded-full flex items-center justify-center text-xs font-bold">
-                        !
-                      </div>
+                <div className="mt-6 p-5 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border-2 border-blue-200">
+                  <div className="flex items-start gap-3">
+                    <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <AlertCircle className="w-5 h-5 text-white" />
                     </div>
-                    <div className="ml-3">
-                      <p className="text-blue-800 font-medium">
-                        Multiple Upload Feature
-                      </p>
-                      <p className="text-blue-700 text-sm mt-1">
-                        • Upload 1-5 screenshots at once
-                        <br />
-                        • Earn Rs 1.00 for each unique screenshot
-                        <br />
-                        • Duplicate screenshots are automatically filtered out
-                        <br />• Save time by processing multiple submissions
-                        together
-                      </p>
+                    <div>
+                      <h4 className="font-bold text-blue-900 mb-2">
+                        Multiple Upload Benefits
+                      </h4>
+                      <ul className="text-sm text-blue-800 space-y-1">
+                        <li>• Upload 1-5 screenshots at once</li>
+                        <li>• Earn Rs 1.00 for each unique screenshot</li>
+                        <li>• Duplicates automatically filtered</li>
+                        <li>• Save time with batch processing</li>
+                      </ul>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            <h2 className="text-xl font-bold text-gray-800 mb-6 flex items-center space-x-2">
-              <div className="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold"></div>
 
-              <span>Facebook pages Review Section</span>
-            </h2>
-            {/** Facebook pages Review and Comment Section */}
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto mb-12">
+            {/* Facebook Page Review Section */}
+            <div className="bg-white rounded-2xl shadow-xl p-6">
+              <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                <Star className="w-6 h-6 text-yellow-500" />
+                Facebook Page Review Section
+              </h3>
+
               <Link href="/FbPageReview/pages">
-                <div className="cursor-pointer bg-white shadow-md rounded-lg p-6 border-0 hover:shadow-lg transition">
-                  <div className="flex items-center mb-4">
-                    <div className="w-16 h-16 flex items-center justify-center mr-3 overflow-hidden">
+                <div className="cursor-pointer bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl p-6 hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="w-16 h-16 bg-white rounded-xl flex items-center justify-center shadow-lg">
                       <img
                         src="/review.png"
-                        alt="youtube Icon"
-                        className="w-16 h-16 object-contain"
+                        alt="Review"
+                        className="w-12 h-12 object-contain"
                       />
                     </div>
-                    <h3 className="text-lg font-semibold text-gray-900">
-                      Facebook Page Review Section
-                    </h3>
+                    <div className="flex-1">
+                      <h4 className="text-xl font-bold text-white mb-1">
+                        Page Review Task
+                      </h4>
+                      <p className="text-purple-100">
+                        Share your thoughts and earn more
+                      </p>
+                    </div>
                   </div>
-                  <p className="text-[#000000] font-bold mb-4 text-[18px]">
-                    Page Review
-                  </p>
-                  <div className="text-sm text-[#000000] font-medium">
-                    Rs 30/= • Page Review
+                  <div className="flex items-center justify-between">
+                    <div className="text-3xl font-black text-white">
+                      Rs 30.00
+                    </div>
+                    <div className="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full">
+                      <span className="text-white font-semibold">
+                        Per Review
+                      </span>
+                    </div>
                   </div>
                 </div>
               </Link>
             </div>
 
             {/* Facebook Pages Links */}
-            <div className="mb-8 bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-xl border border-blue-200">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center space-x-2">
-                <ExternalLink className="w-5 h-5 text-blue-600" />
-                <span>Facebook Pages to Follow or Like and Share Posts</span>
-              </h3>
+            <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
+              <div className="bg-gradient-to-r from-indigo-500 to-purple-500 p-6">
+                <h3 className="text-xl font-bold text-white flex items-center gap-3">
+                  <ExternalLink className="w-6 h-6" />
+                  Facebook Pages to Follow
+                </h3>
+              </div>
 
-              <TaskLinks platform="facebook" onLinkClick={handleLinkClick} />
+              <div className="p-6">
+                <TaskLinks platform="facebook" onLinkClick={handleLinkClick} />
 
-              {selectedLinkId && linkClickCounts[selectedLinkId] && (
-                <div className="mt-4 p-4 bg-blue-100 border border-blue-300 rounded-lg">
-                  <div className="flex items-center justify-between">
-                    <p className="text-blue-700 font-medium">
-                      ✓ Link selected - Progress:{" "}
-                      {linkClickCounts[selectedLinkId]}/2 clicks
-                    </p>
-                    {linkClickCounts[selectedLinkId] >= 2 && (
-                      <CheckCircle className="w-5 h-5 text-green-600" />
-                    )}
+                {selectedLinkId && linkClickCounts[selectedLinkId] && (
+                  <div
+                    className={`mt-4 p-4 rounded-xl border-2 ${
+                      linkClickCounts[selectedLinkId] >= 2
+                        ? "bg-green-50 border-green-300"
+                        : "bg-yellow-50 border-yellow-300"
+                    }`}
+                  >
+                    <div className="flex items-center justify-between mb-2">
+                      <p
+                        className={`font-bold ${
+                          linkClickCounts[selectedLinkId] >= 2
+                            ? "text-green-700"
+                            : "text-yellow-700"
+                        }`}
+                      >
+                        {linkClickCounts[selectedLinkId] >= 2
+                          ? "✓ Ready to Submit!"
+                          : "⚠️ Almost Ready"}
+                      </p>
+                      <div className="flex items-center gap-2">
+                        <div className="text-sm font-semibold">
+                          {linkClickCounts[selectedLinkId]}/2 clicks
+                        </div>
+                        {linkClickCounts[selectedLinkId] >= 2 && (
+                          <CheckCircle className="w-5 h-5 text-green-600" />
+                        )}
+                      </div>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div
+                        className={`h-2 rounded-full transition-all duration-300 ${
+                          linkClickCounts[selectedLinkId] >= 2
+                            ? "bg-green-500"
+                            : "bg-yellow-500"
+                        }`}
+                        style={{
+                          width: `${(linkClickCounts[selectedLinkId] / 2) * 100}%`,
+                        }}
+                      ></div>
+                    </div>
                   </div>
-                  {linkClickCounts[selectedLinkId] >= 2 ? (
-                    <p className="text-green-700 text-sm mt-1">
-                      Ready to submit! Upload your screenshots below.
-                    </p>
-                  ) : (
-                    <p className="text-blue-600 text-sm mt-1">
-                      Click {2 - linkClickCounts[selectedLinkId]} more times to
-                      complete
-                    </p>
-                  )}
-                </div>
-              )}
+                )}
+              </div>
             </div>
 
             {/* Screenshot Requirements */}
-            <div className="mb-8 bg-gradient-to-r from-yellow-50 to-orange-50 p-6 rounded-xl border border-yellow-200">
-              <h3 className="text-lg font-semibold text-yellow-800 mb-4 flex items-center space-x-2">
-                <div className="w-6 h-6 bg-yellow-600 text-white rounded-full flex items-center justify-center text-sm">
-                  !
-                </div>
-                <span>Screenshot Requirements</span>
+            <div className="bg-gradient-to-br from-orange-50 to-yellow-50 rounded-2xl shadow-xl p-6 border-2 border-orange-200">
+              <h3 className="text-xl font-bold text-orange-800 mb-4 flex items-center gap-3">
+                <AlertCircle className="w-6 h-6" />
+                Screenshot Requirements
               </h3>
-              <div className="grid md:grid-cols-2 gap-4">
-                <div className="flex items-center space-x-3">
-                  <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
-                  <span className="text-yellow-800">
-                    Must clearly show the liked/followed page
-                  </span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
-                  <span className="text-yellow-800">
-                    Each screenshot should be different
-                  </span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
-                  <span className="text-yellow-800">
-                    No edited or cropped images
-                  </span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
-                  <span className="text-yellow-800">
-                    File size under 5MB each
-                  </span>
-                </div>
+              <div className="grid md:grid-cols-2 gap-3">
+                {[
+                  "Must clearly show the liked/followed page",
+                  "Each screenshot should be different",
+                  "No edited or cropped images",
+                  "File size under 5MB each",
+                ].map((req, idx) => (
+                  <div
+                    key={idx}
+                    className="flex items-center gap-3 bg-white/60 p-3 rounded-lg"
+                  >
+                    <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
+                    <span className="text-sm text-gray-700 font-medium">
+                      {req}
+                    </span>
+                  </div>
+                ))}
               </div>
             </div>
+          </div>
 
-            {/* Mobile-specific instructions */}
-            {isMobile() && (
-              <div className="mb-8 bg-gradient-to-r from-purple-50 to-pink-50 p-6 rounded-xl border border-purple-200">
-                <h3 className="text-lg font-semibold text-purple-800 mb-4 flex items-center space-x-2">
-                  <span className="text-xl">📱</span>
-                  <span>Mobile Instructions</span>
-                </h3>
-                <div className="space-y-3 text-purple-700">
-                  <p className="flex items-start space-x-2">
-                    <span className="text-purple-600 font-bold">•</span>
-                    <span>
-                      Links will open in new tabs or redirect you to Facebook
+          {/* Right Column - Upload Section */}
+          <div className="lg:col-span-1">
+            <div className="bg-white rounded-2xl shadow-xl overflow-hidden sticky top-8">
+              <div className="bg-gradient-to-r from-green-500 to-emerald-500 p-6">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-xl font-bold text-white flex items-center gap-2">
+                    <Upload className="w-6 h-6" />
+                    Upload
+                  </h3>
+                  <div className="bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full">
+                    <span className="text-white font-bold">
+                      {files.length}/5
                     </span>
-                  </p>
-                  <p className="flex items-start space-x-2">
-                    <span className="text-purple-600 font-bold">•</span>
-                    <span>
-                      Use your browser's back button to return here after liking
-                    </span>
-                  </p>
-                  <p className="flex items-start space-x-2">
-                    <span className="text-purple-600 font-bold">•</span>
-                    <span>
-                      Take screenshots using your device's screenshot function
-                      (usually Power + Volume Down)
-                    </span>
-                  </p>
-                  <p className="flex items-start space-x-2">
-                    <span className="text-purple-600 font-bold">•</span>
-                    <span>Select multiple screenshots from your gallery</span>
-                  </p>
+                  </div>
                 </div>
               </div>
-            )}
 
-            {/* Upload Section */}
-            <div>
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="text-xl font-bold text-gray-800 flex items-center space-x-2">
-                  <Upload className="w-6 h-6 text-blue-600" />
-                  <span>Upload Screenshots ({files.length}/5)</span>
-                </h3>
-                {files.length > 0 && (
-                  <button
-                    type="button"
-                    onClick={clearAllFiles}
-                    className="px-3 py-1 text-sm bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
-                  >
-                    Clear All
-                  </button>
-                )}
-              </div>
-
-              <form onSubmit={handleSubmit}>
-                <div className="mb-6">
-                  {previews.length > 0 ? (
-                    <div className="border-2 border-dashed border-green-300 bg-green-50 rounded-xl p-4">
-                      {/* File counter */}
-                      <div className="mb-4 text-center">
-                        <div className="inline-flex items-center bg-white px-4 py-2 rounded-full shadow-sm">
-                          <div className="w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-xs font-bold mr-2">
-                            {files.length}
-                          </div>
-                          <span className="text-gray-700 font-medium">
-                            Screenshots selected
-                          </span>
-                          <div className="ml-4 px-2 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-bold">
+              <form onSubmit={handleSubmit} className="p-6">
+                {/* Upload Area */}
+                {previews.length > 0 ? (
+                  <div className="space-y-4">
+                    {/* Earnings Display */}
+                    <div className="bg-gradient-to-r from-green-500 to-emerald-500 rounded-xl p-4 text-white">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="text-sm opacity-90">
+                            Potential Earnings
+                          </p>
+                          <p className="text-3xl font-black">
                             Rs {files.length}.00
-                          </div>
+                          </p>
                         </div>
+                        <TrendingUp className="w-8 h-8 opacity-80" />
                       </div>
+                    </div>
 
-                      {/* Preview grid */}
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
-                        {previews.map((preview, index) => (
-                          <div
-                            key={preview.id}
-                            className="relative bg-white rounded-lg p-3 shadow-sm border border-gray-200"
-                          >
-                            <div className="absolute -top-2 -right-2">
-                              <button
-                                type="button"
-                                onClick={() => removeFile(index)}
-                                className="w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition-colors"
-                              >
-                                <X className="w-3 h-3" />
-                              </button>
-                            </div>
-
-                            <div className="mb-2 text-center">
-                              <div className="w-6 h-6 bg-gray-200 text-gray-700 rounded-full flex items-center justify-center text-xs font-bold mx-auto">
+                    {/* Preview Grid */}
+                    <div className="space-y-3 max-h-96 overflow-y-auto pr-2">
+                      {previews.map((preview, index) => (
+                        <div key={preview.id} className="relative group">
+                          <div className="absolute -top-2 -right-2 z-10">
+                            <button
+                              type="button"
+                              onClick={() => removeFile(index)}
+                              className="w-7 h-7 bg-red-500 text-white rounded-full flex items-center justify-center hover:bg-red-600 transition-colors shadow-lg"
+                            >
+                              <X className="w-4 h-4" />
+                            </button>
+                          </div>
+                          <div className="bg-gray-50 rounded-xl p-3 border-2 border-gray-200 group-hover:border-blue-400 transition-colors">
+                            <div className="flex items-center gap-3 mb-2">
+                              <div className="w-8 h-8 bg-blue-600 text-white rounded-lg flex items-center justify-center text-sm font-bold">
                                 {index + 1}
                               </div>
+                              <div className="flex-1 min-w-0">
+                                <p className="text-xs text-gray-600 truncate">
+                                  {preview.name}
+                                </p>
+                                <p className="text-xs text-gray-500">
+                                  {(preview.size / (1024 * 1024)).toFixed(2)} MB
+                                </p>
+                              </div>
                             </div>
-
                             <img
                               src={preview.url}
-                              alt={`Screenshot preview ${index + 1}`}
-                              className="w-full h-40 object-contain rounded mb-2"
+                              alt={`Screenshot ${index + 1}`}
+                              className="w-full h-32 object-cover rounded-lg"
                             />
-                            <div className="text-xs text-gray-600 truncate mb-1">
-                              {preview.name}
-                            </div>
-                            <div className="text-xs text-gray-500">
-                              {(preview.size / (1024 * 1024)).toFixed(2)} MB
-                            </div>
                           </div>
-                        ))}
-                      </div>
-
-                      {/* Add more files button */}
-                      {files.length < 5 && (
-                        <div className="text-center">
-                          <label className="inline-flex items-center px-4 py-2 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors cursor-pointer">
-                            <Upload className="w-4 h-4 mr-2" />
-                            Add More Files ({5 - files.length} remaining)
-                            <input
-                              type="file"
-                              accept="image/*"
-                              onChange={handleFileChange}
-                              className="hidden"
-                              multiple
-                            />
-                          </label>
                         </div>
-                      )}
+                      ))}
                     </div>
-                  ) : (
-                    <div className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-blue-400 hover:bg-blue-50 transition-all duration-300">
-                      <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <Upload className="w-8 h-8 text-blue-600" />
-                      </div>
-                      <p className="text-gray-600 mb-2 text-lg font-medium">
-                        {isMobile()
-                          ? "Select up to 5 screenshots from gallery"
-                          : "Drag and drop up to 5 screenshots or click to browse"}
-                      </p>
-                      <p className="text-sm text-gray-500 mb-6">
-                        Supported formats: PNG, JPG, JPEG (max 5MB each)
-                      </p>
 
-                      {/* File selection buttons */}
-                      <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
-                        <label className="inline-block bg-gradient-to-r from-blue-600 to-blue-700 text-white px-8 py-3 rounded-xl cursor-pointer hover:from-blue-700 hover:to-blue-800 transition-all duration-300 transform hover:scale-105 shadow-lg font-semibold">
-                          <Image className="w-5 h-5 inline mr-2" />
-                          {isMobile() ? "Choose from Gallery" : "Choose Files"}
+                    {/* Add More / Clear Buttons */}
+                    <div className="flex gap-2">
+                      {files.length < 5 && (
+                        <label className="flex-1 bg-blue-100 text-blue-700 px-4 py-3 rounded-xl hover:bg-blue-200 transition-colors cursor-pointer text-center font-semibold">
+                          <Upload className="w-4 h-4 inline mr-2" />
+                          Add More
                           <input
                             type="file"
                             accept="image/*"
@@ -724,61 +666,52 @@ export default function FbVerificationTask() {
                             multiple
                           />
                         </label>
-                      </div>
-
-                      {/* Mobile help text */}
-                      {isMobile() && (
-                        <div className="mt-4 p-3 bg-gray-100 rounded-lg">
-                          <p className="text-xs text-gray-600">
-                            <strong>Tip:</strong> You can select multiple
-                            screenshots at once from your gallery.
-                          </p>
-                        </div>
                       )}
+                      <button
+                        type="button"
+                        onClick={clearAllFiles}
+                        className="px-4 py-3 bg-red-100 text-red-700 rounded-xl hover:bg-red-200 transition-colors font-semibold"
+                      >
+                        Clear All
+                      </button>
                     </div>
-                  )}
-
-                  {error && (
-                    <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg">
-                      <p className="text-sm text-red-600 font-medium">
-                        {error}
-                      </p>
+                  </div>
+                ) : (
+                  <div className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-blue-400 hover:bg-blue-50 transition-all">
+                    <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
+                      <Camera className="w-10 h-10 text-white" />
                     </div>
-                  )}
+                    <p className="text-gray-700 font-semibold mb-2">
+                      {isMobile() ? "Select Screenshots" : "Upload Screenshots"}
+                    </p>
+                    <p className="text-sm text-gray-500 mb-6">
+                      PNG, JPG, JPEG • Max 5MB each
+                    </p>
+                    <label className="inline-block bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-3 rounded-xl cursor-pointer hover:from-blue-700 hover:to-indigo-700 transition-all transform hover:scale-105 shadow-lg font-bold">
+                      <Image className="w-5 h-5 inline mr-2" />
+                      Choose Files
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleFileChange}
+                        className="hidden"
+                        multiple
+                      />
+                    </label>
+                  </div>
+                )}
 
-                  {/* Earnings calculation */}
-                  {files.length > 0 && (
-                    <div className="mt-4 p-4 bg-green-50 border border-green-200 rounded-lg">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <p className="text-green-800 font-medium">
-                            Potential Earnings:
-                          </p>
-                          <p className="text-green-700 text-sm">
-                            {files.length} screenshots × Rs 1.00 = Rs{" "}
-                            {files.length}.00
-                          </p>
-                        </div>
-                        <div className="text-lg font-bold text-green-700">
-                          Rs {files.length}.00
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </div>
+                {/* Error Message */}
+                {error && (
+                  <div className="mt-4 p-4 bg-red-50 border-2 border-red-200 rounded-xl">
+                    <p className="text-sm text-red-600 font-medium flex items-center gap-2">
+                      <AlertCircle className="w-4 h-4" />
+                      {error}
+                    </p>
+                  </div>
+                )}
 
-                {/* Submission validation messages */}
-                {selectedLinkId &&
-                  linkClickCounts[selectedLinkId] &&
-                  linkClickCounts[selectedLinkId] < 2 && (
-                    <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-                      <p className="text-yellow-800 font-medium">
-                        ⚠️ Please complete {2 - linkClickCounts[selectedLinkId]}{" "}
-                        more clicks on your selected link before submitting.
-                      </p>
-                    </div>
-                  )}
-
+                {/* Submit Button */}
                 <button
                   type="submit"
                   disabled={
@@ -786,94 +719,99 @@ export default function FbVerificationTask() {
                     isSubmitting ||
                     (selectedLinkId && linkClickCounts[selectedLinkId] < 2)
                   }
-                  className={`w-full py-4 rounded-xl font-bold text-lg transition-all duration-300 transform hover:scale-[1.02] ${
+                  className={`w-full mt-6 py-4 rounded-xl font-bold text-lg transition-all duration-300 transform ${
                     files.length > 0 &&
                     (!selectedLinkId || linkClickCounts[selectedLinkId] >= 2)
-                      ? "bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white shadow-lg hover:shadow-xl"
-                      : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                      ? "bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white shadow-lg hover:shadow-xl hover:scale-105"
+                      : "bg-gray-200 text-gray-400 cursor-not-allowed"
                   }`}
                 >
                   {isSubmitting ? (
-                    <div className="flex items-center justify-center space-x-2">
+                    <div className="flex items-center justify-center gap-2">
                       <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-white"></div>
-                      <span>Processing {files.length} screenshots...</span>
+                      <span>Processing...</span>
                     </div>
                   ) : (
-                    <div className="flex items-center justify-center space-x-2">
-                      <Upload className="w-5 h-5" />
-                      <span>
-                        Submit {files.length}{" "}
-                        {files.length === 1 ? "Screenshot" : "Screenshots"} &
-                        Earn Rs {files.length}.00
-                      </span>
+                    <div className="flex items-center justify-center gap-2">
+                      <Zap className="w-5 h-5" />
+                      <span>Submit & Earn Rs {files.length}.00</span>
                     </div>
                   )}
                 </button>
-
-                {/* Mobile-specific submission note */}
-                {isMobile() && (
-                  <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                    <p className="text-blue-700 text-sm">
-                      📱 <strong>Mobile Tip:</strong> After submitting, you'll
-                      see a summary of what was processed and then be redirected
-                      to your profile page.
-                    </p>
-                  </div>
-                )}
               </form>
             </div>
           </div>
         </div>
-
-        {/* Duplicate Warning Modal */}
-        {showDuplicateModal && (
-          <DuplicateWarningModal
-            onClose={() => {
-              setShowDuplicateModal(false);
-              clearAllFiles();
-            }}
-            previousDate={previousSubmissionDate}
-          />
-        )}
       </div>
 
-      {/* Add mobile-specific styles */}
+      {/* Modals */}
+      {showDuplicateModal && (
+        <DuplicateWarningModal
+          onClose={() => {
+            setShowDuplicateModal(false);
+            clearAllFiles();
+          }}
+          previousDate={previousSubmissionDate}
+        />
+      )}
+
+      {/* Custom Styles */}
       <style jsx>{`
-        @media (max-width: 768px) {
-          .task-link:active {
-            transform: scale(0.98);
-            background-color: rgba(59, 130, 246, 0.2);
+        @keyframes blob {
+          0%,
+          100% {
+            transform: translate(0, 0) scale(1);
           }
-
-          .task-link {
-            -webkit-tap-highlight-color: rgba(59, 130, 246, 0.1);
-            -webkit-touch-callout: none;
-            -webkit-user-select: none;
-            user-select: none;
-            min-height: 44px;
-            touch-action: manipulation;
+          33% {
+            transform: translate(30px, -50px) scale(1.1);
           }
-
-          /* Ensure file inputs work properly on mobile */
-          input[type="file"] {
-            -webkit-appearance: none;
-            appearance: none;
-          }
-
-          /* Better button styling for mobile */
-          button,
-          label {
-            min-height: 44px;
-            touch-action: manipulation;
+          66% {
+            transform: translate(-20px, 20px) scale(0.9);
           }
         }
 
-        /* Hide file input styling across all devices */
+        .animate-blob {
+          animation: blob 7s infinite;
+        }
+
+        .animation-delay-2000 {
+          animation-delay: 2s;
+        }
+
+        .animation-delay-4000 {
+          animation-delay: 4s;
+        }
+
+        @media (max-width: 768px) {
+          .task-link:active {
+            transform: scale(0.98);
+          }
+        }
+
         input[type="file"] {
           position: absolute;
           opacity: 0;
           width: 0;
           height: 0;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+          width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+          background: #f1f1f1;
+          border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+          background: #888;
+          border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+          background: #555;
         }
       `}</style>
     </div>
