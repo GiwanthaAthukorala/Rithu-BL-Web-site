@@ -10,6 +10,7 @@ const {
   updateSubmissionStatus,
   deleteSubmission,
   getAdminStats,
+  bulkDeleteSubmissions,
   getAllUsers,
   toggleUserStatus,
   createAdminUser,
@@ -36,6 +37,7 @@ router.delete(
   admin,
   deleteSubmission,
 );
+router.delete("/submissions/bulk", bulkDeleteSubmissions);
 
 // User Management (Super Admin only)
 router.get("/users", protect, admin, getAllUsers);
