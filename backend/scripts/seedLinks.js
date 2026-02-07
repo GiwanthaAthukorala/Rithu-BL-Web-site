@@ -23,49 +23,33 @@ const connectDB = async () => {
 
 const facebookLinks = [
   {
-    url: "https://www.facebook.com/share/1NNGJpYSCT",
-    title:
-      "Signature Gold House - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    url: "https://www.facebook.com/share/p/1Gf3CkBMyL/",
+    title: "පොස්ට් ලයික් (Like) කරන්න.",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/1FmLCXH6hU",
-    title: "Chamara Dilshan - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    url: "https://www.facebook.com/share/17aRMyj4fw/?mibextid=wwXIfr",
+    title: "AJ Aura - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/1DSFRqaB5G",
-    title:
-      "Apexaura Wellness product with gimhani - Media - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    url: "https://www.facebook.com/share/17wMJ3xzQH",
+    title: "venuzwear.lk - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+
+  {
+    url: "https://www.facebook.com/profile.php?id=61587474540999",
+    title: "𝙋𝙞𝙭𝙚𝙡𝙁𝙤𝙧𝙜𝙚 - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://web.facebook.com/profile.php?id=100063634343067",
-    title:
-      "Akalanka Karunarathna Photography - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/share/1QxWfTuuJy/?mibextid=wwXIfr",
-    title:
-      "Soft Gallery Digital - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://web.facebook.com/profile.php?id=61578106467661",
-    title:
-      "බත්තිරන් Food Village & Caterers - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://web.facebook.com/profile.php?id=61587547283948&rdid=oV43XcqtVZFQbNeR&share_url=https%3A%2F%2Fweb.facebook.com%2Fshare%2F1CMJBjfKNj%2F%3F_rdc%3D1%26_rdr",
-    title: "Twinkle in korea - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    url: "https://www.facebook.com/share/p/19hZKCHhL7/",
+    title: "පොස්ට් ලයික් (Like) කරන්න.",
     platform: "facebook",
     earnings: 1.0,
   },
