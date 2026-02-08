@@ -355,7 +355,7 @@ export default function InstagramVerificationTask() {
                   </h3>{" "}
                   {/*  <div className="space-y-4">
                     <a
-                      href="https://www.instagram.com/reel/DTSxEvogtgu/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=="
+                      href="https://www.instagram.com/vedhyayaayurveda?igsh=MWNibHhzYnV6dWdscw%3D%3D&utm_source=qr"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex items-center gap-4 bg-white p-5 rounded-2xl hover:shadow-xl transition-all duration-300 group border-2 border-transparent hover:border-pink-300 transform hover:-translate-y-1"
@@ -375,7 +375,7 @@ export default function InstagramVerificationTask() {
                     </a>
                   </div>{" "}
                  */}
-                  {/*  <div className="mt-6 bg-gradient-to-r from-pink-500 via-rose-500 to-red-500 p-6 rounded-2xl shadow-xl">
+                  <div className="mt-6 bg-gradient-to-r from-pink-500 via-rose-500 to-red-500 p-6 rounded-2xl shadow-xl">
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                       <div className="flex-1">
                         <h4 className="font-black text-white mb-2 text-lg flex items-center gap-2">
@@ -383,11 +383,12 @@ export default function InstagramVerificationTask() {
                           Follow Our Main Account
                         </h4>
                         <p className="text-white/90 text-sm">
-                          ඉන්ස්ට්‍රග්‍රෑම් එකවුන්ට් එක ෆලෝ කරන්න • Letona Foods
+                          ඉන්ස්ට්‍රග්‍රෑම් එකවුන්ට් එක ෆලෝ කරන්න • Vedhyaya
+                          Ayurveda
                         </p>
                       </div>
                       <a
-                        href="https://www.instagram.com/letona.cafe?igsh=ODFtdWlqd2xnbnA2"
+                        href="https://www.instagram.com/atoz_online_bazaar?igsh=MWFiMjhydDd1MngwYQ=="
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex items-center justify-center bg-white text-pink-600 px-6 py-3 rounded-xl hover:bg-pink-50 transition-all duration-200 font-bold shadow-lg hover:shadow-xl transform hover:scale-105"
@@ -409,7 +410,7 @@ export default function InstagramVerificationTask() {
                         </p>
                       </div>
                       <a
-                        href="https://www.instagram.com/mediapassionlk?igsh=MW5ldmo0NG5rd2dxYw=="
+                        href="https://www.instagram.com/atoz_online_bazaar?igsh=MWFiMjhydDd1MngwYQ=="
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex items-center justify-center bg-white text-pink-600 px-6 py-3 rounded-xl hover:bg-pink-50 transition-all duration-200 font-bold shadow-lg hover:shadow-xl transform hover:scale-105"
@@ -419,7 +420,7 @@ export default function InstagramVerificationTask() {
                       </a>
                     </div>
                   </div>
-                   */}
+                  {/*  */}
                 </div>
               </div>
 
