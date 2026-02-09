@@ -388,7 +388,7 @@ export default function InstagramVerificationTask() {
                         </p>
                       </div>
                       <a
-                        href="https://www.instagram.com/atoz_online_bazaar?igsh=MWFiMjhydDd1MngwYQ=="
+                        href="https://www.instagram.com/vedhyayaayurveda?igsh=MWNibHhzYnV6dWdscw%3D%3D&utm_source=qr"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex items-center justify-center bg-white text-pink-600 px-6 py-3 rounded-xl hover:bg-pink-50 transition-all duration-200 font-bold shadow-lg hover:shadow-xl transform hover:scale-105"
@@ -406,7 +406,8 @@ export default function InstagramVerificationTask() {
                           Follow Our Main Account
                         </h4>
                         <p className="text-white/90 text-sm">
-                          ඉන්ස්ට්‍රග්‍රෑම් එකවුන්ට් එක ෆලෝ කරන්න • Media Passion
+                          ඉන්ස්ට්‍රග්‍රෑම් එකවුන්ට් එක ෆලෝ කරන්න •
+                          AtoZOnlineBazaar
                         </p>
                       </div>
                       <a
