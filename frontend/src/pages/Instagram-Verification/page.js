@@ -420,6 +420,28 @@ export default function InstagramVerificationTask() {
                         <ExternalLink className="w-4 h-4 ml-2" />
                       </a>
                     </div>
+                  </div>{" "}
+                  <div className="mt-6 bg-gradient-to-r from-pink-500 via-rose-500 to-red-500 p-6 rounded-2xl shadow-xl">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                      <div className="flex-1">
+                        <h4 className="font-black text-white mb-2 text-lg flex items-center gap-2">
+                          <Instagram className="w-6 h-6" />
+                          Follow Our Main Account
+                        </h4>
+                        <p className="text-white/90 text-sm">
+                          ඉන්ස්ට්‍රග්‍රෑම් එකවුන්ට් එක ෆලෝ කරන්න • Confi.
+                        </p>
+                      </div>
+                      <a
+                        href="https://www.instagram.com/confi.lk"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-center bg-white text-pink-600 px-6 py-3 rounded-xl hover:bg-pink-50 transition-all duration-200 font-bold shadow-lg hover:shadow-xl transform hover:scale-105"
+                      >
+                        Follow Now
+                        <ExternalLink className="w-4 h-4 ml-2" />
+                      </a>
+                    </div>
                   </div>
                   {/*  */}
                 </div>

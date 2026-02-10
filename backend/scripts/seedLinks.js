@@ -23,52 +23,32 @@ const connectDB = async () => {
 
 const facebookLinks = [
   {
-    url: "https://www.facebook.com/share/1FUJTRN6Ly/?mibextid=wwXIfr",
+    url: "https://m.facebook.com/story.php?story_fbid=pfbid021ouhx5gG5fgw5tcmBTqDizQ2fjY3eNekmRRm5hBKP9SS1sKnVK9AcA9xw7bzxzvEl&id=100010122966156&mibextid=wwXIfr",
     title: "පොස්ට් ලයික් (Like) කරන්න.",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://web.facebook.com/MoonBloomlk",
-    title: "Moon Bloom - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    url: "https://web.facebook.com/confi.lk",
+    title: "Confi. - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/malinga.vijesiri?mibextid=wwXIfr&mibextid=wwXIfr",
-    title: "Malinga Vijesiri - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-
-  {
-    url: "https://www.facebook.com/share/1CH5pWbaTB",
-    title: "Lumix - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/share/17yEkwnuN2",
-    title:
-      "City Services Wellawatha - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/share/1818mZnH6B",
-    title: "Tution.lk - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/share/r/1DW5Tncftp/",
-    title: "පොස්ට් ලයික් (Like) කරන්න.",
+    url: "https://www.facebook.com/share/1Bq9Vr1LQb/?mibextid=wwXIfr",
+    title: "HynoRa - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
 
   // Removed duplicate URL that was causing the error
   /*
+  {
+    url: "https://m.facebook.com/story.php?story_fbid=pfbid021ouhx5gG5fgw5tcmBTqDizQ2fjY3eNekmRRm5hBKP9SS1sKnVK9AcA9xw7bzxzvEl&id=100010122966156&mibextid=wwXIfr",
+    title: "පොස්ට් ලයික් (Like) කරන්න.",
+    platform: "facebook",
+    earnings: 1.0,
+  },
   {
     url: "https://www.facebook.com/share/1ARA89E5H1/",
     title: "Cylora Fashion - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
