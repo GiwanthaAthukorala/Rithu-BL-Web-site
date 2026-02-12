@@ -73,7 +73,7 @@ router.get("/:platform", protect, async (req, res) => {
     const linksWithClickInfo = links.map((link) => {
       const userLink = user.clickedLinks.find(
         (clicked) =>
-          clicked.linkId && clicked.linkId.toString() === link._id.toString()
+          clicked.linkId && clicked.linkId.toString() === link._id.toString(),
       );
 
       return {
@@ -86,10 +86,10 @@ router.get("/:platform", protect, async (req, res) => {
         createdAt: link.createdAt,
         updatedAt: link.updatedAt,
         userClickCount: userLink ? userLink.clickCount : 0,
-        maxClicks: userLink ? userLink.maxClicks : 10,
+        maxClicks: userLink ? userLink.maxClicks : 20,
         remainingClicks: userLink
           ? userLink.maxClicks - userLink.clickCount
-          : 10,
+          : 20,
       };
     });
 
@@ -138,7 +138,7 @@ router.post("/:linkId/click", protect, async (req, res) => {
     }
 
     let userLink = user.clickedLinks.find(
-      (clicked) => clicked.linkId && clicked.linkId.toString() === linkId
+      (clicked) => clicked.linkId && clicked.linkId.toString() === linkId,
     );
 
     if (!userLink) {
@@ -147,7 +147,7 @@ router.post("/:linkId/click", protect, async (req, res) => {
         linkId: new mongoose.Types.ObjectId(linkId),
         platform: link.platform,
         clickCount: 0,
-        maxClicks: 10,
+        maxClicks: 20,
         submitted: false,
       });
 
@@ -157,7 +157,7 @@ router.post("/:linkId/click", protect, async (req, res) => {
       // Refresh user to get the updated clickedLinks
       const updatedUser = await User.findById(userId);
       userLink = updatedUser.clickedLinks.find(
-        (clicked) => clicked.linkId && clicked.linkId.toString() === linkId
+        (clicked) => clicked.linkId && clicked.linkId.toString() === linkId,
       );
     }
 
@@ -218,7 +218,7 @@ router.post("/:linkId/submit", protect, async (req, res) => {
     }
 
     const clickedLink = user.clickedLinks.find(
-      (link) => link.linkId && link.linkId.toString() === linkId
+      (link) => link.linkId && link.linkId.toString() === linkId,
     );
 
     if (clickedLink) {
@@ -266,7 +266,7 @@ router.post("/:linkId/reset", protect, async (req, res) => {
     }
 
     const clickedLinkIndex = user.clickedLinks.findIndex(
-      (link) => link.linkId && link.linkId.toString() === linkId
+      (link) => link.linkId && link.linkId.toString() === linkId,
     );
 
     if (clickedLinkIndex !== -1) {
@@ -379,7 +379,7 @@ router.put("/:id", protect, admin, async (req, res) => {
     const link = await Link.findByIdAndUpdate(
       req.params.id,
       { url, title, platform, earnings, active },
-      { new: true, runValidators: true }
+      { new: true, runValidators: true },
     );
 
     if (!link) {
@@ -431,7 +431,7 @@ router.post("/:linkId/reset-all", protect, admin, async (req, res) => {
           "clickedLinks.$.submitted": false,
           "clickedLinks.$.submittedAt": null,
         },
-      }
+      },
     );
 
     res.json({

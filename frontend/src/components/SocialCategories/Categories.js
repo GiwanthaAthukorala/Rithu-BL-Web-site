@@ -73,6 +73,16 @@ const SupportedPlatforms = () => {
       gradient: "from-cyan-500 to-blue-600",
       shadow: "hover:shadow-cyan-200",
     },
+    {
+      name: "Facebook Page Review Section",
+      description:
+        "Page Review Rs 30/= after Page Like or Follow and Rs 30/= after Review",
+      rate: "Rs 30/= Page Review Section",
+      icon: "/video.png",
+      link: "/FbPageReview/pages",
+      gradient: "from-cyan-500 to-blue-600",
+      shadow: "hover:shadow-cyan-200",
+    },
   ];
 
   return (

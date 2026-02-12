@@ -29,14 +29,33 @@ const facebookLinks = [
     earnings: 1.0,
   },
   {
-    url: "https://web.facebook.com/confi.lk",
-    title: "Confi. - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    url: "https://www.facebook.com/share/189NA27L6s",
+    title: "Ranmini Lands - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/1Bq9Vr1LQb/?mibextid=wwXIfr",
-    title: "HynoRa - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    url: "https://www.facebook.com/share/17X32tbabZ",
+    title: "Golden Glow - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/profile.php?id=61587153406733",
+    title:
+      "MIHIN SARA මිහින් සර - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/share/17iZzPG7Ms/?mibextid=wwXIfr",
+    title: "KaVindu KrisHmal - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/share/1Acq6Bj7tr/?mibextid=wwXIfr",
+    title: "ARM Travels & Tours - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
