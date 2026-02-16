@@ -23,39 +23,41 @@ const connectDB = async () => {
 
 const facebookLinks = [
   {
-    url: "https://m.facebook.com/story.php?story_fbid=pfbid021ouhx5gG5fgw5tcmBTqDizQ2fjY3eNekmRRm5hBKP9SS1sKnVK9AcA9xw7bzxzvEl&id=100010122966156&mibextid=wwXIfr",
+    url: "https://www.facebook.com/share/p/1D3VzryPfH/",
     title: "පොස්ට් ලයික් (Like) කරන්න.",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/189NA27L6s",
-    title: "Ranmini Lands - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    url: "https://www.facebook.com/share/16n2PWZdkJ/",
+    title: "පොස්ට් ලයික් (Like) කරන්න.",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/17X32tbabZ",
-    title: "Golden Glow - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/profile.php?id=61587153406733",
+    url: "https://www.facebook.com/share/18HFmkYDc3/?mibextid=wwXIfr",
     title:
-      "MIHIN SARA මිහින් සර - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+      "SNM Environment Cleaners - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/17iZzPG7Ms/?mibextid=wwXIfr",
-    title: "KaVindu KrisHmal - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    url: "https://web.facebook.com/profile.php?id=61587091746702",
+    title: "MernCrest Solution - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/1Acq6Bj7tr/?mibextid=wwXIfr",
-    title: "ARM Travels & Tours - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    url: "https://web.facebook.com/people/Sandali-herath/61557314681024",
+    title:
+      "Sandamali Herath With Power Hands - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://web.facebook.com/people/Sandali-herath/61557314681024",
+    title:
+      "Sandamali Herath With Power Hands - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
