@@ -23,7 +23,7 @@ const connectDB = async () => {
 
 const facebookLinks = [
   {
-    url: "https://www.facebook.com/share/p/1D3VzryPfH/",
+    url: "https://www.facebook.com/share/v/17vFHUyM33/?mibextid=wwXIfr",
     title: "පොස්ට් ලයික් (Like) කරන්න.",
     platform: "facebook",
     earnings: 1.0,
@@ -35,29 +35,46 @@ const facebookLinks = [
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/18HFmkYDc3/?mibextid=wwXIfr",
-    title:
-      "SNM Environment Cleaners - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    url: "https://www.facebook.com/share/1KBCjSrChD/?mibextid=wwXIfr",
+    title: "The Nail Cabin - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://web.facebook.com/profile.php?id=61587091746702",
-    title: "MernCrest Solution - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    url: "https://www.facebook.com/share/1GcF3UFHQa/?mibextid=wwXIfr",
+    title: "Naari & Kiddos - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://web.facebook.com/people/Sandali-herath/61557314681024",
-    title:
-      "Sandamali Herath With Power Hands - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    url: "https://www.facebook.com/share/1E27qYbKxg",
+    title: "ISLE & IVORY - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://web.facebook.com/people/Sandali-herath/61557314681024",
+    url: "https://www.facebook.com/profile.php?id=61586125307450",
     title:
-      "Sandamali Herath With Power Hands - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+      "N.M. Arachchi Property Development - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/momentixweddings",
+    title: "Momentix Weddings - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/profile.php?id=61588320894864",
+    title:
+      "Asela video online store - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://web.facebook.com/profile.php?id=61588161938441",
+    title: "IExpress Courier - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
