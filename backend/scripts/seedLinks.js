@@ -23,47 +23,22 @@ const connectDB = async () => {
 
 const facebookLinks = [
   {
-    url: "https://www.facebook.com/share/r/1HUDpFSg2A/",
+    url: "https://www.facebook.com/share/r/1AqcJsWj7U/",
     title: "පොස්ට් ලයික් (Like) කරන්න.",
     platform: "facebook",
     earnings: 1.0,
   },
 
   {
-    url: "https://www.facebook.com/profile.php?id=61588559930161&mibextid=ZbWKwL",
+    url: "https://web.facebook.com/profile.php?id=100076233767475",
+    title: "Looknet.lk - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/share/188Kfu216U",
     title:
-      "Js Cake House & Gift Centre - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/share/1DL4xten1k",
-    title: "Hazitha - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-
-  {
-    url: "https://www.facebook.com/profile.php?id=61584556607414",
-    title: "Psycho production - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/share/18UQUNrZKi/?mibextid=wwXIfr",
-    title: "Esha Collection - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/share/1FrA1UTEma/?mibextid=wwXIfr",
-    title: "The Wedding Drive - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/share/1DnfGDg2SA",
-    title: "Ruwaththi clothing - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+      "Dubai Rider ඩුබායි කොල්ලා - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
