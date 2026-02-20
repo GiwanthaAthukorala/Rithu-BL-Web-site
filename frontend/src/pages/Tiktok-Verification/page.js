@@ -353,7 +353,7 @@ export default function TikTokVerificationTask() {
                 </div>{" "}
               </div>{" "}
               {/**  */}
-              <div className="bg-gradient-to-r from-gray-800 to-black p-4 sm:p-6 rounded-lg sm:rounded-xl border border-gray-300 hover:shadow-lg transition-all duration-300 group">
+              {/**  <div className="bg-gradient-to-r from-gray-800 to-black p-4 sm:p-6 rounded-lg sm:rounded-xl border border-gray-300 hover:shadow-lg transition-all duration-300 group">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0">
                   <div className="flex-1">
                     <h4 className="font-semibold text-white mb-1 text-sm sm:text-base">
@@ -364,7 +364,7 @@ export default function TikTokVerificationTask() {
                     </p>
                   </div>
                   <a
-                    href="https://www.tiktok.com/@choco__14?_r=1&_t=ZS-9435mlR7JNR"
+                    href=""
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center justify-center bg-gradient-to-r from-pink-500 to-red-500 text-white px-4 sm:px-6 py-2 rounded-lg hover:from-pink-600 hover:to-red-600 transition-all duration-200 font-medium group-hover:scale-105 text-xs sm:text-sm"
@@ -377,7 +377,7 @@ export default function TikTokVerificationTask() {
                   </a>
                 </div>
               </div>
-              {/**   */}
+               */}
               {/* Video Links */}
               <div className="grid gap-3 sm:gap-4">
                 <div className="bg-gradient-to-br from-purple-50 to-pink-50 p-3 sm:p-4 rounded-lg sm:rounded-xl border border-purple-200 hover:shadow-md transition-all duration-300 group">
