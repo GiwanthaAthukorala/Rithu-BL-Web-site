@@ -331,15 +331,15 @@ export default function TikTokVerificationTask() {
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0">
                   <div className="flex-1">
                     <h4 className="font-semibold text-white mb-1 text-sm sm:text-base">
-                      Esha collection - Follow Our Main Account - ටික් ටොක්
-                      එකව්න්ට් එක ෆලෝ කරන්න
+                      Isira - Follow Our Main Account - ටික් ටොක් එකව්න්ට් එක
+                      ෆලෝ කරන්න
                     </h4>
                     <p className="text-gray-300 text-xs sm:text-sm">
                       D_Apekshitha💫
                     </p>
                   </div>
                   <a
-                    href="https://www.tiktok.com/@d_apekshitha17?_r=1&_t=ZS-942jSHqwJCD"
+                    href="https://www.tiktok.com/@isira.malaka?_r=1&_t=ZS-949y5y5jPfQ"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center justify-center bg-gradient-to-r from-pink-500 to-red-500 text-white px-4 sm:px-6 py-2 rounded-lg hover:from-pink-600 hover:to-red-600 transition-all duration-200 font-medium group-hover:scale-105 text-xs sm:text-sm"
@@ -379,7 +379,7 @@ export default function TikTokVerificationTask() {
               </div>
                */}
               {/* Video Links */}
-              <div className="grid gap-3 sm:gap-4">
+              {/*  <div className="grid gap-3 sm:gap-4">
                 <div className="bg-gradient-to-br from-purple-50 to-pink-50 p-3 sm:p-4 rounded-lg sm:rounded-xl border border-purple-200 hover:shadow-md transition-all duration-300 group">
                   <h4 className="font-semibold text-gray-800 mb-2 text-sm sm:text-base">
                     Like Video #1 - ටික් ටොක් විඩියෝ එකට ලයික් කරන්න
@@ -398,7 +398,7 @@ export default function TikTokVerificationTask() {
                   </a>
                 </div>
               </div>
-              {/*<div className="grid gap-3 sm:gap-4">
+             <div className="grid gap-3 sm:gap-4">
                <div className="bg-gradient-to-br from-purple-50 to-pink-50 p-3 sm:p-4 rounded-lg sm:rounded-xl border border-purple-200 hover:shadow-md transition-all duration-300 group">
                   <h4 className="font-semibold text-gray-800 mb-2 text-sm sm:text-base">
                     Like Video #1 - ටික් ටොක් විඩියෝ එකට ලයික් කරන්න
