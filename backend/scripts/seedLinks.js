@@ -23,8 +23,46 @@ const connectDB = async () => {
 
 const facebookLinks = [
   {
-    url: "https://www.facebook.com/share/1HpbUQziAr",
-    title: "Bake & Bliss - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    url: "https://www.facebook.com/share/r/18V4kXoZMV/",
+    title: "පොස්ට් ලයික් (Like) කරන්න.",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/share/p/1bRTrzTFUq/?mibextid=wwXIfr",
+    title: "පොස්ට් ලයික් (Like) කරන්න.",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/share/p/1CEdP97QAd/",
+    title: "පොස්ට් ලයික් (Like) කරන්න.",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/share/1AwmoWPjfK/?mibextid=wwXIfr",
+    title: "පොස්ට් ලයික් (Like) කරන්න.",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/share/1ZdHzoUtBB/?mibextid=wwXIfr",
+    title: "Next Level Crypto - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/profile.php?id=61588226843243",
+    title:
+      "Suba Nekatha - සුභ නැකත - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://web.facebook.com/profile.php?id=61587386754994",
+    title:
+      "Glamour Gloss Nails By Radhi - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
