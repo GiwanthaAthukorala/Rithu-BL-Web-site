@@ -331,13 +331,15 @@ export default function TikTokVerificationTask() {
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0">
                   <div className="flex-1">
                     <h4 className="font-semibold text-white mb-1 text-sm sm:text-base">
-                      YON ART - Follow Our Main Account - ටික් ටොක් එකව්න්ට් එක
-                      ෆලෝ කරන්න
+                      EA WEAR 👕 - Follow Our Main Account - ටික් ටොක් එකව්න්ට්
+                      එක ෆලෝ කරන්න
                     </h4>
-                    <p className="text-gray-300 text-xs sm:text-sm">YON ART</p>
+                    <p className="text-gray-300 text-xs sm:text-sm">
+                      EA WEAR 👕
+                    </p>
                   </div>
                   <a
-                    href="https://tiktok.com/@yon.art2"
+                    href="https://www.tiktok.com/@ea.wear3?_r=1&_t=ZS-94JzVu3jEzE"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center justify-center bg-gradient-to-r from-pink-500 to-red-500 text-white px-4 sm:px-6 py-2 rounded-lg hover:from-pink-600 hover:to-red-600 transition-all duration-200 font-medium group-hover:scale-105 text-xs sm:text-sm"
