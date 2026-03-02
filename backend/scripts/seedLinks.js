@@ -23,46 +23,62 @@ const connectDB = async () => {
 
 const facebookLinks = [
   {
-    url: "https://www.facebook.com/share/r/18V4kXoZMV/",
+    url: "https://www.facebook.com/share/1CYo2QXT7F/",
     title: "පොස්ට් ලයික් (Like) කරන්න.",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/p/1bRTrzTFUq/?mibextid=wwXIfr",
+    url: "https://www.facebook.com/share/p/1FjuJpfPiP/",
     title: "පොස්ට් ලයික් (Like) කරන්න.",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/p/1CEdP97QAd/",
+    url: "https://www.facebook.com/share/p/1CS3o6Cy8F/",
     title: "පොස්ට් ලයික් (Like) කරන්න.",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/1AwmoWPjfK/?mibextid=wwXIfr",
+    url: "https://www.facebook.com/share/p/1DiEEDmQFp/",
     title: "පොස්ට් ලයික් (Like) කරන්න.",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/1ZdHzoUtBB/?mibextid=wwXIfr",
-    title: "Next Level Crypto - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    url: "https://www.facebook.com/share/p/1B1Wf5yuRx/?mibextid=wwXIfr",
+    title: "පොස්ට් ලයික් (Like) කරන්න.",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/profile.php?id=61588226843243",
-    title:
-      "Suba Nekatha - සුභ නැකත - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    url: "https://www.facebook.com/share/p/1CWwxb3VmL/",
+    title: "පොස්ට් ලයික් (Like) කරන්න.",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://web.facebook.com/profile.php?id=61587386754994",
-    title:
-      "Glamour Gloss Nails By Radhi - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    url: "https://www.facebook.com/share/1CEnJebBE6",
+    title: "Salon Style Station - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/share/1AvCPv1Za6",
+    title: "LIORA - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/profile.php?id=61587316649033",
+    title: "EA WEAR - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/profile.php?id=61586682401520",
+    title: "Central IPL - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
