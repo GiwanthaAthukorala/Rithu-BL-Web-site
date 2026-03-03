@@ -364,7 +364,7 @@ export default function TikTokVerificationTask() {
                     </p>
                   </div>
                   <a
-                    href="https://www.facebook.com/share/p/1CWwxb3VmL/"
+                    href="https://www.tiktok.com/@imeshchamara?_r=1&_t=ZS-94K5qU2Ki4P"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center justify-center bg-gradient-to-r from-pink-500 to-red-500 text-white px-4 sm:px-6 py-2 rounded-lg hover:from-pink-600 hover:to-red-600 transition-all duration-200 font-medium group-hover:scale-105 text-xs sm:text-sm"
