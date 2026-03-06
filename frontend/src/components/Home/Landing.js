@@ -8,7 +8,7 @@ export default function LandingPage() {
             <div className="w-32 h-32 sm:w-40 sm:h-40 lg:w-52 lg:h-52 flex items-center justify-center mx-auto lg:mx-0 lg:mr-3 overflow-hidden">
               <img
                 src="/RBL.png"
-                alt="Company Logo"
+                alt="Rithu Business Logo"
                 className="w-full h-full object-contain"
               />
             </div>
