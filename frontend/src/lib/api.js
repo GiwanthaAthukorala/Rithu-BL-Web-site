@@ -64,9 +64,9 @@ export const endpoints = {
   videos: "/api/videos",
   videoSessions: "/api/videos/session",
   // Password reset endpoints
-  forgotPassword: "/auth/forgot-password",
-  resetPassword: (token) => `/auth/reset-password/${token}`,
-  verifyToken: (token) => `/auth/verify-token/${token}`,
+  forgotPassword: "/api/auth/forgot-password",
+  resetPassword: (token) => `/api/auth/reset-password/${token}`,
+  verifyToken: (token) => `/api/auth/verify-token/${token}`,
 };
 
 // Or better yet, update all your API functions to use the endpoints object:
