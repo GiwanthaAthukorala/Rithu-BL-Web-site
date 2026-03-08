@@ -1,19 +1,17 @@
 import axios from "axios";
 
-// Make sure this points to your backend WITHOUT /api at the end
-const API_URL =
-  process.env.NEXT_PUBLIC_API_URL || "https://rithu-bl-web-site.vercel.app";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
-// Create axios instance with /api base URL
+// Create axios instance
 const api = axios.create({
-  baseURL: `${API_URL}/api`, // Add /api here
+  baseURL: API_URL,
   headers: {
     "Content-Type": "application/json",
   },
   withCredentials: true,
 });
 
-// Add request interceptor to handle errors
+// Add response interceptor to handle errors
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
@@ -39,7 +37,7 @@ api.interceptors.response.use(
       if (error.response.status === 401) {
         if (typeof window !== "undefined") {
           localStorage.removeItem("token");
-          window.location.href = "/LoginPage/page";
+          window.location.href = "/login";
         }
       }
 
@@ -53,26 +51,25 @@ api.interceptors.response.use(
 );
 
 export const endpoints = {
-  // Remove /api from these since baseURL already includes it
-  login: "/users/login",
-  register: "/users/register",
-  profile: "/users/profile",
-  submissions: "/submissions",
-  earnings: "/earnings",
-  youtubeSubmission: "/youtubeSubmissions",
-  fbReviews: "/fb-reviews",
-  FacebookComments: "/fb-comments",
-  instagram: "/instagram",
-  Tiktok: "/tiktok",
-  videos: "/videos",
-  videoSessions: "/videos/session",
-  // Password reset endpoints - also without /api prefix
+  login: "/api/users/login", // Add /api prefix here
+  register: "/api/users/register", // Add /api prefix here
+  profile: "/api/users/profile", // Add /api prefix here
+  submissions: "/api/submissions", // Add /api prefix here
+  earnings: "/api/earnings",
+  youtubeSubmission: "/api/youtubeSubmissions",
+  fbReviews: "/api/fb-reviews",
+  FacebookComments: "/api/fb-comments",
+  instagram: "/api/instagram",
+  Tiktok: "/api/tiktok",
+  videos: "/api/videos",
+  videoSessions: "/api/videos/session",
+  // Password reset endpoints
   forgotPassword: "/auth/forgot-password",
   resetPassword: (token) => `/auth/reset-password/${token}`,
   verifyToken: (token) => `/auth/verify-token/${token}`,
 };
 
-// Auth functions
+// Or better yet, update all your API functions to use the endpoints object:
 export const register = async (userData) => {
   try {
     const response = await api.post(endpoints.register, userData);
@@ -102,12 +99,6 @@ export const register = async (userData) => {
 export const login = async (credentials) => {
   try {
     const response = await api.post(endpoints.login, credentials);
-
-    // Store token if it exists
-    if (response.data.token) {
-      localStorage.setItem("token", response.data.token);
-    }
-
     return response.data;
   } catch (error) {
     console.error("Login error:", error);
@@ -125,7 +116,7 @@ export const getProfile = async () => {
   }
 };
 
-// Password Reset Functions
+// Password Reset Functions - Using axios instead of fetch for consistency
 export const forgotPassword = async (email) => {
   try {
     const response = await api.post(endpoints.forgotPassword, { email });
@@ -133,6 +124,7 @@ export const forgotPassword = async (email) => {
   } catch (error) {
     console.error("Forgot password error:", error);
 
+    // Extract error message from response
     if (error.response?.data?.message) {
       throw new Error(error.response.data.message);
     }
