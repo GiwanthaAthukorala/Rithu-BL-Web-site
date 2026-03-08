@@ -1,18 +1,19 @@
 import axios from "axios";
 
+// Make sure this points to your backend WITHOUT /api at the end
 const API_URL =
   process.env.NEXT_PUBLIC_API_URL || "https://rithu-bl-web-site.vercel.app";
 
-// Create axios instance
+// Create axios instance with /api base URL
 const api = axios.create({
-  baseURL: API_URL,
+  baseURL: `${API_URL}/api`, // Add /api here
   headers: {
     "Content-Type": "application/json",
   },
   withCredentials: true,
 });
 
-// Add response interceptor to handle errors
+// Add request interceptor to handle errors
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
@@ -38,7 +39,7 @@ api.interceptors.response.use(
       if (error.response.status === 401) {
         if (typeof window !== "undefined") {
           localStorage.removeItem("token");
-          window.location.href = "/login";
+          window.location.href = "/LoginPage/page";
         }
       }
 
@@ -52,21 +53,26 @@ api.interceptors.response.use(
 );
 
 export const endpoints = {
-  login: "/api/users/login", // Add /api prefix here
-  register: "/api/users/register", // Add /api prefix here
-  profile: "/api/users/profile", // Add /api prefix here
-  submissions: "/api/submissions", // Add /api prefix here
-  earnings: "/api/earnings",
-  youtubeSubmission: "/api/youtubeSubmissions",
-  fbReviews: "/api/fb-reviews",
-  FacebookComments: "/api/fb-comments",
-  instagram: "/api/instagram",
-  Tiktok: "/api/tiktok",
-  videos: "/api/videos",
-  videoSessions: "/api/videos/session",
+  // Remove /api from these since baseURL already includes it
+  login: "/users/login",
+  register: "/users/register",
+  profile: "/users/profile",
+  submissions: "/submissions",
+  earnings: "/earnings",
+  youtubeSubmission: "/youtubeSubmissions",
+  fbReviews: "/fb-reviews",
+  FacebookComments: "/fb-comments",
+  instagram: "/instagram",
+  Tiktok: "/tiktok",
+  videos: "/videos",
+  videoSessions: "/videos/session",
+  // Password reset endpoints - also without /api prefix
+  forgotPassword: "/auth/forgot-password",
+  resetPassword: (token) => `/auth/reset-password/${token}`,
+  verifyToken: (token) => `/auth/verify-token/${token}`,
 };
 
-// Or better yet, update all your API functions to use the endpoints object:
+// Auth functions
 export const register = async (userData) => {
   try {
     const response = await api.post(endpoints.register, userData);
@@ -96,6 +102,12 @@ export const register = async (userData) => {
 export const login = async (credentials) => {
   try {
     const response = await api.post(endpoints.login, credentials);
+
+    // Store token if it exists
+    if (response.data.token) {
+      localStorage.setItem("token", response.data.token);
+    }
+
     return response.data;
   } catch (error) {
     console.error("Login error:", error);
@@ -109,6 +121,49 @@ export const getProfile = async () => {
     return response.data;
   } catch (error) {
     console.error("Profile error:", error);
+    throw error;
+  }
+};
+
+// Password Reset Functions
+export const forgotPassword = async (email) => {
+  try {
+    const response = await api.post(endpoints.forgotPassword, { email });
+    return response.data;
+  } catch (error) {
+    console.error("Forgot password error:", error);
+
+    if (error.response?.data?.message) {
+      throw new Error(error.response.data.message);
+    }
+    throw error;
+  }
+};
+
+export const resetPassword = async (token, passwords) => {
+  try {
+    const response = await api.put(endpoints.resetPassword(token), passwords);
+    return response.data;
+  } catch (error) {
+    console.error("Reset password error:", error);
+
+    if (error.response?.data?.message) {
+      throw new Error(error.response.data.message);
+    }
+    throw error;
+  }
+};
+
+export const verifyResetToken = async (token) => {
+  try {
+    const response = await api.get(endpoints.verifyToken(token));
+    return response.data;
+  } catch (error) {
+    console.error("Verify token error:", error);
+
+    if (error.response?.data?.message) {
+      throw new Error(error.response.data.message);
+    }
     throw error;
   }
 };
