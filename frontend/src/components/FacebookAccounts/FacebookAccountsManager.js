@@ -8,10 +8,8 @@ import {
   CheckCircle,
   XCircle,
   AlertCircle,
-  RefreshCw,
   Facebook,
   ExternalLink,
-  User,
   Link as LinkIcon,
   ToggleLeft,
   ToggleRight,
@@ -40,8 +38,10 @@ export default function FacebookAccountsManager() {
   const { user } = useAuth();
 
   useEffect(() => {
-    fetchAccounts();
-  }, []);
+    if (user) {
+      fetchAccounts();
+    }
+  }, [user]);
 
   const fetchAccounts = async () => {
     try {
@@ -60,6 +60,7 @@ export default function FacebookAccountsManager() {
         });
       }
     } catch (err) {
+      console.error("Fetch accounts error:", err);
       setError(
         err.response?.data?.message || "Failed to load Facebook accounts",
       );
@@ -73,13 +74,14 @@ export default function FacebookAccountsManager() {
       const response = await api.post("/api/facebook-accounts", accountData);
       if (response.data.success) {
         setSuccess("Facebook account added successfully!");
-        fetchAccounts();
-        setShowAddModal(false);
+        await fetchAccounts();
         setTimeout(() => setSuccess(null), 5000);
       }
     } catch (err) {
-      setError(err.response?.data?.message || "Failed to add account");
-      throw err;
+      console.error("Add account error:", err);
+      const errorMessage =
+        err.response?.data?.message || "Failed to add account";
+      throw new Error(errorMessage);
     }
   };
 
@@ -91,14 +93,14 @@ export default function FacebookAccountsManager() {
       );
       if (response.data.success) {
         setSuccess("Account updated successfully!");
-        fetchAccounts();
-        setShowEditModal(false);
-        setSelectedAccount(null);
+        await fetchAccounts();
         setTimeout(() => setSuccess(null), 5000);
       }
     } catch (err) {
-      setError(err.response?.data?.message || "Failed to update account");
-      throw err;
+      console.error("Update account error:", err);
+      const errorMessage =
+        err.response?.data?.message || "Failed to update account";
+      throw new Error(errorMessage);
     }
   };
 
@@ -109,10 +111,11 @@ export default function FacebookAccountsManager() {
       const response = await api.delete(`/api/facebook-accounts/${accountId}`);
       if (response.data.success) {
         setSuccess("Account deleted successfully!");
-        fetchAccounts();
+        await fetchAccounts();
         setTimeout(() => setSuccess(null), 5000);
       }
     } catch (err) {
+      console.error("Delete account error:", err);
       setError(err.response?.data?.message || "Failed to delete account");
     }
   };
@@ -126,10 +129,11 @@ export default function FacebookAccountsManager() {
         setSuccess(
           `Account ${currentStatus ? "deactivated" : "activated"} successfully!`,
         );
-        fetchAccounts();
+        await fetchAccounts();
         setTimeout(() => setSuccess(null), 3000);
       }
     } catch (err) {
+      console.error("Toggle status error:", err);
       setError(
         err.response?.data?.message || "Failed to toggle account status",
       );
@@ -156,164 +160,6 @@ export default function FacebookAccountsManager() {
 
   return (
     <>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap');
-
-        .fb-manager * { font-family: 'Sora', sans-serif; }
-
-        .fb-hero-bg {
-          background: linear-gradient(135deg, #1877F2 0%, #0a5ac2 40%, #3b5998 70%, #1877F2 100%);
-          background-size: 200% 200%;
-          animation: heroShift 8s ease infinite;
-        }
-        @keyframes heroShift {
-          0%,100% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-        }
-
-        .fb-card {
-          background: white;
-          border-radius: 20px;
-          border: 1px solid #e8edf5;
-          transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
-          position: relative;
-          overflow: hidden;
-        }
-        .fb-card::before {
-          content:'';
-          position:absolute;
-          inset:0;
-          background: linear-gradient(135deg, transparent 60%, rgba(24,119,242,0.03));
-          pointer-events:none;
-        }
-        .fb-card:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 12px 40px rgba(24,119,242,0.12);
-          border-color: #bbd0f8;
-        }
-
-        .fb-card-active {
-          border-color: #22c55e !important;
-          background: linear-gradient(135deg, #f0fdf4, #ffffff) !important;
-        }
-        .fb-card-active::before {
-          background: linear-gradient(135deg, transparent 60%, rgba(34,197,94,0.04)) !important;
-        }
-
-        .fb-stat-card {
-          background: rgba(255,255,255,0.12);
-          backdrop-filter: blur(12px);
-          border: 1px solid rgba(255,255,255,0.2);
-          border-radius: 16px;
-          padding: 16px;
-          transition: background 0.2s;
-        }
-        .fb-stat-card:hover { background: rgba(255,255,255,0.18); }
-
-        .fb-btn-add {
-          background: white;
-          color: #1877F2;
-          border: none;
-          padding: 10px 20px;
-          border-radius: 12px;
-          font-weight: 600;
-          font-size: 14px;
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          cursor: pointer;
-          transition: all 0.2s;
-          box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-        .fb-btn-add:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0,0,0,0.15); }
-        .fb-btn-add:disabled { background: rgba(255,255,255,0.3); color: rgba(255,255,255,0.6); cursor:not-allowed; transform:none; }
-
-        .fb-progress-bar {
-          height: 6px;
-          background: rgba(255,255,255,0.2);
-          border-radius: 99px;
-          overflow: hidden;
-          margin-top: 6px;
-        }
-        .fb-progress-fill {
-          height: 100%;
-          background: white;
-          border-radius: 99px;
-          transition: width 0.6s cubic-bezier(0.4,0,0.2,1);
-        }
-
-        .fb-icon-circle {
-          width: 44px;
-          height: 44px;
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-shrink: 0;
-        }
-
-        .fb-action-btn {
-          width: 36px;
-          height: 36px;
-          border-radius: 10px;
-          border: none;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          cursor: pointer;
-          transition: all 0.2s;
-        }
-
-        .fb-badge {
-          display: inline-flex;
-          align-items: center;
-          gap: 4px;
-          padding: 3px 10px;
-          border-radius: 99px;
-          font-size: 11px;
-          font-weight: 600;
-          letter-spacing: 0.03em;
-        }
-
-        .fb-empty-state {
-          text-align: center;
-          padding: 60px 20px;
-          background: linear-gradient(135deg, #f8faff, #f0f4ff);
-          border-radius: 16px;
-          border: 2px dashed #c7d7f8;
-        }
-
-        .fb-alert {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          padding: 14px 18px;
-          border-radius: 14px;
-          margin: 16px 24px;
-          font-size: 14px;
-          font-weight: 500;
-          animation: slideDown 0.3s ease;
-        }
-        @keyframes slideDown {
-          from { opacity:0; transform:translateY(-8px); }
-          to { opacity:1; transform:translateY(0); }
-        }
-
-        .fb-grid-dot {
-          position: absolute;
-          width: 6px;
-          height: 6px;
-          border-radius: 50%;
-          background: rgba(255,255,255,0.15);
-        }
-
-        @media (max-width: 640px) {
-          .fb-stats-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 10px !important; }
-          .fb-card-actions { flex-wrap: wrap; gap: 6px; }
-          .fb-account-meta { flex-direction: column !important; gap: 4px !important; }
-        }
-      `}</style>
-
       <div className="fb-manager bg-white rounded-2xl overflow-hidden shadow-lg border border-gray-100">
         {/* Hero Header */}
         <div className="fb-hero-bg relative overflow-hidden p-6 sm:p-8">
@@ -323,11 +169,14 @@ export default function FacebookAccountsManager() {
               key={i}
               className="fb-grid-dot"
               style={{
+                position: "absolute",
+                width: i % 2 === 0 ? "8px" : "5px",
+                height: i % 2 === 0 ? "8px" : "5px",
+                borderRadius: "50%",
+                background: "rgba(255,255,255,0.15)",
                 top: `${10 + (i % 4) * 25}%`,
                 right: `${5 + Math.floor(i / 4) * 12}%`,
                 opacity: 0.1 + (i % 3) * 0.08,
-                width: i % 2 === 0 ? "8px" : "5px",
-                height: i % 2 === 0 ? "8px" : "5px",
               }}
             />
           ))}
@@ -403,7 +252,34 @@ export default function FacebookAccountsManager() {
               <button
                 onClick={() => setShowAddModal(true)}
                 disabled={stats.remainingSlots === 0}
-                className="fb-btn-add"
+                style={{
+                  background: "white",
+                  color: "#1877F2",
+                  border: "none",
+                  padding: "10px 20px",
+                  borderRadius: "12px",
+                  fontWeight: 600,
+                  fontSize: "14px",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  cursor:
+                    stats.remainingSlots === 0 ? "not-allowed" : "pointer",
+                  transition: "all 0.2s",
+                  boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+                  opacity: stats.remainingSlots === 0 ? 0.5 : 1,
+                }}
+                onMouseEnter={(e) => {
+                  if (stats.remainingSlots > 0) {
+                    e.currentTarget.style.transform = "translateY(-1px)";
+                    e.currentTarget.style.boxShadow =
+                      "0 6px 20px rgba(0,0,0,0.15)";
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.boxShadow = "0 2px 8px rgba(0,0,0,0.1)";
+                }}
               >
                 <Plus size={16} />
                 <span>Add Account</span>
@@ -412,7 +288,6 @@ export default function FacebookAccountsManager() {
 
             {/* Stats */}
             <div
-              className="fb-stats-grid"
               style={{
                 display: "grid",
                 gridTemplateColumns: "repeat(3,1fr)",
@@ -420,7 +295,15 @@ export default function FacebookAccountsManager() {
                 marginTop: "24px",
               }}
             >
-              <div className="fb-stat-card">
+              <div
+                style={{
+                  background: "rgba(255,255,255,0.12)",
+                  backdropFilter: "blur(12px)",
+                  border: "1px solid rgba(255,255,255,0.2)",
+                  borderRadius: "16px",
+                  padding: "16px",
+                }}
+              >
                 <p
                   style={{
                     color: "rgba(255,255,255,0.65)",
@@ -454,7 +337,15 @@ export default function FacebookAccountsManager() {
                   accounts
                 </p>
               </div>
-              <div className="fb-stat-card">
+              <div
+                style={{
+                  background: "rgba(255,255,255,0.12)",
+                  backdropFilter: "blur(12px)",
+                  border: "1px solid rgba(255,255,255,0.2)",
+                  borderRadius: "16px",
+                  padding: "16px",
+                }}
+              >
                 <p
                   style={{
                     color: "rgba(255,255,255,0.65)",
@@ -488,7 +379,15 @@ export default function FacebookAccountsManager() {
                   running
                 </p>
               </div>
-              <div className="fb-stat-card">
+              <div
+                style={{
+                  background: "rgba(255,255,255,0.12)",
+                  backdropFilter: "blur(12px)",
+                  border: "1px solid rgba(255,255,255,0.2)",
+                  borderRadius: "16px",
+                  padding: "16px",
+                }}
+              >
                 <p
                   style={{
                     color: "rgba(255,255,255,0.65)",
@@ -512,10 +411,23 @@ export default function FacebookAccountsManager() {
                 >
                   {stats.remainingSlots}
                 </p>
-                <div className="fb-progress-bar">
+                <div
+                  style={{
+                    height: "6px",
+                    background: "rgba(255,255,255,0.2)",
+                    borderRadius: "99px",
+                    overflow: "hidden",
+                    marginTop: "6px",
+                  }}
+                >
                   <div
-                    className="fb-progress-fill"
-                    style={{ width: `${slotPercentage}%` }}
+                    style={{
+                      height: "100%",
+                      background: "white",
+                      borderRadius: "99px",
+                      width: `${slotPercentage}%`,
+                      transition: "width 0.6s cubic-bezier(0.4,0,0.2,1)",
+                    }}
                   />
                 </div>
               </div>
@@ -526,8 +438,15 @@ export default function FacebookAccountsManager() {
         {/* Notifications */}
         {error && (
           <div
-            className="fb-alert"
             style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "12px",
+              padding: "14px 18px",
+              borderRadius: "14px",
+              margin: "16px 24px",
+              fontSize: "14px",
+              fontWeight: 500,
               background: "#fef2f2",
               border: "1px solid #fecaca",
               color: "#dc2626",
@@ -551,8 +470,15 @@ export default function FacebookAccountsManager() {
         )}
         {success && (
           <div
-            className="fb-alert"
             style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "12px",
+              padding: "14px 18px",
+              borderRadius: "14px",
+              margin: "16px 24px",
+              fontSize: "14px",
+              fontWeight: 500,
               background: "#f0fdf4",
               border: "1px solid #bbf7d0",
               color: "#16a34a",
@@ -578,7 +504,15 @@ export default function FacebookAccountsManager() {
         {/* Accounts List */}
         <div style={{ padding: "20px 24px 24px" }}>
           {accounts.length === 0 ? (
-            <div className="fb-empty-state">
+            <div
+              style={{
+                textAlign: "center",
+                padding: "60px 20px",
+                background: "linear-gradient(135deg, #f8faff, #f0f4ff)",
+                borderRadius: "16px",
+                border: "2px dashed #c7d7f8",
+              }}
+            >
               <div
                 style={{
                   width: "72px",
@@ -631,7 +565,6 @@ export default function FacebookAccountsManager() {
                   fontSize: "14px",
                   cursor: "pointer",
                   boxShadow: "0 4px 16px rgba(24,119,242,0.3)",
-                  fontFamily: "Sora, sans-serif",
                   transition: "all 0.2s",
                 }}
                 onMouseEnter={(e) =>
@@ -649,11 +582,31 @@ export default function FacebookAccountsManager() {
             <div
               style={{ display: "flex", flexDirection: "column", gap: "12px" }}
             >
-              {accounts.map((account, idx) => (
+              {accounts.map((account) => (
                 <div
                   key={account._id}
-                  className={`fb-card ${account.isActive ? "fb-card-active" : ""}`}
-                  style={{ padding: "18px 20px" }}
+                  style={{
+                    background: account.isActive
+                      ? "linear-gradient(135deg, #f0fdf4, #ffffff)"
+                      : "white",
+                    borderRadius: "20px",
+                    border: account.isActive
+                      ? "1px solid #22c55e"
+                      : "1px solid #e8edf5",
+                    padding: "18px 20px",
+                    position: "relative",
+                    overflow: "hidden",
+                    transition: "all 0.3s cubic-bezier(0.4,0,0.2,1)",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = "translateY(-2px)";
+                    e.currentTarget.style.boxShadow =
+                      "0 12px 40px rgba(24,119,242,0.12)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = "translateY(0)";
+                    e.currentTarget.style.boxShadow = "none";
+                  }}
                 >
                   <div
                     style={{
@@ -664,11 +617,17 @@ export default function FacebookAccountsManager() {
                   >
                     {/* Avatar */}
                     <div
-                      className="fb-icon-circle"
                       style={{
+                        width: "44px",
+                        height: "44px",
+                        borderRadius: "50%",
                         background: account.isActive
                           ? "linear-gradient(135deg, #dcfce7, #bbf7d0)"
                           : "linear-gradient(135deg, #f1f5f9, #e2e8f0)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        flexShrink: 0,
                       }}
                     >
                       <Facebook
@@ -700,16 +659,31 @@ export default function FacebookAccountsManager() {
                         </h4>
                         {account.isVerified && (
                           <span
-                            className="fb-badge"
-                            style={{ background: "#dbeafe", color: "#1d4ed8" }}
+                            style={{
+                              display: "inline-flex",
+                              alignItems: "center",
+                              gap: "4px",
+                              padding: "3px 10px",
+                              borderRadius: "99px",
+                              fontSize: "11px",
+                              fontWeight: 600,
+                              background: "#dbeafe",
+                              color: "#1d4ed8",
+                            }}
                           >
                             <Shield size={10} />
                             Verified
                           </span>
                         )}
                         <span
-                          className="fb-badge"
                           style={{
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: "4px",
+                            padding: "3px 10px",
+                            borderRadius: "99px",
+                            fontSize: "11px",
+                            fontWeight: 600,
                             background: account.isActive
                               ? "#dcfce7"
                               : "#f1f5f9",
@@ -761,7 +735,6 @@ export default function FacebookAccountsManager() {
                       </a>
 
                       <div
-                        className="fb-account-meta"
                         style={{
                           display: "flex",
                           alignItems: "center",
@@ -816,7 +789,6 @@ export default function FacebookAccountsManager() {
 
                     {/* Actions */}
                     <div
-                      className="fb-card-actions"
                       style={{
                         display: "flex",
                         alignItems: "center",
@@ -829,8 +801,16 @@ export default function FacebookAccountsManager() {
                           handleToggleStatus(account._id, account.isActive)
                         }
                         title={account.isActive ? "Deactivate" : "Activate"}
-                        className="fb-action-btn"
                         style={{
+                          width: "36px",
+                          height: "36px",
+                          borderRadius: "10px",
+                          border: "none",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          cursor: "pointer",
+                          transition: "all 0.2s",
                           background: account.isActive ? "#dcfce7" : "#f1f5f9",
                           color: account.isActive ? "#16a34a" : "#94a3b8",
                         }}
@@ -854,8 +834,19 @@ export default function FacebookAccountsManager() {
                           setShowEditModal(true);
                         }}
                         title="Edit"
-                        className="fb-action-btn"
-                        style={{ background: "#dbeafe", color: "#1877F2" }}
+                        style={{
+                          width: "36px",
+                          height: "36px",
+                          borderRadius: "10px",
+                          border: "none",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          cursor: "pointer",
+                          transition: "all 0.2s",
+                          background: "#dbeafe",
+                          color: "#1877F2",
+                        }}
                         onMouseEnter={(e) =>
                           (e.currentTarget.style.opacity = "0.8")
                         }
@@ -869,8 +860,19 @@ export default function FacebookAccountsManager() {
                       <button
                         onClick={() => handleDeleteAccount(account._id)}
                         title="Delete"
-                        className="fb-action-btn"
-                        style={{ background: "#fee2e2", color: "#dc2626" }}
+                        style={{
+                          width: "36px",
+                          height: "36px",
+                          borderRadius: "10px",
+                          border: "none",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          cursor: "pointer",
+                          transition: "all 0.2s",
+                          background: "#fee2e2",
+                          color: "#dc2626",
+                        }}
                         onMouseEnter={(e) =>
                           (e.currentTarget.style.opacity = "0.8")
                         }
