@@ -48,6 +48,10 @@ const facebookAccountSchema = new mongoose.Schema({
 
 // Ensure user doesn't add more than 20 accounts
 facebookAccountSchema.index({ user: 1 });
-facebookAccountSchema.index({ user: 1, profileUrl: 1 }, { unique: true });
+// Make sure the unique index is properly configured
+facebookAccountSchema.index(
+  { user: 1, profileUrl: 1 },
+  { unique: true, sparse: true },
+);
 
 module.exports = mongoose.model("FacebookAccount", facebookAccountSchema);

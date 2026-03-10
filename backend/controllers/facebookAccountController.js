@@ -7,8 +7,33 @@ const addFacebookAccount = async (req, res) => {
     const { accountName, profileUrl } = req.body;
     const userId = req.user._id;
 
+    // Validate required fields
+    if (!accountName || !accountName.trim()) {
+      return res.status(400).json({
+        success: false,
+        message: "Account name is required",
+      });
+    }
+
+    if (!profileUrl || !profileUrl.trim()) {
+      return res.status(400).json({
+        success: false,
+        message: "Profile URL is required",
+      });
+    }
+
+    // Clean the profile URL (remove trailing slashes, etc.)
+    const cleanProfileUrl = profileUrl.trim().replace(/\/$/, "");
+
     // Check if user has reached the limit
     const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
 
     if (user.facebookAccounts && user.facebookAccounts.length >= 20) {
       return res.status(400).json({
@@ -20,7 +45,7 @@ const addFacebookAccount = async (req, res) => {
     // Check if account with same URL already exists for this user
     const existingAccount = await FacebookAccount.findOne({
       user: userId,
-      profileUrl: profileUrl,
+      profileUrl: cleanProfileUrl,
     });
 
     if (existingAccount) {
@@ -33,11 +58,14 @@ const addFacebookAccount = async (req, res) => {
     // Create new Facebook account
     const facebookAccount = await FacebookAccount.create({
       user: userId,
-      accountName,
-      profileUrl,
+      accountName: accountName.trim(),
+      profileUrl: cleanProfileUrl,
     });
 
     // Add reference to user
+    if (!user.facebookAccounts) {
+      user.facebookAccounts = [];
+    }
     user.facebookAccounts.push(facebookAccount._id);
     await user.save();
 
@@ -57,6 +85,14 @@ const addFacebookAccount = async (req, res) => {
       });
     }
 
+    if (error.name === "ValidationError") {
+      const messages = Object.values(error.errors).map((err) => err.message);
+      return res.status(400).json({
+        success: false,
+        message: messages[0] || "Validation error",
+      });
+    }
+
     res.status(500).json({
       success: false,
       message: error.message || "Failed to add Facebook account",
@@ -71,11 +107,13 @@ const getUserFacebookAccounts = async (req, res) => {
       createdAt: -1,
     });
 
+    const user = await User.findById(req.user._id);
+
     res.json({
       success: true,
       data: accounts,
       total: accounts.length,
-      remainingSlots: 20 - accounts.length,
+      remainingSlots: 20 - (user.facebookAccounts?.length || 0),
       limit: 20,
     });
   } catch (error) {
@@ -107,9 +145,11 @@ const updateFacebookAccount = async (req, res) => {
 
     // Check if updating to a URL that already exists
     if (profileUrl && profileUrl !== account.profileUrl) {
+      const cleanProfileUrl = profileUrl.trim().replace(/\/$/, "");
+
       const existingAccount = await FacebookAccount.findOne({
         user: req.user._id,
-        profileUrl: profileUrl,
+        profileUrl: cleanProfileUrl,
         _id: { $ne: accountId },
       });
 
@@ -119,12 +159,18 @@ const updateFacebookAccount = async (req, res) => {
           message: "Another account with this URL already exists",
         });
       }
+
+      account.profileUrl = cleanProfileUrl;
     }
 
     // Update fields
-    if (accountName) account.accountName = accountName;
-    if (profileUrl) account.profileUrl = profileUrl;
-    if (isActive !== undefined) account.isActive = isActive;
+    if (accountName && accountName.trim()) {
+      account.accountName = accountName.trim();
+    }
+
+    if (isActive !== undefined) {
+      account.isActive = isActive;
+    }
 
     await account.save();
 
@@ -135,6 +181,15 @@ const updateFacebookAccount = async (req, res) => {
     });
   } catch (error) {
     console.error("Update account error:", error);
+
+    if (error.name === "ValidationError") {
+      const messages = Object.values(error.errors).map((err) => err.message);
+      return res.status(400).json({
+        success: false,
+        message: messages[0] || "Validation error",
+      });
+    }
+
     res.status(500).json({
       success: false,
       message: "Failed to update Facebook account",
