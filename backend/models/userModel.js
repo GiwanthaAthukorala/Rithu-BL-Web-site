@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const { platform } = require("os");
+const FacebookAccount = require("./FacebookAccount");
 
 const userSchema = new mongoose.Schema(
   {
@@ -161,12 +162,29 @@ const userSchema = new mongoose.Schema(
       },
     ],
 
+    facebookAccounts: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "FacebookAccount",
+      },
+    ],
+
     resetPasswordToken: String,
     resetPasswordExpire: Date,
   },
 
-  { timestamps: true }
+  { timestamps: true },
 );
+
+// Add this method to check if user can add more accounts
+userSchema.methods.canAddFacebookAccount = function () {
+  return this.facebookAccounts && this.facebookAccounts.length < 20;
+};
+
+// Add method to get available accounts count
+userSchema.methods.getAvailableFacebookAccountsCount = function () {
+  return 20 - (this.facebookAccounts?.length || 0);
+};
 
 // Admin-specific methods
 userSchema.methods.isAdmin = function () {
@@ -201,7 +219,7 @@ userSchema.methods.getProfilePictureUrl = function () {
   }
   // Return a default avatar URL or initials-based avatar
   return `https://ui-avatars.com/api/?name=${encodeURIComponent(
-    this.firstName + "+" + this.lastName
+    this.firstName + "+" + this.lastName,
   )}&background=3B82F6&color=ffffff&size=400`;
 };
 

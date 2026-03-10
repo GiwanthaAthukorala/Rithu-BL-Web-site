@@ -2,46 +2,8 @@ const Submission = require("../models/Submission");
 const Earnings = require("../models/Earnings");
 const generateImageHash = require("../utils/generateImageHash");
 const isSimilarHash = require("../utils/isSimilarHash");
-
-//const path = require("path");
-//const fs = require("fs").promises;
-//const { v4: uuidv4 } = require("uuid");
-//const multer = require("multer");
-
-// Configure storage
-/*const storage = multer.diskStorage({
-  destination: async (req, file, cb) => {
-    try {
-      const uploadDir = path.join(__dirname, "../public/uploads");
-      await fs.mkdir(uploadDir, { recursive: true });
-      cb(null, uploadDir);
-    } catch (err) {
-      cb(err);
-    }
-  },
-  filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname);
-    cb(null, `${uuidv4()}${ext}`);
-  },
-});*/
-
-const fileFilter = (req, file, cb) => {
-  const validTypes = ["image/jpeg", "image/png", "image/jpg"];
-  if (validTypes.includes(file.mimetype)) {
-    cb(null, true);
-  } else {
-    cb(new Error("Only JPEG/JPG/PNG images allowed"), false);
-  }
-};
-
-// Create multer instance
-/*const upload = multer({
-  storage,
-  fileFilter,
-  limits: {
-    fileSize: 5 * 1024 * 1024, // 5MB
-  },
-});*/
+const FacebookAccount = require("../models/FacebookAccount");
+const User = require("../models/userModel"); // Add this import
 
 // Controller functions
 const createSubmission = async (req, res) => {
@@ -52,6 +14,51 @@ const createSubmission = async (req, res) => {
   const startTime = Date.now();
 
   try {
+    // Check if user has active Facebook accounts
+    const user = await User.findById(req.user._id).populate("facebookAccounts");
+
+    const activeAccounts = user.facebookAccounts.filter((acc) => acc.isActive);
+
+    if (activeAccounts.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message:
+          "You need to add at least one active Facebook account before submitting tasks. Please add your Facebook account in your profile settings.",
+        errorType: "NO_FACEBOOK_ACCOUNT",
+      });
+    }
+
+    // Get the selected Facebook account from request
+    const { facebookAccountId } = req.body;
+
+    let selectedAccount = null;
+
+    if (facebookAccountId) {
+      selectedAccount = activeAccounts.find(
+        (acc) => acc._id.toString() === facebookAccountId,
+      );
+
+      if (!selectedAccount) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid or inactive Facebook account selected",
+        });
+      }
+    } else {
+      // If no account selected, use the most recently used or first active account
+      selectedAccount = activeAccounts.sort((a, b) => {
+        if (!a.lastUsed) return -1;
+        if (!b.lastUsed) return 1;
+        return b.lastUsed - a.lastUsed;
+      })[0];
+    }
+
+    // Update account usage
+    selectedAccount.lastUsed = new Date();
+    selectedAccount.usageCount += 1;
+    await selectedAccount.save();
+
+    // Continue with existing submission logic...
     if (!req.file || !req.file.path) {
       console.error("❌ File upload failed. req.file is missing or invalid.");
       return res.status(400).json({
@@ -80,7 +87,7 @@ const createSubmission = async (req, res) => {
     const previousSubmissions = await Submission.find({
       user: userId,
       imageHash: { $ne: null },
-    }).limit(10); // Limit to recent submissions
+    }).limit(10);
 
     for (const submission of previousSubmissions) {
       if (isSimilarHash(uploadedImageHash, submission.imageHash)) {
@@ -97,20 +104,6 @@ const createSubmission = async (req, res) => {
 
     console.log("Hashing took", Date.now() - startTime, "ms");
 
-    // Validate required fields
-    if (!req.user?._id) {
-      return res.status(400).json({
-        success: false,
-        message: "User not authenticated",
-      });
-    }
-
-    /*const fileData = {
-      buffer: req.file.buffer,
-      mimetype: req.file.mimetype,
-      originalname: req.file.originalname,
-    };*/
-
     const submission = await Submission.create({
       user: req.user._id,
       platform: req.body.platform || "facebook",
@@ -118,6 +111,8 @@ const createSubmission = async (req, res) => {
       imageHash: uploadedImageHash,
       status: "approved",
       amount: 1.0,
+      facebookAccount: selectedAccount._id,
+      facebookAccountName: selectedAccount.accountName,
     });
 
     let earnings = await Earnings.findOne({ user: req.user._id });
@@ -139,7 +134,7 @@ const createSubmission = async (req, res) => {
       try {
         const apiUrl =
           process.env.NEXT_PUBLIC_API_URL ||
-          "https://rithu-bl-web-side.vercel.app";
+          "https://rithu-bl-web-site.vercel.app";
         await fetch(`${apiUrl}/api/links/${linkId}/submit`, {
           method: "POST",
           headers: {
@@ -149,38 +144,93 @@ const createSubmission = async (req, res) => {
         });
       } catch (linkError) {
         console.error("Failed to mark link as submitted:", linkError);
-        // Don't fail the submission if link tracking fails
       }
     }
-    // Update earnings (only when admin approves)
-    // We'll move this to the approveSubmission function
 
-    // Emit update to the user
     const io = req.app.get("io");
     io.to(req.user._id.toString()).emit("earningsUpdate", earnings);
     console.log("Updated earnings:", earnings);
 
-    // Debug logging
-
     res.status(201).json({
       success: true,
       message: "Submission created successfully",
-      data: submission,
+      data: {
+        submission,
+        facebookAccount: {
+          name: selectedAccount.accountName,
+          url: selectedAccount.profileUrl,
+        },
+      },
       earnings,
     });
   } catch (error) {
     console.error("Submission error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      error: error.message,
+    });
+  }
+};
 
-    /* if (req.file) {
-      try {
-        await fs.unlink(
-          path.join(__dirname, "../public/uploads", req.file.filename)
-        );
-      } catch (cleanupError) {
-        console.error("Failed to clean up file:", cleanupError);
+const createMultipleSubmissions = async (req, res) => {
+  try {
+    // Check if user has active Facebook accounts
+    const user = await User.findById(req.user._id).populate("facebookAccounts");
+
+    const activeAccounts = user.facebookAccounts.filter((acc) => acc.isActive);
+
+    if (activeAccounts.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message:
+          "You need to add at least one active Facebook account before submitting tasks. Please add your Facebook account in your profile settings.",
+        errorType: "NO_FACEBOOK_ACCOUNT",
+      });
+    }
+
+    // Get the selected Facebook account from request
+    const { facebookAccountId } = req.body;
+
+    let selectedAccount = null;
+
+    if (facebookAccountId) {
+      selectedAccount = activeAccounts.find(
+        (acc) => acc._id.toString() === facebookAccountId,
+      );
+
+      if (!selectedAccount) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid or inactive Facebook account selected",
+        });
       }
-    }*/
+    } else {
+      selectedAccount = activeAccounts.sort((a, b) => {
+        if (!a.lastUsed) return -1;
+        if (!b.lastUsed) return 1;
+        return b.lastUsed - a.lastUsed;
+      })[0];
+    }
 
+    // Update account usage
+    selectedAccount.lastUsed = new Date();
+    selectedAccount.usageCount += 1;
+    await selectedAccount.save();
+
+    // Add your multiple submission logic here
+    res.status(200).json({
+      success: true,
+      message: "Multiple submissions processed",
+      data: {
+        facebookAccount: {
+          name: selectedAccount.accountName,
+          url: selectedAccount.profileUrl,
+        },
+      },
+    });
+  } catch (error) {
+    console.error("Multiple submissions error:", error);
     res.status(500).json({
       success: false,
       message: "Internal server error",
@@ -191,7 +241,10 @@ const createSubmission = async (req, res) => {
 
 const getUserSubmissions = async (req, res) => {
   try {
-    const submissions = await Submission.find({ user: req.user._id });
+    const submissions = await Submission.find({ user: req.user._id }).populate(
+      "facebookAccount",
+      "accountName profileUrl",
+    );
     res.status(200).json({ success: true, data: submissions });
   } catch (error) {
     res.status(500).json({
@@ -215,7 +268,6 @@ const approveSubmission = async (req, res) => {
     submission.status = "approved";
     await submission.save();
 
-    // Update earnings
     let earnings = await Earnings.findOne({ user: submission.user });
     if (!earnings) {
       earnings = await Earnings.create({
@@ -231,7 +283,6 @@ const approveSubmission = async (req, res) => {
       await earnings.save();
     }
 
-    // Emit update to the user
     const io = req.app.get("io");
     io.to(submission.user.toString()).emit("earningsUpdate", {
       totalEarned: earnings.totalEarned,
@@ -272,18 +323,16 @@ const rejectSubmission = async (req, res) => {
       message: "Submission rejected",
       data: {
         submission,
-        earnings,
       },
     });
   } catch (error) {
-    console.error("Approval Error : ", error);
+    console.error("Rejection Error : ", error);
     res.status(500).json({ message: "Rejection failed", error: error.message });
   }
 };
 
-// Export as separate named exports
-//module.exports.uploadFile = upload.single("screenshot");
 module.exports.createSubmission = createSubmission;
+module.exports.createMultipleSubmissions = createMultipleSubmissions;
 module.exports.getUserSubmissions = getUserSubmissions;
 module.exports.approveSubmission = approveSubmission;
 module.exports.rejectSubmission = rejectSubmission;

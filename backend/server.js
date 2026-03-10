@@ -117,6 +117,7 @@ app.use("/api/videos", require("./routes/videoRoutes"));
 app.use("/api/instagram", require("./routes/InstaRouts"));
 app.use("/api/tiktok", require("./routes/TiktokRouts"));
 app.use("/api/auth", require("./routes/passwordResetRoutes"));
+app.use("/api/facebook-accounts", require("./routes/facebookAccounts"));
 
 // === Health Check ===
 app.get("/health", (req, res) => {

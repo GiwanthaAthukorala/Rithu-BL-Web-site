@@ -31,6 +31,13 @@ const submissionSchema = new mongoose.Schema(
       type: Number,
       default: 1,
     },
+    facebookAccount: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "FacebookAccount",
+    },
+    facebookAccountName: {
+      type: String,
+    },
     //lastSubmissionTime: {
     //type: Date,
     //default: Date.now,

@@ -10,6 +10,10 @@ import {
   Image,
   X,
   AlertCircle,
+  Facebook,
+  Plus,
+  User,
+  Link as LinkIcon,
 } from "lucide-react";
 import Header from "@/components/Header/Header";
 import api from "@/lib/api";
@@ -33,6 +37,9 @@ export default function FbVerificationTask() {
   const [selectedLinkId, setSelectedLinkId] = useState(null);
   const [linkClickCounts, setLinkClickCounts] = useState({});
   const [submissionSummary, setSubmissionSummary] = useState(null);
+  const [facebookAccounts, setFacebookAccounts] = useState([]);
+  const [selectedFacebookAccount, setSelectedFacebookAccount] = useState(null);
+  const [loadingAccounts, setLoadingAccounts] = useState(true);
 
   // Mobile detection
   const isMobile = () => {
@@ -44,6 +51,34 @@ export default function FbVerificationTask() {
         window.innerWidth <= 768)
     );
   };
+
+  const fetchFacebookAccounts = async () => {
+    try {
+      setLoadingAccounts(true);
+      const response = await api.get("/api/facebook-accounts");
+
+      if (response.data.success) {
+        const activeAccounts = response.data.data.filter((acc) => acc.isActive);
+        setFacebookAccounts(activeAccounts);
+
+        // Auto-select first active account if none selected
+        if (activeAccounts.length > 0 && !selectedFacebookAccount) {
+          setSelectedFacebookAccount(activeAccounts[0]);
+        }
+      }
+    } catch (err) {
+      console.error("Error fetching Facebook accounts:", err);
+      setError("Failed to load your Facebook accounts");
+    } finally {
+      setLoadingAccounts(false);
+    }
+  };
+
+  useEffect(() => {
+    if (user) {
+      fetchFacebookAccounts();
+    }
+  }, [user]);
 
   const handleFileChange = (e) => {
     const selectedFiles = Array.from(e.target.files);
@@ -155,6 +190,12 @@ export default function FbVerificationTask() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Check if Facebook account is selected
+    if (!selectedFacebookAccount) {
+      setError("Please select a Facebook account to use for this task");
+      return;
+    }
+
     // Validate files
     if (!files.length || !user) {
       setError(
@@ -168,7 +209,7 @@ export default function FbVerificationTask() {
     // Validate link clicks if a link is selected
     if (selectedLinkId && linkClickCounts[selectedLinkId] < 2) {
       setError(
-        `You need to click the link at least 2 times before submitting (current: ${linkClickCounts[selectedLinkId] || 0})`,
+        `You need to click the link at least 20 times before submitting (current: ${linkClickCounts[selectedLinkId] || 0})`,
       );
       return;
     }
@@ -186,6 +227,7 @@ export default function FbVerificationTask() {
 
       formData.append("platform", "facebook");
       formData.append("count", files.length.toString());
+      formData.append("facebookAccountId", selectedFacebookAccount._id);
 
       if (selectedLinkId) {
         formData.append("linkId", selectedLinkId);
@@ -390,6 +432,83 @@ export default function FbVerificationTask() {
               ></path>
             </svg>
           </div>
+        </div>
+
+        {/* Facebook Account Selection */}
+        <div className="mb-8 bg-gradient-to-r from-purple-50 to-pink-50 p-6 rounded-xl border border-purple-200">
+          <h3 className="text-lg font-semibold text-purple-800 mb-4 flex items-center space-x-2">
+            <Facebook className="w-5 h-5 text-purple-600" />
+            <span>Select Facebook Account to Use</span>
+          </h3>
+
+          {loadingAccounts ? (
+            <div className="flex items-center justify-center py-4">
+              <div className="animate-spin rounded-full h-6 w-6 border-2 border-purple-500 border-t-transparent"></div>
+            </div>
+          ) : facebookAccounts.length === 0 ? (
+            <div className="text-center py-4">
+              <p className="text-purple-700 mb-2">
+                No active Facebook accounts found
+              </p>
+              <Link
+                href="/profile?tab=facebook-accounts"
+                className="inline-flex items-center px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm"
+              >
+                <Plus size={16} className="mr-2" />
+                Add Facebook Account
+              </Link>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {facebookAccounts.map((account) => (
+                <div
+                  key={account._id}
+                  onClick={() => setSelectedFacebookAccount(account)}
+                  className={`flex items-center justify-between p-3 rounded-lg border cursor-pointer transition-all duration-200 ${
+                    selectedFacebookAccount?._id === account._id
+                      ? "border-purple-500 bg-purple-100"
+                      : "border-purple-200 bg-white hover:bg-purple-50"
+                  }`}
+                >
+                  <div className="flex items-center space-x-3">
+                    <div
+                      className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                        selectedFacebookAccount?._id === account._id
+                          ? "bg-purple-600 text-white"
+                          : "bg-purple-200 text-purple-700"
+                      }`}
+                    >
+                      <Facebook size={16} />
+                    </div>
+                    <div>
+                      <p className="font-medium text-gray-900">
+                        {account.accountName}
+                      </p>
+                      <p className="text-xs text-gray-500 truncate max-w-xs">
+                        {account.profileUrl}
+                      </p>
+                    </div>
+                  </div>
+                  {selectedFacebookAccount?._id === account._id && (
+                    <CheckCircle className="text-purple-600" size={20} />
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+
+          {selectedFacebookAccount && (
+            <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
+              <p className="text-green-700 text-sm flex items-center">
+                <CheckCircle size={16} className="mr-2" />
+                Using account:{" "}
+                <strong className="mx-1">
+                  {selectedFacebookAccount.accountName}
+                </strong>
+                for this task
+              </p>
+            </div>
+          )}
         </div>
 
         {/* Main Content */}
