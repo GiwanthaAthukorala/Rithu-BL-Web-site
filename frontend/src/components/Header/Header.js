@@ -187,10 +187,10 @@ export default function Header() {
             <div className="px-4 py-4 space-y-2">
               {/* Mobile Navigation Links */}
               {[
-                { href: "#how-it-works", label: "How It Works" },
-                { href: "#platforms", label: "Platforms" },
-                { href: "../../components/FAQ.js", label: "FAQ" },
-                { href: "#contact", label: "Contact" },
+                { href: "/how-it-works/page", label: "How It Works" },
+                { href: "/platforms/page", label: "Platforms" },
+                { href: "/faq/page", label: "FAQ" },
+                { href: "/contact/page", label: "Contact" },
               ].map((item, index) => (
                 <Link
                   key={item.href}
