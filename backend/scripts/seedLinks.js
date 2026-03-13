@@ -23,29 +23,16 @@ const connectDB = async () => {
 
 const facebookLinks = [
   {
-    url: "https://www.facebook.com/share/1DLkSJjtRo/?mibextid=wwXIfr",
+    url: "https://www.facebook.com/share/1F29nvNWZL/?mibextid=wwXIfr",
     title:
-      "Roshantha Hewa Madduma - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+      "ICT with Siripawara Madurasinghe - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/profile.php?id=61585023260968",
-    title: "Shan Drums - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-
-  {
-    url: "https://www.facebook.com/share/17b9MS39Fk",
+    url: "https://www.facebook.com/profile.php?id=61582747389559",
     title:
-      "R&R Elite Tours and Events Pvt Ltd - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/share/14XcNrd94YQ",
-    title: "Island Blooms - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+      "Great Frozen Pvt Ltd - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
