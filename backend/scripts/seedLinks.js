@@ -23,24 +23,41 @@ const connectDB = async () => {
 
 const facebookLinks = [
   {
-    url: "https://www.facebook.com/share/1F29nvNWZL/?mibextid=wwXIfr",
-    title:
-      "ICT with Siripawara Madurasinghe - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    url: "https://www.facebook.com/share/r/1WqjjbihPU/",
+    title: "පොස්ට් ලයික් (Like) කරන්න.",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/profile.php?id=61582747389559",
+    url: "https://www.facebook.com/share/1G1eTZdqXo",
     title:
-      "Great Frozen Pvt Ltd - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+      "Excesslanka travel & tours - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
-
+  {
+    url: "https://web.facebook.com/profile.php?id=61587386754994",
+    title:
+      "Glamour Gloss Nails By Radhi - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/share/1CEnJebBE6",
+    title: "Salon Style Station - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/profile.php?id=61582236509300",
+    title: "Ayurra Herbal - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
   // Removed duplicate URL that was causing the error
   /*
   {
-    url: "https://www.facebook.com/share/p/185R6JwYmW/",
+    url: "https://www.facebook.com/share/r/1WqjjbihPU/",
     title: "පොස්ට් ලයික් (Like) කරන්න.",
     platform: "facebook",
     earnings: 1.0,
