@@ -23,37 +23,26 @@ const connectDB = async () => {
 
 const facebookLinks = [
   {
-    url: "https://www.facebook.com/share/r/1WqjjbihPU/",
+    url: "https://www.facebook.com/share/p/18GtqQqfgc/",
     title: "පොස්ට් ලයික් (Like) කරන්න.",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/1G1eTZdqXo",
+    url: "https://www.facebook.com/share/186outShWt/?mibextid=wwXIfr",
     title:
-      "Excesslanka travel & tours - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+      "Aloura Skin Care & Beauty - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://web.facebook.com/profile.php?id=61587386754994",
+    url: "https://www.facebook.com/share/17HQyEUbhp",
     title:
-      "Glamour Gloss Nails By Radhi - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+      "Hina Billa - හිනා බිල්ලා - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
-  {
-    url: "https://www.facebook.com/share/1CEnJebBE6",
-    title: "Salon Style Station - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/profile.php?id=61582236509300",
-    title: "Ayurra Herbal - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
+
   // Removed duplicate URL that was causing the error
   /*
   {

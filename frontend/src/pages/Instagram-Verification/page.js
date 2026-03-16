@@ -353,7 +353,7 @@ export default function InstagramVerificationTask() {
                     <span className="text-3xl">📱</span>
                     Complete These Tasks
                   </h3>{" "}
-                  <div className="space-y-4">
+                  {/* <div className="space-y-4">
                     <a
                       href="https://www.instagram.com/p/DNXVORTs02C/?igsh=MTdsMWMzcTl6M3Bhaw=="
                       target="_blank"
@@ -374,7 +374,7 @@ export default function InstagramVerificationTask() {
                       <ExternalLink className="w-6 h-6 text-pink-400 group-hover:text-pink-600 transition-colors" />
                     </a>
                   </div>{" "}
-                  {/**/}
+                  */}
                   {/*
                   <div className="mt-6 bg-gradient-to-r from-pink-500 via-rose-500 to-red-500 p-6 rounded-2xl shadow-xl">
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
