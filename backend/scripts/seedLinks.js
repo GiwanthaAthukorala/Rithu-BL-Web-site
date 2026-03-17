@@ -23,22 +23,15 @@ const connectDB = async () => {
 
 const facebookLinks = [
   {
-    url: "https://www.facebook.com/share/p/18GtqQqfgc/",
-    title: "පොස්ට් ලයික් (Like) කරන්න.",
+    url: "https://www.facebook.com/share/1KAWV6FQEs/?mibextid=wwXIfr",
+    title: "Nethu Baba Borukari - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/186outShWt/?mibextid=wwXIfr",
+    url: "https://www.facebook.com/share/1HPGr6Grvs",
     title:
-      "Aloura Skin Care & Beauty - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/share/17HQyEUbhp",
-    title:
-      "Hina Billa - හිනා බිල්ලා - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+      "Dewmini - Sales Executive - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
