@@ -23,19 +23,37 @@ const connectDB = async () => {
 
 const facebookLinks = [
   {
-    url: "https://www.facebook.com/share/1KAWV6FQEs/?mibextid=wwXIfr",
-    title: "Nethu Baba Borukari - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    url: "https://www.facebook.com/share/p/1BoDKDdebg/",
+    title: "පොස්ට් ලයික් (Like) කරන්න.",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/1HPGr6Grvs",
+    url: "https://www.facebook.com/share/19K85wwRmq",
     title:
-      "Dewmini - Sales Executive - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+      "Aruna Travels PVT LTD - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
-
+  {
+    url: "https://www.facebook.com/share/183uZLT9gX",
+    title:
+      "Janatha Foreign Employment Agency - Dambulla,Sri Lanka - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/share/1AoVRatLj3",
+    title: "Daily Lanka - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/share/189Xfya5VK/?mibextid=wwXIfr",
+    title: "Dushen Ramshitha - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
   // Removed duplicate URL that was causing the error
   /*
   {
