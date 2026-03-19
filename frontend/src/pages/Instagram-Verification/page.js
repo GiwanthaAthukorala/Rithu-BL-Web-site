@@ -355,7 +355,7 @@ export default function InstagramVerificationTask() {
                   </h3>{" "}
                   <div className="space-y-4">
                     <a
-                      href="https://www.instagram.com/reel/DV-FP-Wk8KY/?igsh=dnR2OWlpdW5kaTZ6"
+                      href="https://www.instagram.com/p/DV1O4i_jabP/?igsh=MTh0em5ucmE0eDNwaQ=="
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex items-center gap-4 bg-white p-5 rounded-2xl hover:shadow-xl transition-all duration-300 group border-2 border-transparent hover:border-pink-300 transform hover:-translate-y-1"
