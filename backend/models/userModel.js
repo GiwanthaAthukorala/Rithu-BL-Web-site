@@ -169,6 +169,13 @@ const userSchema = new mongoose.Schema(
       },
     ],
 
+    instagramAccounts: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "InstagramAccount",
+      },
+    ],
+
     resetPasswordToken: String,
     resetPasswordExpire: Date,
   },
@@ -184,6 +191,16 @@ userSchema.methods.canAddFacebookAccount = function () {
 // Add method to get available accounts count
 userSchema.methods.getAvailableFacebookAccountsCount = function () {
   return 20 - (this.facebookAccounts?.length || 0);
+};
+
+// Add this method to check if user can add more accounts
+userSchema.methods.canAddInstagramAccount = function () {
+  return this.instagramAccounts && this.instagramAccounts.length < 20;
+};
+
+// Add method to get available accounts count
+userSchema.methods.getAvailableInstagramAccountsCount = function () {
+  return 20 - (this.instagramAccounts?.length || 0);
 };
 
 // Admin-specific methods

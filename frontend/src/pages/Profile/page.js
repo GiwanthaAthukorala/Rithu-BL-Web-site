@@ -26,6 +26,8 @@ import api from "@/lib/api";
 import { useSocket } from "@/Context/SocketContext";
 import ProfileEditModal from "@/components/Profile/profileModel";
 import FacebookAccountsManager from "@/components/FacebookAccounts/FacebookAccountsManager";
+import InstagramAccountsManager from "@/components/InstagramAccounts/InstrgramAccountsManager";
+import { Instagram } from "@/components/Icons";
 
 export default function Profile() {
   const [earnings, setEarnings] = useState({
@@ -204,6 +206,11 @@ export default function Profile() {
       key: "facebook-accounts",
       label: "Facebook Accounts",
       icon: <Facebook size={14} />,
+    },
+    {
+      key: "instagram-accounts",
+      label: "Instagram Accounts",
+      icon: <Instagram size={14} />,
     },
     { key: "earnings", label: "Earnings", icon: null },
   ];
@@ -1411,6 +1418,8 @@ export default function Profile() {
 
           {/* ── FACEBOOK ACCOUNTS TAB ── */}
           {activeTab === "facebook-accounts" && <FacebookAccountsManager />}
+          {/* ── INSTAGRAM ACCOUNTS TAB ── */}
+          {activeTab === "instagram-accounts" && <InstagramAccountsManager />}
 
           {/* ── EARNINGS TAB ── */}
           {activeTab === "earnings" && (

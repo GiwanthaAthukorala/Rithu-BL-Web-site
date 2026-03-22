@@ -23,55 +23,55 @@ const connectDB = async () => {
 
 const facebookLinks = [
   {
-    url: "https://www.facebook.com/share/v/18FojrRPpx/",
+    url: "https://www.facebook.com/share/p/189ez4RSmA/",
     title: "පොස්ට් ලයික් (Like) කරන්න.",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/BuildSL2025?mibextid=ZbWKwL",
-    title: "Build SL - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    url: "https://www.facebook.com/share/17BZXdoYKV/",
+    title: "පොස්ට් ලයික් (Like) කරන්න.",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/18PFxooEs5",
-    title: "CK Abilash SB Abiya - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    url: "https://www.facebook.com/share/p/1VwgCvg7sT/",
+    title: "පොස්ට් ලයික් (Like) කරන්න.",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://web.facebook.com/profile.php?id=61577516182040",
+    url: "https://www.facebook.com/share/p/1GXdFQmjXY/?mibextid=wwXIfr",
+    title: "පොස්ට් ලයික් (Like) කරන්න.",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/share/17UGyJBNSE/?mibextid=wwXIfr",
+    title: "Land Sale Kesbewa - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/share/1BMeWSakUT/?mibextid=wwXIfr",
+    title: "𝑻𝒓𝒂𝒄𝒌 𝑲𝒊𝒍𝒍𝒆𝒓 - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/profile.php?id=61553594189722&mibextid=ZbWKwL",
+    title: "naturaly - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/share/1AKzruJ6hT/?mibextid=wwXIfr",
     title:
-      "WeFix Phone Repair Shop - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/profile.php?id=61579534193382",
-    title: "GlamGroove Beauty - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://web.facebook.com/ThaDoom",
-    title: "Tha Doom - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+      "Laki Cooking life with Travel - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
 
-  {
-    url: "https://www.facebook.com/share/1B2SgCYCbx/?mibextid=wwXIfr",
-    title: "Sithija Nandimithra - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/share/18DTVtwMPo/?mibextid=wwXIfr",
-    title: "Little Oven - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
   // Removed duplicate URL that was causing the error
   /*
   {

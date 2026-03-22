@@ -2,46 +2,8 @@ const Instrgram = require("../models/InstrgramModel");
 const Earnings = require("../models/Earnings");
 const generateImageHash = require("../utils/generateImageHash");
 const isSimilarHash = require("../utils/isSimilarHash");
-
-//const path = require("path");
-//const fs = require("fs").promises;
-//const { v4: uuidv4 } = require("uuid");
-//const multer = require("multer");
-
-// Configure storage
-/*const storage = multer.diskStorage({
-  destination: async (req, file, cb) => {
-    try {
-      const uploadDir = path.join(__dirname, "../public/uploads");
-      await fs.mkdir(uploadDir, { recursive: true });
-      cb(null, uploadDir);
-    } catch (err) {
-      cb(err);
-    }
-  },
-  filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname);
-    cb(null, `${uuidv4()}${ext}`);
-  },
-});*/
-
-const fileFilter = (req, file, cb) => {
-  const validTypes = ["image/jpeg", "image/png", "image/jpg"];
-  if (validTypes.includes(file.mimetype)) {
-    cb(null, true);
-  } else {
-    cb(new Error("Only JPEG/JPG/PNG images allowed"), false);
-  }
-};
-
-// Create multer instance
-/*const upload = multer({
-  storage,
-  fileFilter,
-  limits: {
-    fileSize: 5 * 1024 * 1024, // 5MB
-  },
-});*/
+const InstagramAccount = require("../models/instrgramAccount");
+const User = require("../models/userModel");
 
 // Controller functions
 const createInstaSubmission = async (req, res) => {
@@ -52,6 +14,53 @@ const createInstaSubmission = async (req, res) => {
   const startTime = Date.now();
 
   try {
+    // Check if user has active Facebook accounts
+    const user = await User.findById(req.user._id).populate(
+      "InstagramAccounts",
+    );
+
+    const activeAccounts = user.instagramAccounts.filter((acc) => acc.isActive);
+
+    if (activeAccounts.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message:
+          "You need to add at least one active Instagram account before submitting tasks. Please add your Instagram account in your profile settings.",
+        errorType: "NO_INSTAGRAM_ACCOUNT",
+      });
+    }
+
+    // Get the selected Instagram account from request
+    const { instagramAccountId } = req.body;
+
+    let selectedAccount = null;
+
+    if (instagramAccountId) {
+      selectedAccount = activeAccounts.find(
+        (acc) => acc._id.toString() === instagramAccountId,
+      );
+
+      if (!selectedAccount) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid or inactive Instagram account selected",
+        });
+      }
+    } else {
+      // If no account selected, use the most recently used or first active account
+      selectedAccount = activeAccounts.sort((a, b) => {
+        if (!a.lastUsed) return -1;
+        if (!b.lastUsed) return 1;
+        return b.lastUsed - a.lastUsed;
+      })[0];
+    }
+
+    // Update account usage
+    selectedAccount.lastUsed = new Date();
+    selectedAccount.usageCount += 1;
+    await selectedAccount.save();
+
+    // Continue with existing submission logic...
     if (!req.file || !req.file.path) {
       console.error("❌ File upload failed. req.file is missing or invalid.");
       return res.status(400).json({
@@ -80,14 +89,14 @@ const createInstaSubmission = async (req, res) => {
     const previousSubmissions = await Instrgram.find({
       user: userId,
       imageHash: { $ne: null },
-    }).limit(10); // Limit to recent submissions
+    }).limit(10);
 
     for (const submission of previousSubmissions) {
       if (isSimilarHash(uploadedImageHash, submission.imageHash)) {
         return res.status(400).json({
           success: false,
           message: `This screenshot is too similar to one you submitted on ${new Date(
-            submission.createdAt
+            submission.createdAt,
           ).toLocaleDateString()}. Please upload a different screenshot.`,
           errorType: "DUPLICATE_IMAGE",
           previousDate: new Date(submission.createdAt).toLocaleDateString(),
@@ -97,27 +106,15 @@ const createInstaSubmission = async (req, res) => {
 
     console.log("Hashing took", Date.now() - startTime, "ms");
 
-    // Validate required fields
-    if (!req.user?._id) {
-      return res.status(400).json({
-        success: false,
-        message: "User not authenticated",
-      });
-    }
-
-    /*const fileData = {
-      buffer: req.file.buffer,
-      mimetype: req.file.mimetype,
-      originalname: req.file.originalname,
-    };*/
-
     const submission = await Instrgram.create({
       user: req.user._id,
-      platform: req.body.platform || "facebook",
+      platform: req.body.platform || "Instragrm",
       screenshot: cloudinaryUrl,
       imageHash: uploadedImageHash,
       status: "approved",
       amount: 1.0,
+      instagramAccount: selectedAccount._id,
+      instagramAccountName: selectedAccount.accountName,
     });
 
     let earnings = await Earnings.findOne({ user: req.user._id });
@@ -139,7 +136,7 @@ const createInstaSubmission = async (req, res) => {
       try {
         const apiUrl =
           process.env.NEXT_PUBLIC_API_URL ||
-          "https://rithu-bl-web-side.vercel.app";
+          "https://rithu-bl-web-site.vercel.app";
         await fetch(`${apiUrl}/api/links/${linkId}/submit`, {
           method: "POST",
           headers: {
@@ -149,38 +146,95 @@ const createInstaSubmission = async (req, res) => {
         });
       } catch (linkError) {
         console.error("Failed to mark link as submitted:", linkError);
-        // Don't fail the submission if link tracking fails
       }
     }
-    // Update earnings (only when admin approves)
-    // We'll move this to the approveSubmission function
 
-    // Emit update to the user
     const io = req.app.get("io");
     io.to(req.user._id.toString()).emit("earningsUpdate", earnings);
     console.log("Updated earnings:", earnings);
 
-    // Debug logging
-
     res.status(201).json({
       success: true,
       message: "Submission created successfully",
-      data: submission,
+      data: {
+        submission,
+        instragrmAccount: {
+          name: selectedAccount.accountName,
+          url: selectedAccount.profileUrl,
+        },
+      },
       earnings,
     });
   } catch (error) {
     console.error("Submission error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      error: error.message,
+    });
+  }
+};
 
-    /* if (req.file) {
-      try {
-        await fs.unlink(
-          path.join(__dirname, "../public/uploads", req.file.filename)
-        );
-      } catch (cleanupError) {
-        console.error("Failed to clean up file:", cleanupError);
+const createInstaMultipleSubmissions = async (req, res) => {
+  try {
+    // Check if user has active Instagram accounts
+    const user = await User.findById(req.user._id).populate(
+      "instagramAccounts",
+    );
+
+    const activeAccounts = user.instagramAccounts.filter((acc) => acc.isActive);
+
+    if (activeAccounts.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message:
+          "You need to add at least one active Instagram account before submitting tasks. Please add your Instagram account in your profile settings.",
+        errorType: "NO_INSTAGRAM_ACCOUNT",
+      });
+    }
+
+    // Get the selected Instagram account from request
+    const { instagramAccountId } = req.body;
+
+    let selectedAccount = null;
+
+    if (instagramAccountId) {
+      selectedAccount = activeAccounts.find(
+        (acc) => acc._id.toString() === instagramAccountId,
+      );
+
+      if (!selectedAccount) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid or inactive Instagram account selected",
+        });
       }
-    }*/
+    } else {
+      selectedAccount = activeAccounts.sort((a, b) => {
+        if (!a.lastUsed) return -1;
+        if (!b.lastUsed) return 1;
+        return b.lastUsed - a.lastUsed;
+      })[0];
+    }
 
+    // Update account usage
+    selectedAccount.lastUsed = new Date();
+    selectedAccount.usageCount += 1;
+    await selectedAccount.save();
+
+    // Add your multiple submission logic here
+    res.status(200).json({
+      success: true,
+      message: "Multiple submissions processed",
+      data: {
+        facebookAccount: {
+          name: selectedAccount.accountName,
+          url: selectedAccount.profileUrl,
+        },
+      },
+    });
+  } catch (error) {
+    console.error("Multiple submissions error:", error);
     res.status(500).json({
       success: false,
       message: "Internal server error",
@@ -191,7 +245,10 @@ const createInstaSubmission = async (req, res) => {
 
 const getUserInstaSubmissions = async (req, res) => {
   try {
-    const submissions = await Instrgram.find({ user: req.user._id });
+    const submissions = await Submission.find({ user: req.user._id }).populate(
+      "instagramAccount",
+      "accountName profileUrl",
+    );
     res.status(200).json({ success: true, data: submissions });
   } catch (error) {
     res.status(500).json({
@@ -204,7 +261,7 @@ const getUserInstaSubmissions = async (req, res) => {
 
 const approveInstaSubmission = async (req, res) => {
   try {
-    const submission = await Instrgram.findById(req.params.id);
+    const submission = await Submission.findById(req.params.id);
     if (!submission) {
       return res.status(404).json({ message: "Submission not found" });
     }
@@ -215,7 +272,6 @@ const approveInstaSubmission = async (req, res) => {
     submission.status = "approved";
     await submission.save();
 
-    // Update earnings
     let earnings = await Earnings.findOne({ user: submission.user });
     if (!earnings) {
       earnings = await Earnings.create({
@@ -231,7 +287,6 @@ const approveInstaSubmission = async (req, res) => {
       await earnings.save();
     }
 
-    // Emit update to the user
     const io = req.app.get("io");
     io.to(submission.user.toString()).emit("earningsUpdate", {
       totalEarned: earnings.totalEarned,
@@ -272,18 +327,16 @@ const rejectInstaSubmission = async (req, res) => {
       message: "Submission rejected",
       data: {
         submission,
-        earnings,
       },
     });
   } catch (error) {
-    console.error("Approval Error : ", error);
+    console.error("Rejection Error : ", error);
     res.status(500).json({ message: "Rejection failed", error: error.message });
   }
 };
 
-// Export as separate named exports
-//module.exports.uploadFile = upload.single("screenshot");
 module.exports.createInstaSubmission = createInstaSubmission;
+module.exports.createInstaMultipleSubmissions = createInstaMultipleSubmissions;
 module.exports.getUserInstaSubmissions = getUserInstaSubmissions;
 module.exports.approveInstaSubmission = approveInstaSubmission;
 module.exports.rejectInstaSubmission = rejectInstaSubmission;

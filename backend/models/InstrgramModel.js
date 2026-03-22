@@ -32,17 +32,24 @@ const InstrgramSubmissionSchema = new mongoose.Schema(
       type: Number,
       default: 1,
     },
+    instagramAccount: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "InstagramAccount",
+    },
+    instagramAccountName: {
+      type: String,
+    },
     //lastSubmissionTime: {
     //type: Date,
     //default: Date.now,
   },
 
-  { timestamps: true }
+  { timestamps: true },
 );
 
 //submissionSchema.index({ user: 1, createdAt: -1 });
 
 module.exports = mongoose.model(
   "InstrgramSubmission",
-  InstrgramSubmissionSchema
+  InstrgramSubmissionSchema,
 );
