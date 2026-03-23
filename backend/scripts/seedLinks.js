@@ -23,51 +23,34 @@ const connectDB = async () => {
 
 const facebookLinks = [
   {
-    url: "https://www.facebook.com/share/p/189ez4RSmA/",
+    url: "https://www.facebook.com/share/v/1Ghhsm3vWv/",
     title: "පොස්ට් ලයික් (Like) කරන්න.",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/17BZXdoYKV/",
+    url: "https://www.facebook.com/share/p/1BBzeuKDkU/",
     title: "පොස්ට් ලයික් (Like) කරන්න.",
     platform: "facebook",
     earnings: 1.0,
   },
+
   {
-    url: "https://www.facebook.com/share/p/1VwgCvg7sT/",
-    title: "පොස්ට් ලයික් (Like) කරන්න.",
+    url: "https://www.facebook.com/share/1BFsHzeGM1",
+    title: "Color Splash - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/p/1GXdFQmjXY/?mibextid=wwXIfr",
-    title: "පොස්ට් ලයික් (Like) කරන්න.",
+    url: "https://web.facebook.com/profile.php?id=61579690485722",
+    title: "Anuja Bamboo Blind - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/17UGyJBNSE/?mibextid=wwXIfr",
-    title: "Land Sale Kesbewa - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/share/1BMeWSakUT/?mibextid=wwXIfr",
-    title: "𝑻𝒓𝒂𝒄𝒌 𝑲𝒊𝒍𝒍𝒆𝒓 - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/profile.php?id=61553594189722&mibextid=ZbWKwL",
-    title: "naturaly - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/share/1AKzruJ6hT/?mibextid=wwXIfr",
+    url: "https://www.facebook.com/share/1Auz2YukKc/?mibextid=wwXIfr&wa_status_inline=true",
     title:
-      "Laki Cooking life with Travel - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+      "K & S cashew product - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
