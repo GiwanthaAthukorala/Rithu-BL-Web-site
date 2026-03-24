@@ -360,11 +360,11 @@ export default function TikTokVerificationTask() {
                       Follow Our Main Account -ටික් ටොක් එකව්න්ට් එක ෆලෝ කරන්න
                     </h4>
                     <p className="text-gray-300 text-xs sm:text-sm">
-                      Dahlia Whitening By Ishu - Join our community
+                      Chic Choice - Join our community
                     </p>
                   </div>
                   <a
-                    href="https://www.tiktok.com/@dahlia_whitening_by_ishu?_r=1&_t=ZS-94kqG5sgAAG"
+                    href="https://www.tiktok.com/@chic.choice16?_r=1&_t=ZS-94wtHGJFSbq"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center justify-center bg-gradient-to-r from-pink-500 to-red-500 text-white px-4 sm:px-6 py-2 rounded-lg hover:from-pink-600 hover:to-red-600 transition-all duration-200 font-medium group-hover:scale-105 text-xs sm:text-sm"
