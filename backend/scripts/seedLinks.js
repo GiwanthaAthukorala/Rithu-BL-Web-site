@@ -30,22 +30,21 @@ const facebookLinks = [
   },
 
   {
-    url: "https://www.facebook.com/share/18JErxa27t/?mibextid=wwXIfr",
+    url: "https://www.facebook.com/profile.php?id=61562242333207",
     title:
-      "New Danush TVS Authorized Dealer - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+      "Personal Financial Services with Naween - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/NPTCCD?mibextid=rS40aB7S9Ucbxw6v",
-    title:
-      "TB Free Sri Lanka - NPTCCD - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    url: "https://www.facebook.com/share/1AyCKFe8m6",
+    title: "DSP Online Store - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/1Aq8AC6TSZ",
-    title: "chic choice - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    url: "https://www.facebook.com/share/1CdHGnbyWA",
+    title: "SL Martin Audio - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
