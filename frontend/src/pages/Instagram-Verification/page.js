@@ -91,7 +91,7 @@ export default function InstagramVerificationTask() {
     try {
       const formData = new FormData();
       formData.append("screenshot", file);
-      formData.append("platform", "Instrgram");
+      formData.append("platform", "Instagram");
 
       const token = localStorage.getItem("token");
 
