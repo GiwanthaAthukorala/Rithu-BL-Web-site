@@ -360,11 +360,11 @@ export default function TikTokVerificationTask() {
                       Follow Our Main Account -ටික් ටොක් එකව්න්ට් එක ෆලෝ කරන්න
                     </h4>
                     <p className="text-gray-300 text-xs sm:text-sm">
-                      Ş͙ē͙ຖ͙ค͙♥͙t͙h͙ค͙r͙น͙น͙ - Join our community
+                      Voleena - Join our community
                     </p>
                   </div>
                   <a
-                    href="https://www.tiktok.com/@akashitharuu7?_r=1&_t=ZS-95122vCRnWy"
+                    href="https://www.tiktok.com/@voleenafashion666?_r=1&_t=ZS-952QiBwbSMu"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center justify-center bg-gradient-to-r from-pink-500 to-red-500 text-white px-4 sm:px-6 py-2 rounded-lg hover:from-pink-600 hover:to-red-600 transition-all duration-200 font-medium group-hover:scale-105 text-xs sm:text-sm"

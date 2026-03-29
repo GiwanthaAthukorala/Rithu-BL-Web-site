@@ -23,35 +23,26 @@ const connectDB = async () => {
 
 const facebookLinks = [
   {
-    url: "https://www.facebook.com/share/p/1MdG5ZeF7n/",
+    url: "https://www.facebook.com/share/p/18VFxuhyQw/?mibextid=wwXIfr",
     title: "පොස්ට් ලයික් (Like) කරන්න.",
     platform: "facebook",
     earnings: 1.0,
   },
-
   {
-    url: "https://www.facebook.com/profile.php?id=61562242333207",
-    title:
-      "Personal Financial Services with Naween - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    url: "https://www.facebook.com/share/1HboQ8LUHW/",
+    title: "Demiar T Sharts - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/1AyCKFe8m6",
-    title: "DSP Online Store - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    url: "https://www.facebook.com/share/17yYcpqqf1",
+    title: "Seya Chandrasekara- පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
     url: "https://www.facebook.com/share/1CdHGnbyWA",
     title: "SL Martin Audio - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/share/18EtfVCTUs",
-    title:
-      "Motivation with Kavi - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
