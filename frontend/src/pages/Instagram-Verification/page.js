@@ -108,30 +108,39 @@ export default function InstagramVerificationTask() {
         body: formData,
         credentials: "include",
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${token}`,
         },
       });
 
-      if (!response.headers.get("content-type")?.includes("application/json")) {
-        const text = await response.text();
-        throw new Error(text || "Invalid server response");
-      }
-
+      // Check if response is OK
       if (!response.ok) {
-        const errorData = await response.json();
+        const contentType = response.headers.get("content-type");
 
-        if (errorData.message.includes("too similar")) {
-          const dateMatch = errorData.message.match(/\d{1,2}\/\d{1,2}\/\d{4}/);
-          setPreviousSubmissionDate(dateMatch ? dateMatch[0] : "previously");
-          setShowDuplicateModal(true);
-          return;
+        if (contentType && contentType.includes("application/json")) {
+          const errorData = await response.json();
+
+          if (errorData.message && errorData.message.includes("too similar")) {
+            const dateMatch = errorData.message.match(
+              /\d{1,2}\/\d{1,2}\/\d{4}/,
+            );
+            setPreviousSubmissionDate(dateMatch ? dateMatch[0] : "previously");
+            setShowDuplicateModal(true);
+            return;
+          }
+
+          throw new Error(errorData.message || "Submission failed");
+        } else {
+          const text = await response.text();
+          console.error("Non-JSON response:", text);
+          throw new Error(
+            "Server returned an invalid response. Please try again.",
+          );
         }
-
-        throw new Error(errorData.message || "Submission failed");
       }
 
       const result = await response.json();
       setIsSubmitted(true);
+
       setTimeout(() => {
         router.push("/Profile/page");
       }, 3000);
