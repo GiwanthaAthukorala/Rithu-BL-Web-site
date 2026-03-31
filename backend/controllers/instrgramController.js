@@ -14,9 +14,9 @@ const createInstaSubmission = async (req, res) => {
   const startTime = Date.now();
 
   try {
-    // Check if user has active Facebook accounts
+    // Check if user has active Instagram accounts
     const user = await User.findById(req.user._id).populate(
-      "InstagramAccounts",
+      "instagramAccounts",
     );
 
     const activeAccounts = user.instagramAccounts.filter((acc) => acc.isActive);
@@ -44,6 +44,7 @@ const createInstaSubmission = async (req, res) => {
         return res.status(400).json({
           success: false,
           message: "Invalid or inactive Instagram account selected",
+          errorType: "INVALID_ACCOUNT",
         });
       }
     } else {
@@ -66,6 +67,7 @@ const createInstaSubmission = async (req, res) => {
       return res.status(400).json({
         success: false,
         message: "File upload failed. No file received from client.",
+        errorType: "UPLOAD_FAILED",
       });
     }
 
@@ -82,6 +84,7 @@ const createInstaSubmission = async (req, res) => {
       return res.status(400).json({
         success: false,
         message: "Could not process image. Please try a different file.",
+        errorType: "HASH_ERROR",
       });
     }
 
@@ -106,9 +109,10 @@ const createInstaSubmission = async (req, res) => {
 
     console.log("Hashing took", Date.now() - startTime, "ms");
 
+    // Create submission with correct platform value
     const submission = await Instrgram.create({
       user: req.user._id,
-      platform: req.body.platform || "Instragrm",
+      platform: "instagram", // Make sure this matches the enum in the model
       screenshot: cloudinaryUrl,
       imageHash: uploadedImageHash,
       status: "approved",
@@ -117,6 +121,9 @@ const createInstaSubmission = async (req, res) => {
       instagramAccountName: selectedAccount.accountName,
     });
 
+    console.log("Submission created successfully:", submission._id);
+
+    // Update or create earnings
     let earnings = await Earnings.findOne({ user: req.user._id });
     if (!earnings) {
       earnings = await Earnings.create({
@@ -132,7 +139,8 @@ const createInstaSubmission = async (req, res) => {
       await earnings.save();
     }
 
-    if (req.body.linkId) {
+    // Mark link as submitted if provided
+    if (linkId) {
       try {
         const apiUrl =
           process.env.NEXT_PUBLIC_API_URL ||
@@ -149,16 +157,19 @@ const createInstaSubmission = async (req, res) => {
       }
     }
 
+    // Emit socket event for real-time update
     const io = req.app.get("io");
-    io.to(req.user._id.toString()).emit("earningsUpdate", earnings);
-    console.log("Updated earnings:", earnings);
+    if (io) {
+      io.to(req.user._id.toString()).emit("earningsUpdate", earnings);
+      console.log("Earnings update emitted");
+    }
 
     res.status(201).json({
       success: true,
       message: "Submission created successfully",
       data: {
         submission,
-        instragrmAccount: {
+        instagramAccount: {
           name: selectedAccount.accountName,
           url: selectedAccount.profileUrl,
         },
@@ -167,10 +178,21 @@ const createInstaSubmission = async (req, res) => {
     });
   } catch (error) {
     console.error("Submission error:", error);
+
+    // Send appropriate error response
+    if (error.name === "ValidationError") {
+      return res.status(400).json({
+        success: false,
+        message: error.message,
+        errorType: "VALIDATION_ERROR",
+        details: Object.values(error.errors).map((err) => err.message),
+      });
+    }
+
     res.status(500).json({
       success: false,
-      message: "Internal server error",
-      error: error.message,
+      message: error.message || "Internal server error",
+      errorType: "SERVER_ERROR",
     });
   }
 };
@@ -227,7 +249,7 @@ const createInstaMultipleSubmissions = async (req, res) => {
       success: true,
       message: "Multiple submissions processed",
       data: {
-        facebookAccount: {
+        instagramAccount: {
           name: selectedAccount.accountName,
           url: selectedAccount.profileUrl,
         },
@@ -245,10 +267,9 @@ const createInstaMultipleSubmissions = async (req, res) => {
 
 const getUserInstaSubmissions = async (req, res) => {
   try {
-    const submissions = await Submission.find({ user: req.user._id }).populate(
-      "instagramAccount",
-      "accountName profileUrl",
-    );
+    const submissions = await Instrgram.find({ user: req.user._id })
+      .populate("instagramAccount", "accountName profileUrl")
+      .sort({ createdAt: -1 });
     res.status(200).json({ success: true, data: submissions });
   } catch (error) {
     res.status(500).json({
@@ -261,7 +282,7 @@ const getUserInstaSubmissions = async (req, res) => {
 
 const approveInstaSubmission = async (req, res) => {
   try {
-    const submission = await Submission.findById(req.params.id);
+    const submission = await Instrgram.findById(req.params.id);
     if (!submission) {
       return res.status(404).json({ message: "Submission not found" });
     }
@@ -335,8 +356,10 @@ const rejectInstaSubmission = async (req, res) => {
   }
 };
 
-module.exports.createInstaSubmission = createInstaSubmission;
-module.exports.createInstaMultipleSubmissions = createInstaMultipleSubmissions;
-module.exports.getUserInstaSubmissions = getUserInstaSubmissions;
-module.exports.approveInstaSubmission = approveInstaSubmission;
-module.exports.rejectInstaSubmission = rejectInstaSubmission;
+module.exports = {
+  createInstaSubmission,
+  createInstaMultipleSubmissions,
+  getUserInstaSubmissions,
+  approveInstaSubmission,
+  rejectInstaSubmission,
+};

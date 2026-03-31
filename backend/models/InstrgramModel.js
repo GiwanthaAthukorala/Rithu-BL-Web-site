@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
 
 const InstrgramSubmissionSchema = new mongoose.Schema(
   {
@@ -11,14 +10,17 @@ const InstrgramSubmissionSchema = new mongoose.Schema(
     platform: {
       type: String,
       required: true,
-      enum: ["facebook", "Instrgram"],
-      default: "Instrgram",
+      enum: ["facebook", "instagram", "youtube", "tiktok"], // Added "instagram" to enum
+      default: "instagram",
     },
     screenshot: {
       type: String,
       required: true,
     },
-    imageHash: { type: String },
+    imageHash: {
+      type: String,
+      default: null,
+    },
     status: {
       type: String,
       enum: ["pending", "approved", "rejected"],
@@ -39,15 +41,13 @@ const InstrgramSubmissionSchema = new mongoose.Schema(
     instagramAccountName: {
       type: String,
     },
-    //lastSubmissionTime: {
-    //type: Date,
-    //default: Date.now,
   },
-
   { timestamps: true },
 );
 
-//submissionSchema.index({ user: 1, createdAt: -1 });
+// Add index for better query performance
+InstrgramSubmissionSchema.index({ user: 1, createdAt: -1 });
+InstrgramSubmissionSchema.index({ imageHash: 1 });
 
 module.exports = mongoose.model(
   "InstrgramSubmission",

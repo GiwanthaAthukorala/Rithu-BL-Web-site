@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import {
   Upload,
@@ -15,11 +15,16 @@ import {
   TrendingUp,
   Award,
   Sparkles,
+  AlertCircle,
+  Plus,
+  Link as LinkIcon,
+  User,
 } from "lucide-react";
 import Header from "@/components/Header/Header";
 import api from "@/lib/api";
 import { useAuth } from "@/Context/AuthContext";
 import DuplicateWarningModal from "@/components/DuplicateWarningModal";
+import Link from "next/link";
 
 export default function InstagramVerificationTask() {
   const [file, setFile] = useState(null);
@@ -32,6 +37,50 @@ export default function InstagramVerificationTask() {
   const { user, isLoading: isAuthLoading } = useAuth();
   const [showDuplicateModal, setShowDuplicateModal] = useState(false);
   const [previousSubmissionDate, setPreviousSubmissionDate] = useState("");
+  const [submissionSummary, setSubmissionSummary] = useState(null);
+  const [instagramAccounts, setInstagramAccounts] = useState([]);
+  const [selectedInstagramAccount, setSelectedInstagramAccount] =
+    useState(null);
+  const [loadingAccounts, setLoadingAccounts] = useState(true);
+
+  // Mobile detection
+  const isMobile = () => {
+    return (
+      typeof window !== "undefined" &&
+      (/Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent,
+      ) ||
+        window.innerWidth <= 768)
+    );
+  };
+
+  const fetchInstagramAccounts = async () => {
+    try {
+      setLoadingAccounts(true);
+      const response = await api.get("/api/instagram-accounts");
+
+      if (response.data.success) {
+        const activeAccounts = response.data.data.filter((acc) => acc.isActive);
+        setInstagramAccounts(activeAccounts);
+
+        // Auto-select first active account if none selected
+        if (activeAccounts.length > 0 && !selectedInstagramAccount) {
+          setSelectedInstagramAccount(activeAccounts[0]);
+        }
+      }
+    } catch (err) {
+      console.error("Error fetching Instagram accounts:", err);
+      setError("Failed to load your Instagram accounts");
+    } finally {
+      setLoadingAccounts(false);
+    }
+  };
+
+  useEffect(() => {
+    if (user) {
+      fetchInstagramAccounts();
+    }
+  }, [user]);
 
   const handleDragOver = (e) => {
     e.preventDefault();
@@ -83,6 +132,13 @@ export default function InstagramVerificationTask() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Check if Instagram account is selected
+    if (!selectedInstagramAccount) {
+      setError("Please select an Instagram account to use for this task");
+      return;
+    }
+
     if (!file || !user) return;
 
     setIsSubmitting(true);
@@ -91,7 +147,8 @@ export default function InstagramVerificationTask() {
     try {
       const formData = new FormData();
       formData.append("screenshot", file);
-      formData.append("platform", "Instagram");
+      formData.append("platform", "instagram");
+      formData.append("instagramAccountId", selectedInstagramAccount._id);
 
       const token = localStorage.getItem("token");
 
@@ -118,6 +175,11 @@ export default function InstagramVerificationTask() {
 
         if (contentType && contentType.includes("application/json")) {
           const errorData = await response.json();
+
+          if (errorData.errorType === "NO_INSTAGRAM_ACCOUNT") {
+            setError(errorData.message);
+            return;
+          }
 
           if (errorData.message && errorData.message.includes("too similar")) {
             const dateMatch = errorData.message.match(
@@ -221,7 +283,7 @@ export default function InstagramVerificationTask() {
             </div>
 
             <button
-              onClick={() => router.push("/Instagram-Verification/page")}
+              onClick={() => router.push("/Profile/page")}
               className="w-full bg-gradient-to-r from-emerald-600 via-green-600 to-teal-500 text-white px-8 py-4 rounded-2xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 font-bold text-lg shadow-lg"
             >
               View Your Earnings
@@ -284,6 +346,109 @@ export default function InstagramVerificationTask() {
               </div>
             </div>
           </div>
+        </div>
+
+        {/* Instagram Account Selection Section */}
+        <div className="bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl mb-8 border border-white/20 overflow-hidden">
+          <div className="p-6 border-b border-gray-100">
+            <div className="flex items-center justify-between flex-wrap gap-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center">
+                  <User className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <h2 className="text-xl font-bold text-gray-800">
+                    Your Instagram Account
+                  </h2>
+                  <p className="text-sm text-gray-500">
+                    Select which account you're using for this task
+                  </p>
+                </div>
+              </div>
+              <Link
+                href="/Profile/page?tab=instagram-accounts"
+                className="px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl font-semibold text-sm hover:shadow-lg transition-all"
+              >
+                <Plus size={16} className="inline mr-1" />
+                Manage Accounts
+              </Link>
+            </div>
+          </div>
+
+          <div className="p-6">
+            {loadingAccounts ? (
+              <div className="flex justify-center py-8">
+                <div className="animate-spin rounded-full h-8 w-8 border-2 border-purple-500 border-t-transparent"></div>
+              </div>
+            ) : instagramAccounts.length === 0 ? (
+              <div className="text-center py-8">
+                <AlertCircle className="w-12 h-12 text-yellow-500 mx-auto mb-3" />
+                <p className="text-gray-600 mb-4">
+                  No active Instagram accounts found.
+                </p>
+                <Link
+                  href="/Profile/page?tab=instagram-accounts"
+                  className="inline-flex items-center px-6 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl font-semibold hover:shadow-lg transition-all"
+                >
+                  <Plus size={16} className="mr-2" />
+                  Add Your First Account
+                </Link>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {instagramAccounts.map((account) => (
+                  <div
+                    key={account._id}
+                    onClick={() => setSelectedInstagramAccount(account)}
+                    className={`flex items-center justify-between p-4 rounded-xl border-2 cursor-pointer transition-all duration-200 ${
+                      selectedInstagramAccount?._id === account._id
+                        ? "border-purple-500 bg-purple-50"
+                        : "border-gray-200 hover:border-purple-300 hover:bg-gray-50"
+                    }`}
+                  >
+                    <div className="flex items-center space-x-3 flex-1 min-w-0">
+                      <div
+                        className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${
+                          selectedInstagramAccount?._id === account._id
+                            ? "bg-purple-600 text-white"
+                            : "bg-purple-200 text-purple-700"
+                        }`}
+                      >
+                        <Instagram size={18} />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="font-semibold text-gray-900">
+                          {account.accountName}
+                        </p>
+                        <p className="text-xs text-gray-500 truncate">
+                          {account.profileUrl}
+                        </p>
+                      </div>
+                    </div>
+                    {selectedInstagramAccount?._id === account._id && (
+                      <CheckCircle
+                        className="text-purple-600 flex-shrink-0"
+                        size={20}
+                      />
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {selectedInstagramAccount && instagramAccounts.length > 0 && (
+            <div className="mx-6 mb-6 p-3 bg-green-50 border border-green-200 rounded-lg">
+              <p className="text-green-700 text-sm flex items-center">
+                <CheckCircle size={16} className="mr-2 flex-shrink-0" />
+                Using account:{" "}
+                <strong className="mx-1 truncate">
+                  {selectedInstagramAccount.accountName}
+                </strong>
+                for this task
+              </p>
+            </div>
+          )}
         </div>
 
         {/* Main Content */}
@@ -356,12 +521,45 @@ export default function InstagramVerificationTask() {
                   ))}
                 </div>
 
+                {/* Mobile-specific instructions */}
+                {isMobile() && (
+                  <div className="mb-8 bg-gradient-to-r from-purple-50 to-pink-50 p-6 rounded-xl border border-purple-200">
+                    <h3 className="text-lg font-semibold text-purple-800 mb-4 flex items-center space-x-2">
+                      <span className="text-xl">📱</span>
+                      <span>Mobile Instructions</span>
+                    </h3>
+                    <div className="space-y-3 text-purple-700">
+                      <p className="flex items-start space-x-2">
+                        <span className="text-purple-600 font-bold">•</span>
+                        <span>
+                          Link will open in a new tab or redirect you to
+                          Instagram
+                        </span>
+                      </p>
+                      <p className="flex items-start space-x-2">
+                        <span className="text-purple-600 font-bold">•</span>
+                        <span>
+                          Use your browser's back button to return here after
+                          liking
+                        </span>
+                      </p>
+                      <p className="flex items-start space-x-2">
+                        <span className="text-purple-600 font-bold">•</span>
+                        <span>
+                          Take screenshot using your device's screenshot
+                          function (usually Power + Volume Down)
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+                )}
+
                 {/* Task Links */}
                 <div className="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 p-8 rounded-3xl border-2 border-blue-200 shadow-lg">
                   <h3 className="font-black text-gray-800 mb-6 text-xl flex items-center gap-2">
                     <span className="text-3xl">📱</span>
-                    Complete These Tasks
-                  </h3>{" "}
+                    Complete This Task
+                  </h3>
                   <div className="space-y-4">
                     <a
                       href="https://www.instagram.com/p/DWbPPaiDy42/?igsh=bTh6YWl3ejJqMGJu"
@@ -377,83 +575,12 @@ export default function InstagramVerificationTask() {
                           පොස්ට් ලයික් (Like) කරන්න
                         </span>
                         <span className="block text-gray-500 text-sm mt-1">
-                          Post 1 - Click to open
+                          Click to open post on Instagram
                         </span>
                       </div>
                       <ExternalLink className="w-6 h-6 text-pink-400 group-hover:text-pink-600 transition-colors" />
                     </a>
-                  </div>{" "}
-                  {/*   */}
-                  {/*
-                  <div className="mt-6 bg-gradient-to-r from-pink-500 via-rose-500 to-red-500 p-6 rounded-2xl shadow-xl">
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                      <div className="flex-1">
-                        <h4 className="font-black text-white mb-2 text-lg flex items-center gap-2">
-                          <Instagram className="w-6 h-6" />
-                          Follow Our Main Account
-                        </h4>
-                        <p className="text-white/90 text-sm">
-                          ඉන්ස්ට්‍රග්‍රෑම් එකවුන්ට් එක ෆලෝ කරන්න • Vedhyaya
-                          Ayurveda
-                        </p>
-                      </div>
-                      <a
-                        href="https://www.instagram.com/vedhyayaayurveda?igsh=MWNibHhzYnV6dWdscw%3D%3D&utm_source=qr"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center justify-center bg-white text-pink-600 px-6 py-3 rounded-xl hover:bg-pink-50 transition-all duration-200 font-bold shadow-lg hover:shadow-xl transform hover:scale-105"
-                      >
-                        Follow Now
-                        <ExternalLink className="w-4 h-4 ml-2" />
-                      </a>
-                    </div>
                   </div>
-                   {" "}
-                  <div className="mt-6 bg-gradient-to-r from-pink-500 via-rose-500 to-red-500 p-6 rounded-2xl shadow-xl">
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                      <div className="flex-1">
-                        <h4 className="font-black text-white mb-2 text-lg flex items-center gap-2">
-                          <Instagram className="w-6 h-6" />
-                          Follow Our Main Account
-                        </h4>
-                        <p className="text-white/90 text-sm">
-                          ඉන්ස්ට්‍රග්‍රෑම් එකවුන්ට් එක ෆලෝ කරන්න • S.N.M
-                          Environment Cleaners
-                        </p>
-                      </div>
-                      <a
-                        href="https://www.instagram.com/gullybowserkandylk?igsh=MWhodmJ4NHAwNHR0cg%3D%3D&utm_source=qr"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center justify-center bg-white text-pink-600 px-6 py-3 rounded-xl hover:bg-pink-50 transition-all duration-200 font-bold shadow-lg hover:shadow-xl transform hover:scale-105"
-                      >
-                        Follow Now
-                        <ExternalLink className="w-4 h-4 ml-2" />
-                      </a>
-                    </div>
-                  </div>{" "}
-                  <div className="mt-6 bg-gradient-to-r from-pink-500 via-rose-500 to-red-500 p-6 rounded-2xl shadow-xl">
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                      <div className="flex-1">
-                        <h4 className="font-black text-white mb-2 text-lg flex items-center gap-2">
-                          <Instagram className="w-6 h-6" />
-                          Follow Our Main Account
-                        </h4>
-                        <p className="text-white/90 text-sm">
-                          ඉන්ස්ට්‍රග්‍රෑම් එකවුන්ට් එක ෆලෝ කරන්න • Sandun Perera
-                        </p>
-                      </div>
-                      <a
-                        href="https://www.instagram.com/s.a_perera?igsh=MWdmN29henR3cmJmNw=="
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center justify-center bg-white text-pink-600 px-6 py-3 rounded-xl hover:bg-pink-50 transition-all duration-200 font-bold shadow-lg hover:shadow-xl transform hover:scale-105"
-                      >
-                        Follow Now
-                        <ExternalLink className="w-4 h-4 ml-2" />
-                      </a>
-                    </div>
-                  </div>*/}
                 </div>
               </div>
 
@@ -503,6 +630,15 @@ export default function InstagramVerificationTask() {
                     Upload Screenshot
                   </h3>
                 </div>
+
+                {error && (
+                  <div className="mb-6 p-4 bg-red-50 border-l-4 border-red-500 rounded-2xl shadow-lg">
+                    <p className="text-sm text-red-700 font-bold flex items-center gap-2">
+                      <AlertCircle className="w-5 h-5" />
+                      {error}
+                    </p>
+                  </div>
+                )}
 
                 <form onSubmit={handleSubmit}>
                   <div className="mb-8">
@@ -574,21 +710,20 @@ export default function InstagramVerificationTask() {
                         </label>
                       </div>
                     )}
-
-                    {error && (
-                      <div className="mt-6 p-5 bg-red-50 border-l-4 border-red-500 rounded-2xl shadow-lg">
-                        <p className="text-sm text-red-700 font-bold">
-                          {error}
-                        </p>
-                      </div>
-                    )}
                   </div>
 
                   <button
                     type="submit"
-                    disabled={!file || isSubmitting}
+                    disabled={
+                      !file ||
+                      isSubmitting ||
+                      instagramAccounts.length === 0 ||
+                      !selectedInstagramAccount
+                    }
                     className={`w-full py-5 rounded-2xl font-black text-xl transition-all duration-300 shadow-xl ${
-                      file
+                      file &&
+                      instagramAccounts.length > 0 &&
+                      selectedInstagramAccount
                         ? "bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 hover:from-green-600 hover:via-emerald-600 hover:to-teal-600 text-white hover:shadow-2xl transform hover:scale-105"
                         : "bg-gray-200 text-gray-400 cursor-not-allowed"
                     }`}
@@ -606,6 +741,13 @@ export default function InstagramVerificationTask() {
                       </span>
                     )}
                   </button>
+
+                  {(instagramAccounts.length === 0 ||
+                    !selectedInstagramAccount) && (
+                    <p className="text-center text-sm text-red-500 mt-4">
+                      Please add and select an Instagram account above
+                    </p>
+                  )}
                 </form>
               </div>
             </div>
@@ -622,6 +764,18 @@ export default function InstagramVerificationTask() {
           <TrendingUp className="w-6 h-6" />
         </button>
       </div>
+
+      {/* Duplicate Warning Modal */}
+      {showDuplicateModal && (
+        <DuplicateWarningModal
+          onClose={() => {
+            setShowDuplicateModal(false);
+            setFile(null);
+            setPreview(null);
+          }}
+          previousDate={previousSubmissionDate}
+        />
+      )}
 
       <style jsx>{`
         @keyframes float {
