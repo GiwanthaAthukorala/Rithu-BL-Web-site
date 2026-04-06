@@ -23,26 +23,21 @@ const connectDB = async () => {
 
 const facebookLinks = [
   {
-    url: "https://www.facebook.com/share/p/18VFxuhyQw/?mibextid=wwXIfr",
+    url: "https://m.facebook.com/story.php?story_fbid=pfbid0295VULYefsqZWYuZ6ySzF4uAjx8ZjxoNupy5jcv6m2SAYB3tkCJMQow1essxrEk7jl&id=100018685975373&mibextid=wwXIfr",
     title: "පොස්ට් ලයික් (Like) කරන්න.",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/1HboQ8LUHW/",
-    title: "Demiar T Sharts - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    url: "https://www.facebook.com/share/1ArDJLU5M3/",
+    title: "පොස්ට් ලයික් (Like) කරන්න.",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/17yYcpqqf1",
-    title: "Seya Chandrasekara- පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/share/1CdHGnbyWA",
-    title: "SL Martin Audio - පෙජ් එක ලයික්(Like)/ෆලෝ(follwer) කරන්න කරන්න",
+    url: "https://www.facebook.com/share/1HyEph8mQJ/?mibextid=wwXIfr",
+    title:
+      "Bethany International Preschool - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
@@ -56,7 +51,7 @@ const facebookLinks = [
     earnings: 1.0,
   },
   {
-    url: "https://m.facebook.com/story.php?story_fbid=pfbid021ouhx5gG5fgw5tcmBTqDizQ2fjY3eNekmRRm5hBKP9SS1sKnVK9AcA9xw7bzxzvEl&id=100010122966156&mibextid=wwXIfr",
+    url: "https://m.facebook.com/story.php?story_fbid=pfbid0295VULYefsqZWYuZ6ySzF4uAjx8ZjxoNupy5jcv6m2SAYB3tkCJMQow1essxrEk7jl&id=100018685975373&mibextid=wwXIfr",
     title: "පොස්ට් ලයික් (Like) කරන්න.",
     platform: "facebook",
     earnings: 1.0,
