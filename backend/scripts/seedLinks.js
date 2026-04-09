@@ -23,21 +23,44 @@ const connectDB = async () => {
 
 const facebookLinks = [
   {
-    url: "https://m.facebook.com/story.php?story_fbid=pfbid0295VULYefsqZWYuZ6ySzF4uAjx8ZjxoNupy5jcv6m2SAYB3tkCJMQow1essxrEk7jl&id=100018685975373&mibextid=wwXIfr",
+    url: "https://www.facebook.com/share/r/14WEtPEvAPR/?mibextid=wwXIfr",
     title: "පොස්ට් ලයික් (Like) කරන්න.",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/1ArDJLU5M3/",
+    url: "https://www.facebook.com/share/v/1DTdGFEz2g/",
     title: "පොස්ට් ලයික් (Like) කරන්න.",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/1HyEph8mQJ/?mibextid=wwXIfr",
-    title:
-      "Bethany International Preschool - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
+    url: "https://www.facebook.com/share/r/1GEFNfwpfG/",
+    title: "පොස්ට් ලයික් (Like) කරන්න.",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/share/v/1B4DVhC2t9/?mibextid=wwXIfr",
+    title: "පොස්ට් ලයික් (Like) කරන්න.",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/share/18VBWq1hDN/?mibextid=wwXIfr",
+    title: "Thinethra.lk - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/manyd3als?mibextid=wwXIfr&mibextid=wwXIfr",
+    title: "Many Deals - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/sportizzacom",
+    title: "Sportizza - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
