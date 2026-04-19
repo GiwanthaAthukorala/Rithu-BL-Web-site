@@ -23,19 +23,25 @@ const connectDB = async () => {
 
 const facebookLinks = [
   {
-    url: "https://www.facebook.com/share/r/14WEtPEvAPR/?mibextid=wwXIfr",
+    url: "https://www.facebook.com/share/r/1LKSVwVsCn/?mibextid=wwXIfr",
     title: "පොස්ට් ලයික් (Like) කරන්න.",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/v/1DTdGFEz2g/",
+    url: "https://www.facebook.com/share/r/1DXLiBZVjH/",
     title: "පොස්ට් ලයික් (Like) කරන්න.",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/r/1GEFNfwpfG/",
+    url: "https://m.facebook.com/story.php?story_fbid=pfbid0Gw89q4YBuFDPrkQywkUhmkGizdrXcuE9CwgmPTSAwvmcxLbB8oEzR6VHayoWpr5Vl&id=61561504599725&mibextid=ZbWKwL",
+    title: "පොස්ට් ලයික් (Like) කරන්න.",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://web.facebook.com/reel/1490838922700714",
     title: "පොස්ට් ලයික් (Like) කරන්න.",
     platform: "facebook",
     earnings: 1.0,
@@ -47,20 +53,8 @@ const facebookLinks = [
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/18VBWq1hDN/?mibextid=wwXIfr",
-    title: "Thinethra.lk - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/manyd3als?mibextid=wwXIfr&mibextid=wwXIfr",
-    title: "Many Deals - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/sportizzacom",
-    title: "Sportizza - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
+    url: "https://www.facebook.com/share/1XLY2984Db/?mibextid=wwXIfr",
+    title: "Malinga Vijesiri - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
