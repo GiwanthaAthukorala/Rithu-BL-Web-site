@@ -23,38 +23,41 @@ const connectDB = async () => {
 
 const facebookLinks = [
   {
-    url: "https://www.facebook.com/share/r/1LKSVwVsCn/?mibextid=wwXIfr",
-    title: "පොස්ට් ලයික් (Like) කරන්න.",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
     url: "https://www.facebook.com/share/r/1DXLiBZVjH/",
     title: "පොස්ට් ලයික් (Like) කරන්න.",
     platform: "facebook",
     earnings: 1.0,
   },
+
   {
-    url: "https://m.facebook.com/story.php?story_fbid=pfbid0Gw89q4YBuFDPrkQywkUhmkGizdrXcuE9CwgmPTSAwvmcxLbB8oEzR6VHayoWpr5Vl&id=61561504599725&mibextid=ZbWKwL",
-    title: "පොස්ට් ලයික් (Like) කරන්න.",
+    url: "https://www.facebook.com/share/1DzQrgLuS8",
+    title:
+      "Synergy consultants - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://web.facebook.com/reel/1490838922700714",
-    title: "පොස්ට් ලයික් (Like) කරන්න.",
+    url: "https://www.facebook.com/share/1KvFSanteL/?mibextid=wwXIfr",
+    title: "K-Glow Cosmetics - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/v/1B4DVhC2t9/?mibextid=wwXIfr",
-    title: "පොස්ට් ලයික් (Like) කරන්න.",
+    url: "https://www.facebook.com/share/1bhF4yZv1b",
+    title: "Global Lanka News - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/1XLY2984Db/?mibextid=wwXIfr",
-    title: "Malinga Vijesiri - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
+    url: "https://www.facebook.com/share/1FtXuiiguY",
+    title:
+      "නෝනා ෆැෂන් Nona Fashion - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/share/18hc8yE9ni/?mibextid=wwXIfr",
+    title: "eDisplay360 - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
