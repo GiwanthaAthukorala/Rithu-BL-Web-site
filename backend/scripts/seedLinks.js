@@ -23,13 +23,6 @@ const connectDB = async () => {
 
 const facebookLinks = [
   {
-    url: "https://www.facebook.com/share/r/1DXLiBZVjH/",
-    title: "පොස්ට් ලයික් (Like) කරන්න.",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-
-  {
     url: "https://www.facebook.com/share/1DzQrgLuS8",
     title:
       "Synergy consultants - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
