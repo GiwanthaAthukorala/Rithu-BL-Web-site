@@ -360,11 +360,59 @@ export default function TikTokVerificationTask() {
                       Follow Our Main Account -ටික් ටොක් එකව්න්ට් එක ෆලෝ කරන්න
                     </h4>
                     <p className="text-gray-300 text-xs sm:text-sm">
-                      reshitha_ruwishwaka - Join our community
+                      Amila Athukorala - Join our community
                     </p>
                   </div>
                   <a
-                    href="https://www.tiktok.com/@reshitha_ruwishwaka?_r=1&_t=ZS-95qnRiM3tLQ"
+                    href="https://www.tiktok.com/@amila.athukoralaofficial?_r=1&_t=ZS-95j4cti4eLQ"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center bg-gradient-to-r from-pink-500 to-red-500 text-white px-4 sm:px-6 py-2 rounded-lg hover:from-pink-600 hover:to-red-600 transition-all duration-200 font-medium group-hover:scale-105 text-xs sm:text-sm"
+                  >
+                    <span className="hidden sm:inline">
+                      Follow Now - ටික් ටොක් එකව්න්ට් එක ෆලෝ කරන්න
+                    </span>
+                    <span className="sm:hidden">Follow Now</span>
+                    <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4 ml-1 sm:ml-2" />
+                  </a>
+                </div>
+              </div>
+              <div className="bg-gradient-to-r from-gray-800 to-black p-4 sm:p-6 rounded-lg sm:rounded-xl border border-gray-300 hover:shadow-lg transition-all duration-300 group">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0">
+                  <div className="flex-1">
+                    <h4 className="font-semibold text-white mb-1 text-sm sm:text-base">
+                      Follow Our Main Account -ටික් ටොක් එකව්න්ට් එක ෆලෝ කරන්න
+                    </h4>
+                    <p className="text-gray-300 text-xs sm:text-sm">
+                      Weer- official - Join our community
+                    </p>
+                  </div>
+                  <a
+                    href="https://www.tiktok.com/@warunaweerasinghe?_r=1&_t=ZS-95suypYgEQK"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center bg-gradient-to-r from-pink-500 to-red-500 text-white px-4 sm:px-6 py-2 rounded-lg hover:from-pink-600 hover:to-red-600 transition-all duration-200 font-medium group-hover:scale-105 text-xs sm:text-sm"
+                  >
+                    <span className="hidden sm:inline">
+                      Follow Now - ටික් ටොක් එකව්න්ට් එක ෆලෝ කරන්න
+                    </span>
+                    <span className="sm:hidden">Follow Now</span>
+                    <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4 ml-1 sm:ml-2" />
+                  </a>
+                </div>
+              </div>
+              <div className="bg-gradient-to-r from-gray-800 to-black p-4 sm:p-6 rounded-lg sm:rounded-xl border border-gray-300 hover:shadow-lg transition-all duration-300 group">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0">
+                  <div className="flex-1">
+                    <h4 className="font-semibold text-white mb-1 text-sm sm:text-base">
+                      Follow Our Main Account -ටික් ටොක් එකව්න්ට් එක ෆලෝ කරන්න
+                    </h4>
+                    <p className="text-gray-300 text-xs sm:text-sm">
+                      hiru Fashion - Join our community
+                    </p>
+                  </div>
+                  <a
+                    href="https://www.tiktok.com/@hiru.fashion21?_r=1&_t=ZS-95uEbtbT2Y8"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center justify-center bg-gradient-to-r from-pink-500 to-red-500 text-white px-4 sm:px-6 py-2 rounded-lg hover:from-pink-600 hover:to-red-600 transition-all duration-200 font-medium group-hover:scale-105 text-xs sm:text-sm"

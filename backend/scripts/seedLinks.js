@@ -23,14 +23,39 @@ const connectDB = async () => {
 
 const facebookLinks = [
   {
-    url: "https://www.facebook.com/profile.php?id=61584059455505",
-    title: "Art One - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
+    url: "https://www.facebook.com/share/16CebQ58A4/?mibextid=wwXIfr",
+    title:
+      "San Lanka-COCO Products - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/18cBwwF9i4",
-    title: "ceylon AgroLab - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
+    url: "https://www.facebook.com/share/1Dp7HpSWQV/?mibextid=wwXIfr",
+    title: "Luxury Mist - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/share/17QhnKNDJQ/?mibextid=wwXIfr",
+    title: "Ogi’s perfect - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/profile.php?id=61578784323627",
+    title: "Hiru Fashion - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/share/1BHCQnn6M4/?mibextid=wwXIfr",
+    title: "Pesil Pathirana - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/share/p/18LHZSDCFU/",
+    title: "පොස්ට් ලයික් (Like) කරන්න.",
     platform: "facebook",
     earnings: 1.0,
   },
