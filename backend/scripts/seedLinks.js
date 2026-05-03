@@ -23,27 +23,23 @@ const connectDB = async () => {
 
 const facebookLinks = [
   {
-    url: "https://www.facebook.com/share/1CUgj3QXWM",
+    url: "https://www.facebook.com/share/1L92YbVSvH/?mibextid=wwXIfr",
+    title: "Gaya's diary - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/share/1Ch7ETxNuv",
     title:
-      "Vishaka Herbal Beauty Product - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
+      "ගුවන් සේයා - Guwan Seya - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
+
   {
-    url: "https://www.facebook.com/share/1DyPM2zYPx",
-    title: "Yoti - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/share/17Q9DbeoyP",
-    title: "Dulaa Dissanayake - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://web.facebook.com/share/p/17jph2MY4a/",
-    title: "පොස්ට් ලයික් (Like) කරන්න.",
+    url: "https://www.facebook.com/share/1B9FCQH3Mc/?mibextid=wwXIfr",
+    title:
+      "රජරට king luxury edition - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },

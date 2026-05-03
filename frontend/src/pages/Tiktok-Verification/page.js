@@ -384,11 +384,11 @@ export default function TikTokVerificationTask() {
                       Follow Our Main Account -ටික් ටොක් එකව්න්ට් එක ෆලෝ කරන්න
                     </h4>
                     <p className="text-gray-300 text-xs sm:text-sm">
-                      Weer- official - Join our community
+                      Guwan Seya - ගුවන් සේයා - Join our community
                     </p>
                   </div>
                   <a
-                    href="https://www.tiktok.com/@warunaweerasinghe?_r=1&_t=ZS-95suypYgEQK"
+                    href="https://www.tiktok.com/@guwanseya"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center justify-center bg-gradient-to-r from-pink-500 to-red-500 text-white px-4 sm:px-6 py-2 rounded-lg hover:from-pink-600 hover:to-red-600 transition-all duration-200 font-medium group-hover:scale-105 text-xs sm:text-sm"
@@ -408,11 +408,11 @@ export default function TikTokVerificationTask() {
                       Follow Our Main Account -ටික් ටොක් එකව්න්ට් එක ෆලෝ කරන්න
                     </h4>
                     <p className="text-gray-300 text-xs sm:text-sm">
-                      Its_Nisy 🤍 nisandi_saushilya - Join our community
+                      AI HUSTLE LAB - Join our community
                     </p>
                   </div>
                   <a
-                    href="https://www.tiktok.com/@nisandi_saushilya?_r=1&_t=ZS-960GEdkYZ0K"
+                    href="https://www.tiktok.com/@ai.hustle.lab75?_r=1&_t=ZS-962f0McehQz"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center justify-center bg-gradient-to-r from-pink-500 to-red-500 text-white px-4 sm:px-6 py-2 rounded-lg hover:from-pink-600 hover:to-red-600 transition-all duration-200 font-medium group-hover:scale-105 text-xs sm:text-sm"
