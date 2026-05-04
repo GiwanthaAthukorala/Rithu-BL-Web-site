@@ -560,7 +560,8 @@ export default function InstagramVerificationTask() {
                     <span className="text-3xl">📱</span>
                     Complete This Task
                   </h3>
-                  <div className="space-y-4">
+
+                  {/*  <div className="space-y-4">
                     <a
                       href="https://www.instagram.com/p/DXvwSREDl6S/?igsh=MW1hb3pncGNtOHRwMw=="
                       target="_blank"
@@ -581,28 +582,7 @@ export default function InstagramVerificationTask() {
                       <ExternalLink className="w-6 h-6 text-pink-400 group-hover:text-pink-600 transition-colors" />
                     </a>
                   </div>
-                  <div className="space-y-4">
-                    <a
-                      href="https://www.instagram.com/p/DXvwTfujpYR/?igsh=cDR4OXN5dTJ2Yzlz"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-4 bg-white p-5 rounded-2xl hover:shadow-xl transition-all duration-300 group border-2 border-transparent hover:border-pink-300 transform hover:-translate-y-1"
-                    >
-                      <div className="w-14 h-14 bg-gradient-to-br from-pink-500 via-rose-500 to-orange-500 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg group-hover:scale-110 transition-transform">
-                        <Heart className="w-7 h-7 text-white" />
-                      </div>
-                      <div className="flex-1">
-                        <span className="block text-gray-800 font-bold text-lg group-hover:text-pink-600 transition-colors">
-                          පොස්ට් ලයික් (Like) කරන්න
-                        </span>
-                        <span className="block text-gray-500 text-sm mt-1">
-                          Click to open post on Instagram
-                        </span>
-                      </div>
-                      <ExternalLink className="w-6 h-6 text-pink-400 group-hover:text-pink-600 transition-colors" />
-                    </a>
-                  </div>
-                  {/*    */}
+                     */}
                   {/*  <div className="mt-6 bg-gradient-to-r from-pink-500 via-rose-500 to-red-500 p-6 rounded-2xl shadow-xl">
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                       <div className="flex-1">

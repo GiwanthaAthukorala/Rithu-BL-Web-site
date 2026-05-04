@@ -23,23 +23,53 @@ const connectDB = async () => {
 
 const facebookLinks = [
   {
-    url: "https://www.facebook.com/share/1L92YbVSvH/?mibextid=wwXIfr",
-    title: "Gaya's diary - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
+    url: "https://www.facebook.com/share/r/1DYXKm5Nqp/",
+    title: "පොස්ට් ලයික් (Like) කරන්න.",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/1Ch7ETxNuv",
+    url: "https://www.facebook.com/share/p/1MmZ6q2B8W/",
+    title: "පොස්ට් ලයික් (Like) කරන්න.",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/share/1LTRbqoA8p/?mibextid=wwXIfr",
     title:
-      "ගුවන් සේයා - Guwan Seya - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
+      "Prana Ayurvedic Products - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/share/16kgMz3V9T/?mibextid=wwXIfr",
+    title: "Biz Lead Masters - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
 
   {
-    url: "https://www.facebook.com/share/1B9FCQH3Mc/?mibextid=wwXIfr",
+    url: "https://www.facebook.com/share/1ER5r9Ld8Q",
     title:
-      "රජරට king luxury edition - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
+      "සුභ නැකත - 𝗦𝗨𝗕𝗔 𝗡𝗘𝗞𝗔𝗧𝗛𝗔 - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/share/1B6VtwZJEG",
+    title: "Easy Korea Life - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/share/18mjpytUQi",
+    title: "High Care Agro - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://web.facebook.com/profile.php?id=61589035411536",
+    title: "Manu Fashion - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },

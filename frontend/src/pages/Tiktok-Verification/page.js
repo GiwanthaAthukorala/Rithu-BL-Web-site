@@ -408,11 +408,11 @@ export default function TikTokVerificationTask() {
                       Follow Our Main Account -ටික් ටොක් එකව්න්ට් එක ෆලෝ කරන්න
                     </h4>
                     <p className="text-gray-300 text-xs sm:text-sm">
-                      AI HUSTLE LAB - Join our community
+                      සුභ නැකත - Suba Nekatha - Join our community
                     </p>
                   </div>
                   <a
-                    href="https://www.tiktok.com/@ai.hustle.lab75?_r=1&_t=ZS-962f0McehQz"
+                    href="https://www.tiktok.com/@suba.nekatha.media?_r=1&_t=ZS-963bMAvbDyn"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center justify-center bg-gradient-to-r from-pink-500 to-red-500 text-white px-4 sm:px-6 py-2 rounded-lg hover:from-pink-600 hover:to-red-600 transition-all duration-200 font-medium group-hover:scale-105 text-xs sm:text-sm"
