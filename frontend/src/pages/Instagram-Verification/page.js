@@ -560,8 +560,7 @@ export default function InstagramVerificationTask() {
                     <span className="text-3xl">📱</span>
                     Complete This Task
                   </h3>
-
-                  <div className="space-y-4">
+                  {/*  <div className="space-y-4">
                     <a
                       href="https://www.instagram.com/p/DX9gDE_EsIY/?igsh=bm9pN3NuNXNsODIw"
                       target="_blank"
@@ -570,7 +569,7 @@ export default function InstagramVerificationTask() {
                     >
                       <div className="w-14 h-14 bg-gradient-to-br from-pink-500 via-rose-500 to-orange-500 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg group-hover:scale-110 transition-transform">
                         <Heart className="w-7 h-7 text-white" />
-                      </div>
+                         </div>
                       <div className="flex-1">
                         <span className="block text-gray-800 font-bold text-lg group-hover:text-pink-600 transition-colors">
                           පොස්ට් ලයික් (Like) කරන්න
@@ -582,8 +581,8 @@ export default function InstagramVerificationTask() {
                       <ExternalLink className="w-6 h-6 text-pink-400 group-hover:text-pink-600 transition-colors" />
                     </a>
                   </div>
-                  {/*  */}
-                  {/*  <div className="mt-6 bg-gradient-to-r from-pink-500 via-rose-500 to-red-500 p-6 rounded-2xl shadow-xl">
+                 */}
+                  <div className="mt-6 bg-gradient-to-r from-pink-500 via-rose-500 to-red-500 p-6 rounded-2xl shadow-xl">
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                       <div className="flex-1">
                         <h4 className="font-black text-white mb-2 text-lg flex items-center gap-2">
@@ -591,12 +590,12 @@ export default function InstagramVerificationTask() {
                           Follow Our Main Account
                         </h4>
                         <p className="text-white/90 text-sm">
-                          ඉන්ස්ට්‍රග්‍රෑම් එකවුන්ට් එක ෆලෝ කරන්න • Rotary Roofvo
-                          Restaurant & Bar
+                          ඉන්ස්ට්‍රග්‍රෑම් එකවුන්ට් එක ෆලෝ කරන්න • Leesons
+                          Campus
                         </p>
                       </div>
                       <a
-                        href="https://www.instagram.com/roofvo.lk?igsh=cjZwM2o2dndjeGl0"
+                        href="https://www.instagram.com/leesonscampus?igsh=cnVpNHc3bGN0Z3J0"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex items-center justify-center bg-white text-pink-600 px-6 py-3 rounded-xl hover:bg-pink-50 transition-all duration-200 font-bold shadow-lg hover:shadow-xl transform hover:scale-105"
@@ -606,7 +605,7 @@ export default function InstagramVerificationTask() {
                       </a>
                     </div>
                   </div>{" "}
-               */}
+                  {/*  */}
                 </div>
               </div>{" "}
               {/* Requirements */}
