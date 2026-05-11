@@ -590,12 +590,12 @@ export default function InstagramVerificationTask() {
                           Follow Our Main Account
                         </h4>
                         <p className="text-white/90 text-sm">
-                          ඉන්ස්ට්‍රග්‍රෑම් එකවුන්ට් එක ෆලෝ කරන්න • Leesons
-                          Campus
+                          ඉන්ස්ට්‍රග්‍රෑම් එකවුන්ට් එක ෆලෝ කරන්න • WivesOnly
+                          Australia
                         </p>
                       </div>
                       <a
-                        href="https://www.instagram.com/leesonscampus?igsh=cnVpNHc3bGN0Z3J0"
+                        href="https://www.instagram.com/wives.only_aus/"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex items-center justify-center bg-white text-pink-600 px-6 py-3 rounded-xl hover:bg-pink-50 transition-all duration-200 font-bold shadow-lg hover:shadow-xl transform hover:scale-105"
