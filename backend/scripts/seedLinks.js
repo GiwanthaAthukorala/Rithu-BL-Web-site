@@ -23,86 +23,60 @@ const connectDB = async () => {
 
 const facebookLinks = [
   {
-    url: "https://www.facebook.com/share/r/1BEwxekbPe/",
+    url: "https://www.facebook.com/share/p/191sXwYrdn/",
     title: "පොස්ට් ලයික් (Like) කරන්න.",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/p/1CXrKfaTrh/",
+    url: "https://www.facebook.com/share/p/1D5ghD3T1c/",
     title: "පොස්ට් ලයික් (Like) කරන්න.",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/p/1DPQXpyDEW/",
+    url: "https://www.facebook.com/share/p/1E3noBtNUn/",
     title: "පොස්ට් ලයික් (Like) කරන්න.",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/1B3L93WHUo",
-    title: "සන්සුන් මනස - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
+    url: "https://www.facebook.com/share/r/1EB3UwSqVX/",
+    title: "පොස්ට් ලයික් (Like) කරන්න.",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/AUFITSriLanka",
+    url: "https://www.facebook.com/share/1C2tGCPT4w",
     title:
-      "AUFIT Air Conditioners - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
+      "RDM Perera Auto Ac Repair Shop - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/1CwEDg67Dc",
+    url: "https://www.facebook.com/share/1L5nzLjbkQ",
+    title: "ආයු වෙද අරණ - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+
+  {
+    url: "https://www.facebook.com/share/1Ey5SufnK8/?mibextid=wwXIfr",
     title:
-      "නෝනා ෆැෂන් Nona Fashion - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
+      "Japanese Class - Roshini Sensei - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/1HoMe7YSZP",
-    title: "Doodlezy - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/share/1EWyFko72z",
+    url: "https://www.facebook.com/share/1D19MhRMsD/?mibextid=wwXIfr",
     title:
-      "Mahatun Maama- මහතුන් මාමා - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
+      "Thashila Sadew Liyanage - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/1BUGGW6s3N/?mibextid=wwXIfr",
-    title:
-      "CSandun Harischandra - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/share/1DJ9zxnhpW/",
-    title: "Kasun Kp Pradeep - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/share/1Chh27N76R",
-    title: "Senora fashion - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/profile.php?id=61588996731424",
-    title:
-      "MC Cinematic Studio - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/share/1TXxW45sex/?mibextid=wwXIfr",
-    title:
-      "iCare Mobile and Laptop Solutions - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
+    url: "https://www.facebook.com/share/1PcoU7PQde",
+    title: "𝐇𝐚𝐢𝐫𝐲 - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
