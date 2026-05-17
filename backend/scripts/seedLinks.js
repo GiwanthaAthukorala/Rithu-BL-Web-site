@@ -23,60 +23,21 @@ const connectDB = async () => {
 
 const facebookLinks = [
   {
-    url: "https://www.facebook.com/share/p/191sXwYrdn/",
-    title: "පොස්ට් ලයික් (Like) කරන්න.",
+    url: "https://www.facebook.com/profile.php?id=61584523317625&mibextid=ZbWKwL",
+    title: "infinity walk - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/p/1D5ghD3T1c/",
-    title: "පොස්ට් ලයික් (Like) කරන්න.",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/share/p/1E3noBtNUn/",
-    title: "පොස්ට් ලයික් (Like) කරන්න.",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/share/r/1EB3UwSqVX/",
-    title: "පොස්ට් ලයික් (Like) කරන්න.",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/share/1C2tGCPT4w",
+    url: "https://www.facebook.com/share/18hVDC6C3j",
     title:
-      "RDM Perera Auto Ac Repair Shop - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
+      "The Gini Kukulla - Flame Grilled Kitchen - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/1L5nzLjbkQ",
-    title: "ආයු වෙද අරණ - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-
-  {
-    url: "https://www.facebook.com/share/1Ey5SufnK8/?mibextid=wwXIfr",
-    title:
-      "Japanese Class - Roshini Sensei - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/share/1D19MhRMsD/?mibextid=wwXIfr",
-    title:
-      "Thashila Sadew Liyanage - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/share/1PcoU7PQde",
-    title: "𝐇𝐚𝐢𝐫𝐲 - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
+    url: "https://www.facebook.com/share/18mJK5c1mX",
+    title: "Velvona Fashion - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
