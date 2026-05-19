@@ -331,15 +331,15 @@ export default function TikTokVerificationTask() {
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0">
                   <div className="flex-1">
                     <h4 className="font-semibold text-white mb-1 text-sm sm:text-base">
-                      ⚡️_Snoopy _〽️ - Follow Our Main Account - ටික් ටොක්
+                      Aloka kohombage- Follow Our Main Account - ටික් ටොක්
                       එකව්න්ට් එක ෆලෝ කරන්න
                     </h4>
                     <p className="text-gray-300 text-xs sm:text-sm">
-                      ⚡️_Snoopy _〽️
+                      Aloka kohombage
                     </p>
                   </div>
                   <a
-                    href="https://www.tiktok.com/@havoc4369?_r=1&_t=ZS-96RGf1VHUXM"
+                    href="https://www.tiktok.com/@alo526895?_r=1&_t=ZS-96U1APdDGOP"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center justify-center bg-gradient-to-r from-pink-500 to-red-500 text-white px-4 sm:px-6 py-2 rounded-lg hover:from-pink-600 hover:to-red-600 transition-all duration-200 font-medium group-hover:scale-105 text-xs sm:text-sm"
