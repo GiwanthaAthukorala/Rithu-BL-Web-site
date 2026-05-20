@@ -23,7 +23,7 @@ const connectDB = async () => {
 
 const facebookLinks = [
   {
-    url: "https://www.facebook.com/share/1J5ao6tkAw",
+    url: "https://web.facebook.com/share/p/1GqtpAS66n/",
     title: "පොස්ට් ලයික් (Like) කරන්න.",
     platform: "facebook",
     earnings: 1.0,
@@ -35,36 +35,45 @@ const facebookLinks = [
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/1BAjgyLVgj/?mibextid=wwXIfr",
-    title:
-      "Colombo Home Visit - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
+    url: "https://www.facebook.com/share/1B2nu8jR4r",
+    title: "Fancy Lady - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/1FmzQnsHoL/?mibextid=wwXIfr",
-    title:
-      "The House of Elroy PVT LTD - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
+    url: "https://www.facebook.com/share/1B5epg2wx1/?mibextid=wwXIfr",
+    title: "Bryve Media - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/profile.php?id=61589009014144",
-    title:
-      "Qatar News Today - Srilanka أخبار قطر اليوم - سريلانكا - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
+    url: "https://www.facebook.com/share/18bpx85y9U",
+    title: "LK Mems - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/18dSxcGvho/?mibextid=wwXIfr",
-    title: "Nature Life LK - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
+    url: "https://web.facebook.com/CakesbyNatashalk",
+    title: "Cakes by Natasha - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/v/1Cmayg68zA",
+    url: "https://web.facebook.com/sathishchamikaphotography",
     title:
-      "San Lanka-COCO Products - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
+      "Sathish Chamika Photography -Dream S Studio - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/share/1Dp3WCguR1",
+    title: "Sihina fashion - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/share/1Dp3WCguR1",
+    title: "Sihina fashion - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
