@@ -29,37 +29,6 @@ const facebookLinks = [
     platform: "facebook",
     earnings: 1.0,
   },
-  {
-    url: "https://www.facebook.com/share/1B5epg2wx1/?mibextid=wwXIfr",
-    title: "Bryve Media - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/share/18bpx85y9U",
-    title: "LK Mems - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://web.facebook.com/CakesbyNatashalk",
-    title: "Cakes by Natasha - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://web.facebook.com/sathishchamikaphotography",
-    title:
-      "Sathish Chamika Photography -Dream S Studio - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/share/1Dp3WCguR1",
-    title: "Sihina fashion - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
 
   // Removed duplicate URL that was causing the error
   /*
