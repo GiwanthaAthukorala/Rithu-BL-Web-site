@@ -218,10 +218,10 @@ export default function Profile() {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap');
         * { box-sizing: border-box; }
         body { margin: 0; }
-        .profile-root { font-family: 'Sora', sans-serif; }
+        .profile-root { font-family: var(--font-sans), sans-serif; }
+        h1, h2, h3, h4, h5, h6 { font-family: var(--font-display), sans-serif; }
 
         @keyframes spin { to { transform: rotate(360deg); } }
         @keyframes fadeSlideUp {
@@ -235,27 +235,28 @@ export default function Profile() {
 
         .profile-bg {
           min-height: 100vh;
-          background: #f8faff;
+          background: #fafbfe;
           background-image:
-            radial-gradient(ellipse at 20% 10%, rgba(59,130,246,0.06) 0%, transparent 60%),
-            radial-gradient(ellipse at 80% 80%, rgba(99,102,241,0.05) 0%, transparent 60%);
+            radial-gradient(ellipse at 20% 10%, rgba(99, 102, 241, 0.05) 0%, transparent 60%),
+            radial-gradient(ellipse at 80% 80%, rgba(14, 165, 233, 0.04) 0%, transparent 60%);
         }
 
         .profile-header {
-          background: white;
-          border-bottom: 1px solid #e8edf5;
+          background: rgba(255, 255, 255, 0.8);
+          backdrop-filter: blur(12px);
+          border-bottom: 1px solid rgba(226, 232, 240, 0.8);
           position: sticky;
           top: 0;
           z-index: 40;
-          box-shadow: 0 1px 20px rgba(0,0,0,0.05);
+          box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
         }
 
         .profile-logo {
           width: 44px; height: 44px;
-          background: linear-gradient(135deg, #3b82f6, #6366f1);
+          background: linear-gradient(135deg, var(--color-primary-500), var(--color-primary-700));
           border-radius: 12px;
           display: flex; align-items: center; justify-content: center;
-          box-shadow: 0 4px 12px rgba(59,130,246,0.3);
+          box-shadow: 0 4px 14px rgba(99, 102, 241, 0.25);
           flex-shrink: 0;
         }
 
@@ -266,10 +267,10 @@ export default function Profile() {
           padding: 8px 12px;
           border-radius: 10px;
           transition: all 0.2s;
-          font-family: 'Sora', sans-serif;
+          font-family: var(--font-sans), sans-serif;
         }
-        .profile-nav-link:hover { background: #f0f4ff; color: #3b82f6; }
-        .profile-nav-link.active { background: #eff6ff; color: #2563eb; font-weight: 600; }
+        .profile-nav-link:hover { background: var(--color-primary-50); color: var(--color-primary-600); }
+        .profile-nav-link.active { background: var(--color-primary-100); color: var(--color-primary-700); font-weight: 600; }
 
         .profile-tab-btn {
           padding: 16px 4px;
@@ -285,17 +286,18 @@ export default function Profile() {
           gap: 6px;
           white-space: nowrap;
           transition: all 0.2s;
-          font-family: 'Sora', sans-serif;
+          font-family: var(--font-sans), sans-serif;
         }
         .profile-tab-btn:hover { color: #475569; border-color: #cbd5e1; }
-        .profile-tab-btn.active { color: #2563eb; border-color: #2563eb; font-weight: 600; }
+        .profile-tab-btn.active { color: var(--color-primary-600); border-color: var(--color-primary-600); font-weight: 600; }
 
         .profile-card {
-          background: white;
+          background: rgba(255, 255, 255, 0.75);
+          backdrop-filter: blur(12px);
           border-radius: 24px;
-          border: 1px solid #e8edf5;
+          border: 1px solid rgba(226, 232, 240, 0.8);
           overflow: hidden;
-          box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+          box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.04);
           animation: fadeSlideUp 0.4s ease;
         }
 
@@ -308,7 +310,7 @@ export default function Profile() {
         }
         .earnings-stat-card:hover {
           transform: translateY(-3px);
-          box-shadow: 0 12px 32px rgba(0,0,0,0.1);
+          box-shadow: 0 12px 32px rgba(99, 102, 241, 0.1);
         }
         .earnings-stat-card::after {
           content:'';
@@ -332,16 +334,16 @@ export default function Profile() {
           gap: 8px;
           cursor: pointer;
           transition: all 0.3s;
-          font-family: 'Sora', sans-serif;
+          font-family: var(--font-sans), sans-serif;
         }
         .withdraw-btn.enabled {
-          background: linear-gradient(135deg, #16a34a, #059669);
+          background: linear-gradient(135deg, var(--color-accent-500), var(--color-accent-600));
           color: white;
-          box-shadow: 0 6px 24px rgba(22,163,74,0.3);
+          box-shadow: 0 6px 24px rgba(16, 185, 129, 0.25);
         }
         .withdraw-btn.enabled:hover {
           transform: translateY(-2px);
-          box-shadow: 0 10px 32px rgba(22,163,74,0.4);
+          box-shadow: 0 10px 32px rgba(16, 185, 129, 0.35);
         }
         .withdraw-btn.disabled {
           background: #f1f5f9;
@@ -364,20 +366,22 @@ export default function Profile() {
 
         .modal-overlay {
           position: fixed; inset: 0;
-          background: rgba(0,0,0,0.5);
-          backdrop-filter: blur(6px);
+          background: rgba(15, 23, 42, 0.3);
+          backdrop-filter: blur(8px);
           display: flex; align-items: center; justify-content: center;
           padding: 16px; z-index: 50;
           animation: fadeSlideUp 0.2s ease;
         }
 
         .modal-box {
-          background: white;
+          background: rgba(255, 255, 255, 0.9);
+          backdrop-filter: blur(16px);
+          border: 1px solid rgba(255, 255, 255, 0.5);
           border-radius: 24px;
           max-width: 440px;
           width: 100%;
           overflow: hidden;
-          box-shadow: 0 32px 80px rgba(0,0,0,0.25);
+          box-shadow: 0 32px 80px rgba(15, 23, 42, 0.15);
           animation: fadeSlideUp 0.3s ease;
         }
 
@@ -390,13 +394,13 @@ export default function Profile() {
           font-weight: 600;
           outline: none;
           transition: border-color 0.2s;
-          font-family: 'Sora', sans-serif;
+          font-family: var(--font-sans), sans-serif;
           color: #0f172a;
         }
-        .modal-input:focus { border-color: #3b82f6; }
+        .modal-input:focus { border-color: var(--color-primary-500); }
 
         .profile-hero {
-          background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #6366f1 100%);
+          background: linear-gradient(135deg, var(--color-primary-600) 0%, var(--color-primary-500) 50%, var(--color-brand-500) 100%);
           background-size: 200% 200%;
           animation: shimmer 6s ease infinite;
           padding: 36px 28px;
@@ -419,7 +423,7 @@ export default function Profile() {
           font-size: 14px;
           font-weight: 500;
           animation: fadeSlideUp 0.3s ease;
-          font-family: 'Sora', sans-serif;
+          font-family: var(--font-sans), sans-serif;
         }
 
         @media (max-width: 768px) {
@@ -461,13 +465,13 @@ export default function Profile() {
                     style={{
                       fontSize: "20px",
                       fontWeight: 800,
-                      background: "linear-gradient(135deg, #2563eb, #6366f1)",
+                      background: "linear-gradient(135deg, var(--color-primary-600), var(--color-brand-500))",
                       WebkitBackgroundClip: "text",
                       WebkitTextFillColor: "transparent",
                       lineHeight: 1.1,
                     }}
                   >
-                    TaskPay
+                    RBL Earnings
                   </div>
                   <div
                     style={{
@@ -476,7 +480,7 @@ export default function Profile() {
                       fontWeight: 500,
                     }}
                   >
-                    Earn & Withdraw
+                    Rithu Business Lanka
                   </div>
                 </div>
               </div>
@@ -557,7 +561,7 @@ export default function Profile() {
                     display: "flex",
                     alignItems: "center",
                     gap: "10px",
-                    background: "linear-gradient(135deg, #f8fafc, #eff6ff)",
+                    background: "linear-gradient(135deg, #f8fafc, var(--color-primary-50))",
                     border: "1px solid #e2e8f0",
                     borderRadius: "99px",
                     padding: "8px 16px 8px 8px",
@@ -873,7 +877,7 @@ export default function Profile() {
                           display: "flex",
                           alignItems: "center",
                           justifyContent: "center",
-                          color: "#3b82f6",
+                          color: "var(--color-primary-500)",
                           cursor: "pointer",
                           boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
                           transition: "transform 0.2s",
@@ -929,15 +933,15 @@ export default function Profile() {
                         display: "flex",
                         alignItems: "center",
                         gap: "5px",
-                        color: "#2563eb",
+                        color: "var(--color-primary-600)",
                         fontSize: "13px",
                         fontWeight: 600,
-                        background: "#eff6ff",
+                        background: "var(--color-primary-50)",
                         border: "none",
                         borderRadius: "8px",
                         padding: "6px 12px",
                         cursor: "pointer",
-                        fontFamily: "Sora, sans-serif",
+                        fontFamily: "var(--font-sans), sans-serif",
                         transition: "background 0.2s",
                       }}
                     >
@@ -986,16 +990,16 @@ export default function Profile() {
                     <div
                       style={{
                         padding: "14px",
-                        background: "linear-gradient(135deg, #f0fdf4, #ecfdf5)",
+                        background: "linear-gradient(135deg, var(--color-accent-50), rgba(16, 185, 129, 0.05))",
                         borderRadius: "14px",
-                        border: "1px solid #d1fae5",
+                        border: "1px solid var(--color-accent-100)",
                       }}
                     >
                       <p
                         style={{
                           fontSize: "12px",
                           fontWeight: 700,
-                          color: "#047857",
+                          color: "var(--color-accent-700)",
                           textTransform: "uppercase",
                           letterSpacing: "0.06em",
                           margin: "0 0 10px",
@@ -1057,7 +1061,7 @@ export default function Profile() {
                   <div
                     style={{
                       background:
-                        "linear-gradient(135deg, #059669, #16a34a, #0d9488)",
+                        "linear-gradient(135deg, var(--color-primary-700), var(--color-primary-500), var(--color-brand-600))",
                       backgroundSize: "200% 200%",
                       animation: "shimmer 6s ease infinite",
                       padding: "24px 28px",
@@ -1118,8 +1122,8 @@ export default function Profile() {
                               width: "44px",
                               height: "44px",
                               borderRadius: "50%",
-                              border: "4px solid #dbeafe",
-                              borderTopColor: "#3b82f6",
+                              border: "4px solid var(--color-primary-100)",
+                              borderTopColor: "var(--color-primary-500)",
                               animation: "spin 0.8s linear infinite",
                               margin: "0 auto 12px",
                             }}
@@ -1150,37 +1154,37 @@ export default function Profile() {
                               label: "Total Approved Tasks",
                               value: Math.round(earnings.totalEarned / 1.0),
                               sub: "Tasks completed",
-                              bg: "linear-gradient(135deg, #eff6ff, #dbeafe)",
-                              border: "#bfdbfe",
-                              labelColor: "#1d4ed8",
-                              valueColor: "#1e3a8a",
+                              bg: "linear-gradient(135deg, var(--color-primary-50), var(--color-primary-100))",
+                              border: "rgba(99, 102, 241, 0.15)",
+                              labelColor: "var(--color-primary-600)",
+                              valueColor: "var(--color-primary-800)",
                             },
                             {
                               label: "Total Earned",
                               value: `Rs ${formatCurrency(earnings.totalEarned)}`,
                               sub: "Lifetime earnings",
-                              bg: "linear-gradient(135deg, #faf5ff, #ede9fe)",
-                              border: "#ddd6fe",
-                              labelColor: "#7c3aed",
-                              valueColor: "#4c1d95",
+                              bg: "linear-gradient(135deg, var(--color-brand-50), var(--color-brand-100))",
+                              border: "rgba(14, 165, 233, 0.15)",
+                              labelColor: "var(--color-brand-700)",
+                              valueColor: "var(--color-brand-900)",
                             },
                             {
                               label: "Available Balance",
                               value: `Rs ${formatCurrency(earnings.availableBalance)}`,
                               sub: "Ready to withdraw",
-                              bg: "linear-gradient(135deg, #f0fdf4, #dcfce7)",
-                              border: "#bbf7d0",
-                              labelColor: "#15803d",
-                              valueColor: "#14532d",
+                              bg: "linear-gradient(135deg, var(--color-accent-50), var(--color-accent-100))",
+                              border: "rgba(16, 185, 129, 0.15)",
+                              labelColor: "var(--color-accent-700)",
+                              valueColor: "var(--color-accent-900)",
                             },
                             {
                               label: "Total Withdrawn",
                               value: `Rs ${formatCurrency(earnings.withdrawnAmount)}`,
                               sub: "Successfully withdrawn",
-                              bg: "linear-gradient(135deg, #fffbeb, #fef3c7)",
-                              border: "#fde68a",
-                              labelColor: "#b45309",
-                              valueColor: "#78350f",
+                              bg: "linear-gradient(135deg, #faf5ff, #f3e8ff)",
+                              border: "rgba(168, 85, 247, 0.15)",
+                              labelColor: "#7e22ce",
+                              valueColor: "#581c87",
                             },
                           ].map((stat, i) => (
                             <div
@@ -1332,14 +1336,14 @@ export default function Profile() {
                       style={{
                         width: "28px",
                         height: "28px",
-                        background: "#eff6ff",
+                        background: "var(--color-primary-50)",
                         borderRadius: "8px",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
                       }}
                     >
-                      <Settings size={14} color="#2563eb" />
+                      <Settings size={14} color="var(--color-primary-600)" />
                     </div>
                     Withdrawal Information
                   </h3>
@@ -1355,25 +1359,25 @@ export default function Profile() {
                         value: "500",
                         label: "Minimum Amount",
                         sub: "Rs 500 minimum",
-                        bg: "linear-gradient(135deg, #f0fdf4, #dcfce7)",
-                        iconBg: "#bbf7d0",
-                        textColor: "#15803d",
+                        bg: "linear-gradient(135deg, var(--color-accent-50), var(--color-accent-100))",
+                        iconBg: "var(--color-accent-200)",
+                        textColor: "var(--color-accent-700)",
                       },
                       {
                         value: "3-5",
                         label: "Processing Time",
                         sub: "Business days",
-                        bg: "linear-gradient(135deg, #eff6ff, #dbeafe)",
-                        iconBg: "#bfdbfe",
-                        textColor: "#1d4ed8",
+                        bg: "linear-gradient(135deg, var(--color-primary-50), var(--color-primary-100))",
+                        iconBg: "var(--color-primary-200)",
+                        textColor: "var(--color-primary-700)",
                       },
                       {
                         value: "0%",
                         label: "No Fees",
                         sub: "Free withdrawals",
-                        bg: "linear-gradient(135deg, #faf5ff, #ede9fe)",
-                        iconBg: "#ddd6fe",
-                        textColor: "#7c3aed",
+                        bg: "linear-gradient(135deg, #faf5ff, #f3e8ff)",
+                        iconBg: "#e9d5ff",
+                        textColor: "#7e22ce",
                       },
                     ].map((rule, i) => (
                       <div
@@ -1427,7 +1431,7 @@ export default function Profile() {
               <div
                 style={{
                   background:
-                    "linear-gradient(135deg, #059669, #16a34a, #0d9488)",
+                    "linear-gradient(135deg, var(--color-primary-700), var(--color-primary-500), var(--color-brand-600))",
                   backgroundSize: "200% 200%",
                   animation: "shimmer 6s ease infinite",
                   padding: "24px 28px",
@@ -1487,8 +1491,8 @@ export default function Profile() {
                           width: "44px",
                           height: "44px",
                           borderRadius: "50%",
-                          border: "4px solid #dbeafe",
-                          borderTopColor: "#3b82f6",
+                          border: "4px solid var(--color-primary-100)",
+                          borderTopColor: "var(--color-primary-500)",
                           animation: "spin 0.8s linear infinite",
                           margin: "0 auto 12px",
                         }}
@@ -1518,14 +1522,14 @@ export default function Profile() {
                         {
                           label: "Total Earned",
                           value: `Rs ${formatCurrency(earnings.totalEarned)}`,
-                          bg: "#eff6ff",
-                          color: "#1d4ed8",
+                          bg: "var(--color-brand-50)",
+                          color: "var(--color-brand-700)",
                         },
                         {
                           label: "Available",
                           value: `Rs ${formatCurrency(earnings.availableBalance)}`,
-                          bg: "#f0fdf4",
-                          color: "#15803d",
+                          bg: "var(--color-accent-50)",
+                          color: "var(--color-accent-700)",
                         },
                         {
                           label: "Pending",
@@ -1537,7 +1541,7 @@ export default function Profile() {
                           label: "Withdrawn",
                           value: `Rs ${formatCurrency(earnings.withdrawnAmount)}`,
                           bg: "#faf5ff",
-                          color: "#7c3aed",
+                          color: "#7e22ce",
                         },
                       ].map((item, i) => (
                         <div
@@ -1639,7 +1643,7 @@ export default function Profile() {
             <div className="modal-box">
               <div
                 style={{
-                  background: "linear-gradient(135deg, #2563eb, #6366f1)",
+                  background: "linear-gradient(135deg, var(--color-primary-600), var(--color-primary-500))",
                   padding: "24px 28px",
                   position: "relative",
                   overflow: "hidden",
@@ -1741,7 +1745,7 @@ export default function Profile() {
 
                 <div
                   style={{
-                    background: "linear-gradient(135deg, #f8fafc, #eff6ff)",
+                    background: "linear-gradient(135deg, #f8fafc, var(--color-primary-50))",
                     border: "1px solid #e2e8f0",
                     borderRadius: "14px",
                     padding: "16px",
@@ -1782,7 +1786,7 @@ export default function Profile() {
                       fontSize: "14px",
                       cursor: "pointer",
                       background: "white",
-                      fontFamily: "Sora, sans-serif",
+                      fontFamily: "var(--font-sans), sans-serif",
                       transition: "all 0.2s",
                     }}
                   >
@@ -1801,13 +1805,13 @@ export default function Profile() {
                       fontSize: "14px",
                       cursor: isLoading ? "not-allowed" : "pointer",
                       background: isLoading
-                        ? "#93c5fd"
-                        : "linear-gradient(135deg, #2563eb, #6366f1)",
-                      fontFamily: "Sora, sans-serif",
+                        ? "var(--color-primary-300)"
+                        : "linear-gradient(135deg, var(--color-primary-600), var(--color-primary-500))",
+                      fontFamily: "var(--font-sans), sans-serif",
                       transition: "all 0.3s",
                       boxShadow: isLoading
                         ? "none"
-                        : "0 6px 20px rgba(37,99,235,0.3)",
+                        : "0 6px 20px rgba(99,102,241,0.25)",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",

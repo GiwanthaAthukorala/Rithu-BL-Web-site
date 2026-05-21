@@ -582,7 +582,7 @@ export default function InstagramVerificationTask() {
                     </a>
                   </div>
                  */}
-                  {/* <div className="mt-6 bg-gradient-to-r from-pink-500 via-rose-500 to-red-500 p-6 rounded-2xl shadow-xl">
+                  <div className="mt-6 bg-gradient-to-r from-pink-500 via-rose-500 to-red-500 p-6 rounded-2xl shadow-xl">
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                       <div className="flex-1">
                         <h4 className="font-black text-white mb-2 text-lg flex items-center gap-2">
@@ -590,12 +590,11 @@ export default function InstagramVerificationTask() {
                           Follow Our Main Account
                         </h4>
                         <p className="text-white/90 text-sm">
-                          ඉන්ස්ට්‍රග්‍රෑම් එකවුන්ට් එක ෆලෝ කරන්න • WivesOnly
-                          Australia
+                          ඉන්ස්ට්‍රග්‍රෑම් එකවුන්ට් එක ෆලෝ කරන්න • Girls Cave
                         </p>
                       </div>
                       <a
-                        href="https://www.instagram.com/wives.only_aus/"
+                        href="https://www.instagram.com/girlscavefashionstore?utm_source=qr&igsh=aGdhMTRmd3p4ZzN6"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex items-center justify-center bg-white text-pink-600 px-6 py-3 rounded-xl hover:bg-pink-50 transition-all duration-200 font-bold shadow-lg hover:shadow-xl transform hover:scale-105"
@@ -605,7 +604,7 @@ export default function InstagramVerificationTask() {
                       </a>
                     </div>
                   </div>{" "}
-                 */}
+                  {/**/}
                 </div>
               </div>{" "}
               {/* Requirements */}

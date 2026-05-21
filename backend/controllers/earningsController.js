@@ -5,7 +5,7 @@ const YoutubeSubmission = require("../models/YoutubeSubmission");
 const FbReviewSubmission = require("../models/FbReviewSubmission");
 const FbCommentSubmission = require("../models/FbCommentSubmission");
 const GoogleReviewModel = require("../models/GoogleReviewModel");
-const Video = require("../models/Video");
+const VideoWatchSession = require("../models/VideoWatchSession");
 const Instrgram = require("../models/InstrgramModel");
 const TiktokSubmission = require("../models/TiktokModel");
 
@@ -67,9 +67,9 @@ exports.getUserEarnings = async (req, res) => {
           user: req.user._id,
           status: "approved",
         }).catch(() => []),
-        Video.find({
+        VideoWatchSession.find({
           user: req.user._id,
-          status: "approved",
+          status: "completed",
         }).catch(() => []),
       ]);
 
@@ -103,7 +103,7 @@ exports.getUserEarnings = async (req, res) => {
         0
       );
       const videoTotal = (videoSubmissions || []).reduce(
-        (sum, sub) => sum + (sub.rewardAmount || 1),
+        (sum, sub) => sum + (sub.amountEarned || 0),
         0
       );
 
@@ -120,10 +120,12 @@ exports.getUserEarnings = async (req, res) => {
       // Update earnings if needed
       if (earnings.totalEarned !== calculatedTotal) {
         earnings.totalEarned = calculatedTotal;
-        earnings.availableBalance =
+        earnings.availableBalance = Math.max(
+          0,
           calculatedTotal -
-          earnings.withdrawnAmount -
-          earnings.pendingWithdrawal;
+            earnings.withdrawnAmount -
+            earnings.pendingWithdrawal
+        );
         await earnings.save();
       }
 

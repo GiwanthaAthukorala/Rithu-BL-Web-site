@@ -42,7 +42,7 @@ const videoWatchSessionSchema = new mongoose.Schema(
   }
 );
 
-// Ensure one user can only watch a video once
-videoWatchSessionSchema.index({ user: 1, video: 1 }, { unique: true });
+// Index for fast query performance
+videoWatchSessionSchema.index({ user: 1, video: 1 });
 
 module.exports = mongoose.model("VideoWatchSession", videoWatchSessionSchema);

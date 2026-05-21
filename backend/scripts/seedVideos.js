@@ -64,7 +64,7 @@ const sampleVideos = [
   {
     title: "TikTok Dance Challenge",
     description: "Latest viral dance trend on TikTok",
-    videoUrl: "https://vm.tiktok.com/ZNRhB7gD1/",
+    videoUrl: "https://vt.tiktok.com/ZSxDJr5DA/",
     platform: "tiktok",
     duration: 60,
     rewardAmount: 0.5,
@@ -148,7 +148,7 @@ const processVideos = (videos) => {
         return {
           ...video,
           embedUrl: `https://www.tiktok.com/embed/v2?url=${encodeURIComponent(
-            video.videoUrl
+            video.videoUrl,
           )}`,
           thumbnailUrl: `https://placehold.co/400x225/FF0050/FFFFFF?text=TikTok+Video&font=montserrat`,
         };
@@ -179,12 +179,12 @@ const seedVideos = async () => {
     console.log("\nCreated Videos:");
     createdVideos.forEach((video) => {
       console.log(
-        `- ${video.title} (${video.platform}) - ${video.duration}s - Rs ${video.rewardAmount}`
+        `- ${video.title} (${video.platform}) - ${video.duration}s - Rs ${video.rewardAmount}`,
       );
       console.log(`  Embed URL: ${video.embedUrl}`);
       if (video.platform === "tiktok") {
         console.log(
-          `  Note: TikTok videos require proper oEmbed/API setup for full functionality`
+          `  Note: TikTok videos require proper oEmbed/API setup for full functionality`,
         );
       }
     });

@@ -61,7 +61,7 @@ export default function VideoRewards() {
 
   const fetchAvailableVideos = async () => {
     try {
-      const response = await api.get("/videos/available");
+      const response = await api.get("/api/videos/available");
       setVideos(response.data.data || []);
     } catch (error) {
       console.error("Fetch videos error:", error);
@@ -71,7 +71,7 @@ export default function VideoRewards() {
 
   const fetchWatchHistory = async () => {
     try {
-      const response = await api.get("/videos/history");
+      const response = await api.get("/api/videos/history");
       setWatchHistory(response.data.data || []);
     } catch (error) {
       console.error("Fetch history error:", error);
@@ -83,7 +83,7 @@ export default function VideoRewards() {
       setIsLoading(true);
       setError(null);
 
-      const response = await api.post(`/videos/${video._id}/start`);
+      const response = await api.post(`/api/videos/${video._id}/start`);
       const session = response.data.data;
 
       setCurrentVideo(video);
@@ -112,7 +112,7 @@ export default function VideoRewards() {
       try {
         // Update progress every 5 seconds
         if (localSeconds % 5 === 0 || localSeconds >= duration) {
-          await api.put(`/videos/session/${sessionId}/progress`, {
+          await api.put(`/api/videos/session/${sessionId}/progress`, {
             currentTime: localSeconds,
           });
         }
@@ -120,7 +120,7 @@ export default function VideoRewards() {
         // Check if video completed locally
         if (localSeconds >= duration) {
           console.log("Video completed locally, sending final update");
-          await api.put(`/videos/session/${sessionId}/progress`, {
+          await api.put(`/api/videos/session/${sessionId}/progress`, {
             currentTime: duration,
           });
           completeTracking(sessionId, false);
@@ -207,11 +207,11 @@ export default function VideoRewards() {
     return video.thumbnailUrl;
   };
 
-  const hasUserWatchedVideo = (videoId) => {
-    return watchHistory.some(
+  const getWatchCount = (videoId) => {
+    return watchHistory.filter(
       (session) =>
         session.video?._id === videoId && session.status === "completed"
-    );
+    ).length;
   };
 
   const totalEarned = watchHistory
@@ -408,8 +408,8 @@ export default function VideoRewards() {
               </div>
             ) : (
               videos.map((video) => {
-                const isWatched = hasUserWatchedVideo(video._id);
-                if (isWatched) return null;
+                const watchCount = getWatchCount(video._id);
+                if (watchCount >= 20) return null;
 
                 return (
                   <div
@@ -441,6 +441,9 @@ export default function VideoRewards() {
                       </div>
                       <div className="absolute bottom-3 left-3 bg-green-600 text-white px-2 py-1 rounded-full text-xs font-medium">
                         Rs {video.rewardAmount}
+                      </div>
+                      <div className="absolute bottom-3 right-3 bg-purple-600 text-white px-2 py-1 rounded-full text-xs font-medium animate-pulse">
+                        {watchCount}/20 Views
                       </div>
                     </div>
 

@@ -84,21 +84,21 @@ const Footer = () => {
   );
 
   return (
-    <footer className="relative bg-gradient-to-br from-slate-900 via-slate-800 to-gray-900 text-gray-300 overflow-hidden">
+    <footer className="relative bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-slate-350 overflow-hidden font-sans">
       {/* Animated Background Elements */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-10 left-10 w-32 h-32 bg-blue-500 rounded-full blur-3xl animate-pulse"></div>
+      <div className="absolute inset-0 opacity-15">
+        <div className="absolute top-10 left-10 w-32 h-32 bg-primary-500 rounded-full blur-3xl animate-pulse"></div>
         <div
-          className="absolute bottom-20 right-20 w-40 h-40 bg-indigo-500 rounded-full blur-3xl animate-pulse"
+          className="absolute bottom-20 right-20 w-40 h-40 bg-brand-500 rounded-full blur-3xl animate-pulse"
           style={{ animationDelay: "2s" }}
         ></div>
         <div
-          className="absolute top-1/2 left-1/4 w-24 h-24 bg-purple-500 rounded-full blur-2xl animate-pulse"
+          className="absolute top-1/2 left-1/4 w-24 h-24 bg-accent-500 rounded-full blur-2xl animate-pulse"
           style={{ animationDelay: "4s" }}
         ></div>
       </div>
 
-      <div className="relative z-10 py-12 sm:py-16 px-4 sm:px-6 lg:px-8">
+      <div className="relative z-10 py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           {/* Main Footer Content */}
           <div className="grid grid-cols-1 md:grid-cols-5 gap-8 mb-12">
@@ -111,35 +111,34 @@ const Footer = () => {
                     alt="RBL Logo"
                     className="w-12 h-12 object-contain"
                   />
-                  <div className="absolute inset-0 bg-blue-500 rounded-full blur-md opacity-30 animate-pulse"></div>
+                  <div className="absolute inset-0 bg-primary-500 rounded-full blur-md opacity-35 animate-pulse"></div>
                 </div>
                 <div>
-                  <h3 className="text-white text-xl lg:text-2xl font-bold bg-gradient-to-r from-white via-blue-200 to-indigo-200 bg-clip-text text-transparent">
+                  <h3 className="text-white text-xl lg:text-2xl font-bold bg-gradient-to-r from-white via-primary-100 to-brand-100 bg-clip-text text-transparent">
                     Rithu Business Lanka
                   </h3>
-                  <p className="text-sm text-blue-300">
+                  <p className="text-sm text-primary-300 font-semibold">
                     Social Media Monetization
                   </p>
                 </div>
               </div>
 
-              <p className="text-gray-400 text-sm leading-relaxed mb-6 max-w-md mx-auto md:mx-0">
-                Transform your social media presence into income. Connect your
-                accounts and start earning from your engagement today.
+              <p className="text-slate-400 text-sm font-semibold leading-relaxed mb-6 max-w-md mx-auto md:mx-0">
+                Transform your social media activity into a reliable source of income. Connect your accounts, watch videos, submit reviews, and withdraw earnings in minutes.
               </p>
 
               {/* Contact Info */}
               <div className="space-y-3 text-sm">
-                <div className="flex items-center justify-center md:justify-start space-x-3 text-gray-400 hover:text-white transition-colors">
-                  <Mail className="w-4 h-4 text-blue-400" />
+                <div className="flex items-center justify-center md:justify-start space-x-3 text-slate-400 hover:text-white transition-colors font-semibold">
+                  <Mail className="w-4 h-4 text-primary-400" />
                   <span>rithubusinesslanka@gmail.com</span>
                 </div>
-                <div className="flex items-center justify-center md:justify-start space-x-3 text-gray-400 hover:text-white transition-colors">
-                  <Phone className="w-4 h-4 text-blue-400" />
+                <div className="flex items-center justify-center md:justify-start space-x-3 text-slate-400 hover:text-white transition-colors font-semibold">
+                  <Phone className="w-4 h-4 text-primary-400" />
                   <span>+94 74 008 9006</span>
                 </div>
-                <div className="flex items-center justify-center md:justify-start space-x-3 text-gray-400 hover:text-white transition-colors">
-                  <MapPin className="w-4 h-4 text-blue-400" />
+                <div className="flex items-center justify-center md:justify-start space-x-3 text-slate-400 hover:text-white transition-colors font-semibold">
+                  <MapPin className="w-4 h-4 text-primary-400" />
                   <span>Mawanella, Sri Lanka</span>
                 </div>
               </div>
@@ -153,9 +152,9 @@ const Footer = () => {
                     <li key={index}>
                       <a
                         href="#"
-                        className="group flex items-center space-x-2 text-gray-400 hover:text-white transition-all duration-200 text-sm"
+                        className="group flex items-center space-x-2 text-slate-400 hover:text-white transition-all duration-200 text-sm font-semibold"
                       >
-                        <ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+                        <ExternalLink className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity text-primary-400" />
                         <span className="group-hover:translate-x-1 transition-transform">
                           {item}
                         </span>
@@ -178,9 +177,9 @@ const Footer = () => {
                   <li key={index}>
                     <a
                       href="#"
-                      className="group flex items-center space-x-2 text-gray-400 hover:text-white transition-all duration-200 text-sm"
+                      className="group flex items-center space-x-2 text-slate-400 hover:text-white transition-all duration-200 text-sm font-semibold"
                     >
-                      <ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+                      <ExternalLink className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity text-primary-400" />
                       <span className="group-hover:translate-x-1 transition-transform">
                         {item}
                       </span>
@@ -195,16 +194,16 @@ const Footer = () => {
               <div className="space-y-4">
                 {/* Newsletter Signup */}
                 <div className="mb-6">
-                  <p className="text-sm text-gray-400 mb-3">
-                    Stay updated with latest features
+                  <p className="text-sm text-slate-400 font-semibold mb-3">
+                    Stay updated with latest campaigns
                   </p>
                   <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
                     <input
                       type="email"
-                      placeholder="Enter your email"
-                      className="flex-1 px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-sm text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors"
+                      placeholder="Enter email"
+                      className="flex-1 px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-sm text-white placeholder-slate-500 focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 transition-colors font-semibold"
                     />
-                    <button className="px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-lg text-sm font-medium transition-all duration-200 transform hover:scale-105">
+                    <button className="px-4 py-2 bg-gradient-to-r from-primary-600 to-brand-600 hover:from-primary-700 hover:to-brand-700 text-white rounded-lg text-sm font-bold transition-all duration-200 transform hover:scale-[1.03]">
                       Subscribe
                     </button>
                   </div>
@@ -216,10 +215,10 @@ const Footer = () => {
                     <a
                       key={index}
                       href="#"
-                      className={`w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center text-gray-400 transition-all duration-300 transform hover:scale-110 hover:rotate-6 ${social.color} hover:text-white group`}
+                      className={`w-10 h-10 bg-slate-900 border border-slate-800 rounded-full flex items-center justify-center text-slate-400 transition-all duration-300 transform hover:scale-110 hover:rotate-6 ${social.color} hover:text-white group`}
                       title={social.name}
                     >
-                      <div className="group-hover:scale-110 transition-transform">
+                      <div className="group-hover:scale-115 transition-transform">
                         {social.icon}
                       </div>
                     </a>
@@ -230,15 +229,15 @@ const Footer = () => {
           </div>
 
           {/* Bottom Section */}
-          <div className="border-t border-gray-700 pt-8">
+          <div className="border-t border-slate-800 pt-8">
             <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
               <div className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-6 text-center md:text-left">
-                <p className="text-gray-400 text-sm">
-                  © 2025 Rithu Business Lanka. All rights reserved.
+                <p className="text-slate-500 text-sm font-semibold">
+                  © 2026 Rithu Business Lanka. All rights reserved.
                 </p>
-                <div className="flex items-center space-x-2 text-xs text-gray-500">
+                <div className="flex items-center space-x-2 text-xs text-slate-500 font-semibold">
                   <span>Developed by</span>
-                  <span className="px-2 py-1 bg-gray-800 rounded text-blue-400 font-medium">
+                  <span className="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-primary-400 font-bold">
                     @Giwantha_Athukorala
                   </span>
                 </div>
@@ -246,7 +245,7 @@ const Footer = () => {
 
               {/* Language Selector */}
               <div className="flex items-center space-x-4">
-                <select className="bg-gray-800 border border-gray-600 rounded-lg px-3 py-1 text-sm text-gray-300 focus:outline-none focus:border-blue-500">
+                <select className="bg-slate-900 border border-slate-800 rounded-lg px-3 py-1.5 text-sm text-slate-350 focus:outline-none focus:border-primary-500 font-semibold">
                   <option value="en">🇺🇸 English</option>
                   <option value="si">🇱🇰 සිංහල</option>
                   <option value="ta">🇱🇰 தமிழ்</option>
@@ -256,16 +255,16 @@ const Footer = () => {
 
             {/* Trust Badges */}
             <div className="mt-8 flex flex-wrap justify-center items-center space-x-6 opacity-60">
-              <div className="flex items-center space-x-2 text-xs text-gray-500">
-                <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+              <div className="flex items-center space-x-2 text-xs text-slate-550 font-bold">
+                <div className="w-2.5 h-2.5 bg-accent-500 rounded-full"></div>
                 <span>SSL Secured</span>
               </div>
-              <div className="flex items-center space-x-2 text-xs text-gray-500">
-                <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+              <div className="flex items-center space-x-2 text-xs text-slate-550 font-bold">
+                <div className="w-2.5 h-2.5 bg-brand-500 rounded-full"></div>
                 <span>GDPR Compliant</span>
               </div>
-              <div className="flex items-center space-x-2 text-xs text-gray-500">
-                <div className="w-3 h-3 bg-purple-500 rounded-full"></div>
+              <div className="flex items-center space-x-2 text-xs text-slate-550 font-bold">
+                <div className="w-2.5 h-2.5 bg-primary-500 rounded-full"></div>
                 <span>SOC 2 Certified</span>
               </div>
             </div>

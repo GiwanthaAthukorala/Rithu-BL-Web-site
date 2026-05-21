@@ -7,17 +7,20 @@ exports.getAvailableVideos = async (req, res) => {
   try {
     const userId = req.user._id;
 
-    // Find videos that user hasn't watched completely
-    const watchedVideos = await VideoWatchSession.find({
-      user: userId,
-      status: "completed",
-    }).select("video");
+    // Count completed watch sessions per video for the user
+    const completedSessions = await VideoWatchSession.aggregate([
+      { $match: { user: userId, status: "completed" } },
+      { $group: { _id: "$video", count: { $sum: 1 } } },
+    ]);
 
-    const watchedVideoIds = watchedVideos.map((session) => session.video);
+    // Find video IDs that have been watched 20 or more times
+    const fullyWatchedVideoIds = completedSessions
+      .filter((session) => session.count >= 20)
+      .map((session) => session._id);
 
     const availableVideos = await Video.find({
       isActive: true,
-      _id: { $nin: watchedVideoIds },
+      _id: { $nin: fullyWatchedVideoIds },
       $or: [{ maxViews: { $gt: 0 } }, { maxViews: null }],
     });
 
@@ -66,17 +69,17 @@ exports.startVideoSession = async (req, res) => {
       });
     }
 
-    // Check if user already completed this video
-    const existingCompletedSession = await VideoWatchSession.findOne({
+    // Check if user already completed this video 20 or more times
+    const completedCount = await VideoWatchSession.countDocuments({
       user: userId,
       video: videoId,
       status: "completed",
     });
 
-    if (existingCompletedSession) {
+    if (completedCount >= 20) {
       return res.status(400).json({
         success: false,
-        message: "You have already watched this video and earned the reward",
+        message: "You have already watched this video the maximum limit of 20 times",
       });
     }
 
