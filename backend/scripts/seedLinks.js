@@ -23,9 +23,33 @@ const connectDB = async () => {
 
 const facebookLinks = [
   {
-    url: "https://www.facebook.com/accufoundation",
+    url: "https://www.facebook.com/share/r/1H2jLrcGeC/",
+    title: "පොස්ට් ලයික් (Like) කරන්න.",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/share/p/1928EYN4RK/",
+    title: "පොස්ට් ලයික් (Like) කරන්න.",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/share/p/14fMU4DZmNC/",
+    title: "පොස්ට් ලයික් (Like) කරන්න.",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/share/p/1HLxi4Anop/",
+    title: "පොස්ට් ලයික් (Like) කරන්න.",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/share/1Fe9oGHf4D/?mibextid=wwXIfr",
     title:
-      "All Ceylon Cultural United Foundation - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
+      "Trans Lanka Agency - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
