@@ -62,9 +62,9 @@ const extractTikTokId = (url) => {
 
 const sampleVideos = [
   {
-    title: "TikTok Dance Challenge",
-    description: "Latest viral dance trend on TikTok",
-    videoUrl: "https://vt.tiktok.com/ZSxDJr5DA/",
+    title: "මතකද අප නෙත් කතා කලා.....",
+    description: "Navinmana Sanjaya's post",
+    videoUrl: "https://www.facebook.com/share/v/1B2P1Uop4m/",
     platform: "tiktok",
     duration: 60,
     rewardAmount: 0.5,
