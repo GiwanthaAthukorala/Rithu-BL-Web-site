@@ -327,19 +327,19 @@ export default function TikTokVerificationTask() {
               </h3>
             </div>
             <div className="space-y-3 sm:space-y-4">
-              {/** <div className="bg-gradient-to-r from-gray-800 to-black p-4 sm:p-6 rounded-lg sm:rounded-xl border border-gray-300 hover:shadow-lg transition-all duration-300 group">
+              <div className="bg-gradient-to-r from-gray-800 to-black p-4 sm:p-6 rounded-lg sm:rounded-xl border border-gray-300 hover:shadow-lg transition-all duration-300 group">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0">
                   <div className="flex-1">
                     <h4 className="font-semibold text-white mb-1 text-sm sm:text-base">
-                      Dilan Gems - Follow Our Main Account - ටික් ටොක් එකව්න්ට්
-                      එක ෆලෝ කරන්න
+                      Rithu Business Lanka Team - Follow Our Main Account - ටික්
+                      ටොක් එකව්න්ට් එක ෆලෝ කරන්න
                     </h4>
                     <p className="text-gray-300 text-xs sm:text-sm">
-                      Dilan Gems
+                      Rithu Business Lanka Team
                     </p>
                   </div>
                   <a
-                    href="https://www.tiktok.com/@dilangemslk?_r=1&_t=ZS-96WKwcwFjpU"
+                    href="https://www.tiktok.com/@rithubus?_r=1&_t=ZS-96gI4jYfiTd"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center justify-center bg-gradient-to-r from-pink-500 to-red-500 text-white px-4 sm:px-6 py-2 rounded-lg hover:from-pink-600 hover:to-red-600 transition-all duration-200 font-medium group-hover:scale-105 text-xs sm:text-sm"
@@ -352,7 +352,7 @@ export default function TikTokVerificationTask() {
                   </a>
                 </div>{" "}
               </div>{" "}
-              */}
+              {/**  */}
               {/** <div className="bg-gradient-to-r from-gray-800 to-black p-4 sm:p-6 rounded-lg sm:rounded-xl border border-gray-300 hover:shadow-lg transition-all duration-300 group">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0">
                   <div className="flex-1">

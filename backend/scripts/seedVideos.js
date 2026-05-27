@@ -62,29 +62,18 @@ const extractTikTokId = (url) => {
 
 const sampleVideos = [
   {
-    title: "මතකද අප නෙත් කතා කලා.....",
-    description: "Navinmana Sanjaya's post",
-    videoUrl: "https://www.facebook.com/share/v/1B2P1Uop4m/",
-    platform: "tiktok",
-    duration: 60,
-    rewardAmount: 0.5,
-    isActive: true,
-  },
-  /*
-  {
-    title:
-      "සිතුවිලි ගිනිපුපුරු (Sithuvili Gini Pupuru) | Official Music Video Vishwa Oudarika ",
+    title: "ඔන්ලයින් දවසට විනාඩි 5ක් වැඩ කරලා රුපියල්",
     description:
-      "සිතුවිලි ගිනිපුපුරු (Sithuvili Gini Pupuru) | Official Music Video Vishwa Oudarika   Watch for 0.50 minute to earn Rs 0.50.",
-    videoUrl: "https://www.youtube.com/watch?v=VXsnevrcEJk",
-    embedUrl: "https://youtu.be/VXsnevrcEJk?si=B28-wFlLbEvWRFP9",
+      "ඔන්ලයින් දවසට විනාඩි 5ක් වැඩ කරලා රුපියල්   Watch for 0.50 minute to earn Rs 0.50.",
+    videoUrl: "https://youtube.com/shorts/rDp0tA2PCAc?si=t-ONaDwZbs27b6D-",
+    embedUrl: "https://youtube.com/shorts/rDp0tA2PCAc?si=t-ONaDwZbs27b6D-",
     thumbnailUrl: "https://img.youtube.com/vi/VXsnevrcEJk/hqdefault.jpg",
     platform: "youtube",
     duration: 60,
     rewardAmount: 0.5,
     isActive: true,
   },
-  // TikTok video example
+  /*// TikTok video example
   {
     title: "Funny TikTok Compilation",
     description: "Daily dose of laughter with these funny TikTok videos",
