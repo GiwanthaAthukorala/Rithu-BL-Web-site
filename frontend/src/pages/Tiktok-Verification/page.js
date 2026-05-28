@@ -327,7 +327,7 @@ export default function TikTokVerificationTask() {
               </h3>
             </div>
             <div className="space-y-3 sm:space-y-4">
-              <div className="bg-gradient-to-r from-gray-800 to-black p-4 sm:p-6 rounded-lg sm:rounded-xl border border-gray-300 hover:shadow-lg transition-all duration-300 group">
+              {/** <div className="bg-gradient-to-r from-gray-800 to-black p-4 sm:p-6 rounded-lg sm:rounded-xl border border-gray-300 hover:shadow-lg transition-all duration-300 group">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0">
                   <div className="flex-1">
                     <h4 className="font-semibold text-white mb-1 text-sm sm:text-base">
@@ -352,7 +352,7 @@ export default function TikTokVerificationTask() {
                   </a>
                 </div>{" "}
               </div>{" "}
-              {/**  */}
+               */}
               {/** <div className="bg-gradient-to-r from-gray-800 to-black p-4 sm:p-6 rounded-lg sm:rounded-xl border border-gray-300 hover:shadow-lg transition-all duration-300 group">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0">
                   <div className="flex-1">
