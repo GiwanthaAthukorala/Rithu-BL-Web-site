@@ -23,32 +23,33 @@ const connectDB = async () => {
 
 const facebookLinks = [
   {
-    url: "https://www.facebook.com/share/r/18AMVfasRB/",
+    url: "https://www.facebook.com/share/r/1CM9rmUaP4/",
     title: "පොස්ට් ලයික් (Like) කරන්න.",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/r/1HLBdPbCGQ/",
+    url: "https://www.facebook.com/share/p/1BLYML9vHE/?mibextid=wwXIfr",
     title: "පොස්ට් ලයික් (Like) කරන්න.",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/1bkHwSoZ8a/",
-    title: "පොස්ට් ලයික් (Like) කරන්න.",
+    url: "https://www.facebook.com/profile.php?id=61555165544323&mibextid=ZbWKwL",
+    title: "Geemal Gaming - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/1GqKTBvKwo/?mibextid=wwXIfr",
-    title: "Capital Express - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
+    url: "https://www.facebook.com/share/1EvH6jdFgb",
+    title:
+      "Metro Elevators Lanka - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/1D5p2YvJep",
-    title: "DressingBear - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
+    url: "https://www.facebook.com/share/1Dxutw8PMJ",
+    title: "Movara - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
