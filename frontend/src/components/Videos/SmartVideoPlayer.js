@@ -12,7 +12,7 @@ import {
   AlertCircle,
 } from "lucide-react";
 
-const SmartVideoPlayer = ({ video, onClose, onTimeUpdate, sessionId }) => {
+const SmartVideoPlayer = ({ video, onClose, onTimeUpdate, sessionId, onPlay }) => {
   const [currentTime, setCurrentTime] = useState(0);
   const [isCompleted, setIsCompleted] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -25,11 +25,13 @@ const SmartVideoPlayer = ({ video, onClose, onTimeUpdate, sessionId }) => {
   // Platform configuration
   const platformConfig = {
     youtube: {
-      embeddable: true,
+      embeddable: false,
       icon: <Youtube size={20} className="text-red-500" />,
       color: "text-red-600",
       bgColor: "bg-red-50",
       borderColor: "border-red-200",
+      btnClass: "from-red-600 to-red-700 hover:from-red-700 hover:to-red-800",
+      btnText: "Watch on YouTube",
     },
     custom: {
       embeddable: true,
@@ -37,6 +39,8 @@ const SmartVideoPlayer = ({ video, onClose, onTimeUpdate, sessionId }) => {
       color: "text-purple-600",
       bgColor: "bg-purple-50",
       borderColor: "border-purple-200",
+      btnClass: "from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700",
+      btnText: "Open Video",
     },
     facebook: {
       embeddable: false,
@@ -44,6 +48,8 @@ const SmartVideoPlayer = ({ video, onClose, onTimeUpdate, sessionId }) => {
       color: "text-blue-600",
       bgColor: "bg-blue-50",
       borderColor: "border-blue-200",
+      btnClass: "from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800",
+      btnText: "Watch on Facebook",
     },
     instagram: {
       embeddable: false,
@@ -51,6 +57,8 @@ const SmartVideoPlayer = ({ video, onClose, onTimeUpdate, sessionId }) => {
       color: "text-pink-600",
       bgColor: "bg-pink-50",
       borderColor: "border-pink-200",
+      btnClass: "from-pink-600 to-pink-700 hover:from-pink-700 hover:to-pink-800",
+      btnText: "Watch on Instagram",
     },
     tiktok: {
       embeddable: false,
@@ -58,6 +66,8 @@ const SmartVideoPlayer = ({ video, onClose, onTimeUpdate, sessionId }) => {
       color: "text-black",
       bgColor: "bg-gray-50",
       borderColor: "border-gray-200",
+      btnClass: "from-gray-800 to-black hover:from-black hover:to-gray-900",
+      btnText: "Watch on TikTok",
     },
   };
 
@@ -107,6 +117,7 @@ const SmartVideoPlayer = ({ video, onClose, onTimeUpdate, sessionId }) => {
   const handlePlay = () => {
     setIsPlaying(true);
     startTimeTracking();
+    onPlay?.();
   };
 
   const handlePause = () => {
@@ -231,34 +242,37 @@ const SmartVideoPlayer = ({ video, onClose, onTimeUpdate, sessionId }) => {
   );
 
   // External Platform Player (for non-embeddable platforms)
-  const renderExternalPlatformPlayer = () => (
-    <div
-      className={`w-full h-96 rounded-2xl overflow-hidden ${config.bgColor} border-2 ${config.borderColor} flex flex-col items-center justify-center p-8 text-center`}
-    >
-      <div className="text-4xl mb-4">{config.icon}</div>
-      <h3 className="text-2xl font-bold text-gray-800 mb-4">{video.title}</h3>
-      <p className="text-gray-600 mb-2">
-        Watch on{" "}
-        {video.platform.charAt(0).toUpperCase() + video.platform.slice(1)}
-      </p>
-      <p className="text-sm text-gray-500 mb-6 max-w-md">
-        This video platform doesn't support embedded playback. Click below to
-        open in a new tab.
-      </p>
+  const renderExternalPlatformPlayer = () => {
+    const btnClass = config.btnClass || "from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700";
+    const btnText = config.btnText || "Open Video";
+    const platformName = video.platform.charAt(0).toUpperCase() + video.platform.slice(1);
 
-      <button
-        onClick={() => {
-          window.open(video.videoUrl, "_blank");
-          handlePlay();
-        }}
-        className="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-8 py-4 rounded-2xl font-bold hover:from-purple-700 hover:to-pink-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center justify-center space-x-2"
+    return (
+      <div
+        className={`w-full h-96 rounded-2xl overflow-hidden ${config.bgColor} border-2 ${config.borderColor} flex flex-col items-center justify-center p-8 text-center`}
       >
-        <Play size={20} />
-        <span>Open Video</span>
-        <ExternalLink size={16} />
-      </button>
-    </div>
-  );
+        <div className="text-4xl mb-4">{config.icon}</div>
+        <h3 className="text-2xl font-bold text-gray-800 mb-4">{video.title}</h3>
+        <p className="text-gray-600 mb-2">Watch on {platformName}</p>
+        <p className="text-sm text-gray-500 mb-6 max-w-md">
+          To earn your reward, click the button below to watch the video on {platformName}.
+          Keep this window open to track your progress automatically.
+        </p>
+
+        <button
+          onClick={() => {
+            window.open(video.videoUrl, "_blank");
+            handlePlay();
+          }}
+          className={`bg-gradient-to-r ${btnClass} text-white px-8 py-4 rounded-2xl font-bold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center justify-center space-x-2`}
+        >
+          <Play size={20} />
+          <span>{btnText}</span>
+          <ExternalLink size={16} />
+        </button>
+      </div>
+    );
+  };
 
   const formatTime = (seconds) => {
     const mins = Math.floor(seconds / 60);
@@ -271,7 +285,7 @@ const SmartVideoPlayer = ({ video, onClose, onTimeUpdate, sessionId }) => {
   };
 
   const renderVideoPlayer = () => {
-    if (video.platform === "youtube") {
+    if (video.platform === "youtube" && config.embeddable) {
       return renderYouTubePlayer();
     } else if (config.embeddable) {
       return renderCustomVideoPlayer();

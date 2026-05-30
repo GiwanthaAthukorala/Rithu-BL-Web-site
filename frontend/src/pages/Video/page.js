@@ -89,9 +89,6 @@ export default function VideoRewards() {
       setCurrentVideo(video);
       setTrackingSession(session);
       setSecondsWatched(0);
-
-      // Start tracking immediately
-      startTimeTracking(session.sessionId, video.duration);
     } catch (error) {
       console.error("Start session error:", error);
       setError(
@@ -329,7 +326,15 @@ export default function VideoRewards() {
 
               {/* Video Content */}
               <div className="p-6">
-                <SmartVideoPlayer video={currentVideo} onClose={closeVideo} />
+                <SmartVideoPlayer
+                  video={currentVideo}
+                  onClose={closeVideo}
+                  onPlay={() => {
+                    if (trackingSession && !trackingTimerRef.current) {
+                      startTimeTracking(trackingSession.sessionId, currentVideo.duration);
+                    }
+                  }}
+                />
 
                 {/* Progress Tracking */}
                 <div className="mt-6 p-4 bg-gray-50 rounded-xl border">
