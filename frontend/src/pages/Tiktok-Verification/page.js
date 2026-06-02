@@ -353,18 +353,18 @@ export default function TikTokVerificationTask() {
                 </div>{" "}
               </div>{" "}
                */}
-              {/** <div className="bg-gradient-to-r from-gray-800 to-black p-4 sm:p-6 rounded-lg sm:rounded-xl border border-gray-300 hover:shadow-lg transition-all duration-300 group">
+              <div className="bg-gradient-to-r from-gray-800 to-black p-4 sm:p-6 rounded-lg sm:rounded-xl border border-gray-300 hover:shadow-lg transition-all duration-300 group">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0">
                   <div className="flex-1">
                     <h4 className="font-semibold text-white mb-1 text-sm sm:text-base">
                       Follow Our Main Account -ටික් ටොක් එකව්න්ට් එක ෆලෝ කරන්න
                     </h4>
                     <p className="text-gray-300 text-xs sm:text-sm">
-                      Amila Athukorala - Join our community
+                      Isuru Kaveen - Join our community
                     </p>
                   </div>
                   <a
-                    href="https://www.tiktok.com/@havoc4369?_r=1&_t=ZS-96PkEl2mCdl"
+                    href="https://www.tiktok.com/@isu__ruwa?_r=1&_t=ZS-96rk1Y5bQdJ"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center justify-center bg-gradient-to-r from-pink-500 to-red-500 text-white px-4 sm:px-6 py-2 rounded-lg hover:from-pink-600 hover:to-red-600 transition-all duration-200 font-medium group-hover:scale-105 text-xs sm:text-sm"
@@ -384,11 +384,11 @@ export default function TikTokVerificationTask() {
                       Follow Our Main Account -ටික් ටොක් එකව්න්ට් එක ෆලෝ කරන්න
                     </h4>
                     <p className="text-gray-300 text-xs sm:text-sm">
-                      Guwan Seya - ගුවන් සේයා - Join our community
+                      Premio Bridal Ride - ගුවන් සේයා - Join our community
                     </p>
                   </div>
                   <a
-                    href="https://www.tiktok.com/@guwanseya"
+                    href="https://www.tiktok.com/@premiobridalride?_r=1&_t=ZS-96ro14wBmU9"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center justify-center bg-gradient-to-r from-pink-500 to-red-500 text-white px-4 sm:px-6 py-2 rounded-lg hover:from-pink-600 hover:to-red-600 transition-all duration-200 font-medium group-hover:scale-105 text-xs sm:text-sm"
@@ -401,7 +401,7 @@ export default function TikTokVerificationTask() {
                   </a>
                 </div>
               </div>
-              <div className="bg-gradient-to-r from-gray-800 to-black p-4 sm:p-6 rounded-lg sm:rounded-xl border border-gray-300 hover:shadow-lg transition-all duration-300 group">
+              {/**  <div className="bg-gradient-to-r from-gray-800 to-black p-4 sm:p-6 rounded-lg sm:rounded-xl border border-gray-300 hover:shadow-lg transition-all duration-300 group">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0">
                   <div className="flex-1">
                     <h4 className="font-semibold text-white mb-1 text-sm sm:text-base">
@@ -412,7 +412,7 @@ export default function TikTokVerificationTask() {
                     </p>
                   </div>
                   <a
-                    href="https://www.tiktok.com/@isuuu.z?_r=1&_t=ZS-96NlGCoaHaP"
+                    href="https://www.tiktok.com/@isu__ruwa?_r=1&_t=ZS-96rk1Y5bQdJ"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center justify-center bg-gradient-to-r from-pink-500 to-red-500 text-white px-4 sm:px-6 py-2 rounded-lg hover:from-pink-600 hover:to-red-600 transition-all duration-200 font-medium group-hover:scale-105 text-xs sm:text-sm"
@@ -427,32 +427,13 @@ export default function TikTokVerificationTask() {
               </div>
             */}
               {/* Video Links */}
-              {/*  <div className="grid gap-3 sm:gap-4">
+              <div className="grid gap-3 sm:gap-4">
                 <div className="bg-gradient-to-br from-purple-50 to-pink-50 p-3 sm:p-4 rounded-lg sm:rounded-xl border border-purple-200 hover:shadow-md transition-all duration-300 group">
                   <h4 className="font-semibold text-gray-800 mb-2 text-sm sm:text-base">
                     Like Video #1 - ටික් ටොක් විඩියෝ එකට ලයික් කරන්න
                   </h4>
                   <a
-                    href="https://vt.tiktok.com/ZSxBBukuP/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium group-hover:underline text-xs sm:text-sm"
-                  >
-                    <span className="hidden sm:inline">
-                      Watch & Like - ටික් ටොක් විඩියෝ එකට ලයික් කරන්න
-                    </span>
-                    <span className="sm:hidden">Watch & Like</span>
-                    <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4 ml-1" />
-                  </a>
-                </div>
-              </div>
-                <div className="grid gap-3 sm:gap-4">
-                <div className="bg-gradient-to-br from-purple-50 to-pink-50 p-3 sm:p-4 rounded-lg sm:rounded-xl border border-purple-200 hover:shadow-md transition-all duration-300 group">
-                  <h4 className="font-semibold text-gray-800 mb-2 text-sm sm:text-base">
-                    Like Video #1 - ටික් ටොක් විඩියෝ එකට ලයික් කරන්න
-                  </h4>
-                  <a
-                    href="https://vt.tiktok.com/ZSuYtE1Xs/"
+                    href="https://vt.tiktok.com/ZSx3bqbpm/"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium group-hover:underline text-xs sm:text-sm"
@@ -466,6 +447,25 @@ export default function TikTokVerificationTask() {
                 </div>
               </div>{" "}
               <div className="grid gap-3 sm:gap-4">
+                <div className="bg-gradient-to-br from-purple-50 to-pink-50 p-3 sm:p-4 rounded-lg sm:rounded-xl border border-purple-200 hover:shadow-md transition-all duration-300 group">
+                  <h4 className="font-semibold text-gray-800 mb-2 text-sm sm:text-base">
+                    Like Video #1 - ටික් ටොක් විඩියෝ එකට ලයික් කරන්න
+                  </h4>
+                  <a
+                    href="https://vt.tiktok.com/ZSxT8v2hj/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium group-hover:underline text-xs sm:text-sm"
+                  >
+                    <span className="hidden sm:inline">
+                      Watch & Like - ටික් ටොක් විඩියෝ එකට ලයික් කරන්න
+                    </span>
+                    <span className="sm:hidden">Watch & Like</span>
+                    <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4 ml-1" />
+                  </a>
+                </div>
+              </div>{" "}
+              {/* <div className="grid gap-3 sm:gap-4">
                 <div className="bg-gradient-to-br from-purple-50 to-pink-50 p-3 sm:p-4 rounded-lg sm:rounded-xl border border-purple-200 hover:shadow-md transition-all duration-300 group">
                   <h4 className="font-semibold text-gray-800 mb-2 text-sm sm:text-base">
                     Like Video #1 - ටික් ටොක් විඩියෝ එකට ලයික් කරන්න
