@@ -23,58 +23,32 @@ const connectDB = async () => {
 
 const facebookLinks = [
   {
-    url: "https://www.facebook.com/100047368005305/posts/1490788445843408/?substory_index=2942168302790552&app=fbl",
+    url: "https://m.facebook.com/story.php?story_fbid=pfbid02HDRNWULFNakxKU1zzmvnBrw8d5XvWLk6srdmy4wiB2VcoezX9PToxQkPicq6cMqSl&id=61590393877008&mibextid=ZbWKwL",
     title: "පොස්ට් ලයික් (Like) කරන්න.",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/p/1EMm9Bgk4n/",
+    url: "https://www.facebook.com/share/r/1E5ZBwktCx/",
     title: "පොස්ට් ලයික් (Like) කරන්න.",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/r/1b3ZaX1ZNy/",
+    url: "https://www.facebook.com/share/p/1CXYXZ82sw/",
     title: "පොස්ට් ලයික් (Like) කරන්න.",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/p/1EMvtewMgE/",
+    url: "https://www.facebook.com/share/r/1FHWgRqbMA/",
     title: "පොස්ට් ලයික් (Like) කරන්න.",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/p/18bpXmQcXx/",
+    url: "https://www.facebook.com/share/r/1BUQrjyYvg/",
     title: "පොස්ට් ලයික් (Like) කරන්න.",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/share/18aoeJVg63",
-    title:
-      "Dior Fashion Store - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/share/1E8qowLM4A",
-    title: "AnoKy Products- පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/share/1CXX2vYmuq/",
-    title: "Nuwan Dinesh - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/share/19r4M6hsWR/?mibextid=wwXIfr",
-    title:
-      "Awantha Indusara Bandara - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
