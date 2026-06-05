@@ -16,6 +16,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@vercel/speed-insights": "^2.0.0",
     "axios": "^1.12.2",
     "bcryptjs": "^3.0.2",
     "blockhash-core": "^0.1.0",
