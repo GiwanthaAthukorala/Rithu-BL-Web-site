@@ -4,6 +4,7 @@ import { AuthProvider } from "@/Context/AuthContext";
 import { SocketProvider } from "@/Context/SocketContext";
 import "@/styles/globals.css";
 import { ErrorBoundary } from "react-error-boundary";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 function ErrorFallback({ error, resetErrorBoundary }) {
   return (
@@ -26,6 +27,7 @@ export default function App({ Component, pageProps }) {
       <SocketProvider>
         <AuthProvider>
           <Component {...pageProps} />
+          <SpeedInsights />
         </AuthProvider>
       </SocketProvider>
     </ErrorBoundary>
