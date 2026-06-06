@@ -23,6 +23,30 @@ const connectDB = async () => {
 
 const facebookLinks = [
   {
+    url: "https://web.facebook.com/gatewaylogistic",
+    title: "Gateway Logistics - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://web.facebook.com/profile.php?id=61590747326722",
+    title: "supun.dev - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/share/1JroyYUBV4/?mibextid=wwXIfr",
+    title: "Dream Property LK - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/share/1933rrNZ4s/?mibextid=wwXIfr",
+    title: "පොස්ට් ලයික් (Like) කරන්න.",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
     url: "https://m.facebook.com/story.php?story_fbid=pfbid02HDRNWULFNakxKU1zzmvnBrw8d5XvWLk6srdmy4wiB2VcoezX9PToxQkPicq6cMqSl&id=61590393877008&mibextid=ZbWKwL",
     title: "පොස්ට් ලයික් (Like) කරන්න.",
     platform: "facebook",
