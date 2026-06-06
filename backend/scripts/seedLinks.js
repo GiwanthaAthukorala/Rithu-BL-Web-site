@@ -47,31 +47,7 @@ const facebookLinks = [
     earnings: 1.0,
   },
   {
-    url: "https://m.facebook.com/story.php?story_fbid=pfbid02HDRNWULFNakxKU1zzmvnBrw8d5XvWLk6srdmy4wiB2VcoezX9PToxQkPicq6cMqSl&id=61590393877008&mibextid=ZbWKwL",
-    title: "පොස්ට් ලයික් (Like) කරන්න.",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/share/r/1E5ZBwktCx/",
-    title: "පොස්ට් ලයික් (Like) කරන්න.",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/share/p/1CXYXZ82sw/",
-    title: "පොස්ට් ලයික් (Like) කරන්න.",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/share/r/1FHWgRqbMA/",
-    title: "පොස්ට් ලයික් (Like) කරන්න.",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/share/r/1BUQrjyYvg/",
+    url: "https://www.facebook.com/share/p/1D7oJwB9Nk/",
     title: "පොස්ට් ලයික් (Like) කරන්න.",
     platform: "facebook",
     earnings: 1.0,
