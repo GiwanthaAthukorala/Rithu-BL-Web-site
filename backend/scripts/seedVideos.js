@@ -62,6 +62,15 @@ const extractTikTokId = (url) => {
 
 const sampleVideos = [
   {
+    title: "❤️SAYASHOE❤️",
+    description: "Daily dose of laughter with these funny TikTok videos",
+    videoUrl: "https://vt.tiktok.com/ZSQFgpmV2/",
+    platform: "tiktok",
+    duration: 60,
+    rewardAmount: 0.5,
+    isActive: true,
+  },
+  /*{
     title: "ඔන්ලයින් දවසට විනාඩි 5ක් වැඩ කරලා රුපියල්",
     description:
       "ඔන්ලයින් දවසට විනාඩි 5ක් වැඩ කරලා රුපියල්   Watch for 0.50 minute to earn Rs 0.50.",
@@ -73,7 +82,7 @@ const sampleVideos = [
     rewardAmount: 0.5,
     isActive: true,
   },
-  /*// TikTok video example
+  // TikTok video example
   {
     title: "Funny TikTok Compilation",
     description: "Daily dose of laughter with these funny TikTok videos",
