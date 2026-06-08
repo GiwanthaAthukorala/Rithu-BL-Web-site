@@ -55,7 +55,7 @@ const facebookLinks = [
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/v/18fUYVWBQZ/",
+    url: "https://web.facebook.com/share/18oGANKHpT/",
     title: "පොස්ට් ලයික් (Like) කරන්න.",
     platform: "facebook",
     earnings: 1.0,
