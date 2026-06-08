@@ -23,31 +23,39 @@ const connectDB = async () => {
 
 const facebookLinks = [
   {
-    url: "https://web.facebook.com/gatewaylogistic",
-    title: "Gateway Logistics - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
+    url: "https://www.facebook.com/profile.php?id=61567735582119&mibextid=wwXIfr&mibextid=wwXIfr",
+    title: "Puls24 LK - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://web.facebook.com/profile.php?id=61590747326722",
-    title: "supun.dev - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
+    url: "https://www.facebook.com/profile.php?id=61590424475345",
+    title:
+      "Apex Aluminum and Glass - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/1JroyYUBV4/?mibextid=wwXIfr",
-    title: "Dream Property LK - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
+    url: "https://www.facebook.com/share/1RjrgwnNxo/?mibextid=wwXIfr",
+    title:
+      "Insurance Solutions by Ravindu Kulathunga - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/1933rrNZ4s/?mibextid=wwXIfr",
+    url: "https://www.facebook.com/share/v/18fUYVWBQZ/",
     title: "පොස්ට් ලයික් (Like) කරන්න.",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/p/1D7oJwB9Nk/",
+    url: "https://www.facebook.com/share/p/1EuL8banZu/",
+    title: "පොස්ට් ලයික් (Like) කරන්න.",
+    platform: "facebook",
+    earnings: 1.0,
+  },
+  {
+    url: "https://www.facebook.com/share/v/18fUYVWBQZ/",
     title: "පොස්ට් ලයික් (Like) කරන්න.",
     platform: "facebook",
     earnings: 1.0,
