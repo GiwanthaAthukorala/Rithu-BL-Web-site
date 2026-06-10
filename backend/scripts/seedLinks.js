@@ -23,40 +23,22 @@ const connectDB = async () => {
 
 const facebookLinks = [
   {
-    url: "https://www.facebook.com/profile.php?id=61567735582119&mibextid=wwXIfr&mibextid=wwXIfr",
-    title: "Puls24 LK - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/profile.php?id=61590424475345",
+    url: "https://www.facebook.com/smartrealtyinvestments1",
     title:
-      "Apex Aluminum and Glass - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
+      "Smart Realty Investments - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/1RjrgwnNxo/?mibextid=wwXIfr",
+    url: "https://www.facebook.com/share/14gn3QEz8vN/?mibextid=wwXIfr",
     title:
-      "Insurance Solutions by Ravindu Kulathunga - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
+      "Sri Lanka web news - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/v/18fUYVWBQZ/",
-    title: "පොස්ට් ලයික් (Like) කරන්න.",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/share/p/1EuL8banZu/",
-    title: "පොස්ට් ලයික් (Like) කරන්න.",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://web.facebook.com/share/18oGANKHpT/",
-    title: "පොස්ට් ලයික් (Like) කරන්න.",
+    url: "https://www.facebook.com/share/1HMLuN2WET",
+    title: "Kronos Pay - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
