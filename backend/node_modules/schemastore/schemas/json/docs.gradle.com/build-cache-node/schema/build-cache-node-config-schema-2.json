@@ -1,0 +1,187 @@
+{
+  "type": "object",
+  "description": "The configuration format for build cache nodes",
+  "title": "node-configuration",
+  "additionalProperties": false,
+  "properties": {
+    "cache": {
+      "type": "object",
+      "description": "The cache settings",
+      "additionalProperties": false,
+      "properties": {
+        "credentials": {
+          "type": "object",
+          "description": "The credentials for reading and writing to the cache",
+          "additionalProperties": false,
+          "properties": {
+            "anonymousLevel": {
+              "enum": [
+                "READ",
+                "READWRITE"
+              ],
+              "type": "string",
+              "description": "The level of the access for anonymous users"
+            },
+            "users": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "description": "A user of the build cache",
+                "additionalProperties": false,
+                "properties": {
+                  "level": {
+                    "enum": [
+                      "READ",
+                      "READWRITE"
+                    ],
+                    "type": "string",
+                    "description": "The level of the access for the build cache user"
+                  },
+                  "note": {
+                    "type": "string",
+                    "description": "Some optional free text"
+                  },
+                  "password": {
+                    "type": "object",
+                    "description": "The hashed password of the user",
+                    "additionalProperties": false,
+                    "properties": {
+                      "algorithm": {
+                        "type": "string",
+                        "description": "The algorithm for generating the hash",
+                        "enum": [
+                          "sha256"
+                        ]
+                      },
+                      "hash": {
+                        "type": "string",
+                        "description": "The hashed password for the user as a hex string",
+                        "pattern": "^[0-9a-fA-F]+$"
+                      },
+                      "salt": {
+                        "type": "string",
+                        "description": "The salt used in generating the hash as a hex string",
+                        "pattern": "^[0-9a-fA-F]+$"
+                      }
+                    },
+                    "required": [
+                      "algorithm",
+                      "hash",
+                      "salt"
+                    ]
+                  },
+                  "username": {
+                    "type": "string",
+                    "description": "The username of the user"
+                  }
+                },
+                "required": [
+                  "level",
+                  "password",
+                  "username"
+                ]
+              },
+              "description": "The users of the cache and their access level",
+              "uniqueItems": true
+            }
+          }
+        },
+        "maxArtifactSize": {
+          "type": "integer",
+          "description": "The maximum size of a single artifact in the cache in MB",
+          "minimum": 1
+        },
+        "targetSize": {
+          "type": "integer",
+          "description": "The total available size of the cache in MB",
+          "minimum": 1
+        }
+      }
+    },
+    "registration": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "key": {
+          "type": "string",
+          "description": "The key of the node (can be found on the nodes screen of Gradle Enterprise)"
+        },
+        "nodeAddress": {
+          "type": "string",
+          "description": "The URI of this build cache node",
+          "format": "uri"
+        },
+        "secret": {
+          "type": "string",
+          "description": "The secret of the node (can be found on the nodes screen of Gradle Enterprise)"
+        },
+        "serverAddress": {
+          "type": "string",
+          "description": "The URI of the Gradle Enterprise instance",
+          "format": "uri"
+        }
+      },
+      "required": [
+        "key",
+        "nodeAddress",
+        "secret",
+        "serverAddress"
+      ],
+      "description": "The registration details to connect to Gradle Enterprise"
+    },
+    "uiAccess": {
+      "type": "object",
+      "description": "The credentials for securing the UI",
+      "additionalProperties": false,
+      "properties": {
+        "password": {
+          "type": "object",
+          "description": "The hashed password for securing the cache node UI",
+          "additionalProperties": false,
+          "properties": {
+            "algorithm": {
+              "type": "string",
+              "description": "The algorithm for generating the hash",
+              "enum": [
+                "sha256"
+              ]
+            },
+            "hash": {
+              "type": "string",
+              "description": "The hashed password for the user as a hex string",
+              "pattern": "^[0-9a-fA-F]+$"
+            },
+            "salt": {
+              "type": "string",
+              "description": "The salt used in generating the hash as a hex string",
+              "pattern": "^[0-9a-fA-F]+$"
+            }
+          },
+          "required": [
+            "algorithm",
+            "hash",
+            "salt"
+          ]
+        },
+        "username": {
+          "type": "string",
+          "description": "The username for securing the cache node UI"
+        }
+      },
+      "required": [
+        "password",
+        "username"
+      ]
+    },
+    "version": {
+      "type": "integer",
+      "description": "The version of the config file",
+      "maximum": 2,
+      "minimum": 2
+    }
+  },
+  "required": [
+    "version"
+  ],
+  "$schema": "http://json-schema.org/draft-04/schema#"
+}

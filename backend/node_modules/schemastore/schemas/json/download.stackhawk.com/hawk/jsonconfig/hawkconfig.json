@@ -1,0 +1,915 @@
+{
+  "$schema": "http://json-schema.org/draft/2019-09/schema#",
+  "id": "com.stackhawk.nest.HawkScanMessages$HawkscanConf",
+  "type": "object",
+  "title": "com.stackhawk.nest.HawkScanMessages$HawkscanConf",
+  "definitions": {
+    "Spider": {
+      "id": "#/definitions/Spider",
+      "type": "object",
+      "properties": {
+        "base": {
+          "type": "boolean",
+          "description": "Enable the basic web crawler for discovering your application’s routes. This spider is appropriate for most traditional web applications.",
+          "default": true
+        },
+        "ajax": {
+          "type": "boolean",
+          "description": "Enable the ajax web crawler for discovering your application’s routes. This spider is appropriate for single-page web applications.",
+          "default": false
+        },
+        "maxDurationMinutes": {
+          "type": "number",
+          "description": "Maximum allowed time for enabled spiders to crawl your web application. defaults to 5",
+          "exclusiveMinimum": 0
+        },
+        "ajaxBrowser": {
+          "type": "string",
+          "description": "The browser to type and style to use when running the AjaxSpider. This value is ignored when running the hawkscan docker container and use's the default FIREFOX_HEADLESS.",
+          "enum": [
+            "FIREFOX_HEADLESS",
+            "CHROME_HEADLESS",
+            "FIREFOX",
+            "CHROME"
+          ]
+        }
+      }
+    },
+    "ScanConf": {
+      "id": "#/definitions/ScanConf",
+      "type": "object",
+      "properties": {
+        "maxDurationMinutes": {
+          "type": [
+            "number",
+            "string"
+          ],
+          "description": "Maximum duration that a scan will run.",
+          "minimum": 0,
+          "pattern": "^([0-9][0-9]+|[1-9]|0)$"
+        },
+        "maxRuleDurationMinutes": {
+          "type": [
+            "number",
+            "string"
+          ],
+          "description": "Maximum duration that a scan will spend on a rule.",
+          "minimum": 0,
+          "pattern": "^([0-9][0-9]+|[1-9]|0)$"
+        },
+        "requestDelayMillis": {
+          "type": [
+            "number",
+            "string"
+          ],
+          "description": "Delay time between sending requests.",
+          "minimum": 0,
+          "pattern": "^([0-9][0-9]+|[1-9]|0)$"
+        },
+        "concurrentRequests": {
+          "type": [
+            "number",
+            "string"
+          ],
+          "description": "Number of request threads. _If you need that little extra push._ defaults to 11",
+          "exclusiveMinimum": 0,
+          "pattern": "^([0-9][0-9]+|[1-9])$"
+        },
+        "throttlePassiveBacklog": {
+          "type": [
+            "number",
+            "string"
+          ],
+          "description": "Pause active scan when passive backlog is greater than this value, resumes once backlog is empty. defaults to 50",
+          "exclusiveMinimum": 0,
+          "pattern": "^([0-9][0-9]+|[1-9])$"
+        }
+      }
+    },
+    "HawkConf": {
+      "id": "#/definitions/HawkConf",
+      "type": "object",
+      "properties": {
+        "spider": {
+          "$ref": "#/definitions/Spider",
+          "description": "Spider configuration"
+        },
+        "startupTimeoutMinutes": {
+          "type": "number",
+          "description": "Maximum time in minutes to wait for the scanner process to start",
+          "exclusiveMinimum": 0
+        },
+        "failureThreshold": {
+          "type": "string",
+          "description": "The lowest alert level that returns a failed scan status. Accepted values: high, medium, or low",
+          "pattern": "\\b(?:high|medium|low|HIGH|MEDIUM|LOW)\\b"
+        },
+        "scan": {
+          "$ref": "#/definitions/ScanConf",
+          "description": "Scan Configuration"
+        },
+        "config": {
+          "type": "array",
+          "description": "Scanner configuration overrides, provided as a list of strings.",
+          "items": {
+            "type": "string",
+            "pattern": "^([a-zA-Z0-9]*\\.)*([a-zA-Z_$0-9])+=.*$"
+          }
+        }
+      }
+    },
+    "NameValParam": {
+      "id": "#/definitions/NameValParam",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": ""
+        },
+        "val": {
+          "type": "string",
+          "description": ""
+        }
+      }
+    },
+    "UsernamePasswordCredentials": {
+      "id": "#/definitions/UsernamePasswordCredentials",
+      "type": "object",
+      "properties": {
+        "loginPagePath": {
+          "type": "string",
+          "description": "",
+          "pattern": "^\\/(([A-z0-9\\-\\%]+\\/)*[A-z0-9\\-\\%]+$)?"
+        },
+        "loginPath": {
+          "type": "string",
+          "description": "",
+          "pattern": "^\\/(([A-z0-9\\-\\%]+\\/)*[A-z0-9\\-\\%]+$)?"
+        },
+        "usernameField": {
+          "type": "string",
+          "description": ""
+        },
+        "passwordField": {
+          "type": "string",
+          "description": ""
+        },
+        "scanUsername": {
+          "type": "string",
+          "description": ""
+        },
+        "scanPassword": {
+          "type": "string",
+          "description": ""
+        },
+        "type": {
+          "type": "string",
+          "description": "An enum value describing the type of `POST` data expected by the `loginPath`",
+          "enum": [
+            "FORM",
+            "JSON"
+          ]
+        },
+        "otherParams": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "$ref": "#/definitions/NameValParam"
+          }
+        }
+      },
+      "required": [
+        "loginPath",
+        "usernameField",
+        "passwordField",
+        "scanUsername",
+        "scanPassword"
+      ]
+    },
+    "ExternalCredentials": {
+      "id": "#/definitions/ExternalCredentials",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "Specifies the type of token being supplied. If `COOKIE` is specified the .external.value should be in the form of a cookie value <cookie-name>=<cookie-value> . Defaults to `Token`.",
+          "enum": [
+            "TOKEN",
+            "COOKIE"
+          ]
+        },
+        "value": {
+          "type": "string",
+          "description": "**Required.** The value containing the token that will authorize requests. How the token is passed to your application is determined by the assigned `type`."
+        }
+      },
+      "required": [
+        "value"
+      ]
+    },
+    "ParametersEntry": {
+      "id": "#/definitions/ParametersEntry",
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "CredentialsEntry": {
+      "id": "#/definitions/CredentialsEntry",
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "AuthenticationScript": {
+      "id": "#/definitions/AuthenticationScript",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The name of the authentication script specified in the hawkAddOn.scripts.name"
+        },
+        "parameters": {
+          "$ref": "#/definitions/ParametersEntry",
+          "description": "The parameters required for the authentication script."
+        },
+        "credentials": {
+          "$ref": "#/definitions/CredentialsEntry",
+          "description": "The credentials required for the authentication script. These values will be redacted."
+        }
+      },
+      "required": [
+        "name"
+      ]
+    },
+    "TokenExtraction": {
+      "id": "#/definitions/TokenExtraction",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "Specifying `TOKEN_PATH` tells HawkScan to extract the token from the JSON payload of the response from authentication. `HEADER` tells HawkScan to extract the token from a header in the response from authentication. defaults to `TOKEN_PATH`.",
+          "enum": [
+            "TOKEN_PATH",
+            "HEADER_NAME"
+          ]
+        },
+        "value": {
+          "type": "string",
+          "description": "",
+          "pattern": "(^([a-z_]*(\\.[a-zA-Z][a-zA-Z_$0-9]*)*)\\.([a-zA-Z_$0-9]*)$)|(^[a-zA-Z_]*$)"
+        }
+      },
+      "required": [
+        "value"
+      ]
+    },
+    "CookieAuthorization": {
+      "id": "#/definitions/CookieAuthorization",
+      "type": "object",
+      "properties": {
+        "cookieNames": {
+          "type": "array",
+          "description": "A list of strings that are the names of cookies used for maintaining a session. Typically this is one value like `jsessionid` or `PHPSESS`. When used in combination with authentication HawkScan will use this value to persist authenticated session state with your application.",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "TokenAuthorization": {
+      "id": "#/definitions/TokenAuthorization",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "",
+          "enum": [
+            "HEADER",
+            "QUERY_PARAM"
+          ]
+        },
+        "value": {
+          "type": "string",
+          "description": "**Required.** The name of the `HEADER` or `QUERY_PARAM` the token should be passed as."
+        }
+      },
+      "required": [
+        "value"
+      ]
+    },
+    "SessionScript": {
+      "id": "#/definitions/SessionScript",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The name of the session script specified in the hawkAddOn.scripts.name"
+        },
+        "parameters": {
+          "$ref": "#/definitions/ParametersEntry",
+          "description": "The parameters required for the session script."
+        }
+      },
+      "required": [
+        "name"
+      ]
+    },
+    "RequestHeadersEntry": {
+      "id": "#/definitions/RequestHeadersEntry",
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "AuthTestPath": {
+      "id": "#/definitions/AuthTestPath",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "An enum value representing what to match against in the response from issuing a GET request to the `testPath.path`. The supported values are `HEADER` and `BODY`.",
+          "enum": [
+            "HEADER",
+            "BODY"
+          ]
+        },
+        "path": {
+          "type": "string",
+          "description": "**Required**. The path to a protected route in your application that requires authorization. For example `/mysettings`. A `GET` request will be made to this path using the configured authentication.",
+          "pattern": "^\\/(([A-z0-9\\-\\%]+\\/)*[A-z0-9\\-\\%]+$)?"
+        },
+        "success": {
+          "type": "string",
+          "description": "*"
+        },
+        "fail": {
+          "type": "string",
+          "description": "*"
+        },
+        "requestMethod": {
+          "type": "string",
+          "description": "Request method to use for queries. Will generate GraphQL queries as either POST payloads or GET uri strings.",
+          "enum": [
+            "GET",
+            "POST",
+            "PUT"
+          ]
+        },
+        "requestBody": {
+          "type": "string",
+          "description": "The request content to send along with POST or PUT requests for authentication verification."
+        },
+        "requestHeaders": {
+          "$ref": "#/definitions/RequestHeadersEntry",
+          "description": "*"
+        }
+      },
+      "required": [
+        "path"
+      ],
+      "allOf": [
+        {
+          "oneOf": [
+            {
+              "required": [
+                "success"
+              ]
+            },
+            {
+              "required": [
+                "fail"
+              ]
+            },
+            {
+              "not": {
+                "anyOf": [
+                  {
+                    "required": [
+                      "success"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "fail"
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "Authentication": {
+      "id": "#/definitions/Authentication",
+      "type": "object",
+      "properties": {
+        "usernamePassword": {
+          "$ref": "#/definitions/UsernamePasswordCredentials",
+          "description": "Optional configuration specifying a username and password based authentication configuration. Do not configure if using `external`."
+        },
+        "external": {
+          "$ref": "#/definitions/ExternalCredentials",
+          "description": "Optional configuration block for specifying an externally supplied authorization token. Do not configure if using `usernamePassword`."
+        },
+        "script": {
+          "$ref": "#/definitions/AuthenticationScript",
+          "description": "Optional configuration block for using an authentication script."
+        },
+        "tokenExtraction": {
+          "$ref": "#/definitions/TokenExtraction",
+          "description": "Optional configuration block for extracting the authorization token from the authentication response."
+        },
+        "cookieAuthorization": {
+          "$ref": "#/definitions/CookieAuthorization",
+          "description": "Optional configuration specifying if authorization is maintained via a cookie session. Do not configure if using `tokenAuthorization`."
+        },
+        "tokenAuthorization": {
+          "$ref": "#/definitions/TokenAuthorization",
+          "description": "Optional configuration telling HawkScan how to pass the authorization token to your application on each request to maintain authorized access. Do not configure if using `cookieAuthorization`."
+        },
+        "sessionScript": {
+          "$ref": "#/definitions/SessionScript",
+          "description": "Optional configuration for using a session management script."
+        },
+        "loggedInIndicator": {
+          "type": "string",
+          "description": "**Required**. A regex to match against http responses from pages in the web application to determine if the scanned pages user session is still logged in to the app, provided as a string (ex. `\"\\\\Qsigned in as\\\\E\"`)."
+        },
+        "loggedOutIndicator": {
+          "type": "string",
+          "description": "**Required**. A regex to match against http responses from pages in the web application to determine if the scanned pages user session is logged out of the app, provided as a string"
+        },
+        "testPath": {
+          "$ref": "#/definitions/AuthTestPath",
+          "description": "A configuration block specifying how to verify authentication/authorization is working"
+        }
+      },
+      "required": [
+        "loggedInIndicator",
+        "loggedOutIndicator",
+        "testPath"
+      ],
+      "allOf": [
+        {
+          "oneOf": [
+            {
+              "required": [
+                "usernamePassword"
+              ]
+            },
+            {
+              "required": [
+                "external"
+              ]
+            },
+            {
+              "required": [
+                "script"
+              ]
+            },
+            {
+              "not": {
+                "anyOf": [
+                  {
+                    "required": [
+                      "usernamePassword"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "external"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "script"
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "oneOf": [
+            {
+              "required": [
+                "cookieAuthorization"
+              ]
+            },
+            {
+              "required": [
+                "tokenAuthorization"
+              ]
+            },
+            {
+              "required": [
+                "sessionScript"
+              ]
+            },
+            {
+              "not": {
+                "anyOf": [
+                  {
+                    "required": [
+                      "cookieAuthorization"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "tokenAuthorization"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "sessionScript"
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "GraphQLConf": {
+      "id": "#/definitions/GraphQLConf",
+      "type": "object",
+      "properties": {
+        "schemaPath": {
+          "type": "string",
+          "description": "Path to the GraphQL introspection endpoint, relative to the target URI",
+          "pattern": "^\\/(([A-z0-9\\-\\%]+\\/)*[A-z0-9\\-\\%]+$)?"
+        },
+        "requestMethod": {
+          "type": "string",
+          "description": "Request method to use for queries. Will generate GraphQL queries as either POST payloads or GET uri strings.",
+          "enum": [
+            "POST",
+            "GET"
+          ]
+        },
+        "uriMaxLength": {
+          "type": [
+            "number",
+            "string"
+          ],
+          "description": "Max length of URIs when generation queries for GET requests.",
+          "minimum": 0,
+          "pattern": "^([0-9][0-9]+|[1-9]|0)$"
+        },
+        "maxDepth": {
+          "type": [
+            "number",
+            "string"
+          ],
+          "description": "Maximum depth for generated query graphs",
+          "exclusiveMinimum": 0,
+          "maximum": 50,
+          "pattern": "^([0-9][0-9]+|[1-9]|0)$"
+        },
+        "enabled": {
+          "type": "boolean",
+          "description": "Enable GraphQL scan support. HawkScan will enumerate all possible field types and input values for GraphQL Queries and Mutations. Provide relative path to the API endpoint."
+        },
+        "operation": {
+          "type": "string",
+          "description": "GraphQL operation to enumerate and scan. Defaults to find all Query and Mutation operations.",
+          "enum": [
+            "ALL",
+            "QUERY",
+            "MUTATION"
+          ]
+        },
+        "filePath": {
+          "type": "string",
+          "description": "Relative path to a JSON formatted GraphQL schema (default: None)"
+        }
+      }
+    },
+    "OpenApiConf": {
+      "id": "#/definitions/OpenApiConf",
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "description": "A string relative path to an OpenAPI specification file (JSON or YAML) from the specified app.host",
+          "pattern": "^\\/(([A-z0-9\\-\\%]+\\/)*[A-z0-9\\-\\%]+$)?"
+        },
+        "filePath": {
+          "type": "string",
+          "description": "*"
+        },
+        "inline": {
+          "type": "string",
+          "description": "Define your openapi specification yaml inlined as a string."
+        },
+        "strict": {
+          "type": "boolean",
+          "description": "Enable strict parsing of the openapi."
+        }
+      }
+    },
+    "SoapConf": {
+      "id": "#/definitions/SoapConf",
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "description": "Host path to the SOAP WSDL, prefixed with a `/`",
+          "pattern": "^\\/(([A-z0-9\\-\\%]+\\/)*[A-z0-9\\-\\%]+$)?"
+        },
+        "filePath": {
+          "type": "string",
+          "description": "Relative path to the SOAP WSDL schema definition file"
+        }
+      }
+    },
+    "InjectableParam": {
+      "id": "#/definitions/InjectableParam",
+      "type": "object",
+      "properties": {}
+    },
+    "EnabledRPCParam": {
+      "id": "#/definitions/EnabledRPCParam",
+      "type": "object",
+      "properties": {}
+    },
+    "InputVectorParams": {
+      "id": "#/definitions/InputVectorParams",
+      "type": "object",
+      "properties": {
+        "injectableParam": {
+          "$ref": "#/definitions/InjectableParam",
+          "description": ""
+        },
+        "enabledRpcParam": {
+          "$ref": "#/definitions/EnabledRPCParam",
+          "description": ""
+        }
+      }
+    },
+    "AppConf": {
+      "id": "#/definitions/AppConf",
+      "type": "object",
+      "properties": {
+        "host": {
+          "type": "string",
+          "description": "**Required.** The base url of the application to scan ex: `http://localhost:8000`. If the url cannot be reached, the scan will not proceed.",
+          "pattern": "(?i)(?:(?:https?|ftp|file):\\/\\/|www\\.|ftp\\.)(?:\\([-A-Z0-9+&@#\\/%=~_|$?!:,.]*\\)|[-A-Z0-9+&@#\\/%=~_|$?!:,.])*(?:\\([-A-Z0-9+&@#\\/%=~_|$?!:,.]*\\)|[A-Z0-9+&@#\\/%=~_|$])"
+        },
+        "sessionTokens": {
+          "type": "array",
+          "description": "The names of any session tokens used by your application, provided as an array of strings (Hint: these are the names of session cookies used by your application).",
+          "items": {
+            "type": "string"
+          }
+        },
+        "antiCsrfParam": {
+          "type": "string",
+          "description": "The name of your CSRF security parameter used in any application form inputs. Globally set, HawkScan will parse this parameter value from form responses to use in subsequent requests."
+        },
+        "authentication": {
+          "$ref": "#/definitions/Authentication",
+          "description": ""
+        },
+        "excludePaths": {
+          "type": "array",
+          "description": "An array of strings, used as regexes to match against routes that should be ignored entirely by HawkScan. This field is useful for prohibiting asset directories or other resources that don’t require vulnerability scanning. (TODO: ADD EXAMPLE)",
+          "items": {
+            "type": "string"
+          }
+        },
+        "applicationId": {
+          "type": "string",
+          "description": "**Required**. The `applicationId` of an application from the StackHawk platform",
+          "pattern": "\\b[0-9a-f]{8}\\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\\b[0-9a-f]{12}\\b"
+        },
+        "env": {
+          "type": "string",
+          "description": "**Required**. The `env` environment name to organize Scan Results"
+        },
+        "graphqlConf": {
+          "$ref": "#/definitions/GraphQLConf",
+          "description": "GraphQL API scanner parameters."
+        },
+        "includePaths": {
+          "type": "array",
+          "description": "An array of strings, used as regexes to constrain the application routes HawkScan will specifically visit. This field is useful for constraining the reach of the HawkScan scanner and spider. (TODO: add examples)",
+          "items": {
+            "type": "string"
+          }
+        },
+        "autoPolicy": {
+          "type": "boolean",
+          "description": "Set to `true` to enable an optimized policy when scanning specific APIs like GraphQL and OpenAPI. Defaults to True"
+        },
+        "autoInputVectors": {
+          "type": "boolean",
+          "description": "Set to `true` to automatically enabled the correct input data types when scanning API’s like GraphQL and OpenAPI. This can increase scan accuracy and reduce false positives. Defaults to True"
+        },
+        "openApiConf": {
+          "$ref": "#/definitions/OpenApiConf",
+          "description": "OpenApi scanner parameters."
+        },
+        "soapConf": {
+          "$ref": "#/definitions/SoapConf",
+          "description": "SOAP API scanner parameters."
+        },
+        "inputVectors": {
+          "$ref": "#/definitions/InputVectorParams",
+          "description": "Fine grained control of injectable input vectors"
+        }
+      },
+      "required": [
+        "host",
+        "applicationId",
+        "env"
+      ],
+      "allOf": [
+        {
+          "oneOf": [
+            {
+              "required": [
+                "authentication"
+              ]
+            },
+            {
+              "not": {
+                "anyOf": [
+                  {
+                    "required": [
+                      "authentication"
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "ReplacerRules": {
+      "id": "#/definitions/ReplacerRules",
+      "type": "object",
+      "properties": {
+        "matchString": {
+          "type": "string",
+          "description": "*"
+        },
+        "replacement": {
+          "type": "string",
+          "description": "*"
+        },
+        "initiators": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string",
+            "enum": [
+              "PROXY",
+              "ACTIVE_SCANNER",
+              "SPIDER",
+              "FUZZER",
+              "AUTHENTICATION",
+              "MANUAL_REQUEST",
+              "CHECK_FOR_UPDATES",
+              "BEAN_SHELL",
+              "ACCESS_CONTROL_SCANNER",
+              "AJAX_SPIDER",
+              "FORCED_BROWSE",
+              "TOKEN_GENERATOR",
+              "WEB_SOCKET",
+              "AUTHENTICATION_HELPER"
+            ]
+          }
+        },
+        "replaceOnly": {
+          "type": "boolean",
+          "description": "*"
+        },
+        "isRegex": {
+          "type": "boolean",
+          "description": "*"
+        }
+      },
+      "required": [
+        "matchString",
+        "replacement"
+      ]
+    },
+    "Replacer": {
+      "id": "#/definitions/Replacer",
+      "type": "object",
+      "properties": {
+        "rules": {
+          "type": "array",
+          "description": "List of regex match and replace rules for request headers.",
+          "items": {
+            "$ref": "#/definitions/ReplacerRules"
+          }
+        }
+      }
+    },
+    "Script": {
+      "id": "#/definitions/Script",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "the name of this custom script"
+        },
+        "type": {
+          "type": "string",
+          "description": "",
+          "enum": [
+            "active",
+            "authentication",
+            "httpsender",
+            "passive",
+            "proxy",
+            "standalone",
+            "targeted",
+            "session"
+          ]
+        },
+        "path": {
+          "type": "string",
+          "description": "Path to the file location for the custom script"
+        },
+        "vars": {
+          "type": "array",
+          "description": "Named variables to expose to the script",
+          "items": {
+            "$ref": "#/definitions/NameValParam"
+          }
+        },
+        "language": {
+          "type": "string",
+          "description": "The language of this script",
+          "enum": [
+            "KOTLIN",
+            "JAVASCRIPT"
+          ]
+        }
+      }
+    },
+    "HawkAddOnConf": {
+      "id": "#/definitions/HawkAddOnConf",
+      "type": "object",
+      "properties": {
+        "replacer": {
+          "$ref": "#/definitions/Replacer",
+          "description": "Configuration for the replacer addOn"
+        },
+        "scripts": {
+          "type": "array",
+          "description": "List of configurations for custom scripts.",
+          "items": {
+            "$ref": "#/definitions/Script"
+          }
+        }
+      }
+    },
+    "HawkscanConf": {
+      "id": "#/definitions/HawkscanConf",
+      "type": "object",
+      "properties": {
+        "hawk": {
+          "$ref": "#/definitions/HawkConf",
+          "description": "Parameters for scanner runtime and how it should look for vulnerabilities."
+        },
+        "app": {
+          "$ref": "#/definitions/AppConf",
+          "description": "**Required** Parameters for the target application and specifics for how it should be scanned."
+        },
+        "hawkAddOn": {
+          "$ref": "#/definitions/HawkAddOnConf",
+          "description": "Parameters for additional HawkScan add-ons."
+        }
+      },
+      "required": [
+        "app"
+      ]
+    }
+  },
+  "properties": {
+    "hawk": {
+      "id": "#/properties/hawk",
+      "type": "object",
+      "$ref": "#/definitions/HawkConf"
+    },
+    "app": {
+      "id": "#/properties/app",
+      "type": "object",
+      "$ref": "#/definitions/AppConf"
+    },
+    "hawkAddOn": {
+      "id": "#/properties/hawkAddOn",
+      "type": "object",
+      "$ref": "#/definitions/HawkAddOnConf"
+    }
+  }
+}

@@ -1,0 +1,1911 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "netin.config.template.schema.json",
+  "title": "NetinDS - Device template",
+  "description": "NetinDS device configuration template, defines the drivers used to collect the datapoints and the transformations and alarms to be applied to these datapoints",
+  "type": "object",
+  "definitions": {
+    "schemaVersionDef": {
+      "type": "string",
+      "title": "Schema version",
+      "description": "Fixed value designating the version of the template schema",
+      "markdownDescription": "SemVer style template schema version [See the documentation](https://semver.org/)",
+      "pattern": "(?<=^v?|\\sv?)(?:(?:0|[1-9][0-9]*).){2}(?:0|[1-9][0-9]*)(?:-(?:0|[1-9][0-9]*|[0-9a-z-]*[a-z-][0-9a-z-]*)(?:.(?:0|[1-9][0-9]*|[0-9a-z-]*[a-z-][0-9a-z-]*))*)?(?:\\+[0-9a-z-]+(?:.[0-9a-z-]+)*)?\\b",
+      "examples": [
+        "1.5.2",
+        "7.5.3",
+        "7.5.3-test"
+      ],
+      "errorMessage": "Not valid version string, for more information see : https://semver.org/"
+    },
+    "originDef": {
+      "title": "Origin",
+      "description": "Monitored system, subsystem, device or ... source of the datapoint",
+      "type": "string",
+      "pattern": "^\\/\\{[a-zA-Z0-9-_.]{1,80}\\}\\/$|^[a-zA-Z0-9-_.]{1,80}$",
+      "errorMessage": "origin should be a string. Maximum size of 80 alphanumerical characters or symbol: -_."
+    },
+    "templateIdDef": {
+      "type": "string",
+      "title": "Template identification",
+      "description": "Template identification string",
+      "pattern": "^[a-zA-Z0-9-_ ]{1,80}$",
+      "errorMessage": "templateId should be a string. Maximum size of 80 alphanumerical characters or symbol: -_"
+    },
+    "templateVersionDef": {
+      "type": "string",
+      "title": "Template version",
+      "description": "SemVer style template version",
+      "markdownDescription": "SemVer style template version [See the documentation](https://semver.org/)",
+      "pattern": "(?<=^v?|\\sv?)(?:(?:0|[1-9][0-9]*).){2}(?:0|[1-9][0-9]*)(?:-(?:0|[1-9][0-9]*|[0-9a-z-]*[a-z-][0-9a-z-]*)(?:.(?:0|[1-9][0-9]*|[0-9a-z-]*[a-z-][0-9a-z-]*))*)?(?:\\+[0-9a-z-]+(?:.[0-9a-z-]+)*)?\\b",
+      "examples": [
+        "1.5.2",
+        "7.5.3",
+        "7.5.3-test"
+      ],
+      "errorMessage": "templateVersion should be a valid version string. For more information see : https://semver.org/"
+    },
+    "descriptionDef": {
+      "type": "string",
+      "title": "Template description",
+      "description": "Detailed information about the device or system to be monitored by this device",
+      "minLength": 1,
+      "maxLength": 800,
+      "errorMessage": "description should be a string of at least one character and maximum 800 characters"
+    },
+    "rangerFilterDef": {
+      "type": "object",
+      "title": "Ranger match configuration",
+      "description": "Tags used by Ranger to match discoverd devices with their respective templates",
+      "properties": {
+        "deviceID": {
+          "type": "string",
+          "title": "deviceID Regex",
+          "description": "Regular expression for PROFINET device identification field in hexadecimal format",
+          "examples": [
+            "0x0A01",
+            "0x0A0B"
+          ],
+          "errorMessage": "DeviceID should be a string"
+        },
+        "vendorID": {
+          "type": "string",
+          "title": "vendorID regex",
+          "description": "Regular expression for PROFINET manufacturer identification field in hexadecimal format",
+          "markdownDescription": "Regular expression for [PROFINET manufacturer](https://www.profibus.com/IM/Man_ID_Table.xml) identification field in hexadecimal format",
+          "examples": [
+            "0x002A"
+          ],
+          "errorMessage": "vendorID should be a string"
+        },
+        "description": {
+          "type": "string",
+          "title": "Device description Regex",
+          "description": "Regular expression for SNMP sysDescr OID (1.3.6.1.2.1.1.1) device description",
+          "examples": [
+            "SIMATIC NET, SCALANCE X2"
+          ],
+          "minLength": 1,
+          "maxLength": 800,
+          "errorMessage": "description should be a string of at least one character and maximum 800 characters"
+        }
+      },
+      "defaultSnippets": [
+        {
+          "label": "PROFINET based",
+          "description": "Ranger filter for a PROFINET device",
+          "body": {
+            "deviceID": "0x0A01",
+            "vendorID": "0x002A"
+          }
+        },
+        {
+          "label": "SNMP based",
+          "description": "Ranger filter for a SNMP device",
+          "body": {
+            "description": "SIMATIC NET"
+          }
+        }
+      ]
+    },
+    "originTypeDef": {
+      "type": "string",
+      "title": "Driver (Origin type) identification",
+      "description": "Driver (Origin type) identification string for the driver",
+      "pattern": "^[a-zA-Z0-9-]{1,80}$",
+      "errorMessage": "Should be a string and follow the pattern: alphanumerical characters and - symbol, maximum length 80"
+    },
+    "originTypeConfigDef": {
+      "type": "object",
+      "title": "Driver (Origin type) configuration",
+      "description": "Driver (Origin type) configuration object. Check the specific documentation for each driver",
+      "markdownDescription": "Driver (Origin type) configuration object. Check the specific [documentation](https://docs.netin.io/netin_webUI/NetinDS/templates/#origin-type-declaration) for each driver",
+      "properties": {
+        "originType": {
+          "$ref": "#/definitions/originTypeDef"
+        }
+      },
+      "defaultSnippets": [
+        {
+          "label": "PROFINET Driver",
+          "description": "Basic PROFINET Driver configuration",
+          "body": {
+            "originType": "netin-ds-drv-pnio",
+            "ipAddress": "/{DCP_IPAddress}/",
+            "gsd": "GSDML-V2.35-Siemens-ET200SP-20200729"
+          }
+        },
+        {
+          "label": "SNMP Driver",
+          "description": "Basic SNMP Driver configuration",
+          "body": {
+            "originType": "netin-ds-drv-snmp",
+            "basicConfig": {
+              "retries": 2,
+              "address": "/{ICMP_IPAddress}/",
+              "port": 161,
+              "version": 2,
+              "timeout": 5000
+            },
+            "snmpCommunities": {
+              "readCommunity": "public",
+              "writeCommunity": "private"
+            },
+            "snmpV3Security": {
+              "authAlgorithm": "MD5",
+              "privacyAlgorithm": "DES",
+              "usmUser": "",
+              "authPassword": "",
+              "privacyPassword": ""
+            }
+          }
+        },
+        {
+          "label": "ICMP Driver",
+          "description": "Basic ICMP configuration",
+          "body": {
+            "originType": "netin-ds-drv-icmp",
+            "address": "/{ICMP_IPAddress}/",
+            "count": 4,
+            "timeout": 1000
+          }
+        },
+        {
+          "label": "S7 Driver",
+          "description": "Basic S7 configuration",
+          "body": {
+            "originType": "netin-ds-drv-s7",
+            "s7basicConfig": {
+              "address": "/{ICMP_IPAddress}/",
+              "rack": 0,
+              "slot": 2,
+              "deviceType": "S7-300"
+            },
+            "s7extraConfig": {
+              "requestTimeout": 15000,
+              "connectionTimeout": 3000,
+              "port": 102
+            },
+            "s7security": {
+              "password": "",
+              "accessProtection": false
+            },
+            "s7diagnosticBuffer": {
+              "loggingEnabled": false
+            }
+          }
+        },
+        {
+          "label": "MQTT Broker Driver",
+          "description": "Basic MQTT Broker configuration",
+          "body": {
+            "originType": "netin-ds-drv-mqtt",
+            "source": "/{DCP_IPAddress}/",
+            "topics": [
+              {
+                "topicName": "MyTopic",
+                "datapointSet": "MyDatapointSet",
+                "originStrategy": {
+                  "strategyId": "property",
+                  "property": "MyProperty",
+                  "expression": "^[a-zA-Z0-9-]*"
+                },
+                "operationMode": "extract"
+              }
+            ]
+          }
+        },
+        {
+          "label": "MODBUS Driver",
+          "description": "Basic MODBUS Broker configuration",
+          "body": {
+            "originType": "netin-ds-drv-modbus-tcp",
+            "address": "/{DCP_IPAddress}/",
+            "slaveId": 1,
+            "port": 502
+          }
+        }
+      ],
+      "additionalProperties": true,
+      "required": [
+        "originType"
+      ]
+    },
+    "datapointSetTypeDef": {
+      "type": "string",
+      "title": "DatapointSet type",
+      "description": "Define the data structure of this datapointSet, check the documentation for more information",
+      "markdownDescription": "Define the data structure of this datapointSet, check the [documentation](https://docs.netin.io/netin_webUI/NetinDS/templates/#datapointsets) for more information",
+      "enum": [
+        "map",
+        "tableStatic",
+        "tableDynamic"
+      ],
+      "errorMessage": "datapointSetType should be a string. DatapointSet type is datapointSetType, and should be one of: map, tableStatic, tableDynamic"
+    },
+    "datapointSetIdDef": {
+      "title": "DatapointSet identification",
+      "description": "DatapointSet identification string",
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9_-]{1,40}$",
+      "errorMessage": "DatapointSet identification must be alphanumeric string [1-40], \"-\" & \"_\" are also allowed"
+    },
+    "tableAddressDef": {
+      "type": "object",
+      "title": "Table address config",
+      "description": "Specific configuration for tabled based datapointSets",
+      "properties": {
+        "rootAddress": {
+          "type": "string",
+          "title": "Table root address",
+          "description": "Main address for the table, this information is specific for each kind of driver",
+          "maxLength": 240,
+          "errorMessage": "rootAddress should be a string [0-240]"
+        },
+        "indexes": {
+          "type": "array",
+          "title": "Tables indexes",
+          "description": "Array of datapointIds that will act as table indexes, this means columns that acts as keys of the table",
+          "items": {
+            "type": "string",
+            "title": "Table index",
+            "description": "One of the datapointId of the table type datapointSet",
+            "pattern": "^[a-zA-Z0-9#&_-]{1,80}$"
+          },
+          "errorMessage": "Indexes must be an array of datapoint identification strings"
+        }
+      }
+    },
+    "broadcastDef": {
+      "type": "boolean",
+      "title": "Broadcast flag",
+      "description": "Flag to indicate that the alarm/datapointSet will be broadcasted to NetinHUB channels",
+      "errorMessage": "Broadcast flag should be a boolean"
+    },
+    "routingDef": {
+      "type": "object",
+      "properties": {
+        "topic": {
+          "type": "string",
+          "title": "Topic identification",
+          "description": "Define the topic that should be used to transport the data",
+          "maxLength": 80,
+          "errorMessage": "Should be a string of less than 80 characters"
+        },
+        "service": {
+          "type": "string",
+          "title": "Service identification",
+          "description": "Define the service that should consume the information",
+          "maxLength": 80,
+          "errorMessage": "Should be a string of less than 80 characters"
+        },
+        "serviceConfig": {
+          "type": "object",
+          "title": "Service configuration",
+          "description": "Object to define the specific configuration of the service",
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "topic"
+      ]
+    },
+    "dataTypeDef": {
+      "title": "NetinDS data type",
+      "description": "Define the type of the data in the NetinDS context, this means how NetinDS will manage the data before the conversions",
+      "type": "string",
+      "enum": [
+        "BYTE",
+        "INTEGER",
+        "LONG",
+        "FLOAT",
+        "DOUBLE",
+        "STRING",
+        "BOOLEAN",
+        "DATE",
+        "ARRAY",
+        "INTEGER_ARRAY",
+        "STRING_ARRAY",
+        "DOUBLE_ARRAY",
+        "BOOLEAN_ARRAY",
+        "FLOAT_ARRAY",
+        "LONG_ARRAY",
+        "OBJECT"
+      ],
+      "errorMessage": "DataType should be one of: BYTE, INTEGER, LONG, FLOAT, DOUBLE, STRING, BOOLEAN, DATE, ARRAY, INTEGER_ARRAY, STRING_ARRAY, DOUBLE_ARRAY, BOOLEAN_ARRAY, FLOAT_ARRAY, LONG_ARRAY, OBJECT"
+    },
+    "originDataTypeDef": {
+      "type": "string",
+      "title": "Driver data type",
+      "description": "Define the type of the data in the driver context, this means how the type of data that driver expect to collect",
+      "pattern": "^[a-zA-Z0-9-_]{1,80}$",
+      "errorMessage": "Driver side data type should follow the pattern: alphanumerical string +\"-\" and \"_\", size [1-80]"
+    },
+    "originAddressDef": {
+      "type": "string",
+      "title": "Datapoint address (drivers side)",
+      "description": "Define the address of this datapoint. This is specific for each driver",
+      "markdownDescription": "Define the address of this datapoint. [This is specific for each driver](https://docs.netin.io/netin_webUI/NetinDS/templates/templates-origintype/#drivers)",
+      "pattern": "^[\\w\\d_&#:$.-]{1,80}$",
+      "errorMessage": "Datapoint address should be an alphanumerical string [1-80] and [_&#:$.-]"
+    },
+    "originAccessTypeDef": {
+      "type": "string",
+      "title": "Datapoint access type",
+      "description": "Access level to the datapoint. This is specific for each driver",
+      "markdownDescription": "Access level to the datapoint. [This is specific for each driver](https://docs.netin.io/netin_webUI/NetinDS/templates/templates-origintype/#drivers)",
+      "enum": [
+        "read-only",
+        "write-only",
+        "read-write",
+        "not-accessible"
+      ],
+      "errorMessage": "Datapoint access type should be a string and one of: read-only, write-only, read-write, not-accessible"
+    },
+    "receiveModeDef": {
+      "type": "string",
+      "title": "Receive mode",
+      "description": "Define how the driver should get the value of this datapoint. This is specific for each driver",
+      "markdownDescription": "Define how the driver should get the value of this datapoint. [This is specific for each driver](https://docs.netin.io/netin_webUI/NetinDS/templates/templates-origintype/#drivers)",
+      "enum": [
+        "polling",
+        "singleQuery",
+        "subscription"
+      ],
+      "errorMessage": "Receive mode should be a string and one of: polling, singleQuery, subscription"
+    },
+    "pollingGroupDef": {
+      "type": "string",
+      "title": "Polling group",
+      "description": "Frequency in which the driver should update the value of this datapoint. This is specific for each driver",
+      "markdownDescription": "Frequency in which the driver should update the value of this datapoint. [This is specific for each driver](https://docs.netin.io/netin_webUI/NetinDS/templates/templates-origintype/#drivers)",
+      "enum": [
+        "5s",
+        "10s",
+        "30s",
+        "1m",
+        "5m",
+        "10m",
+        "15m",
+        "30m",
+        "1h",
+        "4h",
+        "6h",
+        "12h",
+        "1d"
+      ],
+      "errorMessage": "Polling group should be a string and one of: 5s, 10s, 30s, 1m, 5m, 10m, 15m, 30m, 1h, 4h, 6h, 12h, 1d"
+    },
+    "datapointTypeDef": {
+      "type": "string",
+      "title": "Datapoint type",
+      "description": "Define the kind of information types, within NetinDS context, that the driver/zavod instances will generate for this datapoint",
+      "markdownDescription": "Define the kind of [information types](https://docs.netin.io/netin_webUI/NetinDS/templates/templates-datapointsets/#commonconfig), within NetinDS context, that the driver/zavod instances will generate for this datapoint",
+      "enum": [
+        "SIMPLE",
+        "TIMEPOINT",
+        "DATAPOINT",
+        "@DATAPOINT",
+        "@TIMEPOINT",
+        "#DATAPOINT",
+        "#TIMEPOINT"
+      ],
+      "errorMessage": "DatapointType must be one of: SIMPLE, TIMEPOINT, DATAPOINT, @DATAPOINT, @TIMEPOINT, #DATAPOINT, #TIMEPOINT"
+    },
+    "datapointIdDef": {
+      "title": "Datapoint identification",
+      "description": "Datapoint identification string",
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9#&_-]{1,80}$",
+      "errorMessage": "Should be a string and follow the pattern: alphanumerical and symbols #&_- with less than 41 characters"
+    },
+    "symbolDef": {
+      "type": "string",
+      "title": "Symbol ID",
+      "description": "Identification string for logic expression",
+      "minLength": 1,
+      "errorMessage": "Should be a string of at least one characters and less than 40 characters"
+    },
+    "expressionDef": {
+      "type": "string",
+      "title": "Expression",
+      "description": "Expression to be evaluated by NetinDS-Zavod",
+      "markdownDescription": "Expression to be [evaluated](https://docs.netin.io/netin_webUI/NetinDS/templates/templates-datapointsets/) by NetinDS-Zavod",
+      "examples": [
+        "(^(5|[5-9]\\d*)\\.(3|[3-9]\\d*)\\.(0|[1-9]\\d*)?$).test(datapoint.value)",
+        "datapoint.rawValue"
+      ],
+      "minLength": 1,
+      "maxLength": 800,
+      "errorMessage": "Should be a string of at least one character and less than 800 characters"
+    },
+    "expressionLogicObjectDef": {
+      "type": "object",
+      "title": "Expressions",
+      "description": "Expressions that will be checked in this evaluation",
+      "properties": {
+        "expression": {
+          "$ref": "#/definitions/expressionDef"
+        },
+        "symbol": {
+          "$ref": "#/definitions/symbolDef"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "expression",
+        "symbol"
+      ]
+    },
+    "severityDef": {
+      "title": "Alarm severity",
+      "description": "Level of criticality of the alarm",
+      "markdownDescription": "[Level](https://docs.netin.io/netin_webUI/NetinDS/templates/templates-datapointsets/#rangos-de-severidad) of criticality of the alarm",
+      "type": "integer",
+      "minimum": -1,
+      "maximum": 1000,
+      "errorMessage": "Should be a number greater than -1 and lower than 1001"
+    },
+    "severityForAlarmsDef": {
+      "title": "Alarm severity",
+      "description": "Level of criticality of the alarm",
+      "markdownDescription": "[Level](https://docs.netin.io/netin_webUI/NetinDS/templates/templates-datapointsets/#rangos-de-severidad) of criticality of the alarm",
+      "type": "integer",
+      "minimum": 201,
+      "maximum": 1000,
+      "errorMessage": "Should be a number greater than 200 and lower than 1001"
+    },
+    "severityForLogsDef": {
+      "title": "Log severity",
+      "description": "Level of criticality of the log",
+      "markdownDescription": "[Level](https://docs.netin.io/netin_webUI/NetinDS/templates/templates-datapointsets/#rangos-de-severidad) of criticality of the alarm",
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 200,
+      "errorMessage": "Should be a number greater than 0 and lower than 201"
+    },
+    "textDef": {
+      "title": "Alarm related text",
+      "description": "Alarm/event descriptive text",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 800,
+      "errorMessage": "Should be a string of at least one character and less than 500 characters"
+    },
+    "auditedDef": {
+      "type": "boolean",
+      "title": "Alarm in audit process",
+      "description": "Flag indication for audit process",
+      "errorMessage": "Should be boolean"
+    },
+    "hiddenDef": {
+      "type": "boolean",
+      "title": "Hidden flag",
+      "description": "Flag to indicate that the alarm is hidden by user request",
+      "errorMessage": "Should be boolean"
+    },
+    "facilityDef": {
+      "type": "integer",
+      "title": "Resource group ID",
+      "description": "Ident number for the resource group",
+      "markdownDescription": "[Ident number](https://docs.netin.io/netin_webUI/NetinDS/templates/templates-datapointsets/#grupos-de-recursos) for the resource group",
+      "minimum": -1,
+      "maximum": 255,
+      "errorMessage": "Should be a number in the range [-1, 255]"
+    },
+    "logicDef": {
+      "type": "string",
+      "title": "Logic operation",
+      "description": "Logic operation to be applied between all the expressions",
+      "examples": [
+        "evalID1 & evalID2"
+      ],
+      "minLength": 1,
+      "maxLength": 80,
+      "errorMessage": "Should be a string of at least one character and less than 80 characters"
+    },
+    "evaluationForLogsDef": {
+      "type": "object",
+      "title": "Evaluations array",
+      "description": "Array with all the evaluations that will be checked",
+      "properties": {
+        "expressions": {
+          "type": "array",
+          "title": "Array of logical expressions",
+          "description": "Array of logical expression than should return a boolean value",
+          "items": {
+            "$ref": "#/definitions/expressionLogicObjectDef"
+          }
+        },
+        "logic": {
+          "$ref": "#/definitions/logicDef"
+        },
+        "severity": {
+          "$ref": "#/definitions/severityForLogsDef"
+        },
+        "text": {
+          "$ref": "#/definitions/textDef",
+          "title": "Alarm description",
+          "description": "Alarm/event descriptive text"
+        },
+        "textHelp": {
+          "$ref": "#/definitions/textDef",
+          "title": "Alarm help text",
+          "description": "Descriptive information that help to understand the alarm"
+        },
+        "onStartup": {
+          "type": "boolean",
+          "title": "Alert on startup",
+          "description": "Indicates wether the alert must be sent when the conditions are met from the beginning"
+        },
+        "audited": {
+          "$ref": "#/definitions/auditedDef"
+        },
+        "hidden": {
+          "$ref": "#/definitions/hiddenDef"
+        },
+        "broadcast": {
+          "$ref": "#/definitions/broadcastDef"
+        },
+        "facility": {
+          "$ref": "#/definitions/facilityDef"
+        },
+        "routing": {
+          "$ref": "#/definitions/routingDef"
+        }
+      },
+      "additionalProperties": true,
+      "required": [
+        "expressions",
+        "logic",
+        "severity",
+        "text",
+        "textHelp",
+        "onStartup",
+        "audited",
+        "hidden",
+        "broadcast",
+        "facility"
+      ]
+    },
+    "evaluationForAlarmsDef": {
+      "type": "object",
+      "title": "Evaluations array",
+      "description": "Array with all the evaluations that will be checked",
+      "properties": {
+        "expressions": {
+          "type": "array",
+          "title": "Array of logical expressions",
+          "description": "Array of logical expression than should return a boolean value",
+          "items": {
+            "$ref": "#/definitions/expressionLogicObjectDef"
+          }
+        },
+        "logic": {
+          "$ref": "#/definitions/logicDef"
+        },
+        "severity": {
+          "$ref": "#/definitions/severityForAlarmsDef"
+        },
+        "text": {
+          "$ref": "#/definitions/textDef",
+          "title": "Alarm description",
+          "description": "Alarm/event descriptive text"
+        },
+        "textHelp": {
+          "$ref": "#/definitions/textDef",
+          "title": "Alarm help text",
+          "description": "Descriptive information that help to understand the alarm"
+        },
+        "onStartup": {
+          "type": "boolean",
+          "title": "Alert on startup",
+          "description": "Indicates wether the alert must be sent when the conditions are met from the beginning"
+        },
+        "audited": {
+          "$ref": "#/definitions/auditedDef"
+        },
+        "hidden": {
+          "$ref": "#/definitions/hiddenDef"
+        },
+        "broadcast": {
+          "$ref": "#/definitions/broadcastDef"
+        },
+        "facility": {
+          "$ref": "#/definitions/facilityDef"
+        },
+        "routing": {
+          "$ref": "#/definitions/routingDef"
+        }
+      },
+      "additionalProperties": true,
+      "required": [
+        "expressions",
+        "logic",
+        "severity",
+        "text",
+        "textHelp",
+        "onStartup",
+        "audited",
+        "hidden",
+        "broadcast",
+        "facility"
+      ]
+    },
+    "valueDef": {
+      "title": "Datapoint value or rawValue",
+      "description": "Value or rawValue of a datapoint",
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "array"
+        },
+        {
+          "type": "object"
+        }
+      ]
+    },
+    "commonConfigDef": {
+      "type": "object",
+      "title": "Common configuration",
+      "description": "Datapoint common configuration object",
+      "markdownDescription": "Datapoint [common configuration](https://docs.netin.io/netin_webUI/NetinDS/templates/#commonconfig) object",
+      "properties": {
+        "alias": {
+          "type": "string",
+          "title": "Alias",
+          "description": "Alias name for the datapoint, used as representation label",
+          "examples": [
+            "Packets errors",
+            "Partner"
+          ],
+          "minLength": 1,
+          "maxLength": 80,
+          "errorMessage": "Should be a string of at least one character and less than 80 characters"
+        },
+        "description": {
+          "type": "string",
+          "title": "Description",
+          "description": "Detailed information about the datapoint",
+          "examples": [
+            "Number of packets dropped for error",
+            "Name of the partner"
+          ],
+          "minLength": 0,
+          "maxLength": 1200,
+          "errorMessage": "Should be a string of at least one character and less than 1200 characters"
+        },
+        "syntaxInfo": {
+          "type": "string",
+          "title": "Syntax",
+          "description": "Description about the syntax of this datapoints values",
+          "minLength": 0,
+          "maxLength": 1200,
+          "errorMessage": "Should be a string of at least one character and less than 1200 characters"
+        },
+        "datapointType": {
+          "$ref": "#/definitions/datapointTypeDef"
+        },
+        "datapointId": {
+          "$ref": "#/definitions/datapointIdDef"
+        },
+        "additionalProperties": false
+      },
+      "required": [
+        "datapointId",
+        "datapointType"
+      ]
+    },
+    "addressConfigDef": {
+      "type": "object",
+      "title": "Address config",
+      "description": "Datapoint address configuration object",
+      "markdownDescription": "(Datapoint address configuration object)[https://docs.netin.io/netin_webUI/NetinDS/templates/#addressconfig]",
+      "properties": {
+        "dataType": {
+          "$ref": "#/definitions/dataTypeDef"
+        },
+        "originType": {
+          "$ref": "#/definitions/originTypeDef"
+        },
+        "originDataType": {
+          "$ref": "#/definitions/originDataTypeDef"
+        },
+        "originAddress": {
+          "$ref": "#/definitions/originAddressDef"
+        },
+        "originAccessType": {
+          "$ref": "#/definitions/originAccessTypeDef"
+        },
+        "receiveMode": {
+          "$ref": "#/definitions/receiveModeDef"
+        },
+        "pollingGroup": {
+          "$ref": "#/definitions/pollingGroupDef"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "dataType",
+        "originType",
+        "originDataType",
+        "originAddress",
+        "originAccessType",
+        "receiveMode",
+        "pollingGroup"
+      ]
+    },
+    "alertConfigDef": {
+      "title": "Datapoint alert config",
+      "type": "object",
+      "description": "Allows to configure trigger of alarms and events depending on the datapoint values",
+      "markdownDescription": "Allows to configure trigger of [alarms](https://docs.netin.io/netin_webUI/NetinDS/templates/#alertconfig) and events depending on the datapoint values",
+      "properties": {
+        "evaluations": {
+          "oneOf": [
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/evaluationForLogsDef"
+              },
+              "minItems": 1,
+              "uniqueItemProperties": [
+                "severity"
+              ]
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/evaluationForAlarmsDef"
+              },
+              "minItems": 1,
+              "uniqueItemProperties": [
+                "severity"
+              ]
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "evaluations"
+      ]
+    },
+    "calcConfig": {
+      "type": "object",
+      "title": "Calculate datapoint configuration",
+      "description": "Allows to create new datapoints based on an expression",
+      "markdownDescription": "Allows to create [new datapoints](https://docs.netin.io/netin_webUI/NetinDS/templates/#calcconfig) based on an expression",
+      "properties": {
+        "expression": {
+          "$ref": "#/definitions/expressionDef"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "expression"
+      ]
+    },
+    "convConfigDef": {
+      "type": "object",
+      "title": "Datapoint conversion configuration",
+      "description": "Allows to apply enrichment expressions on the value field",
+      "markdownDescription": "Allows to apply [enrichment expressions](https://docs.netin.io/netin_webUI/NetinDS/templates/#convconfig) on the value field",
+      "properties": {
+        "expression": {
+          "$ref": "#/definitions/expressionDef"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "expression"
+      ]
+    },
+    "defaultValueConfigDef": {
+      "type": "object",
+      "title": "Default value configuration",
+      "description": "Allows to apply default values to a datapoint when the value or rawValue is null",
+      "markdownDescription": "Allows to apply [default values](https://docs.netin.io/netin_webUI/NetinDS/templates/#defaultvalueconfig) to a datapoint when the value or rawValue is `null`",
+      "properties": {
+        "isDefault": {
+          "type": "boolean",
+          "title": "Substitution flag",
+          "description": "Flag to indicate that the value is used as substitution value"
+        },
+        "rawValue": {
+          "title": "Default rawValue",
+          "description": "Value to be assigned to rawValue field",
+          "$ref": "#/definitions/valueDef"
+        },
+        "value": {
+          "title": "Default value",
+          "description": "Value to be assigned to value field",
+          "$ref": "#/definitions/valueDef"
+        }
+      },
+      "additionalProperties": false,
+      "anyOf": [
+        {
+          "required": [
+            "isDefault",
+            "rawValue",
+            "value"
+          ]
+        },
+        {
+          "required": [
+            "isDefault",
+            "value"
+          ]
+        },
+        {
+          "required": [
+            "isDefault",
+            "rawValue"
+          ]
+        }
+      ]
+    },
+    "rowFilterConfigDef": {
+      "type": "object",
+      "title": "DatapointSet table filter",
+      "description": "Allows row filtering in table based datapointSets",
+      "markdownDescription": "Allows [row filtering](https://docs.netin.io/netin_webUI/NetinDS/templates/#valuemapconfig) in table based datapointSets",
+      "properties": {
+        "expressions": {
+          "type": "array",
+          "title": "Array of logical expressions",
+          "description": "Array of logical expression than should return a boolean value",
+          "items": {
+            "$ref": "#/definitions/expressionLogicObjectDef"
+          }
+        },
+        "logic": {
+          "$ref": "#/definitions/logicDef"
+        }
+      }
+    },
+    "unitsConfigDef": {
+      "type": "object",
+      "title": "Units conversion configuration",
+      "description": "Allows converts between measure units",
+      "markdownDescription": "Allows converts between [measure units](https://docs.netin.io/netin_webUI/NetinDS/templates/#unitsconfig)",
+      "properties": {
+        "from": {
+          "type": "string",
+          "title": "From",
+          "description": "Actual measure units",
+          "examples": [
+            "m",
+            "g"
+          ]
+        },
+        "to": {
+          "type": "string",
+          "title": "To",
+          "description": "Desired measure units",
+          "examples": [
+            "m",
+            "g"
+          ]
+        },
+        "toBest": {
+          "type": "boolean",
+          "title": "To best",
+          "description": "Select the measure unit that best fit"
+        },
+        "exclude": {
+          "type": "array",
+          "title": "Exclude",
+          "description": "Array of excluded measure units, when toBest is enabled",
+          "items": {
+            "type": "string",
+            "title": "Exclude unit",
+            "description": "Exclude measure unit",
+            "examples": [
+              "m",
+              "g"
+            ]
+          }
+        },
+        "units": {
+          "type": "boolean",
+          "title": "Units",
+          "description": "Flag to indicate that the unit of measure must indicated"
+        }
+      },
+      "additionalProperties": false,
+      "anyOf": [
+        {
+          "required": [
+            "from",
+            "to"
+          ],
+          "not": {
+            "required": [
+              "toBest",
+              "exclude"
+            ]
+          }
+        },
+        {
+          "required": [
+            "from",
+            "toBest"
+          ],
+          "not": {
+            "required": [
+              "to"
+            ]
+          }
+        }
+      ]
+    },
+    "valueMapConfigDef": {
+      "type": "object",
+      "title": "Map based conversion configuration",
+      "description": "Allows converts rawValue to value based in a key/value map",
+      "markdownDescription": "Allows converts rawValue to value based in a [key/value](https://docs.netin.io/netin_webUI/NetinDS/templates/#valuemapconfig) map",
+      "properties": {
+        "map": {
+          "type": "array",
+          "title": "Map",
+          "description": "Key/Value map with the conversion options",
+          "items": {
+            "type": "object",
+            "title": "Entry",
+            "description": "Entry in the key/value map",
+            "properties": {
+              "key": {
+                "title": "Key",
+                "description": "Entry key",
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "boolean"
+                  }
+                ]
+              },
+              "value": {
+                "title": "Value",
+                "description": "Entry value",
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "map"
+      ]
+    },
+    "datapointConfigDef": {
+      "type": "object",
+      "title": "Datapoint object",
+      "description": "Object that define a complete datapoint configuration",
+      "markdownDescription": "Object that define a complete [datapoint configuration](https://docs.netin.io/netin_webUI/NetinDS/templates/#configuraciones-de-datapoints)",
+      "properties": {
+        "addressConfig": {
+          "$ref": "#/definitions/addressConfigDef"
+        },
+        "commonConfig": {
+          "$ref": "#/definitions/commonConfigDef"
+        },
+        "alertConfig": {
+          "$ref": "#/definitions/alertConfigDef"
+        },
+        "calcConfig": {
+          "$ref": "#/definitions/calcConfig"
+        },
+        "convConfig": {
+          "$ref": "#/definitions/convConfigDef"
+        },
+        "defaultValueConfig": {
+          "$ref": "#/definitions/defaultValueConfigDef"
+        },
+        "rowFilterConfig": {
+          "$ref": "#/definitions/rowFilterConfigDef"
+        },
+        "unitsConfig": {
+          "$ref": "#/definitions/unitsConfigDef"
+        },
+        "valueMapConfig": {
+          "$ref": "#/definitions/valueMapConfigDef"
+        }
+      },
+      "additionalProperties": {
+        "type": "object"
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "commonConfig": {
+                "type": "object",
+                "properties": {
+                  "datapointType": {
+                    "const": "#TIMEPOINT"
+                  }
+                }
+              }
+            },
+            "required": [
+              "commonConfig"
+            ]
+          },
+          "then": {
+            "properties": {
+              "addressConfig": {
+                "$ref": "#/definitions/addressConfigDef"
+              },
+              "commonConfig": {
+                "$ref": "#/definitions/commonConfigDef"
+              }
+            },
+            "required": [
+              "commonConfig",
+              "addressConfig"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "anyOf": [
+            {
+              "required": [
+                "commonConfig",
+                "addressConfig"
+              ],
+              "not": {
+                "required": [
+                  "calcConfig"
+                ]
+              }
+            },
+            {
+              "required": [
+                "commonConfig",
+                "calcConfig"
+              ],
+              "not": {
+                "required": [
+                  "addressConfig"
+                ]
+              }
+            },
+            {
+              "required": [
+                "commonConfig",
+                "defaultValueConfig"
+              ],
+              "not": {
+                "required": [
+                  "addressConfig",
+                  "calcConfig"
+                ]
+              }
+            },
+            {
+              "required": [
+                "commonConfig",
+                "defaultValueConfig, addressConfig"
+              ],
+              "not": {
+                "required": [
+                  "calcConfig"
+                ]
+              }
+            },
+            {
+              "required": [
+                "commonConfig",
+                "defaultValueConfig",
+                "calcConfig"
+              ],
+              "not": {
+                "required": [
+                  "addressConfig"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "datapointSetConfigDef": {
+      "type": "object",
+      "title": "Datapoint set",
+      "description": "DatapointSet configuration object",
+      "markdownDescription": "[DatapointSet configuration](https://docs.netin.io/netin_webUI/NetinDS/templates/#datapointsets) object",
+      "properties": {
+        "datapointSetType": {
+          "$ref": "#/definitions/datapointSetTypeDef"
+        },
+        "datapointSetId": {
+          "$ref": "#/definitions/datapointSetIdDef"
+        },
+        "alias": {
+          "type": "string",
+          "title": "Alias",
+          "description": "Alias name for the datapointSet, used as representation label",
+          "default": "none",
+          "examples": [
+            "Port information"
+          ],
+          "minLength": 1,
+          "maxLength": 80,
+          "errorMessage": "Should be a string of at least one characters and less than 80 characters"
+        },
+        "description": {
+          "type": "string",
+          "title": "Description",
+          "description": "Detailed information about the datapoint set",
+          "default": "none",
+          "examples": [
+            "Information and statistics about the ethernet interfaces"
+          ],
+          "minLength": 0,
+          "maxLength": 1200,
+          "errorMessage": "Should be a string of at least one characters and less than 1200 characters"
+        },
+        "tableAddress": {
+          "$ref": "#/definitions/tableAddressDef"
+        },
+        "broadcast": {
+          "$ref": "#/definitions/broadcastDef"
+        },
+        "routing": {
+          "$ref": "#/definitions/routingDef"
+        },
+        "datapoints": {
+          "type": "array",
+          "title": "Datapoints",
+          "description": "Array of datapoints for this datapoint set",
+          "items": {
+            "$ref": "#/definitions/datapointConfigDef"
+          },
+          "minItems": 1,
+          "errorMessage": "Should be an array of datapoint configuration objects. There should be at least one datapoint in a datapointSet"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "alias",
+        "datapoints",
+        "datapointSetId",
+        "datapointSetType",
+        "description"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "datapointSetType": {
+                "enum": [
+                  "tableStatic",
+                  "tableDynamic"
+                ]
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "tableAddress"
+            ]
+          }
+        }
+      ]
+    },
+    "representationDataDef": {
+      "type": "string",
+      "title": "Widget data",
+      "description": "Datapoints that widget will use for representation",
+      "pattern": "^device\\[[a-zA-Z0-9_-]{1,40}((\\.[0-9]+)?\\.[a-zA-Z0-9#&_-]{1,80})?\\]$",
+      "examples": [
+        "device[deviceInfo]",
+        "device[deviceInfo.deviceSatate]",
+        "device[pnioAPIs.0.cmInitiatorStationName]"
+      ],
+      "errorMessage": "Data should be an string of device[datapointSetId] or device[datapointSetId.datapointId]"
+    },
+    "representationMapConfigDef": {
+      "type": "object",
+      "title": "Map widget representation",
+      "description": "Specific configuration for map widget representation",
+      "properties": {
+        "format": {
+          "type": "array",
+          "title": "Map rows",
+          "description": "Representation for each row",
+          "items": {
+            "type": "object",
+            "title": "row",
+            "description": "Row configuration",
+            "properties": {
+              "order": {
+                "type": "integer",
+                "title": "Order of the row",
+                "description": "Number of the row",
+                "minimum": 0,
+                "examples": [
+                  0,
+                  1,
+                  2
+                ]
+              },
+              "datapoint": {
+                "$ref": "#/definitions/datapointIdDef"
+              },
+              "alias": {
+                "type": "string",
+                "title": "Show text",
+                "description": "Text to display",
+                "minLength": 1,
+                "maxLength": 80,
+                "examples": [
+                  "Name",
+                  "Type",
+                  "Netmask"
+                ]
+              },
+              "fieldType": {
+                "type": "string",
+                "title": "row type",
+                "description": "Format for row value",
+                "enum": [
+                  "string",
+                  "boolean",
+                  "numeric",
+                  "date",
+                  "severity"
+                ]
+              },
+              "utc": {
+                "type": "boolean",
+                "title": "UTC time",
+                "description": "Format date to UTC time"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "order",
+              "datapoint",
+              "alias"
+            ]
+          },
+          "minItems": 1
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "format"
+      ]
+    },
+    "representationTableConfigDef": {
+      "type": "object",
+      "title": "Table widget representation",
+      "description": "Specific configuration for Table widget representation",
+      "properties": {
+        "format": {
+          "type": "array",
+          "title": "Table columns",
+          "description": "Representation for each column",
+          "items": {
+            "type": "object",
+            "title": "column",
+            "description": "column configuration",
+            "properties": {
+              "order": {
+                "type": "integer",
+                "title": "Order of the column",
+                "description": "Number of the column",
+                "minimum": 0,
+                "examples": [
+                  0,
+                  1,
+                  2
+                ]
+              },
+              "datapoint": {
+                "$ref": "#/definitions/datapointIdDef"
+              },
+              "alias": {
+                "type": "string",
+                "title": "Show text",
+                "description": "Text to display",
+                "minLength": 1,
+                "maxLength": 80,
+                "examples": [
+                  "Name",
+                  "Type",
+                  "Netmask"
+                ]
+              },
+              "fieldType": {
+                "type": "string",
+                "title": "column type",
+                "description": "Format for column value",
+                "enum": [
+                  "string",
+                  "boolean",
+                  "numeric",
+                  "date",
+                  "severity"
+                ]
+              },
+              "utc": {
+                "type": "boolean",
+                "title": "UTC time",
+                "description": "Format date to UTC time"
+              },
+              "fieldGroup": {
+                "type": "string",
+                "enum": [
+                  "basic",
+                  "advanced"
+                ],
+                "title": "Mode",
+                "description": "Indicates if the column should be shown on basic or advance mode"
+              },
+              "filterable": {
+                "type": "boolean",
+                "title": "Filter enable",
+                "description": "Indicates if the column is filterable"
+              },
+              "filterType": {
+                "type": "string",
+                "title": "Filter type",
+                "description": "Format for column filter",
+                "enum": [
+                  "string",
+                  "boolean",
+                  "numeric",
+                  "date",
+                  "severity"
+                ]
+              },
+              "width": {
+                "type": "integer",
+                "title": "Column width",
+                "description": "Column initial width",
+                "minimum": 1,
+                "examples": [
+                  60,
+                  120,
+                  200
+                ]
+              },
+              "minScreenSize": {
+                "type": "string",
+                "title": "Screen size",
+                "description": "Column minimun screen size",
+                "enum": [
+                  "xs",
+                  "s",
+                  "m",
+                  "l"
+                ]
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "order",
+              "datapoint",
+              "alias"
+            ]
+          },
+          "minItems": 1
+        },
+        "pageSize": {
+          "type": "number",
+          "title": "Page size",
+          "description": "Rows number for each page",
+          "minimum": 2,
+          "maximum": 10,
+          "examples": [
+            6,
+            7,
+            9
+          ]
+        },
+        "filterable": {
+          "type": "boolean",
+          "title": "Filter enable",
+          "description": "Indicates if the columns should have filters"
+        }
+      },
+      "additionalProperties": true,
+      "required": [
+        "format"
+      ]
+    },
+    "representationMetricConfigDef": {
+      "type": "object",
+      "title": "metric widget representation",
+      "description": "Specific configuration for metric widget representation",
+      "properties": {
+        "url": {
+          "type": "string",
+          "title": "Metric url",
+          "description": "Define url to opened on click event",
+          "examples": [
+            "http://${device[origin]}"
+          ]
+        },
+        "titleEnabled": {
+          "type": "boolean",
+          "title": "Tittle show",
+          "description": "Indicate if tittle should be shown"
+        },
+        "urlEnabled": {
+          "type": "boolean",
+          "title": "Enable click",
+          "description": "Indicate if event click must be enable"
+        },
+        "lastUpdateEnabled": {
+          "type": "boolean",
+          "title": "Metric ",
+          "description": "Indicate if timestamp should be shown"
+        }
+      },
+      "additionalProperties": false
+    },
+    "representationGaugeConfigDef": {
+      "type": "object",
+      "title": "Gauge widget representation",
+      "description": "Specific configuration for gauge widget representation",
+      "properties": {
+        "format": {
+          "type": "array",
+          "title": "gauge values",
+          "description": "Representation for each gauge value",
+          "items": {
+            "type": "object",
+            "title": "value",
+            "description": "value configuration",
+            "properties": {
+              "datapoint": {
+                "$ref": "#/definitions/datapointIdDef"
+              },
+              "color": {
+                "type": "string",
+                "title": "Value color",
+                "description": "Color to display the value",
+                "default": "#45A5F5"
+              },
+              "units": {
+                "type": "string",
+                "title": "Value color",
+                "description": "Color to display the value",
+                "examples": [
+                  "Mb/s",
+                  "%",
+                  "m/s"
+                ]
+              }
+            },
+            "additionalProperties": true,
+            "required": [
+              "datapoint"
+            ]
+          },
+          "minItems": 1
+        },
+        "maxValue": {
+          "type": "number",
+          "title": "Maximum range",
+          "description": "Define the gauge maximum value",
+          "examples": [
+            6,
+            72,
+            90
+          ]
+        },
+        "minValue": {
+          "type": "number",
+          "title": "Minimum range",
+          "description": "Define the gauge minimum value"
+        },
+        "ranges": {
+          "type": "array",
+          "title": "Value ranges",
+          "description": "Value ranges representation",
+          "items": {
+            "type": "object",
+            "title": "Range",
+            "description": "Gauge range definition",
+            "properties": {
+              "from": {
+                "type": "integer",
+                "title": "First value",
+                "description": "First value of the range"
+              },
+              "to": {
+                "type": "integer",
+                "title": "Last value",
+                "description": "Last value of the range"
+              },
+              "severity": {
+                "type": "integer",
+                "title": "Range severity",
+                "description": "Severity of the range"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "from",
+              "to",
+              "severity"
+            ]
+          }
+        }
+      },
+      "additionalProperties": true,
+      "required": [
+        "format",
+        "maxValue",
+        "minValue"
+      ]
+    },
+    "representationCommonConfigDef": {
+      "type": "object",
+      "title": "Common representation properties",
+      "description": "Common fields for grid representation",
+      "properties": {
+        "firstRow": {
+          "type": "integer",
+          "title": "Row position",
+          "description": "Define de position of the widget, first row",
+          "minimum": 1,
+          "examples": [
+            1,
+            3,
+            4
+          ],
+          "errorMessage": "First row should be a number greater than 1"
+        },
+        "firstColumn": {
+          "type": "integer",
+          "title": "Column position",
+          "description": "Define de position of the widget, first column",
+          "minimum": 1,
+          "maximum": 8,
+          "examples": [
+            1,
+            4,
+            5
+          ],
+          "errorMessage": "First column should be a number between 1 and 8"
+        },
+        "widgetWidth": {
+          "type": "integer",
+          "title": "Widget width size",
+          "description": "Define de size of the widget, width",
+          "minimum": 1,
+          "maximum": 8,
+          "examples": [
+            2,
+            4,
+            6
+          ],
+          "errorMessage": "Widget width should be a number between 1 and 8"
+        },
+        "widgetHeight": {
+          "type": "integer",
+          "title": "Widget height size",
+          "description": "Define de size of the widget, height",
+          "minimum": 1,
+          "examples": [
+            5,
+            2,
+            3
+          ],
+          "errorMessage": "Widget height should be a number greater than 1"
+        },
+        "widgetType": {
+          "type": "string",
+          "title": "Widget type",
+          "description": "Select widget type",
+          "enum": [
+            "map",
+            "table",
+            "metric",
+            "gauge"
+          ],
+          "examples": [
+            "map",
+            "table"
+          ],
+          "errorMessage": "Widget type should be one of the following options: map, table, metric, gauge"
+        },
+        "widgetTitle": {
+          "type": "string",
+          "title": "Widget title",
+          "description": "Text for widget title",
+          "minLength": 1,
+          "maxLength": 800,
+          "examples": [
+            "Device Info",
+            "PNIO-Fault"
+          ],
+          "errorMessage": "Widget title should be a string of at least one character and maximum 800 characters"
+        }
+      },
+      "required": [
+        "firstRow",
+        "firstColumn",
+        "widgetWidth",
+        "widgetHeight",
+        "widgetType",
+        "widgetTitle"
+      ]
+    },
+    "representationDef": {
+      "type": "object",
+      "title": "Device representation",
+      "description": "What, where and how information show in device view",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/representationDataDef"
+        },
+        "commonConfig": {
+          "$ref": "#/definitions/representationCommonConfigDef"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "commonConfig": {
+                "type": "object",
+                "properties": {
+                  "widgetType": {
+                    "const": "map"
+                  }
+                }
+              }
+            },
+            "required": [
+              "commonConfig"
+            ]
+          },
+          "then": {
+            "properties": {
+              "data": {
+                "$ref": "#/definitions/representationDataDef"
+              },
+              "commonConfig": {
+                "$ref": "#/definitions/representationCommonConfigDef"
+              },
+              "specificConfig": {
+                "$ref": "#/definitions/representationMapConfigDef"
+              }
+            },
+            "required": [
+              "data",
+              "commonConfig",
+              "specificConfig"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "commonConfig": {
+                "type": "object",
+                "properties": {
+                  "widgetType": {
+                    "const": "table"
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "data": {
+                "$ref": "#/definitions/representationDataDef"
+              },
+              "commonConfig": {
+                "$ref": "#/definitions/representationCommonConfigDef"
+              },
+              "specificConfig": {
+                "$ref": "#/definitions/representationTableConfigDef"
+              }
+            },
+            "required": [
+              "data",
+              "commonConfig",
+              "specificConfig"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "commonConfig": {
+                "type": "object",
+                "properties": {
+                  "widgetType": {
+                    "const": "metric"
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "data": {
+                "$ref": "#/definitions/representationDataDef"
+              },
+              "commonConfig": {
+                "$ref": "#/definitions/representationCommonConfigDef"
+              },
+              "specificConfig": {
+                "$ref": "#/definitions/representationMetricConfigDef"
+              }
+            },
+            "required": [
+              "data",
+              "commonConfig",
+              "specificConfig"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "commonConfig": {
+                "type": "object",
+                "properties": {
+                  "widgetType": {
+                    "const": "gauge"
+                  }
+                }
+              }
+            },
+            "required": [
+              "commonConfig"
+            ]
+          },
+          "then": {
+            "properties": {
+              "data": {
+                "$ref": "#/definitions/representationDataDef"
+              },
+              "commonConfig": {
+                "$ref": "#/definitions/representationCommonConfigDef"
+              },
+              "specificConfig": {
+                "$ref": "#/definitions/representationGaugeConfigDef"
+              }
+            },
+            "required": [
+              "data",
+              "commonConfig",
+              "specificConfig"
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "properties": {
+    "schemaVersion": {
+      "$ref": "#/definitions/schemaVersionDef"
+    },
+    "origin": {
+      "$ref": "#/definitions/originDef"
+    },
+    "templateId": {
+      "$ref": "#/definitions/templateIdDef"
+    },
+    "templateVersion": {
+      "$ref": "#/definitions/templateVersionDef"
+    },
+    "description": {
+      "$ref": "#/definitions/descriptionDef"
+    },
+    "rangerFilter": {
+      "$ref": "#/definitions/rangerFilterDef"
+    },
+    "alias": {
+      "type": "string",
+      "title": "Alias",
+      "description": "Alias name for the template",
+      "examples": [
+        "SCALANCE XC-200",
+        "SCALANCE X-200"
+      ],
+      "minLength": 1,
+      "maxLength": 80,
+      "errorMessage": "Should be a string of at least one character and less than 80 characters"
+    },
+    "originTypes": {
+      "title": "Origin types (drivers)",
+      "description": "Origin types (drivers)",
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/originTypeConfigDef"
+      },
+      "minItems": 1,
+      "uniqueItems": true,
+      "errorMessage": "Should be a array and have at least one entry"
+    },
+    "datapointSets": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/datapointSetConfigDef"
+      },
+      "uniqueItemProperties": [
+        "datapointSetId"
+      ],
+      "minItems": 1,
+      "errorMessage": "Should be a array"
+    },
+    "representation": {
+      "type": "array",
+      "minItems": 1,
+      "errorMessage": "Representation should be a array and have at least one entry",
+      "items": {
+        "$ref": "#/definitions/representationDef"
+      }
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "origin",
+    "templateId",
+    "templateVersion",
+    "description",
+    "datapointSets"
+  ],
+  "errorMessage": "Not valid template object"
+}

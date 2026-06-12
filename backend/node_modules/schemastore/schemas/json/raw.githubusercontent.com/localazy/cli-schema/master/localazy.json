@@ -1,0 +1,685 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "https://raw.githubusercontent.com/localazy/cli-schema/master/localazy.json",
+  "type": "object",
+  "default": {},
+  "title": "Localazy CLI schema",
+  "description": "Schema definition for Localazy CLI configuration file",
+  "required": [],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "default": "https://raw.githubusercontent.com/localazy/cli-schema/master/localazy.json"
+    },
+    "writeKey": {
+      "$id": "#/properties/writeKey",
+      "type": "string",
+      "title": "Write key",
+      "description": "Your application write key. (Can be found in Settings -> Access Keys )",
+      "default": ""
+    },
+    "readKey": {
+      "$id": "#/properties/readKey",
+      "type": "string",
+      "title": "Read key",
+      "description": "Your application read key. (Can be found in Settings -> Access Keys )",
+      "default": ""
+    },
+    "transformations": {
+      "$id": "#/properties/transformations",
+      "title": "Transformations section",
+      "description": "The Transformations property allows defining rule for string transformations. Using transformations, you can eg. obtain file metadata from its path or build the specific path where to write translated files. https://localazy.com/docs/cli/transformations",
+      "default": [],
+      "type": [
+        "array",
+        "object"
+      ],
+      "anyOf": [
+        {
+          "items": {
+            "$ref": "#/definitions/transformationsItem"
+          }
+        },
+        {
+          "$ref": "#/definitions/transformationsItem"
+        }
+      ]
+    },
+    "download": {
+      "$id": "#/properties/download",
+      "type": "object",
+      "title": "Download section",
+      "description": "The download property describes how to process translated files and where to write them. https://localazy.com/docs/cli/download-reference",
+      "default": {},
+      "properties": {
+        "includeSourceLang": {
+          "type": "boolean",
+          "description": "By default, the source language is not downloaded. Set it to true to include source files as well.",
+          "default": false
+        },
+        "folder": {
+          "type": "string",
+          "description": "Base foler for the download action. It can be relative or absolute path.",
+          "default": "."
+        },
+        "excludedLangs": {
+          "description": "The list of languages to exclude from processing.",
+          "type": [
+            "string",
+            "array"
+          ],
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              }
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "langAliases": {
+          "type": "object",
+          "description": "Maps languages to different ones"
+        },
+        "langExpansions": {
+          "type": "object",
+          "description": "Adds additional languages to output; the same file will be saved several time."
+        },
+        "files": {
+          "title": "File download",
+          "description": "The rules to apply to all translated files. It can be either array object or a pattern string.",
+          "default": [],
+          "type": [
+            "string",
+            "array",
+            "object"
+          ],
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/downloadFiles"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/downloadFiles"
+              }
+            }
+          ]
+        },
+        "metadataFileJson": {
+          "type": "string",
+          "title": "JSON metadata file",
+          "description": "Path where JSON language metadata file should be downloaded. https://localazy.com/docs/cli/metadata-file"
+        },
+        "metadataFileJs": {
+          "type": "string",
+          "title": "JavaScript metadata file",
+          "description": "Path where JavaScript language metadata file should be downloaded. https://localazy.com/docs/cli/metadata-file"
+        },
+        "metadataFileTs": {
+          "type": "string",
+          "title": "TypeScript metadata file",
+          "description": "Path where TypeScript language metadata file should be downloaded. https://localazy.com/docs/cli/metadata-file"
+        }
+      }
+    },
+    "upload": {
+      "$id": "#/properties/upload",
+      "type": "object",
+      "title": "Upload section",
+      "description": "The upload section defines how to collect files that you want to upload to the Localazy platform for localization and what metadata to include. It also defines how to process uploaded data. https://localazy.com/docs/cli/upload-reference",
+      "default": {},
+      "properties": {
+        "deprecateMissing": {
+          "$id": "#/properties/upload/properties/deprecateMissing",
+          "type": "boolean",
+          "title": "Deprecate missing",
+          "description": "Tells the server to deprecate any phrase missing in this upload batch. Deprecated phrases are still available but are not visible to translators.",
+          "default": false
+        },
+        "importAsNew": {
+          "$id": "#/properties/upload/properties/importAsNew",
+          "type": "boolean",
+          "title": "Import as new",
+          "description": "Tells the server to import new phrases as unverified. Unverified phrases need to go through the review process. This option allows you to check translations using our unique review process if you are not sure of their quality. This option doesn’t apply to the source language.",
+          "default": false
+        },
+        "allowDuplicateKeys": {
+          "$id": "#/properties/upload/properties/allowDuplicateKeys",
+          "type": "boolean",
+          "title": "Allow duplicate keys",
+          "description": "By default, you can have phrases with the same key in different files. For specific situations like using libraries and string overriding, it’s necessary to disable this option. You can find more on this topic in 'Modules, libraries, product flavors' article.",
+          "default": false
+        },
+        "filterSource": {
+          "$id": "#/properties/upload/properties/filterSource",
+          "type": "boolean",
+          "title": "Filter source",
+          "description": "When set to true, strings that are the same as in the source langauge are not imported. This is important for platforms like iOS where localizable files contain the source phrase where the translation is not available. This option doesn’t apply to the source language.",
+          "default": false
+        },
+        "appVersion": {
+          "$id": "#/properties/upload/properties/appVersion",
+          "type": "number",
+          "title": "App version",
+          "description": "Tells the server the version of the app in which the phrases where deprecated. It only makes sense with deprecateMissing switched to true. It allows for automatic versioning of deprecated phrases. This option can be provided on the command-line with -v option.",
+          "default": 0
+        },
+        "type": {
+          "$ref": "#/definitions/fileTypes"
+        },
+        "features": {
+          "$id": "#/properties/upload/properties/features",
+          "$ref": "#/definitions/features"
+        },
+        "folder": {
+          "$id": "#/properties/upload/properties/folder",
+          "type": "string",
+          "title": "Base folder",
+          "description": "The base folder all operations are relative to. It can be relative or absolute path.",
+          "default": ""
+        },
+        "files": {
+          "$id": "#/properties/upload/properties/files",
+          "title": "Upload files",
+          "description": "The files contains a list of rules for collecting files for upload. You can include files by their exact path or by using standard path wildcards ? (single character), * (anything except path separator), ** (anything including path separators). You can control files that you want to upload with exclusion rules and conditions.",
+          "default": [],
+          "type": [
+            "string",
+            "array",
+            "object"
+          ],
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/uploadFiles"
+            },
+            {
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "$ref": "#/definitions/uploadFiles"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    "conversion": {
+      "$id": "#/properties/conversion",
+      "type": "object",
+      "title": "Conversion section",
+      "description": "The conversion property describes how to convert localizable files between different formats. https://localazy.com/docs/cli/format-conversions#full-configuration",
+      "default": {},
+      "properties": {
+        "folder": {
+          "type": "string",
+          "description": "The base folder all operations are relative to. It can be a relative or absolute path",
+          "default": "."
+        },
+        "excludedLangs": {
+          "description": "The list of languages to exclude from processing.",
+          "default": [],
+          "type": [
+            "string",
+            "array"
+          ],
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              }
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "actions": {
+          "$id": "#/properties/actions",
+          "description": "Define the conversion rules here.",
+          "type": [
+            "array",
+            "object"
+          ],
+          "default": [],
+          "anyOf": [
+            {
+              "items": {
+                "$ref": "#/definitions/actions"
+              }
+            },
+            {
+              "$ref": "#/definitions/actions"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "definitions": {
+    "fileTypes": {
+      "type": "string",
+      "title": "File type",
+      "description": "Type of files you are about to upload. You can also define the type separately for each file. For more info about supported file formats check out the documentation.",
+      "enum": [
+        "android",
+        "ios-strings",
+        "ios-stringsdict",
+        "ios-plist",
+        "arb",
+        "json",
+        "xliff",
+        "js",
+        "po",
+        "pot",
+        "resx",
+        "yaml",
+        "json5",
+        "hjson",
+        "properties",
+        "php",
+        "ini",
+        "qt-ts",
+        "neon",
+        "toml",
+        "csv",
+        "tsv",
+        "excel",
+        "ods",
+        "text",
+        "srt"
+      ]
+    },
+    "conditions": {
+      "type": [
+        "string",
+        "array"
+      ],
+      "title": "Conditions",
+      "description": "With conditions, you can introduce complex logic for processing files when they are downloaded. See documentation for options. https://localazy.com/docs/cli/conditions",
+      "default": [],
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "items": true
+        }
+      ]
+    },
+    "features": {
+      "title": "Enabled features",
+      "description": "The list of features (eg. how to parse plurals) to enable for the given type. See the list of supported file formats in documentation for more information. https://localazy.com/docs/cli/upload-reference#supported-file-formats",
+      "default": [],
+      "uniqueItems": true,
+      "type": [
+        "string",
+        "array"
+      ],
+      "anyOf": [
+        {
+          "items": {
+            "type": "string"
+          }
+        },
+        {
+          "type": "string"
+        }
+      ]
+    },
+    "transformationsItem": {
+      "default": {},
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "Transformation name",
+          "description": "Transformation name. Will be used as variable name in ${name} syntax. https://localazy.com/docs/cli/variables",
+          "default": "transformation_name"
+        },
+        "source": {
+          "type": "string",
+          "title": "Transformation source",
+          "description": "The source string is a transformation input with interpolated variables. Therefore, you can build it using more variables or string constants.",
+          "default": "${path}"
+        },
+        "operations": {
+          "title": "Operations",
+          "description": "Array or string containing valid operations using a operation:argument syntax, wher operation name is one of the following: [trimStart, trimEnd, substringAfter, substringAfterLast, substringBefore, substringBeforeLast, append, prepend, replace, remove, removePrefix, removeSuffix, capitalize, capitalizeWords, lowerCase, upperCase, print, set, detectLang, formatLang, androidBuildType, androidProductFlavors]. https://localazy.com/docs/cli/transformations#operations",
+          "type": [
+            "array",
+            "string"
+          ],
+          "anyOf": [
+            {
+              "default": [],
+              "items": {
+                "type": "string"
+              }
+            },
+            {
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    "downloadFiles": {
+      "type": "object",
+      "properties": {
+        "group": {
+          "type": "string",
+          "title": "Group",
+          "description": "Allows to assign files to groups and run their rules separately."
+        },
+        "conditions": {
+          "$ref": "#/definitions/conditions"
+        },
+        "stop": {
+          "type": "boolean",
+          "title": "Stop processing",
+          "description": "If true, no more rules are processed for the given file. Only makes sense if more output rules are defined. By default, the first matching rule stops processing for the file.",
+          "default": true
+        },
+        "output": {
+          "type": "string",
+          "title": "Output pattern",
+          "description": "The pattern for generating output path and file. Use variables to build the pattern."
+        }
+      }
+    },
+    "uploadFiles": {
+      "type": "object",
+      "properties": {
+        "group": {
+          "type": "string",
+          "title": "Group",
+          "description": "Allows to assign files to groups and run their rules separately.",
+          "default": ""
+        },
+        "pattern": {
+          "type": "string",
+          "title": "Collect pattern",
+          "description": "The pattern to use for collecting files. Standard path wildcards ? (single character), * (anything except path separator), ** (anything including path separators) are supported.",
+          "default": ""
+        },
+        "excludes": {
+          "type": "array",
+          "title": "Exclude list",
+          "description": "The list of patterns used for excluding files. Standard path wildcards ? (single character), * (anything except path separator), ** (anything including path separators) are supported.",
+          "default": []
+        },
+        "type": {
+          "$ref": "#/definitions/fileTypes"
+        },
+        "features": {
+          "$ref": "#/definitions/features"
+        },
+        "conditions": {
+          "$ref": "#/definitions/conditions"
+        },
+        "file": {
+          "type": "string",
+          "title": "File",
+          "description": "The file name to be used for upload.",
+          "default": "${file}"
+        },
+        "path": {
+          "type": "string",
+          "title": "Path",
+          "description": "The path to be used for upload.",
+          "default": "${path}"
+        },
+        "lang": {
+          "type": "string",
+          "title": "Langaguage",
+          "description": "The language of the file being uploaded (format: ll-Scrp-RR). Special default value inherited from the project’s base language."
+        },
+        "buildType": {
+          "type": "string",
+          "title": "Build type",
+          "description": "The custom build type for the file. See Modules, libraries, flavors for more details. https://localazy.com/docs/cli/modules-libraries-product-flavors#build-type"
+        },
+        "productFlavors": {
+          "type": "string",
+          "title": "Product flavours",
+          "description": "The custom product flavors for the file. See Modules, libraries, flavors for more details. https://localazy.com/docs/cli/modules-libraries-product-flavors#product-flavors"
+        },
+        "module": {
+          "type": "string",
+          "title": "Modules",
+          "description": "The module the file belongs to. See Modules, libraries, flavors for more details. https://localazy.com/docs/cli/modules-libraries-product-flavors#module"
+        },
+        "library": {
+          "type": "string",
+          "title": "Library",
+          "description": "The library the file belongs to. See Modules, libraries, flavors for more details. https://localazy.com/docs/cli/modules-libraries-product-flavors#library"
+        }
+      }
+    },
+    "actions": {
+      "type": "object",
+      "properties": {
+        "group": {
+          "type": "string",
+          "description": "Allows to filter rules using groups. https://localazy.com/docs/cli/command-line-options#groups",
+          "default": ""
+        },
+        "stop": {
+          "type": "boolean",
+          "description": "If true, no more rules are processed for the given file. Only makes sense if more output rules are defined. By default, the first matching rule stops processing for the file.",
+          "default": false
+        },
+        "conditions": {
+          "type": [
+            "string",
+            "array"
+          ],
+          "description": "Allows for more complex filtering of rules. https://localazy.com/docs/cli/conditions",
+          "default": [],
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "items": true
+            }
+          ]
+        },
+        "changeExtension": {
+          "type": "string",
+          "description": "If defined, change the extension of the output file. Applied to the final output after resolving all variables.",
+          "default": ""
+        },
+        "output": {
+          "type": "string",
+          "description": "The pattern for generating output path and file. Use variables to build the pattern. https://localazy.com/docs/cli/variables"
+        },
+        "type": {
+          "type": "string",
+          "description": "The type of the conversion to be performed with files. See docs for available types and their parameters. https://localazy.com/docs/cli/format-conversions#available-conversions",
+          "enum": [
+            "android",
+            "arb",
+            "csv",
+            "csv-multilingual",
+            "excel",
+            "excel-multilingual",
+            "ini",
+            "ini-multilingual",
+            "ios-strings",
+            "ios-stringsdict",
+            "json",
+            "json-mozilla",
+            "json-multilingual",
+            "mo",
+            "neon",
+            "neon-multilingual",
+            "ods",
+            "ods-multilingual",
+            "php",
+            "php-multilinngual",
+            "po",
+            "toml",
+            "toml-multilingual",
+            "yaml",
+            "yaml-multilingual",
+            "yaml-rails"
+          ]
+        },
+        "keySeparator": {
+          "type": "string",
+          "description": "The separator used for building structured keys for includeKeys and excludeKeys. For more details: https://localazy.com/docs/cli/excluding-string-keys ",
+          "default": "."
+        },
+        "includeKeys": {
+          "type": [
+            "string",
+            "array"
+          ],
+          "description": "A list of rules for determining keys to include. For more details: https://localazy.com/docs/cli/excluding-string-keys",
+          "default": [],
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "items": true
+            }
+          ]
+        },
+        "excludeKeys": {
+          "type": [
+            "string",
+            "array"
+          ],
+          "description": "A list of rules for determining keys to exclude. For more details: https://localazy.com/docs/cli/excluding-string-keys",
+          "default": [],
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "items": true
+            }
+          ]
+        },
+        "langAliases": {
+          "type": "object",
+          "description": "Maps languages to different ones"
+        },
+        "replacements": {
+          "type": "object",
+          "description": "Define rules for text changes and placeholder replacements."
+        },
+        "langExpansions": {
+          "type": "object",
+          "description": "Adds additional languages to output; the same file will be saved several time."
+        },
+        "arrayType": {
+          "type": "string",
+          "description": "If the type supports more formats for string arrays, you can select the desired one with this parameter.",
+          "enum": [
+            "array",
+            "array_br"
+          ]
+        },
+        "pluralType": {
+          "type": "string",
+          "description": "If the type supports more formats for plurals, you can select the desired one with this parameter.",
+          "enum": [
+            "plural_postfix_br",
+            "plural_postfix_sd",
+            "plural_postfix_dd",
+            "plural_postfix_us",
+            "plural_postfix_cc",
+            "plural_i18next",
+            "plural_object",
+            "plural_icu",
+            "plural_array"
+          ]
+        },
+        "forceArrayType": {
+          "type": "boolean",
+          "description": "If the conversion is made between types that support the same format for string arrays, the format is retained unless you explicitly set this parameter to true to force change.",
+          "default": false
+        },
+        "forcePluralType": {
+          "type": "boolean",
+          "description": "If the conversion is made between types that support the same format for plurals, the format is retained unless you explicitly set this parameter to true to force change.",
+          "default": false
+        },
+        "filterStrings": {
+          "type": "boolean",
+          "description": "If the conversion type allows filtering, you can enable this option to filter strings out of the output file.",
+          "default": false
+        },
+        "filterArrays": {
+          "type": "boolean",
+          "description": "If the conversion type allows filtering, you can enable this option to filter string arrays out of the output file.",
+          "default": false
+        },
+        "filterPlurals": {
+          "type": "boolean",
+          "description": "If the conversion type allows filtering, you can enable this option to filter plurals out of the output file.",
+          "default": false
+        },
+        "params": {
+          "properties": {
+            "filter_untranslated": {
+              "type": "boolean",
+              "description": "Filtering of untranslated phrases",
+              "default": false
+            },
+            "flatten_keys": {
+              "type": "string",
+              "description": " Flattening structured keys",
+              "default": "no"
+            },
+            "arb_locale": {
+              "type": "string",
+              "description": " Generating @@locale key",
+              "default": "full"
+            },
+            "force_escaping": {
+              "type": "boolean",
+              "description": " Forcing aggressive escaping",
+              "default": false
+            },
+            "encoding": {
+              "type": "string",
+              "description": " Output file encoding",
+              "default": "utf8"
+            },
+            "lang_format": {
+              "type": "string",
+              "description": "Format of the locale used for multilingual keys",
+              "default": "ll-rr-scrp"
+            },
+            "clear_params": {
+              "type": "boolean",
+              "description": "Clearing additional phrases metadata.",
+              "default": false
+            }
+          }
+        }
+      },
+      "required": [
+        "type"
+      ]
+    }
+  }
+}

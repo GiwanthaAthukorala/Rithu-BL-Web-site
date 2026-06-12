@@ -1,0 +1,172 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "$id": "https://raw.githubusercontent.com/fujaba/fulibWorkflows/main/schemas/fulibWorkflows.schema.json",
+  "title": "JSON schema for fulibWorkflows ",
+  "description": "Schema for the generation file of fulibWorkflows",
+  "type": "array",
+  "additionalItems": false,
+  "$defs": {
+    "workflowItem": {
+      "description": "The title of your current workflow",
+      "type": "object",
+      "properties": {
+        "workflow": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "workflow"
+      ],
+      "additionalProperties": false
+    },
+    "externalSystemItem": {
+      "description": "Can be used to address data coming from another source",
+      "type": "object",
+      "properties": {
+        "externalSystem": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "externalSystem"
+      ],
+      "additionalProperties": false
+    },
+    "serviceItem": {
+      "description": "The service on which the following events are executed",
+      "type": "object",
+      "properties": {
+        "service": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "service"
+      ],
+      "additionalProperties": false
+    },
+    "commandItem": {
+      "description": "A command send by a user",
+      "type": "object",
+      "properties": {
+        "command": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "command"
+      ],
+      "additionalProperties": false
+    },
+    "eventItem": {
+      "description": "An event signalling that some system state is reached",
+      "type": "object",
+      "properties": {
+        "event": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "event"
+      ]
+    },
+    "policyItem": {
+      "description": "The following steps define the reaction of a service to some triggering command or event",
+      "type": "object",
+      "properties": {
+        "policy": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "policy"
+      ],
+      "additionalProperties": false
+    },
+    "userItem": {
+      "description": "Defines the user who is going to perform an action",
+      "type": "object",
+      "properties": {
+        "user": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "user"
+      ],
+      "additionalProperties": false
+    },
+    "dataItem": {
+      "description": "data object created within a service",
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "data"
+      ]
+    },
+    "pageItem": {
+      "description": "Defines a ui page",
+      "type": "object",
+      "properties": {
+        "page": {
+          "$ref": "page.schema.json"
+        }
+      },
+      "required": [
+        "page"
+      ],
+      "additionalProperties": false
+    },
+    "problemItem": {
+      "description": "Shows a problem/question in the workflow",
+      "type": "object",
+      "properties": {
+        "problem": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "problem"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "items": {
+    "oneOf": [
+      {
+        "$ref": "#/$defs/workflowItem"
+      },
+      {
+        "$ref": "#/$defs/externalSystemItem"
+      },
+      {
+        "$ref": "#/$defs/serviceItem"
+      },
+      {
+        "$ref": "#/$defs/commandItem"
+      },
+      {
+        "$ref": "#/$defs/eventItem"
+      },
+      {
+        "$ref": "#/$defs/policyItem"
+      },
+      {
+        "$ref": "#/$defs/userItem"
+      },
+      {
+        "$ref": "#/$defs/dataItem"
+      },
+      {
+        "$ref": "#/$defs/pageItem"
+      },
+      {
+        "$ref": "#/$defs/problemItem"
+      }
+    ]
+  }
+}

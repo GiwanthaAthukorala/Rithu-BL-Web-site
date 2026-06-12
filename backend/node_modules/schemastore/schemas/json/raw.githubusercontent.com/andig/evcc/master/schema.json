@@ -1,0 +1,279 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "EVCC configuration schema",
+  "type": "object",
+  "properties": {
+    "uri": {
+      "type": "string",
+      "format": "uri"
+    },
+    "interval": {
+      "$ref": "#/definitions/duration"
+    },
+    "log": {
+      "description": "Global log level",
+      "$ref": "#/definitions/loglevel"
+    },
+    "levels": {
+      "type": "object",
+      "description": "Log levels per area",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "sponsortoken": {
+      "type": "string"
+    },
+    "chargers": {
+      "type": "array",
+      "description": "List of chargers",
+      "items": {
+        "$ref": "#/definitions/namedObject"
+      }
+    },
+    "meters": {
+      "type": "array",
+      "description": "List of meters",
+      "items": {
+        "$ref": "#/definitions/namedObject"
+      }
+    },
+    "vehicles": {
+      "type": "array",
+      "description": "List of vehicles",
+      "items": {
+        "$ref": "#/definitions/namedObject",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "capacity": {
+            "type": "integer"
+          },
+          "user": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "VIN": {
+            "type": "string"
+          },
+          "cache": {
+            "$ref": "#/definitions/duration"
+          },
+          "onIdentify": {
+            "type": "object",
+            "properties": {
+              "mode": {
+                "$ref": "#/definitions/mode"
+              },
+              "minSoC": {
+                "type": "integer"
+              },
+              "targetSoC": {
+                "type": "integer"
+              },
+              "minCurrent": {
+                "type": "integer"
+              },
+              "maxCurrent": {
+                "type": "integer"
+              }
+            }
+          }
+        }
+      }
+    },
+    "site": {
+      "type": "object",
+      "required": [
+        "meters"
+      ],
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "meters": {
+          "type": "object",
+          "properties": {
+            "grid": {
+              "type": "string"
+            },
+            "pv": {
+              "type": "string"
+            },
+            "pvs": {
+              "description": "List of pv inverters/meters",
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "minItems": 1,
+              "uniqueItems": true
+            },
+            "battery": {
+              "type": "string"
+            },
+            "batteries": {
+              "description": "List of home batteries",
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "minItems": 1,
+              "uniqueItems": true
+            }
+          }
+        },
+        "prioritySoC": {},
+        "bufferSoC": {}
+      }
+    },
+    "loadpoints": {
+      "type": "array",
+      "description": "List of loadpoints",
+      "items": {
+        "type": "object",
+        "required": [
+          "charger"
+        ],
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "mode": {
+            "$ref": "#/definitions/mode"
+          },
+          "resetOnDisconnect": {
+            "type": "boolean"
+          },
+          "charger": {
+            "type": "string"
+          },
+          "meters": {
+            "type": "object",
+            "properties": {
+              "charge": {
+                "type": "string"
+              }
+            }
+          },
+          "vehicles": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "soc": {
+            "type": "object",
+            "properties": {
+              "poll": {
+                "type": "object",
+                "properties": {
+                  "mode": {
+                    "$ref": "#/definitions/pollMode"
+                  },
+                  "interval": {
+                    "$ref": "#/definitions/duration"
+                  }
+                }
+              },
+              "min": {
+                "type": "integer"
+              },
+              "target": {
+                "type": "integer"
+              },
+              "estimate": {
+                "type": "boolean"
+              }
+            }
+          },
+          "phases": {
+            "type": "integer"
+          },
+          "minCurrent": {
+            "type": "integer"
+          },
+          "maxCurrent": {
+            "type": "integer"
+          },
+          "guardDuration": {
+            "$ref": "#/definitions/duration"
+          },
+          "enable": {
+            "type": "object",
+            "properties": {
+              "delay": {
+                "$ref": "#/definitions/duration"
+              },
+              "threshold": {
+                "type": "integer"
+              }
+            }
+          },
+          "disable": {
+            "type": "object",
+            "properties": {
+              "delay": {
+                "$ref": "#/definitions/duration"
+              },
+              "threshold": {
+                "type": "integer"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "duration": {
+      "type": "string",
+      "pattern": "\\d[msh]$"
+    },
+    "namedObject": {
+      "type": "object",
+      "required": [
+        "name",
+        "type"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "template": {
+          "type": "string"
+        }
+      }
+    },
+    "loglevel": {
+      "enum": [
+        "trace",
+        "debug",
+        "info",
+        "error",
+        "fatal"
+      ]
+    },
+    "mode": {
+      "enum": [
+        "off",
+        "now",
+        "pv",
+        "minpv"
+      ]
+    },
+    "pollMode": {
+      "enum": [
+        "always",
+        "charging",
+        "connected"
+      ]
+    }
+  }
+}

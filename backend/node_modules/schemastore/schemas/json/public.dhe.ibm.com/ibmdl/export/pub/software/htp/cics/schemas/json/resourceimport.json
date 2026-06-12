@@ -1,0 +1,22 @@
+{
+  "$id": "http://www.ibm.com/xmlns/prod/cics/resourceimport",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Resource import JSON Schema.",
+  "description": "Super-schema that describes all versions of 'Resource import JSON Schema.'",
+  "allOf": [
+    {
+      "title": "Resource import JSON Schema.",
+      "description": "Schema that describes the structure of a resource import document.",
+      "if": {
+        "properties": {
+          "schemaVersion": {
+            "const": "resourceImport/1.0"
+          }
+        }
+      },
+      "then": {
+        "$ref": "resourceimport/resourceimport-1.0.0.json"
+      }
+    }
+  ]
+}

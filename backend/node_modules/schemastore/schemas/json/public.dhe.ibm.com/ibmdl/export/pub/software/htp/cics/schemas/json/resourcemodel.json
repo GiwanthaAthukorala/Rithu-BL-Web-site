@@ -1,0 +1,22 @@
+{
+  "$id": "http://www.ibm.com/xmlns/prod/cics/resourcemodel",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Resource model JSON Schema.",
+  "description": "Super-schema that describes all versions of 'Resource model JSON Schema.'",
+  "allOf": [
+    {
+      "title": "Resource model JSON Schema.",
+      "description": "Schema that describes the structure of a resource model document.",
+      "if": {
+        "properties": {
+          "schemaVersion": {
+            "const": "resourceModel/1.0"
+          }
+        }
+      },
+      "then": {
+        "$ref": "resourcemodel/resourcemodel-1.0.0.json"
+      }
+    }
+  ]
+}

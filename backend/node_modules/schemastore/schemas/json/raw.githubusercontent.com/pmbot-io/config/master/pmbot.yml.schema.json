@@ -1,0 +1,757 @@
+{
+  "properties": {
+    "version": {
+      "enum": [
+        "1"
+      ],
+      "type": "string"
+    },
+    "packageManagers": {
+      "items": {
+        "$ref": "#/definitions/PackageManagerUpdateConfig"
+      },
+      "type": "array",
+      "minItems": 1,
+      "markdownDescription": "List of updates to perform"
+    },
+    "actions": {
+      "items": {
+        "$ref": "#/definitions/ActionPluginDeclaration",
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "name": {
+                "const": "create-issue"
+              },
+              "config": {
+                "$ref": "#/definitions/CreateIssueActionConfig"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "properties": {
+              "name": {
+                "const": "create-merge-request"
+              },
+              "config": {
+                "$ref": "#/definitions/CreateMergeRequestActionConfig"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "properties": {
+              "name": {
+                "const": "auto-merge"
+              },
+              "config": {
+                "$ref": "#/definitions/AutoMergeActionConfig"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "properties": {
+              "name": {
+                "const": "webhook"
+              },
+              "config": {
+                "$ref": "#/definitions/WebhookActionConfig"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "properties": {
+              "name": {
+                "const": "slack"
+              },
+              "config": {
+                "$ref": "#/definitions/SlackActionConfig"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "properties": {
+              "name": {
+                "const": "mattermost"
+              },
+              "config": {
+                "$ref": "#/definitions/MattermostActionConfig"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "properties": {
+              "name": {
+                "const": "email"
+              },
+              "config": {
+                "$ref": "#/definitions/EmailActionConfig"
+              }
+            }
+          }
+        ]
+      },
+      "type": "array",
+      "default": [],
+      "description": "Actions to execute after each package manager update",
+      "markdownDescription": "Actions to execute after each package manager update"
+    }
+  },
+  "type": "object",
+  "required": [
+    "version",
+    "packageManagers"
+  ],
+  "definitions": {
+    "AutoMergeActionCommitMessageTemplateContext": {
+      "properties": {
+        "slug": {
+          "description": "Update slug. For example, \"npm\", or, \"npm-0\" when there are multiple pmUpdates with packageManager npm.",
+          "markdownDescription": "Update slug. For example, \"npm\", or, \"npm-0\" when there are multiple pmUpdates with packageManager npm."
+        }
+      },
+      "type": "object",
+      "required": [
+        "slug"
+      ]
+    },
+    "AutoMergeActionConfig": {
+      "properties": {
+        "squash": {
+          "type": "boolean",
+          "default": true,
+          "description": "Whether to squash commits of the update branch",
+          "markdownDescription": "Whether to squash commits of the update branch"
+        },
+        "commitMessage": {
+          "type": "string",
+          "default": "chore: update {{slug}} dependencies",
+          "description": "Commit message\n\nThis [handlebars](https://handlebarsjs.com/guide/#what-is-handlebars) template is passed the following context:\n\n```\n{\n    \"slug\": \"npm-0\"\n}\n```\n",
+          "markdownDescription": "Commit message\n\nThis [handlebars](https://handlebarsjs.com/guide/#what-is-handlebars) template is passed the following context:\n\n```\n{\n    \"slug\": \"npm-0\"\n}\n```\n"
+        },
+        "removeUpdateBranch": {
+          "type": "boolean",
+          "default": true,
+          "description": "Whether to remove the update branch",
+          "markdownDescription": "Whether to remove the update branch"
+        }
+      },
+      "type": "object"
+    },
+    "TitleTemplateContext": {
+      "properties": {
+        "slug": {
+          "description": "Update slug. For example, \"npm\", or, \"npm-0\" when there are multiple pmUpdates with packageManager npm.",
+          "markdownDescription": "Update slug. For example, \"npm\", or, \"npm-0\" when there are multiple pmUpdates with packageManager npm."
+        },
+        "status": {
+          "description": "Package manager update status",
+          "markdownDescription": "Package manager update status"
+        },
+        "statusEmoji": {
+          "description": "A status emoji corresponding to the package manager update status",
+          "markdownDescription": "A status emoji corresponding to the package manager update status"
+        }
+      },
+      "type": "object",
+      "required": [
+        "slug",
+        "status",
+        "statusEmoji"
+      ]
+    },
+    "CreateIssueActionConfig": {
+      "properties": {
+        "title": {
+          "type": "string",
+          "default": "Automated update of {{slug}} dependencies {{statusEmoji}}",
+          "description": "Issue title\n\nThis [handlebars](https://handlebarsjs.com/guide/#what-is-handlebars) template is passed the following context:\n\n```\n{\n    \"slug\": \"myPm\",\n    \"status\": \"myStatus\",\n    \"statusEmoji\": \"✅\"\n}\n```\n",
+          "markdownDescription": "Issue title\n\nThis [handlebars](https://handlebarsjs.com/guide/#what-is-handlebars) template is passed the following context:\n\n```\n{\n    \"slug\": \"myPm\",\n    \"status\": \"myStatus\",\n    \"statusEmoji\": \"✅\"\n}\n```\n"
+        },
+        "additionalText": {
+          "type": "string",
+          "description": "Additional text to embed in the issue description",
+          "markdownDescription": "Additional text to embed in the issue description"
+        },
+        "assignees": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "default": [],
+          "description": "Usernames to assign to the issue created. Note that Gitlab CE only allows one assignee.",
+          "markdownDescription": "Usernames to assign to the issue created. Note that Gitlab CE only allows one assignee."
+        },
+        "closeOpen": {
+          "type": "boolean",
+          "default": true,
+          "description": "Close open issues that were created by Pmbot. This option prevents multiple issues open simultaneously when you don't have the time to look at them.",
+          "markdownDescription": "Close open issues that were created by Pmbot. This option prevents multiple issues open simultaneously when you don't have the time to look at them."
+        },
+        "token": {
+          "minLength": 1,
+          "type": "string",
+          "description": "An authentication token. For Gitlab, this should be a [personal access token](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html). For Github, it should be a [Github personal access token](https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line).",
+          "markdownDescription": "An authentication token. For Gitlab, this should be a [personal access token](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html). For Github, it should be a [Github personal access token](https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line)."
+        }
+      },
+      "type": "object",
+      "required": [
+        "token"
+      ]
+    },
+    "CreateMergeRequestActionConfig": {
+      "properties": {
+        "title": {
+          "type": "string",
+          "default": "Automated update of {{slug}} dependencies {{statusEmoji}}",
+          "description": "Merge request title\n\nThis [handlebars](https://handlebarsjs.com/guide/#what-is-handlebars) template is passed the following context:\n\n```\n{\n    \"slug\": \"myPm\",\n    \"status\": \"myStatus\",\n    \"statusEmoji\": \"✅\"\n}\n```\n",
+          "markdownDescription": "Merge request title\n\nThis [handlebars](https://handlebarsjs.com/guide/#what-is-handlebars) template is passed the following context:\n\n```\n{\n    \"slug\": \"myPm\",\n    \"status\": \"myStatus\",\n    \"statusEmoji\": \"✅\"\n}\n```\n"
+        },
+        "additionalText": {
+          "type": "string",
+          "description": "Additional text to embed in the merge request description",
+          "markdownDescription": "Additional text to embed in the merge request description"
+        },
+        "assignees": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "default": [],
+          "description": "Usernames to assign to the issue created. Note that Gitlab CE only allows one assignee.",
+          "markdownDescription": "Usernames to assign to the issue created. Note that Gitlab CE only allows one assignee."
+        },
+        "closeOpen": {
+          "type": "boolean",
+          "default": true,
+          "description": "Close open merge requests that were created by Pmbot. This option prevents multiple merge requests open simultaneously when you don't have the time to merge them.",
+          "markdownDescription": "Close open merge requests that were created by Pmbot. This option prevents multiple merge requests open simultaneously when you don't have the time to merge them."
+        },
+        "squash": {
+          "type": "boolean",
+          "default": true,
+          "description": "[GITLAB only] Whether commits of the merge request source branch should be squashed",
+          "markdownDescription": "[GITLAB only] Whether commits of the merge request source branch should be squashed"
+        },
+        "deleteSourceBranch": {
+          "type": "boolean",
+          "default": true,
+          "description": "[GITLAB only] Whether the merge request source branch should be deleted",
+          "markdownDescription": "[GITLAB only] Whether the merge request source branch should be deleted"
+        },
+        "maintainerCanModify": {
+          "type": "boolean",
+          "default": true,
+          "description": "[GITHUB only] Whether maintainers can modify the created pull request",
+          "markdownDescription": "[GITHUB only] Whether maintainers can modify the created pull request"
+        },
+        "token": {
+          "minLength": 1,
+          "type": "string",
+          "description": "An authentication token. For Gitlab, this should be a [personal access token](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html). For Github, it should be a [Github personal access token](https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line).",
+          "markdownDescription": "An authentication token. For Gitlab, this should be a [personal access token](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html). For Github, it should be a [Github personal access token](https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line)."
+        }
+      },
+      "type": "object",
+      "required": [
+        "token"
+      ]
+    },
+    "MessageConfig": {
+      "properties": {
+        "from": {
+          "minLength": 1,
+          "type": "string",
+          "description": "Sender's email. Be aware that some providers (e.g. OBVH) will silently ignore sending the email when the sender address does not match the username.",
+          "markdownDescription": "Sender's email. Be aware that some providers (e.g. OBVH) will silently ignore sending the email when the sender address does not match the username."
+        },
+        "to": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Recipient address(es)",
+          "markdownDescription": "Recipient address(es)"
+        },
+        "subject": {
+          "type": "string",
+          "default": "Automated update of {{slug}} dependencies {{statusEmoji}}",
+          "description": "Email subject\n\nThis [handlebars](https://handlebarsjs.com/guide/#what-is-handlebars) template is passed the following context:\n\n```\n{\n    \"slug\": \"myPm\",\n    \"status\": \"myStatus\",\n    \"statusEmoji\": \"✅\"\n}\n```\n",
+          "markdownDescription": "Email subject\n\nThis [handlebars](https://handlebarsjs.com/guide/#what-is-handlebars) template is passed the following context:\n\n```\n{\n    \"slug\": \"myPm\",\n    \"status\": \"myStatus\",\n    \"statusEmoji\": \"✅\"\n}\n```\n"
+        }
+      },
+      "type": "object",
+      "required": [
+        "from",
+        "to"
+      ]
+    },
+    "EmailActionConfig": {
+      "properties": {
+        "transportOptions": {
+          "description": "Nodemailer [transport options](https://nodemailer.com/smtp/#general-options)",
+          "markdownDescription": "Nodemailer [transport options](https://nodemailer.com/smtp/#general-options)"
+        },
+        "messageConfig": {
+          "$ref": "#/definitions/MessageConfig",
+          "description": "Nodemailer [message configuration](https://nodemailer.com/message/). Allows you to override message configuration properties, except `html` and `text`.",
+          "markdownDescription": "Nodemailer [message configuration](https://nodemailer.com/message/). Allows you to override message configuration properties, except `html` and `text`."
+        },
+        "additionalText": {
+          "type": "string",
+          "description": "Additional text to embed in the email body",
+          "markdownDescription": "Additional text to embed in the email body"
+        }
+      },
+      "type": "object",
+      "required": [
+        "transportOptions",
+        "messageConfig"
+      ]
+    },
+    "MattermostActionConfig": {
+      "properties": {
+        "url": {
+          "minLength": 1,
+          "type": "string",
+          "description": "Mattermost [incoming webhook URL](https://docs.mattermost.com/developer/webhooks-incoming.html#simple-incoming-webhook)",
+          "markdownDescription": "Mattermost [incoming webhook URL](https://docs.mattermost.com/developer/webhooks-incoming.html#simple-incoming-webhook)"
+        },
+        "channels": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "description": "Channels where to send the message. Obsolete parameter when you have enabled **Lock to this channel** for the incoming webhook.",
+          "markdownDescription": "Channels where to send the message. Obsolete parameter when you have enabled **Lock to this channel** for the incoming webhook."
+        },
+        "title": {
+          "type": "string",
+          "default": "Automated update of {{slug}} dependencies {{statusEmoji}}",
+          "description": "Message title\n\nThis [handlebars](https://handlebarsjs.com/guide/#what-is-handlebars) template is passed the following context:\n\n```\n{\n    \"slug\": \"myPm\",\n    \"status\": \"myStatus\",\n    \"statusEmoji\": \"✅\"\n}\n```\n",
+          "markdownDescription": "Message title\n\nThis [handlebars](https://handlebarsjs.com/guide/#what-is-handlebars) template is passed the following context:\n\n```\n{\n    \"slug\": \"myPm\",\n    \"status\": \"myStatus\",\n    \"statusEmoji\": \"✅\"\n}\n```\n"
+        },
+        "additionalText": {
+          "type": "string",
+          "description": "Additional text to embed in the message body",
+          "markdownDescription": "Additional text to embed in the message body"
+        }
+      },
+      "type": "object",
+      "required": [
+        "url"
+      ]
+    },
+    "SlackActionConfig": {
+      "properties": {
+        "url": {
+          "minLength": 1,
+          "type": "string",
+          "description": "Slack webhook URL.\n\nTo get this URL:\n1. [Create](https://api.slack.com/apps?new_app=1) a custom Slack App. Fill in the form as follows:\n    - *App Name*: `Pmbot`\n    - *Development Slack Workspace*: Workspace where you want Pmbot to be integrated to\n2. Click \"Create App\". You are redirected to your app's page.\n3. Under menu section *Features*, select *Incoming Webhooks*, then toggle on *Activate Incoming Webhooks*. A new section named *Webhook URLs for Your Workspace* appears.\n4. Under section *Webhook URLs for Your Workspace*, click *Add New Webhook To Workspace*, then select the channel to which you want messages to be sent, for example `#pmbot`.\n5. Once added, copy the webhook URL and configure this action with it\n  ",
+          "markdownDescription": "Slack webhook URL.\n\nTo get this URL:\n1. [Create](https://api.slack.com/apps?new_app=1) a custom Slack App. Fill in the form as follows:\n    - *App Name*: `Pmbot`\n    - *Development Slack Workspace*: Workspace where you want Pmbot to be integrated to\n2. Click \"Create App\". You are redirected to your app's page.\n3. Under menu section *Features*, select *Incoming Webhooks*, then toggle on *Activate Incoming Webhooks*. A new section named *Webhook URLs for Your Workspace* appears.\n4. Under section *Webhook URLs for Your Workspace*, click *Add New Webhook To Workspace*, then select the channel to which you want messages to be sent, for example `#pmbot`.\n5. Once added, copy the webhook URL and configure this action with it\n  "
+        },
+        "title": {
+          "type": "string",
+          "default": "Automated update of {{slug}} dependencies {{statusEmoji}}",
+          "description": "Slack message title\n\nThis [handlebars](https://handlebarsjs.com/guide/#what-is-handlebars) template is passed the following context:\n\n```\n{\n    \"slug\": \"myPm\",\n    \"status\": \"myStatus\",\n    \"statusEmoji\": \"✅\"\n}\n```\n",
+          "markdownDescription": "Slack message title\n\nThis [handlebars](https://handlebarsjs.com/guide/#what-is-handlebars) template is passed the following context:\n\n```\n{\n    \"slug\": \"myPm\",\n    \"status\": \"myStatus\",\n    \"statusEmoji\": \"✅\"\n}\n```\n"
+        },
+        "additionalText": {
+          "type": "string",
+          "description": "Additional text to embed in the slack message body",
+          "markdownDescription": "Additional text to embed in the slack message body"
+        }
+      },
+      "type": "object",
+      "required": [
+        "url"
+      ]
+    },
+    "WebhookHeader": {
+      "properties": {
+        "name": {
+          "minLength": 1,
+          "type": "string",
+          "description": "Header name",
+          "markdownDescription": "Header name"
+        },
+        "value": {
+          "minLength": 1,
+          "type": "string",
+          "description": "Header value",
+          "markdownDescription": "Header value"
+        }
+      },
+      "type": "object",
+      "required": [
+        "name",
+        "value"
+      ]
+    },
+    "WebhookActionConfig": {
+      "properties": {
+        "url": {
+          "minLength": 1,
+          "type": "string",
+          "description": "Url to call",
+          "markdownDescription": "Url to call"
+        },
+        "extraData": {
+          "description": "Data that will be appended to the webhook payload in property \"extraData\"",
+          "markdownDescription": "Data that will be appended to the webhook payload in property \"extraData\""
+        },
+        "headers": {
+          "items": {
+            "$ref": "#/definitions/WebhookHeader"
+          },
+          "type": "array",
+          "description": "Additional headers to append to the HTTP request",
+          "markdownDescription": "Additional headers to append to the HTTP request"
+        }
+      },
+      "type": "object",
+      "required": [
+        "url"
+      ]
+    },
+    "BumpRule": {
+      "properties": {
+        "pattern": {
+          "type": "string",
+          "description": "A Javascript regular expression.",
+          "markdownDescription": "A Javascript regular expression."
+        },
+        "bump": {
+          "enum": [
+            "major",
+            "minor",
+            "patch"
+          ],
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "required": [
+        "pattern",
+        "bump"
+      ]
+    },
+    "GenericBumpConfig": {
+      "properties": {
+        "defaultBumpRule": {
+          "enum": [
+            "major",
+            "minor",
+            "patch"
+          ],
+          "type": "string",
+          "description": "Default rule for bumping dependencies. Used unless a specific rule is configured.",
+          "markdownDescription": "Default rule for bumping dependencies. Used unless a specific rule is configured."
+        },
+        "bumpRules": {
+          "items": {
+            "$ref": "#/definitions/BumpRule"
+          },
+          "type": "array",
+          "default": [],
+          "description": "Bump rules for specific dependencies. The first rule to match is used. When no custom rule is found here, we fallback the default rule.",
+          "markdownDescription": "Bump rules for specific dependencies. The first rule to match is used. When no custom rule is found here, we fallback the default rule."
+        }
+      },
+      "type": "object"
+    },
+    "GoPmaConfig": {
+      "properties": {
+        "bumpConfig": {
+          "description": "Bump configuration. Patterns are matched against package names.",
+          "markdownDescription": "Bump configuration. Patterns are matched against package names."
+        }
+      },
+      "type": "object"
+    },
+    "MavenPmaConfig": {
+      "properties": {
+        "bumpConfig": {
+          "description": "Bump configuration. Patterns are matched against dependency names formed as \"<groupId>:<artifactId>\" (e.g. \"javax.xml.bind:jaxb-api\").",
+          "markdownDescription": "Bump configuration. Patterns are matched against dependency names formed as \"<groupId>:<artifactId>\" (e.g. \"javax.xml.bind:jaxb-api\")."
+        },
+        "settingsPath": {
+          "description": "Path to a maven `settings.xml` file which contains credentials for private repositories.",
+          "markdownDescription": "Path to a maven `settings.xml` file which contains credentials for private repositories."
+        }
+      },
+      "type": "object"
+    },
+    "PmbotPluginDeclaration": {
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "config": {}
+      },
+      "type": "object",
+      "required": [
+        "name"
+      ]
+    },
+    "ActionPluginDeclaration": {
+      "properties": {
+        "on": {
+          "items": {
+            "enum": [
+              "running",
+              "pending",
+              "interrupted",
+              "success",
+              "partial",
+              "failure",
+              "unknown"
+            ],
+            "type": "string"
+          },
+          "type": "array",
+          "default": [],
+          "description": "When to trigger this action",
+          "markdownDescription": "When to trigger this action"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "config": {}
+      },
+      "type": "object",
+      "required": [
+        "name"
+      ]
+    },
+    "CiConfig": {
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "When false, all updates are made at once and we do not wait for CI feedback.",
+          "markdownDescription": "When false, all updates are made at once and we do not wait for CI feedback."
+        }
+      },
+      "type": "object"
+    },
+    "DependencyUpdateCommitMessageTemplateContext": {
+      "properties": {
+        "dependency": {
+          "type": "string",
+          "description": "Name of the dependency",
+          "markdownDescription": "Name of the dependency"
+        },
+        "versionBefore": {
+          "type": "string",
+          "description": "Version of the dependency before it was updated",
+          "markdownDescription": "Version of the dependency before it was updated"
+        },
+        "versionAfter": {
+          "type": "string",
+          "description": "Version of the dependency after it was updated",
+          "markdownDescription": "Version of the dependency after it was updated"
+        }
+      },
+      "type": "object",
+      "required": [
+        "dependency",
+        "versionBefore",
+        "versionAfter"
+      ]
+    },
+    "PackageManagerUpdateConfig": {
+      "properties": {
+        "packageManager": {
+          "$ref": "#/definitions/PmbotPluginDeclaration",
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "const": "npm"
+                },
+                "config": {
+                  "type": "object"
+                }
+              }
+            },
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "const": "maven"
+                },
+                "config": {
+                  "$ref": "#/definitions/MavenPmaConfig"
+                }
+              }
+            },
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "const": "go"
+                },
+                "config": {
+                  "$ref": "#/definitions/GoPmaConfig"
+                }
+              }
+            },
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "const": "composer"
+                },
+                "config": "object"
+              }
+            },
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "const": "ruby"
+                },
+                "config": "object"
+              }
+            }
+          ],
+          "description": "Package manager to use for this update",
+          "markdownDescription": "Package manager to use for this update"
+        },
+        "ci": {
+          "$ref": "#/definitions/CiConfig",
+          "description": "CI configuration for this update",
+          "markdownDescription": "CI configuration for this update"
+        },
+        "branchPrefix": {
+          "type": "string",
+          "default": "update/",
+          "description": "Prefix of the update branch",
+          "markdownDescription": "Prefix of the update branch"
+        },
+        "commitMessage": {
+          "type": "string",
+          "default": "chore: update {{dependency}} from {{versionBefore}} to {{versionAfter}}",
+          "maxLength": 128,
+          "description": "Commit message template\n\nThis [handlebars](https://handlebarsjs.com/guide/#what-is-handlebars) template is passed the following context:\n\n```\n{\n    \"dependency\": \"chalk\",\n    \"versionBefore\": \"1.0.0\",\n    \"versionAfter\": \"1.0.1\"\n}\n```\n",
+          "markdownDescription": "Commit message template\n\nThis [handlebars](https://handlebarsjs.com/guide/#what-is-handlebars) template is passed the following context:\n\n```\n{\n    \"dependency\": \"chalk\",\n    \"versionBefore\": \"1.0.0\",\n    \"versionAfter\": \"1.0.1\"\n}\n```\n"
+        },
+        "ignore": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "default": [],
+          "description": "List of dependencies to ignore. Each item should be a Javascript regular expression.",
+          "markdownDescription": "List of dependencies to ignore. Each item should be a Javascript regular expression."
+        },
+        "actions": {
+          "items": {
+            "$ref": "#/definitions/ActionPluginDeclaration",
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "const": "create-issue"
+                  },
+                  "config": {
+                    "$ref": "#/definitions/CreateIssueActionConfig"
+                  }
+                }
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "const": "create-merge-request"
+                  },
+                  "config": {
+                    "$ref": "#/definitions/CreateMergeRequestActionConfig"
+                  }
+                }
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "const": "auto-merge"
+                  },
+                  "config": {
+                    "$ref": "#/definitions/AutoMergeActionConfig"
+                  }
+                }
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "const": "webhook"
+                  },
+                  "config": {
+                    "$ref": "#/definitions/WebhookActionConfig"
+                  }
+                }
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "const": "slack"
+                  },
+                  "config": {
+                    "$ref": "#/definitions/SlackActionConfig"
+                  }
+                }
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "const": "mattermost"
+                  },
+                  "config": {
+                    "$ref": "#/definitions/MattermostActionConfig"
+                  }
+                }
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "const": "email"
+                  },
+                  "config": {
+                    "$ref": "#/definitions/EmailActionConfig"
+                  }
+                }
+              }
+            ]
+          },
+          "type": "array",
+          "default": [],
+          "description": "Actions to execute after the update",
+          "markdownDescription": "Actions to execute after the update"
+        },
+        "keepUpdateBranchOnFailure": {
+          "type": "boolean",
+          "description": "When `true`, the update branch will **not** be deleted when the package manager update status is `failure`.",
+          "markdownDescription": "When `true`, the update branch will **not** be deleted when the package manager update status is `failure`."
+        }
+      },
+      "type": "object",
+      "required": [
+        "packageManager"
+      ]
+    }
+  }
+}

@@ -1,0 +1,182 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "JsonObject": {
+      "additionalProperties": {
+        "$ref": "#/definitions/JsonValue"
+      },
+      "type": "object"
+    },
+    "JsonValue": {
+      "anyOf": [
+        {
+          "items": {
+            "$ref": "#/definitions/JsonValue"
+          },
+          "type": "array"
+        },
+        {
+          "$ref": "#/definitions/JsonObject"
+        },
+        {
+          "type": [
+            "string",
+            "number",
+            "boolean"
+          ]
+        }
+      ]
+    }
+  },
+  "properties": {
+    "author": {
+      "description": "The name of the author of the block",
+      "type": "string"
+    },
+    "blockType": {
+      "description": "The type of block this is (e.g. custom element, React)",
+      "properties": {
+        "entryPoint": {
+          "enum": [
+            "custom-element",
+            "html",
+            "react"
+          ],
+          "type": "string"
+        },
+        "tagName": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "entryPoint"
+      ],
+      "type": "object"
+    },
+    "default": {
+      "$ref": "#/definitions/JsonObject",
+      "description": "The default data used as the block's properties on first load - must comply with its schema"
+    },
+    "description": {
+      "description": "A short description of the block, to help users understand its capabilities",
+      "type": "string"
+    },
+    "devReloadEndpoint": {
+      "description": "URL of a web socket that reports updates in locally developed blocks. To be used by EAs to auto reload.",
+      "type": "string"
+    },
+    "displayName": {
+      "description": "The display name used for a block",
+      "type": "string"
+    },
+    "examples": {
+      "description": "A list of examples used to showcase a block's capabilities",
+      "items": {
+        "$ref": "#/definitions/JsonObject"
+      },
+      "type": "array"
+    },
+    "externals": {
+      "$ref": "#/definitions/JsonObject",
+      "description": "The dependencies a block relies on but expects the embedding application to provide, e.g. { \"react\": \"^18.0.0\" }"
+    },
+    "icon": {
+      "description": "An icon for the block, to be displayed when the user is selecting from available blocks (as well as elsewhere as appropriate, e.g. in a website listing the block).",
+      "type": "string"
+    },
+    "image": {
+      "description": "A preview image of the block for users to see it in action before using it. This would ideally have a 3:2 width:height ratio and be a minimum of 900x1170px.",
+      "type": "string"
+    },
+    "license": {
+      "description": "The license the block is made available under (e.g. MIT).",
+      "type": "string"
+    },
+    "name": {
+      "description": "A unique, slugified name for the block.",
+      "type": "string"
+    },
+    "protocol": {
+      "description": "The applicable block protocol version.",
+      "type": "string"
+    },
+    "repository": {
+      "anyOf": [
+        {
+          "properties": {
+            "directory": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string"
+            },
+            "url": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "type",
+            "url"
+          ],
+          "type": "object"
+        },
+        {
+          "type": "string"
+        }
+      ],
+      "description": "Specify the place where your block's code lives. This is helpful for people who want to explore the source, or contribute to your block's development."
+    },
+    "schema": {
+      "description": "The path or URL to the block's schema (e.g. block-schema.json)",
+      "type": "string"
+    },
+    "source": {
+      "description": "The path or URL to the entrypoint source file (e.g. index.html, index.js).",
+      "type": "string"
+    },
+    "variants": {
+      "description": "A list which represents different variants of the block that the user can create.",
+      "items": {
+        "properties": {
+          "description": {
+            "type": "string"
+          },
+          "examples": {
+            "items": {
+              "$ref": "#/definitions/JsonObject"
+            },
+            "type": "array"
+          },
+          "icon": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "properties": {
+            "$ref": "#/definitions/JsonObject"
+          }
+        },
+        "required": [
+          "name",
+          "properties"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "version": {
+      "description": "The version of the block, which should use semantic versioning (@see https://semver.org/).",
+      "type": "string"
+    }
+  },
+  "required": [
+    "blockType",
+    "name",
+    "protocol",
+    "schema",
+    "source",
+    "version"
+  ],
+  "type": "object"
+}

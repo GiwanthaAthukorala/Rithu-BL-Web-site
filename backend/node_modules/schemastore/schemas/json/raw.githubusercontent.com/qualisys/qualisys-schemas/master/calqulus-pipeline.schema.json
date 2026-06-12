@@ -1,0 +1,2683 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "line_endings": "unix",
+  "$id": "https://qualisys.com/schemas/calqulus-pipeline",
+  "title": "Qualisys Calqulus Pipeline",
+  "description": "A document describing calculations to be done on biomechanical data for presentation in a report.",
+  "type": "array",
+  "items": {
+    "oneOf": [
+      {
+        "$ref": "#/$defs/Parameter Node"
+      },
+      {
+        "$ref": "#/$defs/Space Node"
+      },
+      {
+        "$ref": "#/$defs/Event Node"
+      },
+      {
+        "$ref": "#/$defs/Marker Node"
+      },
+      {
+        "$ref": "#/$defs/Segment Node"
+      }
+    ]
+  },
+  "$defs": {
+    "parameter": {
+      "title": "Parameter node",
+      "description": "A parameter node defines steps used to calculate a value or a sequence of values. The result is exported to the global scope and exported in the resulting JSON file.",
+      "type": "string"
+    },
+    "space": {
+      "title": "Space node",
+      "description": "A parameter node defines steps used to calculate a value or a sequence of values. The result is exported to the global scope and exported in the resulting JSON file.",
+      "type": "string"
+    },
+    "event": {
+      "title": "Event node",
+      "description": "A parameter node defines steps used to calculate a value or a sequence of values. The result is exported to the global scope and exported in the resulting JSON file.",
+      "type": "string"
+    },
+    "marker": {
+      "title": "Marker node",
+      "description": "A parameter node defines steps used to calculate a value or a sequence of values. The result is exported to the global scope and exported in the resulting JSON file.",
+      "type": "string"
+    },
+    "segment": {
+      "title": "Marker node",
+      "description": "A parameter node defines steps used to calculate a value or a sequence of values. The result is exported to the global scope and exported in the resulting JSON file.",
+      "type": "string"
+    },
+    "steps": {
+      "title": "Node steps",
+      "description": "A step node takes an input and some options and outputs a value.\t\t\t\t\t",
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "title": "Step: angle",
+            "description": "The angle step performs slightly different operation depending on the type and number of inputs.\n\nNote: _For cases where multiple inputs are given of varying lengths, the returning array will be the maximum length and the last value will be repeated for the shorter inputs to fill the gap._\n\nOne input: `` Computes the euler angle of the specified segment, in degrees.\n\nTwo inputs: (, ) | (, ) Given two segments: Computes the relative (euler) angle between the specified segments, in degrees.\n\nGiven two vectors: Computes relative angle between the specified vectors, in radians.\n\nThree inputs: , ,  Computes the angle between the two vectors defined by the specified points (v0 -> v1, v1 -> v2), in radians. The points can be specified as arrays or with named vector signals (ie markers).\n\nGiven the inputs v1, v2 and v3, the resulting angle is given by:\n\nangleBetween(v1 - v0, v1 - v2)\n\nFour inputs: , , ,  Computes the angle between the two lines formed by (v0 -> v1, v2 -> v3), in radians. The points can be specified as arrays or with named vector signals (ie markers).",
+            "properties": {
+              "angle": {
+                "title": "angle step",
+                "description": "The angle step performs slightly different operation depending on the type and number of inputs.\n\nNote: _For cases where multiple inputs are given of varying lengths, the returning array will be the maximum length and the last value will be repeated for the shorter inputs to fill the gap._\n\nOne input: `` Computes the euler angle of the specified segment, in degrees.\n\nTwo inputs: (, ) | (, ) Given two segments: Computes the relative (euler) angle between the specified segments, in degrees.\n\nGiven two vectors: Computes relative angle between the specified vectors, in radians.\n\nThree inputs: , ,  Computes the angle between the two vectors defined by the specified points (v0 -> v1, v1 -> v2), in radians. The points can be specified as arrays or with named vector signals (ie markers).\n\nGiven the inputs v1, v2 and v3, the resulting angle is given by:\n\nangleBetween(v1 - v0, v1 - v2)\n\nFour inputs: , , ,  Computes the angle between the two lines formed by (v0 -> v1, v2 -> v3), in radians. The points can be specified as arrays or with named vector signals (ie markers).",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "array",
+                  "null"
+                ]
+              },
+              "export": {
+                "$ref": "#/$defs/globalOption export"
+              },
+              "output": {
+                "$ref": "#/$defs/globalOption output"
+              },
+              "set": {
+                "$ref": "#/$defs/globalOption set"
+              },
+              "space": {
+                "$ref": "#/$defs/globalOption space"
+              },
+              "project": {
+                "$ref": "#/$defs/categoryOption Angle project"
+              },
+              "rotationOrder": {
+                "$ref": "#/$defs/categoryOption Angle rotationOrder"
+              }
+            },
+            "required": [
+              "angle"
+            ]
+          },
+          {
+            "type": "object",
+            "title": "Step: angularVelocity",
+            "description": "This step calculates the joint angular velocity based on the textbook Research Methods in Biomechanics (2nd Edition).\n\nYou can visit http://www.kwon3d.com/theory/euler/avel.html for more details.\n\nThis is different from calculating the first-order derivate of the joint angle because each axis of the joint angle are different from the axes of the segment coordinate systems.\n\n**Please consider which implementation would be correct to use in your instance**.",
+            "properties": {
+              "angularVelocity": {
+                "title": "angularVelocity step",
+                "description": "This step calculates the joint angular velocity based on the textbook Research Methods in Biomechanics (2nd Edition).\n\nYou can visit http://www.kwon3d.com/theory/euler/avel.html for more details.\n\nThis is different from calculating the first-order derivate of the joint angle because each axis of the joint angle are different from the axes of the segment coordinate systems.\n\n**Please consider which implementation would be correct to use in your instance**.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "array",
+                  "null"
+                ]
+              },
+              "useRotationOrder": {
+                "title": "angularVelocity > useRotationOrder",
+                "description": "If set to false it means that the angular velocity between the segment and refernce segment is transformed to be expressed into the resolution coordinate system.\n\nIf set to true it means that angular velocity between the segment and refernce segment is transformed to be expressed into the joint coordinate system using the Euler/Cardan sequence.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "boolean"
+                ]
+              },
+              "export": {
+                "$ref": "#/$defs/globalOption export"
+              },
+              "output": {
+                "$ref": "#/$defs/globalOption output"
+              },
+              "set": {
+                "$ref": "#/$defs/globalOption set"
+              },
+              "space": {
+                "$ref": "#/$defs/globalOption space"
+              },
+              "project": {
+                "$ref": "#/$defs/categoryOption Angle project"
+              },
+              "rotationOrder": {
+                "$ref": "#/$defs/categoryOption Angle rotationOrder"
+              }
+            },
+            "required": [
+              "angularVelocity"
+            ]
+          },
+          {
+            "type": "object",
+            "title": "Step: jointAngle",
+            "description": "Performs the same computation as angle, but does not handle three or four inputs.",
+            "properties": {
+              "jointAngle": {
+                "title": "jointAngle step",
+                "description": "Performs the same computation as angle, but does not handle three or four inputs.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "array",
+                  "null"
+                ]
+              },
+              "export": {
+                "$ref": "#/$defs/globalOption export"
+              },
+              "output": {
+                "$ref": "#/$defs/globalOption output"
+              },
+              "set": {
+                "$ref": "#/$defs/globalOption set"
+              },
+              "space": {
+                "$ref": "#/$defs/globalOption space"
+              },
+              "project": {
+                "$ref": "#/$defs/categoryOption Angle project"
+              },
+              "rotationOrder": {
+                "$ref": "#/$defs/categoryOption Angle rotationOrder"
+              }
+            },
+            "required": [
+              "jointAngle"
+            ]
+          },
+          {
+            "type": "object",
+            "title": "Step: jointAngleVelocity",
+            "description": "Performs the same computation as angularVelocity.",
+            "properties": {
+              "jointAngleVelocity": {
+                "title": "jointAngleVelocity step",
+                "description": "Performs the same computation as angularVelocity.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "array",
+                  "null"
+                ]
+              },
+              "useRotationOrder": {
+                "title": "jointAngleVelocity > useRotationOrder",
+                "description": "If set to false it means that the angular velocity between the segment and refernce segment is transformed to be expressed into the resolution coordinate system.\n\nIf set to true it means that angular velocity between the segment and refernce segment is transformed to be expressed into the joint coordinate system using the Euler/Cardan sequence.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "boolean"
+                ]
+              },
+              "export": {
+                "$ref": "#/$defs/globalOption export"
+              },
+              "output": {
+                "$ref": "#/$defs/globalOption output"
+              },
+              "set": {
+                "$ref": "#/$defs/globalOption set"
+              },
+              "space": {
+                "$ref": "#/$defs/globalOption space"
+              },
+              "project": {
+                "$ref": "#/$defs/categoryOption Angle project"
+              },
+              "rotationOrder": {
+                "$ref": "#/$defs/categoryOption Angle rotationOrder"
+              }
+            },
+            "required": [
+              "jointAngleVelocity"
+            ]
+          },
+          {
+            "type": "object",
+            "title": "Step: count",
+            "description": "Counts the number of values in the input, i.e. the number of frames in a series, or the number of values in a scalar or event input.",
+            "properties": {
+              "count": {
+                "title": "count step",
+                "description": "Counts the number of values in the input, i.e. the number of frames in a series, or the number of values in a scalar or event input.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "array",
+                  "null"
+                ]
+              },
+              "export": {
+                "$ref": "#/$defs/globalOption export"
+              },
+              "output": {
+                "$ref": "#/$defs/globalOption output"
+              },
+              "set": {
+                "$ref": "#/$defs/globalOption set"
+              },
+              "space": {
+                "$ref": "#/$defs/globalOption space"
+              },
+              "useCycles": {
+                "$ref": "#/$defs/categoryOption Aggregation useCycles"
+              }
+            },
+            "required": [
+              "count"
+            ]
+          },
+          {
+            "type": "object",
+            "title": "Step: max",
+            "description": "Outputs the max value of the input.",
+            "properties": {
+              "max": {
+                "title": "max step",
+                "description": "Outputs the max value of the input.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "array",
+                  "null"
+                ]
+              },
+              "frames": {
+                "title": "max > frames",
+                "description": "If set to true, this step returns the frame index for the maximum value of the input. If using cycles, it will return a frame per cycle.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "boolean"
+                ]
+              },
+              "export": {
+                "$ref": "#/$defs/globalOption export"
+              },
+              "output": {
+                "$ref": "#/$defs/globalOption output"
+              },
+              "set": {
+                "$ref": "#/$defs/globalOption set"
+              },
+              "space": {
+                "$ref": "#/$defs/globalOption space"
+              },
+              "useCycles": {
+                "$ref": "#/$defs/categoryOption Aggregation useCycles"
+              }
+            },
+            "required": [
+              "max"
+            ]
+          },
+          {
+            "type": "object",
+            "title": "Step: mean",
+            "description": "Outputs the mean value of the input.",
+            "properties": {
+              "mean": {
+                "title": "mean step",
+                "description": "Outputs the mean value of the input.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "array",
+                  "null"
+                ]
+              },
+              "export": {
+                "$ref": "#/$defs/globalOption export"
+              },
+              "output": {
+                "$ref": "#/$defs/globalOption output"
+              },
+              "set": {
+                "$ref": "#/$defs/globalOption set"
+              },
+              "space": {
+                "$ref": "#/$defs/globalOption space"
+              },
+              "useCycles": {
+                "$ref": "#/$defs/categoryOption Aggregation useCycles"
+              }
+            },
+            "required": [
+              "mean"
+            ]
+          },
+          {
+            "type": "object",
+            "title": "Step: median",
+            "description": "Outputs the minimum value of the input.",
+            "properties": {
+              "median": {
+                "title": "median step",
+                "description": "Outputs the minimum value of the input.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "array",
+                  "null"
+                ]
+              },
+              "frames": {
+                "title": "median > frames",
+                "description": "If set to true, this step returns the frame index for the minimum value of the input. If using cycles, it will return a frame per cycle.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "boolean"
+                ]
+              },
+              "export": {
+                "$ref": "#/$defs/globalOption export"
+              },
+              "output": {
+                "$ref": "#/$defs/globalOption output"
+              },
+              "set": {
+                "$ref": "#/$defs/globalOption set"
+              },
+              "space": {
+                "$ref": "#/$defs/globalOption space"
+              },
+              "useCycles": {
+                "$ref": "#/$defs/categoryOption Aggregation useCycles"
+              }
+            },
+            "required": [
+              "median"
+            ]
+          },
+          {
+            "type": "object",
+            "title": "Step: min",
+            "description": "Outputs the median value of the input.",
+            "properties": {
+              "min": {
+                "title": "min step",
+                "description": "Outputs the median value of the input.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "array",
+                  "null"
+                ]
+              },
+              "export": {
+                "$ref": "#/$defs/globalOption export"
+              },
+              "output": {
+                "$ref": "#/$defs/globalOption output"
+              },
+              "set": {
+                "$ref": "#/$defs/globalOption set"
+              },
+              "space": {
+                "$ref": "#/$defs/globalOption space"
+              },
+              "useCycles": {
+                "$ref": "#/$defs/categoryOption Aggregation useCycles"
+              }
+            },
+            "required": [
+              "min"
+            ]
+          },
+          {
+            "type": "object",
+            "title": "Step: range",
+            "description": "Outputs the range between the minimum and maximum value of the input.",
+            "properties": {
+              "range": {
+                "title": "range step",
+                "description": "Outputs the range between the minimum and maximum value of the input.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "array",
+                  "null"
+                ]
+              },
+              "export": {
+                "$ref": "#/$defs/globalOption export"
+              },
+              "output": {
+                "$ref": "#/$defs/globalOption output"
+              },
+              "set": {
+                "$ref": "#/$defs/globalOption set"
+              },
+              "space": {
+                "$ref": "#/$defs/globalOption space"
+              },
+              "useCycles": {
+                "$ref": "#/$defs/categoryOption Aggregation useCycles"
+              }
+            },
+            "required": [
+              "range"
+            ]
+          },
+          {
+            "type": "object",
+            "title": "Step: rms",
+            "description": "Outputs the Root Mean Square (root of the average squared deviations) between two arrays.",
+            "properties": {
+              "rms": {
+                "title": "rms step",
+                "description": "Outputs the Root Mean Square (root of the average squared deviations) between two arrays.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "array",
+                  "null"
+                ]
+              },
+              "export": {
+                "$ref": "#/$defs/globalOption export"
+              },
+              "output": {
+                "$ref": "#/$defs/globalOption output"
+              },
+              "set": {
+                "$ref": "#/$defs/globalOption set"
+              },
+              "space": {
+                "$ref": "#/$defs/globalOption space"
+              },
+              "useCycles": {
+                "$ref": "#/$defs/categoryOption Aggregation useCycles"
+              }
+            },
+            "required": [
+              "rms"
+            ]
+          },
+          {
+            "type": "object",
+            "title": "Step: standardDeviation",
+            "description": "Outputs the standard deviation value of the input.",
+            "properties": {
+              "standardDeviation": {
+                "title": "standardDeviation step",
+                "description": "Outputs the standard deviation value of the input.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "array",
+                  "null"
+                ]
+              },
+              "export": {
+                "$ref": "#/$defs/globalOption export"
+              },
+              "output": {
+                "$ref": "#/$defs/globalOption output"
+              },
+              "set": {
+                "$ref": "#/$defs/globalOption set"
+              },
+              "space": {
+                "$ref": "#/$defs/globalOption space"
+              },
+              "useCycles": {
+                "$ref": "#/$defs/categoryOption Aggregation useCycles"
+              }
+            },
+            "required": [
+              "standardDeviation"
+            ]
+          },
+          {
+            "type": "object",
+            "title": "Step: standardDeviation",
+            "description": "Outputs the standard deviation value of the input.",
+            "properties": {
+              "stdDev": {
+                "title": "stdDev step",
+                "description": "Outputs the standard deviation value of the input.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "array",
+                  "null"
+                ]
+              },
+              "export": {
+                "$ref": "#/$defs/globalOption export"
+              },
+              "output": {
+                "$ref": "#/$defs/globalOption output"
+              },
+              "set": {
+                "$ref": "#/$defs/globalOption set"
+              },
+              "space": {
+                "$ref": "#/$defs/globalOption space"
+              },
+              "useCycles": {
+                "$ref": "#/$defs/categoryOption Aggregation useCycles"
+              }
+            },
+            "required": [
+              "stdDev"
+            ]
+          },
+          {
+            "type": "object",
+            "title": "Step: sum",
+            "description": "Outputs the sum of all values of the input.",
+            "properties": {
+              "sum": {
+                "title": "sum step",
+                "description": "Outputs the sum of all values of the input.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "array",
+                  "null"
+                ]
+              },
+              "export": {
+                "$ref": "#/$defs/globalOption export"
+              },
+              "output": {
+                "$ref": "#/$defs/globalOption output"
+              },
+              "set": {
+                "$ref": "#/$defs/globalOption set"
+              },
+              "space": {
+                "$ref": "#/$defs/globalOption space"
+              },
+              "useCycles": {
+                "$ref": "#/$defs/categoryOption Aggregation useCycles"
+              }
+            },
+            "required": [
+              "sum"
+            ]
+          },
+          {
+            "type": "object",
+            "title": "Step: add",
+            "description": "Adds the input operands.",
+            "properties": {
+              "add": {
+                "title": "add step",
+                "description": "Adds the input operands.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "array",
+                  "null"
+                ]
+              },
+              "export": {
+                "$ref": "#/$defs/globalOption export"
+              },
+              "output": {
+                "$ref": "#/$defs/globalOption output"
+              },
+              "set": {
+                "$ref": "#/$defs/globalOption set"
+              },
+              "space": {
+                "$ref": "#/$defs/globalOption space"
+              },
+              "frameSequenceOrder": {
+                "$ref": "#/$defs/categoryOption Arithmetic frameSequenceOrder"
+              }
+            },
+            "required": [
+              "add"
+            ]
+          },
+          {
+            "type": "object",
+            "title": "Step: divide",
+            "description": "Divides the input operands.",
+            "properties": {
+              "divide": {
+                "title": "divide step",
+                "description": "Divides the input operands.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "array",
+                  "null"
+                ]
+              },
+              "export": {
+                "$ref": "#/$defs/globalOption export"
+              },
+              "output": {
+                "$ref": "#/$defs/globalOption output"
+              },
+              "set": {
+                "$ref": "#/$defs/globalOption set"
+              },
+              "space": {
+                "$ref": "#/$defs/globalOption space"
+              },
+              "frameSequenceOrder": {
+                "$ref": "#/$defs/categoryOption Arithmetic frameSequenceOrder"
+              }
+            },
+            "required": [
+              "divide"
+            ]
+          },
+          {
+            "type": "object",
+            "title": "Step: multiply",
+            "description": "Multiplies the input operands.",
+            "properties": {
+              "multiply": {
+                "title": "multiply step",
+                "description": "Multiplies the input operands.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "array",
+                  "null"
+                ]
+              },
+              "export": {
+                "$ref": "#/$defs/globalOption export"
+              },
+              "output": {
+                "$ref": "#/$defs/globalOption output"
+              },
+              "set": {
+                "$ref": "#/$defs/globalOption set"
+              },
+              "space": {
+                "$ref": "#/$defs/globalOption space"
+              },
+              "frameSequenceOrder": {
+                "$ref": "#/$defs/categoryOption Arithmetic frameSequenceOrder"
+              }
+            },
+            "required": [
+              "multiply"
+            ]
+          },
+          {
+            "type": "object",
+            "title": "Step: subtract",
+            "description": "Subtracts the input operands.",
+            "properties": {
+              "subtract": {
+                "title": "subtract step",
+                "description": "Subtracts the input operands.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "array",
+                  "null"
+                ]
+              },
+              "export": {
+                "$ref": "#/$defs/globalOption export"
+              },
+              "output": {
+                "$ref": "#/$defs/globalOption output"
+              },
+              "set": {
+                "$ref": "#/$defs/globalOption set"
+              },
+              "space": {
+                "$ref": "#/$defs/globalOption space"
+              },
+              "frameSequenceOrder": {
+                "$ref": "#/$defs/categoryOption Arithmetic frameSequenceOrder"
+              }
+            },
+            "required": [
+              "subtract"
+            ]
+          },
+          {
+            "type": "object",
+            "title": "Step: distance",
+            "description": "Accepts marker or segment sequences and calculates the distance between the points (Euclidian norm).\n\nIt assumes that the values are comparable by index. If the sequence length differs, the calculation will be done up until the shortest length of the input sequences.",
+            "properties": {
+              "distance": {
+                "title": "distance step",
+                "description": "Accepts marker or segment sequences and calculates the distance between the points (Euclidian norm).\n\nIt assumes that the values are comparable by index. If the sequence length differs, the calculation will be done up until the shortest length of the input sequences.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "array",
+                  "null"
+                ]
+              },
+              "export": {
+                "$ref": "#/$defs/globalOption export"
+              },
+              "output": {
+                "$ref": "#/$defs/globalOption output"
+              },
+              "set": {
+                "$ref": "#/$defs/globalOption set"
+              },
+              "space": {
+                "$ref": "#/$defs/globalOption space"
+              }
+            },
+            "required": [
+              "distance"
+            ]
+          },
+          {
+            "type": "object",
+            "title": "Step: magnitude",
+            "description": "Accepts a vector or a segment sequence and calculates the magnitude of it (Euclidian norm).",
+            "properties": {
+              "magnitude": {
+                "title": "magnitude step",
+                "description": "Accepts a vector or a segment sequence and calculates the magnitude of it (Euclidian norm).",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "array",
+                  "null"
+                ]
+              },
+              "export": {
+                "$ref": "#/$defs/globalOption export"
+              },
+              "output": {
+                "$ref": "#/$defs/globalOption output"
+              },
+              "set": {
+                "$ref": "#/$defs/globalOption set"
+              },
+              "space": {
+                "$ref": "#/$defs/globalOption space"
+              }
+            },
+            "required": [
+              "magnitude"
+            ]
+          },
+          {
+            "type": "object",
+            "title": "Step: plane",
+            "description": "Takes three marker or segment sequences and returns the plane which intersects all three points.\n\nIt assumes that the values are comparable by index. If the sequence length differs, the calculation will be done up until the shortest length of the input sequences.",
+            "properties": {
+              "plane": {
+                "title": "plane step",
+                "description": "Takes three marker or segment sequences and returns the plane which intersects all three points.\n\nIt assumes that the values are comparable by index. If the sequence length differs, the calculation will be done up until the shortest length of the input sequences.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "array",
+                  "null"
+                ]
+              },
+              "export": {
+                "$ref": "#/$defs/globalOption export"
+              },
+              "output": {
+                "$ref": "#/$defs/globalOption output"
+              },
+              "set": {
+                "$ref": "#/$defs/globalOption set"
+              },
+              "space": {
+                "$ref": "#/$defs/globalOption space"
+              }
+            },
+            "required": [
+              "plane"
+            ]
+          },
+          {
+            "type": "object",
+            "title": "Step: project",
+            "description": "Orthogonally projects a point onto a plane and returns the location of the projected point.\n\nNote: *The plane will remain in the space used when creating it, applying a space to the project step will apply the space to the vector / segment, but the plane will be left untouched.*",
+            "properties": {
+              "project": {
+                "title": "project step",
+                "description": "Orthogonally projects a point onto a plane and returns the location of the projected point.\n\nNote: *The plane will remain in the space used when creating it, applying a space to the project step will apply the space to the vector / segment, but the plane will be left untouched.*",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "array",
+                  "null"
+                ]
+              },
+              "export": {
+                "$ref": "#/$defs/globalOption export"
+              },
+              "output": {
+                "$ref": "#/$defs/globalOption output"
+              },
+              "set": {
+                "$ref": "#/$defs/globalOption set"
+              },
+              "space": {
+                "$ref": "#/$defs/globalOption space"
+              },
+              "angle": {
+                "type": "null"
+              }
+            },
+            "required": [
+              "project"
+            ]
+          },
+          {
+            "type": "object",
+            "title": "Step: unitVector",
+            "description": "Calculates the unit vector i.e. the new vector has the same direction of the input vector but its norm equals 1.",
+            "properties": {
+              "unitVector": {
+                "title": "unitVector step",
+                "description": "Calculates the unit vector i.e. the new vector has the same direction of the input vector but its norm equals 1.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "array",
+                  "null"
+                ]
+              },
+              "export": {
+                "$ref": "#/$defs/globalOption export"
+              },
+              "output": {
+                "$ref": "#/$defs/globalOption output"
+              },
+              "set": {
+                "$ref": "#/$defs/globalOption set"
+              },
+              "space": {
+                "$ref": "#/$defs/globalOption space"
+              }
+            },
+            "required": [
+              "unitVector"
+            ]
+          },
+          {
+            "type": "object",
+            "title": "Step: abs",
+            "description": "Outputs the absolute value for each value in the input signal.",
+            "properties": {
+              "abs": {
+                "title": "abs step",
+                "description": "Outputs the absolute value for each value in the input signal.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "array",
+                  "null"
+                ]
+              },
+              "export": {
+                "$ref": "#/$defs/globalOption export"
+              },
+              "output": {
+                "$ref": "#/$defs/globalOption output"
+              },
+              "set": {
+                "$ref": "#/$defs/globalOption set"
+              },
+              "space": {
+                "$ref": "#/$defs/globalOption space"
+              }
+            },
+            "required": [
+              "abs"
+            ]
+          },
+          {
+            "type": "object",
+            "title": "Step: convert",
+            "description": "For each value of the input, converts it according to the units defined in the from and to options.",
+            "properties": {
+              "convert": {
+                "title": "convert step",
+                "description": "For each value of the input, converts it according to the units defined in the from and to options.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "array",
+                  "null"
+                ]
+              },
+              "from": {
+                "title": "convert > from",
+                "description": "Defines the unit to convert from.",
+                "additionalProperties": false,
+                "type": [
+                  "string"
+                ]
+              },
+              "to": {
+                "title": "convert > to",
+                "description": "Defines the unit to convert to.",
+                "additionalProperties": false,
+                "type": [
+                  "string"
+                ]
+              },
+              "export": {
+                "$ref": "#/$defs/globalOption export"
+              },
+              "output": {
+                "$ref": "#/$defs/globalOption output"
+              },
+              "set": {
+                "$ref": "#/$defs/globalOption set"
+              },
+              "space": {
+                "$ref": "#/$defs/globalOption space"
+              }
+            },
+            "required": [
+              "convert",
+              "from",
+              "to"
+            ]
+          },
+          {
+            "type": "object",
+            "title": "Step: diff",
+            "description": "Outputs the difference between each value in the input. Since this compares value n with n+1, the output signal will be shorter by one item.",
+            "properties": {
+              "diff": {
+                "title": "diff step",
+                "description": "Outputs the difference between each value in the input. Since this compares value n with n+1, the output signal will be shorter by one item.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "array",
+                  "null"
+                ]
+              },
+              "export": {
+                "$ref": "#/$defs/globalOption export"
+              },
+              "output": {
+                "$ref": "#/$defs/globalOption output"
+              },
+              "set": {
+                "$ref": "#/$defs/globalOption set"
+              },
+              "space": {
+                "$ref": "#/$defs/globalOption space"
+              }
+            },
+            "required": [
+              "diff"
+            ]
+          },
+          {
+            "type": "object",
+            "title": "Step: dotProduct",
+            "description": "\tCalculates the dot product between two vectors.\n\n\tThe output length will be equal to the length of the first vector sequence.\n\n\tThe second vector sequence needs to be singular or equal to the first vector sequence in length.\n\n\tA lone vector in the second input will be used to calculate the dot product between itself \tand all vectors contained in the first vector sequence.",
+            "properties": {
+              "dotProduct": {
+                "title": "dotProduct step",
+                "description": "\tCalculates the dot product between two vectors.\n\n\tThe output length will be equal to the length of the first vector sequence.\n\n\tThe second vector sequence needs to be singular or equal to the first vector sequence in length.\n\n\tA lone vector in the second input will be used to calculate the dot product between itself \tand all vectors contained in the first vector sequence.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "array",
+                  "null"
+                ]
+              },
+              "export": {
+                "$ref": "#/$defs/globalOption export"
+              },
+              "output": {
+                "$ref": "#/$defs/globalOption output"
+              },
+              "set": {
+                "$ref": "#/$defs/globalOption set"
+              },
+              "space": {
+                "$ref": "#/$defs/globalOption space"
+              }
+            },
+            "required": [
+              "dotProduct"
+            ]
+          },
+          {
+            "type": "object",
+            "title": "Step: dotProduct",
+            "description": "\tCalculates the dot product between two vectors.\n\n\tThe output length will be equal to the length of the first vector sequence.\n\n\tThe second vector sequence needs to be singular or equal to the first vector sequence in length.\n\n\tA lone vector in the second input will be used to calculate the dot product between itself \tand all vectors contained in the first vector sequence.",
+            "properties": {
+              "dot": {
+                "title": "dot step",
+                "description": "\tCalculates the dot product between two vectors.\n\n\tThe output length will be equal to the length of the first vector sequence.\n\n\tThe second vector sequence needs to be singular or equal to the first vector sequence in length.\n\n\tA lone vector in the second input will be used to calculate the dot product between itself \tand all vectors contained in the first vector sequence.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "array",
+                  "null"
+                ]
+              },
+              "export": {
+                "$ref": "#/$defs/globalOption export"
+              },
+              "output": {
+                "$ref": "#/$defs/globalOption output"
+              },
+              "set": {
+                "$ref": "#/$defs/globalOption set"
+              },
+              "space": {
+                "$ref": "#/$defs/globalOption space"
+              }
+            },
+            "required": [
+              "dot"
+            ]
+          },
+          {
+            "type": "object",
+            "title": "Step: gapFill",
+            "description": "Outputs a resulting signal of the same type as the input signal where gaps are filled using interpolation.\n\nNote: *Gaps at the beginning or end of the signal will not be interpolated.*",
+            "properties": {
+              "gapFill": {
+                "title": "gapFill step",
+                "description": "Outputs a resulting signal of the same type as the input signal where gaps are filled using interpolation.\n\nNote: *Gaps at the beginning or end of the signal will not be interpolated.*",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "array",
+                  "null"
+                ]
+              },
+              "type": {
+                "title": "gapFill > type",
+                "description": "",
+                "additionalProperties": false,
+                "type": [
+                  "string"
+                ]
+              },
+              "maxGapLength": {
+                "title": "gapFill > maxGapLength",
+                "description": "",
+                "additionalProperties": false,
+                "type": [
+                  "string"
+                ]
+              },
+              "export": {
+                "$ref": "#/$defs/globalOption export"
+              },
+              "output": {
+                "$ref": "#/$defs/globalOption output"
+              },
+              "set": {
+                "$ref": "#/$defs/globalOption set"
+              },
+              "space": {
+                "$ref": "#/$defs/globalOption space"
+              }
+            },
+            "required": [
+              "gapFill"
+            ]
+          },
+          {
+            "type": "object",
+            "title": "Step: integral",
+            "description": "Returns the cumulative integral between neighboring frames in a data series, using the trapezoidal rule. It returns a series by default.",
+            "properties": {
+              "integral": {
+                "title": "integral step",
+                "description": "Returns the cumulative integral between neighboring frames in a data series, using the trapezoidal rule. It returns a series by default.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "array",
+                  "null"
+                ]
+              },
+              "scalar": {
+                "title": "integral > scalar",
+                "description": "Returns the integral as a single value scalar.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "boolean"
+                ]
+              },
+              "useCycles": {
+                "title": "integral > useCycles",
+                "description": "If the signal has cycles defined, the integral step will be run separately over each signal, and a list of values are returned, one for each cycle.\n\nTo avoid this behaviour, set useCycles to false.\n\nFor information on how to set event cycles on a signal, see the eventMask step.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "boolean"
+                ]
+              },
+              "export": {
+                "$ref": "#/$defs/globalOption export"
+              },
+              "output": {
+                "$ref": "#/$defs/globalOption output"
+              },
+              "set": {
+                "$ref": "#/$defs/globalOption set"
+              },
+              "space": {
+                "$ref": "#/$defs/globalOption space"
+              }
+            },
+            "required": [
+              "integral"
+            ]
+          },
+          {
+            "type": "object",
+            "title": "Step: negate",
+            "description": "Outputs the negated value for each value in the input signal.",
+            "properties": {
+              "negate": {
+                "title": "negate step",
+                "description": "Outputs the negated value for each value in the input signal.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "array",
+                  "null"
+                ]
+              },
+              "export": {
+                "$ref": "#/$defs/globalOption export"
+              },
+              "output": {
+                "$ref": "#/$defs/globalOption output"
+              },
+              "set": {
+                "$ref": "#/$defs/globalOption set"
+              },
+              "space": {
+                "$ref": "#/$defs/globalOption space"
+              }
+            },
+            "required": [
+              "negate"
+            ]
+          },
+          {
+            "type": "object",
+            "title": "Step: round",
+            "description": "Outputs a resulting signal of the same type as the input signal where every value is rounded to the specific precision.\n\nThe precision is specified as the number of decimal places to include in the result.",
+            "properties": {
+              "round": {
+                "title": "round step",
+                "description": "Outputs a resulting signal of the same type as the input signal where every value is rounded to the specific precision.\n\nThe precision is specified as the number of decimal places to include in the result.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "array",
+                  "null"
+                ]
+              },
+              "precision": {
+                "title": "round > precision",
+                "description": "",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "number"
+                ]
+              },
+              "export": {
+                "$ref": "#/$defs/globalOption export"
+              },
+              "output": {
+                "$ref": "#/$defs/globalOption output"
+              },
+              "set": {
+                "$ref": "#/$defs/globalOption set"
+              },
+              "space": {
+                "$ref": "#/$defs/globalOption space"
+              }
+            },
+            "required": [
+              "round"
+            ]
+          },
+          {
+            "type": "object",
+            "title": "Step: acceleration",
+            "description": "Derives the input signal to the second order.\n\nNote: _Due to the temporal nature of this operation, the resulting first and last frames will be null._",
+            "properties": {
+              "acceleration": {
+                "title": "acceleration step",
+                "description": "Derives the input signal to the second order.\n\nNote: _Due to the temporal nature of this operation, the resulting first and last frames will be null._",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "array",
+                  "null"
+                ]
+              },
+              "export": {
+                "$ref": "#/$defs/globalOption export"
+              },
+              "output": {
+                "$ref": "#/$defs/globalOption output"
+              },
+              "set": {
+                "$ref": "#/$defs/globalOption set"
+              },
+              "space": {
+                "$ref": "#/$defs/globalOption space"
+              }
+            },
+            "required": [
+              "acceleration"
+            ]
+          },
+          {
+            "type": "object",
+            "title": "Step: derivative",
+            "description": "Derives the input signal to the order defined in input 2. If input 2 is not set, the signal is derived to order 1.\n\nOnly the first and second order is supported.\n\nNote: _Due to the temporal nature of this operation, the resulting first and last frames will be null._",
+            "properties": {
+              "derivative": {
+                "title": "derivative step",
+                "description": "Derives the input signal to the order defined in input 2. If input 2 is not set, the signal is derived to order 1.\n\nOnly the first and second order is supported.\n\nNote: _Due to the temporal nature of this operation, the resulting first and last frames will be null._",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "array",
+                  "null"
+                ]
+              },
+              "export": {
+                "$ref": "#/$defs/globalOption export"
+              },
+              "output": {
+                "$ref": "#/$defs/globalOption output"
+              },
+              "set": {
+                "$ref": "#/$defs/globalOption set"
+              },
+              "space": {
+                "$ref": "#/$defs/globalOption space"
+              }
+            },
+            "required": [
+              "derivative"
+            ]
+          },
+          {
+            "type": "object",
+            "title": "Step: velocity",
+            "description": "Derives the input signal to the first order.\n\nNote: _Due to the temporal nature of this operation, the resulting first and last frame will be null._",
+            "properties": {
+              "velocity": {
+                "title": "velocity step",
+                "description": "Derives the input signal to the first order.\n\nNote: _Due to the temporal nature of this operation, the resulting first and last frame will be null._",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "array",
+                  "null"
+                ]
+              },
+              "export": {
+                "$ref": "#/$defs/globalOption export"
+              },
+              "output": {
+                "$ref": "#/$defs/globalOption output"
+              },
+              "set": {
+                "$ref": "#/$defs/globalOption set"
+              },
+              "space": {
+                "$ref": "#/$defs/globalOption space"
+              }
+            },
+            "required": [
+              "velocity"
+            ]
+          },
+          {
+            "type": "object",
+            "title": "Step: highpass",
+            "description": "Runs a Butterworth high-pass filter over the input data.",
+            "properties": {
+              "highpass": {
+                "title": "highpass step",
+                "description": "Runs a Butterworth high-pass filter over the input data.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "array",
+                  "null"
+                ]
+              },
+              "extrapolate": {
+                "title": "highpass > extrapolate",
+                "description": "Defines how much to add on either side of the series, useful if the filter handles the edges of the series strangely.\n\nLeading and trailing NaN values are removed before extrapolation, i.e., extrapolation begins from the first and last real value. NaN values are then re-inserted in the original places for the output.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "number"
+                ]
+              },
+              "iterations": {
+                "title": "highpass > iterations",
+                "description": "Defines how many times to apply the filter.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "number"
+                ]
+              },
+              "cutoff": {
+                "title": "highpass > cutoff",
+                "description": "Defines around what frequency to limit the filter.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "number"
+                ]
+              },
+              "order": {
+                "title": "highpass > order",
+                "description": "Defines the filter order.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "number"
+                ]
+              },
+              "export": {
+                "$ref": "#/$defs/globalOption export"
+              },
+              "output": {
+                "$ref": "#/$defs/globalOption output"
+              },
+              "set": {
+                "$ref": "#/$defs/globalOption set"
+              },
+              "space": {
+                "$ref": "#/$defs/globalOption space"
+              }
+            },
+            "required": [
+              "highpass"
+            ]
+          },
+          {
+            "type": "object",
+            "title": "Step: lowpass",
+            "description": "Runs a Butterworth low-pass filter over the input data.",
+            "properties": {
+              "lowpass": {
+                "title": "lowpass step",
+                "description": "Runs a Butterworth low-pass filter over the input data.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "array",
+                  "null"
+                ]
+              },
+              "extrapolate": {
+                "title": "lowpass > extrapolate",
+                "description": "Defines how much to add on either side of the series, useful if the filter handles the edges of the series strangely.\n\nLeading and trailing NaN values are removed before extrapolation, i.e., extrapolation begins from the first and last real value. NaN values are then re-inserted in the original places for the output.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "number"
+                ]
+              },
+              "iterations": {
+                "title": "lowpass > iterations",
+                "description": "Defines how many times to apply the filter.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "number"
+                ]
+              },
+              "cutoff": {
+                "title": "lowpass > cutoff",
+                "description": "Defines around what frequency to limit the filter.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "number"
+                ]
+              },
+              "order": {
+                "title": "lowpass > order",
+                "description": "Defines the filter order.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "number"
+                ]
+              },
+              "export": {
+                "$ref": "#/$defs/globalOption export"
+              },
+              "output": {
+                "$ref": "#/$defs/globalOption output"
+              },
+              "set": {
+                "$ref": "#/$defs/globalOption set"
+              },
+              "space": {
+                "$ref": "#/$defs/globalOption space"
+              }
+            },
+            "required": [
+              "lowpass"
+            ]
+          },
+          {
+            "type": "object",
+            "title": "Step: acos",
+            "description": "Outputs the arc cosine (or inverse cosine) for each value in the input signal.",
+            "properties": {
+              "acos": {
+                "title": "acos step",
+                "description": "Outputs the arc cosine (or inverse cosine) for each value in the input signal.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "array",
+                  "null"
+                ]
+              },
+              "export": {
+                "$ref": "#/$defs/globalOption export"
+              },
+              "output": {
+                "$ref": "#/$defs/globalOption output"
+              },
+              "set": {
+                "$ref": "#/$defs/globalOption set"
+              },
+              "space": {
+                "$ref": "#/$defs/globalOption space"
+              }
+            },
+            "required": [
+              "acos"
+            ]
+          },
+          {
+            "type": "object",
+            "title": "Step: asin",
+            "description": "Outputs the arcsine (or inverse sine) for each value in the input signal.",
+            "properties": {
+              "asin": {
+                "title": "asin step",
+                "description": "Outputs the arcsine (or inverse sine) for each value in the input signal.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "array",
+                  "null"
+                ]
+              },
+              "export": {
+                "$ref": "#/$defs/globalOption export"
+              },
+              "output": {
+                "$ref": "#/$defs/globalOption output"
+              },
+              "set": {
+                "$ref": "#/$defs/globalOption set"
+              },
+              "space": {
+                "$ref": "#/$defs/globalOption space"
+              }
+            },
+            "required": [
+              "asin"
+            ]
+          },
+          {
+            "type": "object",
+            "title": "Step: atan",
+            "description": "Outputs the arctangent (or inverse sine) for each value in the input signal.",
+            "properties": {
+              "atan": {
+                "title": "atan step",
+                "description": "Outputs the arctangent (or inverse sine) for each value in the input signal.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "array",
+                  "null"
+                ]
+              },
+              "export": {
+                "$ref": "#/$defs/globalOption export"
+              },
+              "output": {
+                "$ref": "#/$defs/globalOption output"
+              },
+              "set": {
+                "$ref": "#/$defs/globalOption set"
+              },
+              "space": {
+                "$ref": "#/$defs/globalOption space"
+              }
+            },
+            "required": [
+              "atan"
+            ]
+          },
+          {
+            "type": "object",
+            "title": "Step: atan2",
+            "description": "Outputs the the angle (in radians) from the X axis to a point for each value in the input signal.",
+            "properties": {
+              "atan2": {
+                "title": "atan2 step",
+                "description": "Outputs the the angle (in radians) from the X axis to a point for each value in the input signal.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "array",
+                  "null"
+                ]
+              },
+              "export": {
+                "$ref": "#/$defs/globalOption export"
+              },
+              "output": {
+                "$ref": "#/$defs/globalOption output"
+              },
+              "set": {
+                "$ref": "#/$defs/globalOption set"
+              },
+              "space": {
+                "$ref": "#/$defs/globalOption space"
+              }
+            },
+            "required": [
+              "atan2"
+            ]
+          },
+          {
+            "type": "object",
+            "title": "Step: cos",
+            "description": "Outputs the cosine for each value in the input signal.",
+            "properties": {
+              "cos": {
+                "title": "cos step",
+                "description": "Outputs the cosine for each value in the input signal.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "array",
+                  "null"
+                ]
+              },
+              "export": {
+                "$ref": "#/$defs/globalOption export"
+              },
+              "output": {
+                "$ref": "#/$defs/globalOption output"
+              },
+              "set": {
+                "$ref": "#/$defs/globalOption set"
+              },
+              "space": {
+                "$ref": "#/$defs/globalOption space"
+              }
+            },
+            "required": [
+              "cos"
+            ]
+          },
+          {
+            "type": "object",
+            "title": "Step: cosh",
+            "description": "Outputs the hyperbolic cosine for each value in the input signal.",
+            "properties": {
+              "cosh": {
+                "title": "cosh step",
+                "description": "Outputs the hyperbolic cosine for each value in the input signal.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "array",
+                  "null"
+                ]
+              },
+              "export": {
+                "$ref": "#/$defs/globalOption export"
+              },
+              "output": {
+                "$ref": "#/$defs/globalOption output"
+              },
+              "set": {
+                "$ref": "#/$defs/globalOption set"
+              },
+              "space": {
+                "$ref": "#/$defs/globalOption space"
+              }
+            },
+            "required": [
+              "cosh"
+            ]
+          },
+          {
+            "type": "object",
+            "title": "Step: cotan",
+            "description": "Outputs the cotangent for each value in the input signal.",
+            "properties": {
+              "cotan": {
+                "title": "cotan step",
+                "description": "Outputs the cotangent for each value in the input signal.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "array",
+                  "null"
+                ]
+              },
+              "export": {
+                "$ref": "#/$defs/globalOption export"
+              },
+              "output": {
+                "$ref": "#/$defs/globalOption output"
+              },
+              "set": {
+                "$ref": "#/$defs/globalOption set"
+              },
+              "space": {
+                "$ref": "#/$defs/globalOption space"
+              }
+            },
+            "required": [
+              "cotan"
+            ]
+          },
+          {
+            "type": "object",
+            "title": "Step: sin",
+            "description": "Outputs the sine for each value in the input signal.",
+            "properties": {
+              "sin": {
+                "title": "sin step",
+                "description": "Outputs the sine for each value in the input signal.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "array",
+                  "null"
+                ]
+              },
+              "export": {
+                "$ref": "#/$defs/globalOption export"
+              },
+              "output": {
+                "$ref": "#/$defs/globalOption output"
+              },
+              "set": {
+                "$ref": "#/$defs/globalOption set"
+              },
+              "space": {
+                "$ref": "#/$defs/globalOption space"
+              }
+            },
+            "required": [
+              "sin"
+            ]
+          },
+          {
+            "type": "object",
+            "title": "Step: sinh",
+            "description": "Outputs the hyperbolic sine for each value in the input signal.",
+            "properties": {
+              "sinh": {
+                "title": "sinh step",
+                "description": "Outputs the hyperbolic sine for each value in the input signal.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "array",
+                  "null"
+                ]
+              },
+              "export": {
+                "$ref": "#/$defs/globalOption export"
+              },
+              "output": {
+                "$ref": "#/$defs/globalOption output"
+              },
+              "set": {
+                "$ref": "#/$defs/globalOption set"
+              },
+              "space": {
+                "$ref": "#/$defs/globalOption space"
+              }
+            },
+            "required": [
+              "sinh"
+            ]
+          },
+          {
+            "type": "object",
+            "title": "Step: tan",
+            "description": "Outputs the tangent for each value in the input signal.",
+            "properties": {
+              "tan": {
+                "title": "tan step",
+                "description": "Outputs the tangent for each value in the input signal.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "array",
+                  "null"
+                ]
+              },
+              "export": {
+                "$ref": "#/$defs/globalOption export"
+              },
+              "output": {
+                "$ref": "#/$defs/globalOption output"
+              },
+              "set": {
+                "$ref": "#/$defs/globalOption set"
+              },
+              "space": {
+                "$ref": "#/$defs/globalOption space"
+              }
+            },
+            "required": [
+              "tan"
+            ]
+          },
+          {
+            "type": "object",
+            "title": "Step: tanh",
+            "description": "Outputs the hyperbolic tangent for each value in the input signal.",
+            "properties": {
+              "tanh": {
+                "title": "tanh step",
+                "description": "Outputs the hyperbolic tangent for each value in the input signal.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "array",
+                  "null"
+                ]
+              },
+              "export": {
+                "$ref": "#/$defs/globalOption export"
+              },
+              "output": {
+                "$ref": "#/$defs/globalOption output"
+              },
+              "set": {
+                "$ref": "#/$defs/globalOption set"
+              },
+              "space": {
+                "$ref": "#/$defs/globalOption space"
+              }
+            },
+            "required": [
+              "tanh"
+            ]
+          },
+          {
+            "type": "object",
+            "title": "Step: if",
+            "description": "Runs a logical expression. The return value is determined by the result of the expression, and the then and else options.\n\nThe following operators are supported:\n\n  >=\n\nParentheses can be used to influence the order of evaluation.\n\nOnly numbers and single-element arrays can be part of the expression.",
+            "properties": {
+              "if": {
+                "title": "if step",
+                "description": "Runs a logical expression. The return value is determined by the result of the expression, and the then and else options.\n\nThe following operators are supported:\n\n  >=\n\nParentheses can be used to influence the order of evaluation.\n\nOnly numbers and single-element arrays can be part of the expression.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "array",
+                  "null"
+                ]
+              },
+              "then": {
+                "title": "if > then",
+                "description": "",
+                "additionalProperties": false
+              },
+              "else": {
+                "title": "if > else",
+                "description": "",
+                "additionalProperties": false
+              },
+              "export": {
+                "$ref": "#/$defs/globalOption export"
+              },
+              "output": {
+                "$ref": "#/$defs/globalOption output"
+              },
+              "set": {
+                "$ref": "#/$defs/globalOption set"
+              },
+              "space": {
+                "$ref": "#/$defs/globalOption space"
+              }
+            },
+            "required": [
+              "if",
+              "then",
+              "else"
+            ]
+          },
+          {
+            "type": "object",
+            "title": "Step: event",
+            "description": "Imports an event by name.",
+            "properties": {
+              "event": {
+                "title": "event step",
+                "description": "Imports an event by name.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "array",
+                  "null"
+                ]
+              },
+              "export": {
+                "$ref": "#/$defs/globalOption export"
+              },
+              "output": {
+                "$ref": "#/$defs/globalOption output"
+              },
+              "set": {
+                "$ref": "#/$defs/globalOption set"
+              },
+              "space": {
+                "$ref": "#/$defs/globalOption space"
+              }
+            },
+            "required": [
+              "event"
+            ]
+          },
+          {
+            "type": "object",
+            "title": "Step: import",
+            "description": "Generic import of any input by name.",
+            "properties": {
+              "import": {
+                "title": "import step",
+                "description": "Generic import of any input by name.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "array",
+                  "null"
+                ]
+              },
+              "export": {
+                "$ref": "#/$defs/globalOption export"
+              },
+              "output": {
+                "$ref": "#/$defs/globalOption output"
+              },
+              "set": {
+                "$ref": "#/$defs/globalOption set"
+              },
+              "space": {
+                "$ref": "#/$defs/globalOption space"
+              }
+            },
+            "required": [
+              "import"
+            ]
+          },
+          {
+            "type": "object",
+            "title": "Step: marker",
+            "description": "Imports a marker series by name or creates a new signal with a custom origin.",
+            "properties": {
+              "marker": {
+                "title": "marker step",
+                "description": "Imports a marker series by name or creates a new signal with a custom origin.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "array",
+                  "null"
+                ]
+              },
+              "origin": {
+                "title": "marker > origin",
+                "description": "This option can be used to create a new marker signal, with a custom x, y and z coordinate.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "array"
+                ]
+              },
+              "export": {
+                "$ref": "#/$defs/globalOption export"
+              },
+              "output": {
+                "$ref": "#/$defs/globalOption output"
+              },
+              "set": {
+                "$ref": "#/$defs/globalOption set"
+              },
+              "space": {
+                "$ref": "#/$defs/globalOption space"
+              }
+            },
+            "required": [
+              "marker"
+            ]
+          },
+          {
+            "type": "object",
+            "title": "Step: segment",
+            "description": "Imports a segment series by name.",
+            "properties": {
+              "segment": {
+                "title": "segment step",
+                "description": "Imports a segment series by name.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "array",
+                  "null"
+                ]
+              },
+              "export": {
+                "$ref": "#/$defs/globalOption export"
+              },
+              "output": {
+                "$ref": "#/$defs/globalOption output"
+              },
+              "set": {
+                "$ref": "#/$defs/globalOption set"
+              },
+              "space": {
+                "$ref": "#/$defs/globalOption space"
+              }
+            },
+            "required": [
+              "segment"
+            ]
+          },
+          {
+            "type": "object",
+            "title": "Step: eventDuration",
+            "description": "This step takes 2 event inputs and outputs an array of durations (in seconds).\n\nInputs 1 and 2 will be combined into pairs - from values in input 1 to values in input 2.\n\nThe duration is calculated using the frame rate from either the \"from\", or \"to\" input event.",
+            "properties": {
+              "eventDuration": {
+                "title": "eventDuration step",
+                "description": "This step takes 2 event inputs and outputs an array of durations (in seconds).\n\nInputs 1 and 2 will be combined into pairs - from values in input 1 to values in input 2.\n\nThe duration is calculated using the frame rate from either the \"from\", or \"to\" input event.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "array",
+                  "null"
+                ]
+              },
+              "export": {
+                "$ref": "#/$defs/globalOption export"
+              },
+              "output": {
+                "$ref": "#/$defs/globalOption output"
+              },
+              "set": {
+                "$ref": "#/$defs/globalOption set"
+              },
+              "space": {
+                "$ref": "#/$defs/globalOption space"
+              }
+            },
+            "required": [
+              "eventDuration"
+            ]
+          },
+          {
+            "type": "object",
+            "title": "Step: eventMask",
+            "description": "This is a step which takes a signal and 2 event inputs and outputs a filtered signal with values only appearing in between the events.\n\nInputs 2 and 3 will be combined into pairs from values in input 2 to values in input 3.\n\nThese pairs can be used to filter the values in input 1.\n\nThese event pairs, or cycles are also stored on the resulting signal, which can be used in aggregations to aggregate over event cycles. The signal will keep the cycle information no matter if the signal was truncated or not.\n\nIf the signal input is an event, only event frames that is within the span of one of the event pairs will be returned.\n\nThe optional parameter replacement will, if set, replace masked values with the given value. If replacement is not set and truncate is true – the masked values will be removed. The replacement property has no effect when the signal input is an event.\n\nIf replacement is not set and truncate is false (default behavior), the output signal is untouched, except that the event cycles are annotated on the signal.",
+            "properties": {
+              "eventMask": {
+                "title": "eventMask step",
+                "description": "This is a step which takes a signal and 2 event inputs and outputs a filtered signal with values only appearing in between the events.\n\nInputs 2 and 3 will be combined into pairs from values in input 2 to values in input 3.\n\nThese pairs can be used to filter the values in input 1.\n\nThese event pairs, or cycles are also stored on the resulting signal, which can be used in aggregations to aggregate over event cycles. The signal will keep the cycle information no matter if the signal was truncated or not.\n\nIf the signal input is an event, only event frames that is within the span of one of the event pairs will be returned.\n\nThe optional parameter replacement will, if set, replace masked values with the given value. If replacement is not set and truncate is true – the masked values will be removed. The replacement property has no effect when the signal input is an event.\n\nIf replacement is not set and truncate is false (default behavior), the output signal is untouched, except that the event cycles are annotated on the signal.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "array",
+                  "null"
+                ]
+              },
+              "replacement": {
+                "title": "eventMask > replacement",
+                "description": "Replacement value to use for masked values. If not set, masked values will be removed from the output signal.\n\nThe replacement property has no effect when the signal input is an event.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "number"
+                ]
+              },
+              "truncate": {
+                "title": "eventMask > truncate",
+                "description": "Whether or not the signal should be truncated, i.e., if values that were not within an \"event pair\" should be removed or not.\n\nThis will only apply if replacement does not have a value.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "boolean"
+                ]
+              },
+              "export": {
+                "$ref": "#/$defs/globalOption export"
+              },
+              "output": {
+                "$ref": "#/$defs/globalOption output"
+              },
+              "set": {
+                "$ref": "#/$defs/globalOption set"
+              },
+              "space": {
+                "$ref": "#/$defs/globalOption space"
+              }
+            },
+            "required": [
+              "eventMask"
+            ]
+          },
+          {
+            "type": "object",
+            "title": "Step: eventTime",
+            "description": "This step takes an event input and converts each frame value to a time value (in seconds).\n\nThe time is calculated using the frame rate from the signal.",
+            "properties": {
+              "eventTime": {
+                "title": "eventTime step",
+                "description": "This step takes an event input and converts each frame value to a time value (in seconds).\n\nThe time is calculated using the frame rate from the signal.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "array",
+                  "null"
+                ]
+              },
+              "export": {
+                "$ref": "#/$defs/globalOption export"
+              },
+              "output": {
+                "$ref": "#/$defs/globalOption output"
+              },
+              "set": {
+                "$ref": "#/$defs/globalOption set"
+              },
+              "space": {
+                "$ref": "#/$defs/globalOption space"
+              }
+            },
+            "required": [
+              "eventTime"
+            ]
+          },
+          {
+            "type": "object",
+            "title": "Step: peakFinder",
+            "description": "Find peaks inside a signal based on peak properties.\n\nAt first, it will detect any peak-like features in the signal. If any of the options distance, height, prominence, or width is defined, it will use those properties to filter out peaks that match the criteria.\n\nAs a last step, if the sequence option is used, it will match the peaks against a sequence to return a subset of the peaks.\n\nAs a general rule, the peakFinder step is sensitive to noise in the data, so if noise is expected, first run the data through a low-pass filter.\n\nBased on the SciPy find_peaks function.",
+            "properties": {
+              "peakFinder": {
+                "title": "peakFinder step",
+                "description": "Find peaks inside a signal based on peak properties.\n\nAt first, it will detect any peak-like features in the signal. If any of the options distance, height, prominence, or width is defined, it will use those properties to filter out peaks that match the criteria.\n\nAs a last step, if the sequence option is used, it will match the peaks against a sequence to return a subset of the peaks.\n\nAs a general rule, the peakFinder step is sensitive to noise in the data, so if noise is expected, first run the data through a low-pass filter.\n\nBased on the SciPy find_peaks function.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "array",
+                  "null"
+                ]
+              },
+              "distance": {
+                "title": "peakFinder > distance",
+                "description": "Required minimal horizontal distance (>= 1) in samples between neighbouring peaks.\n\nSmaller peaks are removed first until the condition is fulfilled for all remaining peaks.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "number",
+                  "array"
+                ]
+              },
+              "height": {
+                "title": "peakFinder > height",
+                "description": "Required height of peaks. Either a number or a 2-element array. The first element is always interpreted as the minimal and the second, if supplied, as the maximal required height.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "number",
+                  "array"
+                ]
+              },
+              "prominence": {
+                "title": "peakFinder > prominence",
+                "description": "Required prominence of peaks. Either a number or a 2-element array. The first element is always interpreted as the minimal and the second, if supplied, as the maximal required prominence.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "number",
+                  "array"
+                ]
+              },
+              "relHeight": {
+                "title": "peakFinder > relHeight",
+                "description": "Used for calculation of the peaks width, thus it is only used if width is given.\n\nChooses the relative height at which the peak width is measured as a percentage of its prominence. 1.0 calculates the width of the peak at its lowest contour line while 0.5 evaluates at half the prominence height. Must be at least 0.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "number"
+                ]
+              },
+              "sequence": {
+                "title": "peakFinder > sequence",
+                "description": "Allows to classify peaks using a pattern and select peaks from the pattern to use as the output.\n\nSee below for further information.",
+                "additionalProperties": false,
+                "type": [
+                  "object"
+                ],
+                "properties": {
+                  "ranges": {
+                    "title": "peakFinder > sequence > ranges",
+                    "description": "Classification of the peak heights. This option expects a string consisting of 1-character labels separated by a boundary value.\n\nThe boundary values represent a percentage between 0 – 100 which defined the end of the previous label's range and the beginning of the next label's range.\n\nThe entire range 0 – 100 represents the difference between the lowest peak and the highest peak. All peaks will be somewhere in this range, and the ranges option allows you to customize how the peaks are labelled.\n\nThe default ranges value is: L 50 H. This labels the peaks that end up in the bottom 50% of the peak heights as L, and the remaining top 50% as H.\n\nThe syntax, L 50 H, is equivalent to writing 0 L 50 H 100.\n\nThe outer boundaries 0 and 100 is assumed though and are not required.\n\nIf you would like to classify the peaks into three groups, the bottom 25% as L, the top 25% and H, and anything in between as M, you can supply the following string: L 25 M 75 H.\n\nThe labels used should each be 1 character long, but can be whatever you want as long as it corresponds to the pattern used in the pattern option.",
+                    "additionalProperties": false,
+                    "type": [
+                      "string"
+                    ]
+                  },
+                  "pattern": {
+                    "title": "peakFinder > sequence > pattern",
+                    "description": "A pattern describing a sequence of classified peak heights using the labels defined in the ranges option.\n\nIf you have supplied the ranges string L 50 H, and you want to find the following sequence of peaks: \"a low peak followed by a low peak followed by a high peak, you can define the pattern as LLH.\n\nEach matching pattern sequence is stored and the pattern indices in keep determines which of the peaks that are returned.",
+                    "additionalProperties": false,
+                    "type": [
+                      "string"
+                    ]
+                  },
+                  "keep": {
+                    "title": "peakFinder > sequence > keep",
+                    "description": "An array of indices from the pattern labels to keep in the output. The index is zero-based, i.e., the first item in the sequence pattern is 0, the last in the sequence is the (length of the pattern) - 1.\n\nIf the pattern was defined as LLH and we wanted to keep only the first (low) peak in each matching sequence, we would set keep to [0].\n\nConversely if we wanted to keep the last (high) peak in each sequence, the keep should be [2].\n\nTo keep both the first and last peaks in the sequence, the keep option should be set to [0, 2].\n\nPeaks in the sequence pattern not indexed by keep will be ignored in the output.",
+                    "additionalProperties": false,
+                    "type": [
+                      "string",
+                      "array"
+                    ]
+                  }
+                }
+              },
+              "width": {
+                "title": "peakFinder > width",
+                "description": "Required width of peaks in samples. Either a number or a\n2-element array. The first element is always interpreted as the minimal and the second, if supplied, as the maximal required width.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "number",
+                  "array"
+                ]
+              },
+              "window": {
+                "title": "peakFinder > window",
+                "description": "Used for calculation of the peaks prominences, thus it is only used if one of the arguments prominence or width is given.\n\nA window length in samples that optionally limits the evaluated area for each peak to a subset of x. The peak is always placed in the middle of the window therefore the given length is rounded up to the next odd integer. This parameter can speed up the calculation.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "number"
+                ]
+              },
+              "export": {
+                "$ref": "#/$defs/globalOption export"
+              },
+              "output": {
+                "$ref": "#/$defs/globalOption output"
+              },
+              "set": {
+                "$ref": "#/$defs/globalOption set"
+              },
+              "space": {
+                "$ref": "#/$defs/globalOption space"
+              }
+            },
+            "required": [
+              "peakFinder"
+            ]
+          },
+          {
+            "type": "object",
+            "title": "Step: threshold",
+            "description": "This step will register an event for every frame where the signal passes the specified threshold value.\n\nBy default, an event is registered when the signal crosses the threshold in either an ascending or descending direction.\n\nBy configuring the direction option, you can specify a certain direction that will trigger the event; up (ascending) or down (descending).",
+            "properties": {
+              "threshold": {
+                "title": "threshold step",
+                "description": "This step will register an event for every frame where the signal passes the specified threshold value.\n\nBy default, an event is registered when the signal crosses the threshold in either an ascending or descending direction.\n\nBy configuring the direction option, you can specify a certain direction that will trigger the event; up (ascending) or down (descending).",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "array",
+                  "null"
+                ]
+              },
+              "value": {
+                "title": "threshold > value",
+                "description": "The threshold value to use.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "number"
+                ]
+              },
+              "direction": {
+                "title": "threshold > direction",
+                "description": "The direction of crossing the threshold to record.",
+                "additionalProperties": false,
+                "type": [
+                  "string"
+                ]
+              },
+              "export": {
+                "$ref": "#/$defs/globalOption export"
+              },
+              "output": {
+                "$ref": "#/$defs/globalOption output"
+              },
+              "set": {
+                "$ref": "#/$defs/globalOption set"
+              },
+              "space": {
+                "$ref": "#/$defs/globalOption space"
+              }
+            },
+            "required": [
+              "threshold"
+            ]
+          },
+          {
+            "type": "object",
+            "title": "Step: concatenate",
+            "description": "The concatenate step takes any number of inputs (at least 2) of the same (or equivalent) types and appends the values into one output. This will be done on each component, if they exist.",
+            "properties": {
+              "concatenate": {
+                "title": "concatenate step",
+                "description": "The concatenate step takes any number of inputs (at least 2) of the same (or equivalent) types and appends the values into one output. This will be done on each component, if they exist.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "array",
+                  "null"
+                ]
+              },
+              "export": {
+                "$ref": "#/$defs/globalOption export"
+              },
+              "output": {
+                "$ref": "#/$defs/globalOption output"
+              },
+              "set": {
+                "$ref": "#/$defs/globalOption set"
+              },
+              "space": {
+                "$ref": "#/$defs/globalOption space"
+              }
+            },
+            "required": [
+              "concatenate"
+            ]
+          },
+          {
+            "type": "object",
+            "title": "Step: vector",
+            "description": "The vector step takes one or three inputs and outputs a vector sequence signal.\n\nIf given three numeric or 1-dimensional series inputs, each input will be assigned to the x, y, and z components, respectively.\n\nAlternatively, if only one input is given and it contains at least three components, the first three components will be used to construct the vector sequence.\n\nIf the inputs have different lengths, the output signal will be the length of the longest input and shorter inputs will be padded with NaN values.",
+            "properties": {
+              "vector": {
+                "title": "vector step",
+                "description": "The vector step takes one or three inputs and outputs a vector sequence signal.\n\nIf given three numeric or 1-dimensional series inputs, each input will be assigned to the x, y, and z components, respectively.\n\nAlternatively, if only one input is given and it contains at least three components, the first three components will be used to construct the vector sequence.\n\nIf the inputs have different lengths, the output signal will be the length of the longest input and shorter inputs will be padded with NaN values.",
+                "additionalProperties": false,
+                "type": [
+                  "string",
+                  "array",
+                  "null"
+                ]
+              },
+              "export": {
+                "$ref": "#/$defs/globalOption export"
+              },
+              "output": {
+                "$ref": "#/$defs/globalOption output"
+              },
+              "set": {
+                "$ref": "#/$defs/globalOption set"
+              },
+              "space": {
+                "$ref": "#/$defs/globalOption space"
+              }
+            },
+            "required": [
+              "vector"
+            ]
+          }
+        ]
+      }
+    },
+    "where": {
+      "title": "Measurement filtering",
+      "description": "When importing a signal or defining an output node, you can specify a measurement from which the signal should be imported – or for which measurement an output node should run.\n\nYou can filter measurements by name and by field values and you can use wildcard characters `*` to formulate patterns to match partial values. The matching of values is case-insensitive.\n\nWhen using a measurement filter, a list of matching measurements is created. By specifying the `index` option, you can define which of the matching measurements should apply.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "title": "Name filter",
+          "description": "Target a measurement by name",
+          "type": "string"
+        },
+        "index": {
+          "title": "Index filter",
+          "description": "Out of a number of matching measurements, pick the nth match. Either a 1-based index, or the values `first` or `last` to select the first or last match, respectively.",
+          "type": [
+            "integer",
+            "string"
+          ],
+          "if": {
+            "type": "string"
+          },
+          "then": {
+            "enum": [
+              "first",
+              "last"
+            ]
+          }
+        },
+        "fields": {
+          "title": "Field filter",
+          "description": "Target a measurement by a field value.",
+          "type": "object",
+          "additionalProperties": {
+            "title": "Field to match against",
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "set": {
+      "title": "Output set",
+      "description": "Used to specify which _set_ the exported parameter will use. In most cases, this will be either `left` or `right`.\n\nIf not set, the JSON output will use set: null.",
+      "type": "string"
+    },
+    "spaceOrigin": {
+      "title": "Origin",
+      "description": "Sets the origin of a custom coordinate system.",
+      "type": [
+        "string",
+        "array"
+      ]
+    },
+    "spacePrimaryAxis": {
+      "title": "Primary axis",
+      "description": "Sets the primary axis of a custom coordinate system. The primary axis of the custom coordinate system will always be a unit vector with the same direction as this vector.\n\t\t\t\t\nIf more than one vectors is given, for example [myMarker1, myMarker2], the vector difference between the first two vectors is used as the primary axis.",
+      "type": [
+        "string",
+        "array"
+      ]
+    },
+    "spaceSecondaryAxis": {
+      "title": "Secondary axis",
+      "description": "Sets the secondary axis of a custom coordinate system. The actual secondary axis of the custom coordinate system might differ from the vector specified, since the secondary axis must be a unit vector perpendicular to the primary axis.\n\t\t\t\t\nIf more than one vectors is given, for example [myMarker1, myMarker2], the vector difference between the first two vectors is used as the secondary axis.",
+      "type": [
+        "string",
+        "array"
+      ]
+    },
+    "spaceOrder": {
+      "title": "Order",
+      "description": "Defines what axis the primary and secondary axis corresponds to. The first letter defines the name of the primary axis, and the second letter defines the name of the secondary axis.\n\t\t\t\t\nPossible values:\nxy - Primary axis: x, secondary axis: y\nyx - Primary axis: y, secondary axis: x\nxz - Primary axis: x, secondary axis: z\nyz - Primary axis: y, secondary axis: z\nzy - Primary axis: z, secondary axis: y",
+      "type": "string",
+      "enum": [
+        "xy",
+        "yx",
+        "xz",
+        "yz",
+        "zy"
+      ]
+    },
+    "spaceAlignWithSegment": {
+      "title": "Align with segment",
+      "description": "Used to create a space that aligns with the specified segment. The resulting space will be rotated in 90 degree increments relative to the world space.\n\nThe rotation is based on the average orientation of the segment during a measurement.",
+      "type": [
+        "object"
+      ],
+      "properties": {
+        "segment": {
+          "title": "Segment to align to",
+          "description": "Used to create a space that aligns with the specified segment. The resulting space will be rotated in 90 degree increments relative to the world space.\n\nThe rotation is based on the average orientation of the segment during a measurement.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "segment"
+      ]
+    },
+    "Parameter Node": {
+      "title": "Parameter node",
+      "description": "A parameter node defines steps used to calculate a value or a sequence of values. The result is exported to the global scope and exported in the resulting JSON file.",
+      "type": "object",
+      "properties": {
+        "parameter": {
+          "$ref": "#/$defs/parameter"
+        },
+        "steps": {
+          "$ref": "#/$defs/steps"
+        },
+        "where": {
+          "$ref": "#/$defs/where"
+        },
+        "set": {
+          "$ref": "#/$defs/set"
+        }
+      },
+      "required": [
+        "parameter",
+        "steps"
+      ],
+      "additionalProperties": false
+    },
+    "Space Node": {
+      "type": "object",
+      "properties": {
+        "space": {
+          "$ref": "#/$defs/space"
+        },
+        "origin": {
+          "$ref": "#/$defs/spaceOrigin"
+        },
+        "primaryAxis": {
+          "$ref": "#/$defs/spacePrimaryAxis"
+        },
+        "secondaryAxis": {
+          "$ref": "#/$defs/spaceSecondaryAxis"
+        },
+        "order": {
+          "$ref": "#/$defs/spaceOrder"
+        },
+        "alignWithSegment": {
+          "$ref": "#/$defs/spaceAlignWithSegment"
+        },
+        "steps": {
+          "$ref": "#/$defs/steps"
+        },
+        "where": {
+          "$ref": "#/$defs/where"
+        },
+        "set": {
+          "$ref": "#/$defs/set"
+        }
+      },
+      "oneOf": [
+        {
+          "required": [
+            "space",
+            "alignWithSegment"
+          ]
+        },
+        {
+          "required": [
+            "space",
+            "primaryAxis",
+            "secondaryAxis"
+          ]
+        }
+      ],
+      "additionalProperties": false
+    },
+    "Event Node": {
+      "type": "object",
+      "properties": {
+        "event": {
+          "$ref": "#/$defs/event"
+        },
+        "steps": {
+          "$ref": "#/$defs/steps"
+        },
+        "where": {
+          "$ref": "#/$defs/where"
+        },
+        "set": {
+          "$ref": "#/$defs/set"
+        }
+      },
+      "required": [
+        "event",
+        "steps"
+      ],
+      "additionalProperties": false
+    },
+    "Marker Node": {
+      "type": "object",
+      "properties": {
+        "marker": {
+          "$ref": "#/$defs/marker"
+        },
+        "steps": {
+          "$ref": "#/$defs/steps"
+        },
+        "where": {
+          "$ref": "#/$defs/where"
+        },
+        "set": {
+          "$ref": "#/$defs/set"
+        }
+      },
+      "required": [
+        "marker",
+        "steps"
+      ],
+      "additionalProperties": false
+    },
+    "Segment Node": {
+      "type": "object",
+      "properties": {
+        "segment": {
+          "$ref": "#/$defs/segment"
+        },
+        "steps": {
+          "$ref": "#/$defs/steps"
+        },
+        "where": {
+          "$ref": "#/$defs/where"
+        },
+        "set": {
+          "$ref": "#/$defs/set"
+        }
+      },
+      "required": [
+        "segment",
+        "steps"
+      ],
+      "additionalProperties": false
+    },
+    "globalOption export": {
+      "title": "export (global option)",
+      "description": "If this option is set, the result of this step will be exposed on the global scope, as well as being exported to the resulting JSON file.\n\nThe value of this option will be the name of the exported data and can be used to load the resulting data in other steps.",
+      "additionalProperties": false,
+      "type": [
+        "string"
+      ],
+      "name": "export"
+    },
+    "globalOption output": {
+      "title": "output (global option)",
+      "description": "If this option is set, the result of this step will be exposed on the local scope.\n\nThe value of this option will be the name of the output data and can be used to load the resulting data in other steps within the same output node.\n\nYou can also use the short-form \"arrow syntax\" to define an output.",
+      "additionalProperties": false,
+      "type": [
+        "string"
+      ],
+      "name": "output"
+    },
+    "globalOption set": {
+      "title": "set (global option)",
+      "description": "Used to specify which set the exported parameter will use. In most cases, this will be either left or right.\n\nThis option is only used in two cases; where there is also an export option set, or on the last step in a list. In the latter case, the step's set is used only if there's no set defined on the parent output node.\n\nIf this option is not set, the JSON output will use set: null.",
+      "additionalProperties": false,
+      "type": [
+        "string"
+      ],
+      "name": "set"
+    },
+    "globalOption space": {
+      "title": "space (global option)",
+      "description": "This option lets you reference a space where you want the input data for the step to be translated into.\n\nAll named inputs will automatically be converted.\n\nNOTE: This is not yet implemented for segments.",
+      "additionalProperties": false,
+      "type": [
+        "string"
+      ],
+      "name": "space"
+    },
+    "categoryOption Angle project": {
+      "title": "project (Angle category option)",
+      "description": "If set to a string, the angle will be calculated in two dimensions on the specified coordinate plane by ignoring the component of the input signals which is not part of the plane.\n\nUsing a PlaneSequence, projects the input vectors on the provided plane.\n\nNote: _The projection is only applied for vector-based angles and is ignored when calculating joint angles._",
+      "additionalProperties": false,
+      "type": [
+        "string"
+      ],
+      "name": "project",
+      "category": "Angle"
+    },
+    "categoryOption Angle rotationOrder": {
+      "title": "rotationOrder (Angle category option)",
+      "description": "The rotation order to use for calculating the Euler angle. Possible rotation orders are:\n\nCardan sequence: XYZ YZX ZXY XZY YXZ ZYX\n\nEuler sequence: XYX XZX YXY YZY ZXZ ZYZ",
+      "additionalProperties": false,
+      "type": [
+        "string"
+      ],
+      "name": "rotationOrder",
+      "category": "Angle"
+    },
+    "categoryOption Aggregation useCycles": {
+      "title": "useCycles (Aggregation category option)",
+      "description": "If the signal has cycles defined, the aggregation will be run separately over each signal, and a list of values are returned, one for each cycle.\n\nTo avoid this behaviour, set useCycles to false.\n\nFor information on how to set event cycles on a signal, see the eventMask step.",
+      "additionalProperties": false,
+      "type": [
+        "string",
+        "boolean"
+      ],
+      "name": "useCycles",
+      "category": "Aggregation"
+    },
+    "categoryOption Arithmetic frameSequenceOrder": {
+      "title": "frameSequenceOrder (Arithmetic category option)",
+      "description": "If set to any value but none, the input signals will pass through a function which returns a list of signals where each value is from a frame greater than or equal to the frame of the corresponding value from the preceding Signal.\n\nIf set to forward, it will start from the first value of the first (leftmost) input signal (operand) and the algorithm will look at subsequent operands (to the right) one \"row\" at a time.\n\nConversely, if set to reverse, the event sequencing uses the reverse order of operands and goes from right to left.\n\nIf a full \"row\" of values could not be matched, it is not included in the result, i.e., all operands will be of the same length.\n\nThis is useful, for example, when calculating the distance between two signals at a certain event.\n\nThe function will only apply if all input signals have applied a Frames filter, otherwise the signals are left untouched.\n\nExample\n\nsubtract: [LeftFoot.y@LFS, RightFoot.y@RFS]            frameSequenceOrder: reverse\n\n_Creates an event sequence from the inputs, starting from the second operand (RFS event) and creates event pairs RFS -> LFS out of the values. It then subtracts each frame from the RightFoot from the corresponding LeftFoot frame._\n\n_If frameSequenceOrder had been set to forward, it would have created pairs going from LFS -> RFS instead._\n\n_Using the frameSequenceOrder option ensures that the operands starts with the intended event and that both operands have the same length._",
+      "additionalProperties": false,
+      "type": [
+        "string"
+      ],
+      "name": "frameSequenceOrder",
+      "category": "Arithmetic"
+    }
+  }
+}

@@ -1,0 +1,163 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "Config": {
+      "description": "图表配置",
+      "properties": {
+        "color": {
+          "description": "旅程图主色风格",
+          "type": "string"
+        },
+        "height": {
+          "$ref": "#/definitions/Partial<Record<SectionType,number>>",
+          "description": "每个部分的高度"
+        },
+        "sections": {
+          "description": "待显示的区块\n默认为: ['stage', 'action', 'emotion','thought']",
+          "items": {
+            "enum": [
+              "action",
+              "chance",
+              "emotion",
+              "painPoint",
+              "stage",
+              "thought"
+            ],
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "title": {
+          "description": "显示旅程图标题",
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
+    "Partial<Record<SectionType,number>>": {
+      "properties": {
+        "action": {
+          "type": "number"
+        },
+        "chance": {
+          "type": "number"
+        },
+        "emotion": {
+          "type": "number"
+        },
+        "painPoint": {
+          "type": "number"
+        },
+        "stage": {
+          "type": "number"
+        },
+        "thought": {
+          "type": "number"
+        }
+      },
+      "type": "object"
+    },
+    "UserAction": {
+      "description": "用户行为类型",
+      "properties": {
+        "color": {
+          "description": "展示颜色",
+          "type": "string"
+        },
+        "description": {
+          "description": "说明",
+          "type": "string"
+        },
+        "emotion": {
+          "description": "情绪得分",
+          "maximum": 2,
+          "minimum": -2,
+          "type": "integer"
+        },
+        "name": {
+          "description": "行为名称",
+          "type": "string"
+        },
+        "painPoints": {
+          "description": "痛点",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "thoughts": {
+          "description": "想法",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "type": "object"
+    },
+    "YMLStage": {
+      "description": "YML 的阶段类型",
+      "properties": {
+        "actions": {
+          "description": "该阶段所有用户行为",
+          "items": {
+            "$ref": "#/definitions/UserAction"
+          },
+          "type": "array"
+        },
+        "color": {
+          "description": "展示颜色",
+          "type": "string"
+        },
+        "name": {
+          "description": "阶段名称",
+          "type": "string"
+        },
+        "painPoints": {
+          "description": "痛点",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "thoughts": {
+          "description": "想法",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "actions",
+        "name"
+      ],
+      "type": "object"
+    }
+  },
+  "description": "解析后的 YML 数据",
+  "properties": {
+    "config": {
+      "$ref": "#/definitions/Config",
+      "description": "配置参数"
+    },
+    "stages": {
+      "description": "步骤",
+      "items": {
+        "$ref": "#/definitions/YMLStage"
+      },
+      "type": "array"
+    },
+    "title": {
+      "description": "标题名",
+      "type": "string"
+    }
+  },
+  "required": [
+    "stages"
+  ],
+  "type": "object"
+}

@@ -1,0 +1,1151 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "CronBackupSchedule": {
+      "type": "object",
+      "required": [
+        "expression"
+      ],
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "type": {
+          "const": "cron"
+        },
+        "expression": {
+          "type": "string",
+          "pattern": "^(?:\\*|(?:(?:\\*\\/)?[1-5]?[0-9])) (?:\\*|(?:(?:\\*\\/)?(?:1?[0-9]|2[0-3]))) (?:\\*|(?:(?:\\*\\/)?(?:[1-9]|[12][0-9]|3[0-1]))) (?:\\*|(?:(?:\\*\\/)?(?:[1-9]|1[0-2]))) (?:\\*|(?:(?:\\*\\/)?[0-6]))$",
+          "description": "Custom cron expression for backup time"
+        }
+      }
+    },
+    "DailyBackupSchedule": {
+      "type": "object",
+      "required": [
+        "timeOfDay"
+      ],
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "type": {
+          "const": "daily"
+        },
+        "timeOfDay": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/TimeOfDay"
+            },
+            {
+              "description": "Time (in UTC) to perform the backup"
+            }
+          ]
+        }
+      }
+    },
+    "EmailAddress": {
+      "type": "string",
+      "pattern": "^.+@.+$",
+      "format": "gradle-enterprise:email-address",
+      "description": "Internet email address conforming to most of RFC 822 syntax rules and by that allowing a majority of internalized email addresses as well."
+    },
+    "EncryptedSecret": {
+      "type": "string",
+      "pattern": "^(?:plain:.+|aes256:(?:\\s*[A-Za-z0-9+/]){16}:(?:\\s*[A-Za-z0-9+/]){16}:(?:(?:\\s*[A-Za-z0-9+/]){4})*(?:(?:\\s*[A-Za-z0-9+/]){2}(?:\\s*=){2}|(?:\\s*[A-Za-z0-9+/]){3}(?:\\s*=))?\\s*)$"
+    },
+    "ExternalAuthRoleMappings": {
+      "type": "object",
+      "properties": {
+        "administration": {
+          "type": "string",
+          "description": "Allows access to installation administrative functions",
+          "not": {
+            "enum": [
+              "ge-scans-viewing",
+              "ge-data-export",
+              "ge-cache-administration",
+              "ge-scans-publishing",
+              "ge-distributed-testing"
+            ]
+          }
+        },
+        "buildScanPublish": {
+          "type": "string",
+          "description": "Allows publishing of build scans",
+          "not": {
+            "enum": [
+              "ge-administration",
+              "ge-scans-viewing",
+              "ge-data-export",
+              "ge-cache-administration",
+              "ge-distributed-testing"
+            ]
+          }
+        },
+        "buildScanView": {
+          "type": "string",
+          "description": "Allows viewing of build scans",
+          "not": {
+            "enum": [
+              "ge-administration",
+              "ge-data-export",
+              "ge-cache-administration",
+              "ge-scans-publishing",
+              "ge-distributed-testing"
+            ]
+          }
+        },
+        "cacheAdministration": {
+          "type": "string",
+          "description": "Allows access to build cache administration functions",
+          "not": {
+            "enum": [
+              "ge-administration",
+              "ge-scans-viewing",
+              "ge-data-export",
+              "ge-scans-publishing",
+              "ge-distributed-testing"
+            ]
+          }
+        },
+        "dataExport": {
+          "type": "string",
+          "description": "Allows exporting build data via the API",
+          "not": {
+            "enum": [
+              "ge-administration",
+              "ge-scans-viewing",
+              "ge-cache-administration",
+              "ge-scans-publishing",
+              "ge-distributed-testing"
+            ]
+          }
+        },
+        "testDistribution": {
+          "type": "string",
+          "description": "Allows use of test distribution",
+          "not": {
+            "enum": [
+              "ge-administration",
+              "ge-scans-viewing",
+              "ge-data-export",
+              "ge-cache-administration",
+              "ge-scans-publishing"
+            ]
+          }
+        }
+      },
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "ExternalLdapRoles": {
+      "type": "object",
+      "required": [
+        "baseDn",
+        "membershipAttribute",
+        "membershipAttributeType",
+        "nameAttribute",
+        "objectClass"
+      ],
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "type": {
+          "const": "external"
+        },
+        "baseDn": {
+          "type": "string",
+          "description": "Base DN for the subtree holding roles"
+        },
+        "mappings": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/ExternalAuthRoleMappings"
+            },
+            {
+              "description": "Mappings between predefined Gradle Enterprise roles and identity provider role names"
+            }
+          ]
+        },
+        "membershipAttribute": {
+          "type": "string",
+          "description": "Name of the LDAP attribute holding role membership"
+        },
+        "membershipAttributeType": {
+          "type": "string",
+          "enum": [
+            "dn",
+            "uid"
+          ],
+          "description": "Type of the membership-ldap-attribute"
+        },
+        "nameAttribute": {
+          "type": "string",
+          "description": "Name of the LDAP attribute holding the role name"
+        },
+        "objectClass": {
+          "type": "string",
+          "description": "LDAP object classes for roles"
+        },
+        "retrieveStrategy": {
+          "type": "string",
+          "enum": [
+            "groupMember",
+            "userMemberof",
+            "matchingRuleInChain"
+          ],
+          "description": "Type of roles retrieve strategy (defaults to GROUP_MEMBER)"
+        }
+      }
+    },
+    "ExternalSamlRoles": {
+      "type": "object",
+      "required": [
+        "attribute"
+      ],
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "type": {
+          "const": "external"
+        },
+        "attribute": {
+          "type": "string",
+          "description": "Name of the SAML attribute holding role names"
+        },
+        "mappings": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/ExternalAuthRoleMappings"
+            },
+            {
+              "description": "Mappings between predefined Gradle Enterprise roles and identity provider role names"
+            }
+          ]
+        }
+      }
+    },
+    "LdapExternalAuth": {
+      "type": "object",
+      "required": [
+        "connectionUrl",
+        "displayName",
+        "roles",
+        "users"
+      ],
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "type": {
+          "const": "ldap"
+        },
+        "bindUser": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "properties": {
+            "dn": {
+              "type": "string",
+              "description": "Distinguished name for the LDAP user account"
+            },
+            "password": {
+              "allOf": [
+                {
+                  "$ref": "#/definitions/EncryptedSecret"
+                },
+                {
+                  "description": "Password for the LDAP user account"
+                }
+              ]
+            }
+          },
+          "required": [
+            "dn",
+            "password"
+          ],
+          "additionalProperties": false,
+          "minProperties": 1,
+          "description": "Binding information used when LDAP requires authentication"
+        },
+        "connectionUrl": {
+          "type": "string",
+          "description": "URL used to connect to LDAP server"
+        },
+        "displayName": {
+          "type": "string",
+          "description": "Name of this identity provider configuration"
+        },
+        "roles": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "enum": [
+                "external",
+                "local"
+              ]
+            }
+          },
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "type": {
+                    "const": "external"
+                  }
+                }
+              },
+              "then": {
+                "$ref": "#/definitions/ExternalLdapRoles"
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "type": {
+                    "const": "local"
+                  }
+                }
+              },
+              "then": {
+                "$ref": "#/definitions/LocalLdapRoles"
+              }
+            }
+          ],
+          "minProperties": 1
+        },
+        "users": {
+          "type": "object",
+          "properties": {
+            "attributes": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "description": "Name of the LDAP attribute holding email address"
+                },
+                "firstName": {
+                  "type": "string",
+                  "description": "Name of the LDAP attribute holding first name"
+                },
+                "lastName": {
+                  "type": "string",
+                  "description": "Name of the LDAP attribute holding last name"
+                },
+                "userName": {
+                  "type": "string",
+                  "description": "Name of the LDAP attribute holding user name"
+                },
+                "uuid": {
+                  "type": "string",
+                  "description": "Name of the LDAP attribute holding a unique id"
+                }
+              },
+              "required": [
+                "email",
+                "firstName",
+                "lastName",
+                "userName",
+                "uuid"
+              ],
+              "additionalProperties": false,
+              "minProperties": 1,
+              "description": "Describes how user attributes are mapped"
+            },
+            "baseDn": {
+              "type": "string",
+              "description": "Base DN for the subtree holding users"
+            },
+            "filter": {
+              "allOf": [
+                {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "format": "gradle-enterprise:ldap-filter",
+                  "description": "LDAP search filter expression."
+                },
+                {
+                  "description": "Optional LDAP filter expression to limit access"
+                }
+              ]
+            }
+          },
+          "required": [
+            "attributes",
+            "baseDn"
+          ],
+          "additionalProperties": false,
+          "minProperties": 1
+        }
+      }
+    },
+    "LocalLdapRoles": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "type": {
+          "const": "local"
+        },
+        "defaults": {
+          "uniqueItems": true,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "buildScanView",
+              "buildScanPublish",
+              "testDistribution",
+              "cacheAdministration",
+              "administration",
+              "dataExport"
+            ]
+          }
+        }
+      }
+    },
+    "LocalSamlRoles": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "type": {
+          "const": "local"
+        },
+        "defaults": {
+          "uniqueItems": true,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "buildScanView",
+              "buildScanPublish",
+              "testDistribution",
+              "cacheAdministration",
+              "administration",
+              "dataExport"
+            ]
+          }
+        }
+      }
+    },
+    "SamlExternalAuth": {
+      "type": "object",
+      "required": [
+        "displayName",
+        "idpMetadata",
+        "roles"
+      ],
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "type": {
+          "const": "saml"
+        },
+        "displayName": {
+          "type": "string",
+          "description": "Name of this identity provider configuration"
+        },
+        "idpMetadata": {
+          "type": "string",
+          "pattern": "^(?:(?:\\s*[A-Za-z0-9+/]){4})*(?:(?:\\s*[A-Za-z0-9+/]){2}(?:\\s*=){2}|(?:\\s*[A-Za-z0-9+/]){3}(?:\\s*=))?\\s*$",
+          "description": "SAML metadata that describes this identity provider"
+        },
+        "options": {
+          "type": "object",
+          "properties": {
+            "requireEncryptedAssertion": {
+              "type": "boolean",
+              "description": "Encrypt SAML assertions?"
+            },
+            "signAuthenticationRequests": {
+              "type": "boolean",
+              "description": "Sign authentication requests?"
+            },
+            "validateAssertionSignature": {
+              "type": "boolean",
+              "description": "Enable signature validation of SAML assertions?"
+            },
+            "validateResponseSignature": {
+              "type": "boolean",
+              "description": "Enable signature validation of SAML responses?"
+            }
+          },
+          "additionalProperties": false,
+          "minProperties": 1,
+          "description": "Groups all options and is only necessary when one or more needs to be enabled"
+        },
+        "roles": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "enum": [
+                "external",
+                "local"
+              ]
+            }
+          },
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "type": {
+                    "const": "external"
+                  }
+                }
+              },
+              "then": {
+                "$ref": "#/definitions/ExternalSamlRoles"
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "type": {
+                    "const": "local"
+                  }
+                }
+              },
+              "then": {
+                "$ref": "#/definitions/LocalSamlRoles"
+              }
+            }
+          ],
+          "minProperties": 1
+        },
+        "userAttributes": {
+          "type": "object",
+          "properties": {
+            "email": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "description": "Name of the SAML attribute holding email address"
+            },
+            "firstName": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "description": "Name of the SAML attribute holding first name"
+            },
+            "lastName": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "description": "Name of the SAML attribute holding last name"
+            }
+          },
+          "additionalProperties": false,
+          "minProperties": 1,
+          "description": "Describes how user attributes are mapped"
+        }
+      }
+    },
+    "TimeOfDay": {
+      "type": "string",
+      "pattern": "^(?:[01]\\d|2[0-3]):[0-5]\\d$"
+    },
+    "WeeklyBackupSchedule": {
+      "type": "object",
+      "required": [
+        "dayOfWeek",
+        "timeOfDay"
+      ],
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "type": {
+          "const": "weekly"
+        },
+        "dayOfWeek": {
+          "type": "string",
+          "enum": [
+            "monday",
+            "tuesday",
+            "wednesday",
+            "thursday",
+            "friday",
+            "saturday",
+            "sunday"
+          ],
+          "description": "Day (in UTC) to perform the backup"
+        },
+        "timeOfDay": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/TimeOfDay"
+            },
+            {
+              "description": "Time (in UTC) to perform the backup"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "type": "object",
+  "required": [
+    "systemPassword",
+    "version"
+  ],
+  "description": "Gradle Enterprise configuration schema",
+  "additionalProperties": false,
+  "minProperties": 1,
+  "properties": {
+    "version": {
+      "const": 2,
+      "description": "The version of the config file model (must be 2)."
+    },
+    "additionalTrust": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^(?:^^-----BEGIN CERTIFICATE-----(?:\\r?\\n)(?:(?:\\s*[A-Za-z0-9+/]){4})*(?:(?:\\s*[A-Za-z0-9+/]){2}(?:\\s*=){2}|(?:\\s*[A-Za-z0-9+/]){3}(?:\\s*=))?\\s*^-----END CERTIFICATE-----(?:\\r?\\n)?)+$",
+      "format": "gradle-enterprise:x509-certs-pem",
+      "description": "Required if Gradle Enterprise must communicate with servers using certificates not trusted by default"
+    },
+    "advanced": {
+      "type": "object",
+      "properties": {
+        "jvmOptions": {
+          "type": "object",
+          "properties": {
+            "admin": {
+              "type": "object",
+              "properties": {
+                "additionalOptions": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "description": "Extra parameters and configuration for the Java process"
+                },
+                "heapMemory": {
+                  "type": "integer",
+                  "description": "The amount of heap memory allocated to the Java process",
+                  "minimum": 100
+                },
+                "includeBaseOptions": {
+                  "type": "boolean"
+                },
+                "offHeapMemory": {
+                  "type": "integer",
+                  "description": "The amount of off-heap memory allocated to the Java process",
+                  "minimum": 100
+                }
+              },
+              "additionalProperties": false,
+              "minProperties": 1
+            },
+            "app": {
+              "type": "object",
+              "properties": {
+                "additionalOptions": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "description": "Extra parameters and configuration for the Java process"
+                },
+                "heapMemory": {
+                  "type": "integer",
+                  "description": "The amount of heap memory allocated to the Java process",
+                  "minimum": 100
+                },
+                "includeBaseOptions": {
+                  "type": "boolean"
+                },
+                "offHeapMemory": {
+                  "type": "integer",
+                  "description": "The amount of off-heap memory allocated to the Java process",
+                  "minimum": 100
+                }
+              },
+              "additionalProperties": false,
+              "minProperties": 1
+            },
+            "buildCache": {
+              "type": "object",
+              "properties": {
+                "additionalOptions": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "description": "Extra parameters and configuration for the Java process"
+                },
+                "heapMemory": {
+                  "type": "integer",
+                  "description": "The amount of heap memory allocated to the Java process",
+                  "minimum": 100
+                },
+                "includeBaseOptions": {
+                  "type": "boolean"
+                },
+                "offHeapMemory": {
+                  "type": "integer",
+                  "description": "The amount of off-heap memory allocated to the Java process",
+                  "minimum": 100
+                }
+              },
+              "additionalProperties": false,
+              "minProperties": 1
+            },
+            "buildCacheNode": {
+              "type": "object",
+              "properties": {
+                "additionalOptions": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "description": "Extra parameters and configuration for the Java process"
+                },
+                "heapMemory": {
+                  "type": "integer",
+                  "description": "The amount of heap memory allocated to the Java process",
+                  "minimum": 100
+                },
+                "includeBaseOptions": {
+                  "type": "boolean"
+                },
+                "offHeapMemory": {
+                  "type": "integer",
+                  "description": "The amount of off-heap memory allocated to the Java process",
+                  "minimum": 100
+                }
+              },
+              "additionalProperties": false,
+              "minProperties": 1
+            },
+            "buildScans": {
+              "type": "object",
+              "properties": {
+                "additionalOptions": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "description": "Extra parameters and configuration for the Java process"
+                },
+                "heapMemory": {
+                  "type": "integer",
+                  "description": "The amount of heap memory allocated to the Java process",
+                  "minimum": 100
+                },
+                "includeBaseOptions": {
+                  "type": "boolean"
+                },
+                "offHeapMemory": {
+                  "type": "integer",
+                  "description": "The amount of off-heap memory allocated to the Java process",
+                  "minimum": 100
+                }
+              },
+              "additionalProperties": false,
+              "minProperties": 1
+            },
+            "distributionBroker": {
+              "type": "object",
+              "properties": {
+                "additionalOptions": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "description": "Extra parameters and configuration for the Java process"
+                },
+                "heapMemory": {
+                  "type": "integer",
+                  "description": "The amount of heap memory allocated to the Java process",
+                  "minimum": 100
+                },
+                "includeBaseOptions": {
+                  "type": "boolean"
+                },
+                "offHeapMemory": {
+                  "type": "integer",
+                  "description": "The amount of off-heap memory allocated to the Java process",
+                  "minimum": 100
+                }
+              },
+              "additionalProperties": false,
+              "minProperties": 1
+            }
+          },
+          "additionalProperties": false,
+          "minProperties": 1
+        }
+      },
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "auth": {
+      "type": "object",
+      "properties": {
+        "anonymousRoles": {
+          "uniqueItems": true,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "buildScanView",
+              "buildScanPublish",
+              "cacheAdministration",
+              "dataExport"
+            ]
+          }
+        },
+        "external": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "enum": [
+                    "ldap",
+                    "saml"
+                  ]
+                }
+              },
+              "required": [
+                "type"
+              ],
+              "allOf": [
+                {
+                  "if": {
+                    "properties": {
+                      "type": {
+                        "const": "ldap"
+                      }
+                    }
+                  },
+                  "then": {
+                    "$ref": "#/definitions/LdapExternalAuth"
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "type": {
+                        "const": "saml"
+                      }
+                    }
+                  },
+                  "then": {
+                    "$ref": "#/definitions/SamlExternalAuth"
+                  }
+                }
+              ],
+              "minProperties": 1
+            }
+          ]
+        },
+        "timeouts": {
+          "type": "object",
+          "properties": {
+            "accessTokenLifespan": {
+              "type": "integer",
+              "description": "The maximum time before an access token is expired (in minutes), default is 10 minutes"
+            },
+            "ssoSessionIdleTimeout": {
+              "type": "integer",
+              "description": "The time a login session is allowed to be idle before it expires (in minutes), default is 4 days (5760 minutes)"
+            },
+            "ssoSessionMaxLifespan": {
+              "type": "integer",
+              "description": "The maximum time before a login session is expired (in minutes), default is 30 days (43200 minutes)"
+            }
+          },
+          "additionalProperties": false,
+          "minProperties": 1,
+          "description": "Timeouts you can specify for user logins in Gradle Enterprise"
+        }
+      },
+      "additionalProperties": false,
+      "minProperties": 1,
+      "description": "Configuration of Gradle Enterprise authentication options"
+    },
+    "backups": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "backupsToRetain": {
+          "type": "integer",
+          "description": "How many old backups to keep",
+          "minimum": 1
+        },
+        "emailNotification": {
+          "type": "boolean",
+          "description": "Send an email when backup is complete"
+        },
+        "schedule": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "enum": [
+                "daily",
+                "weekly",
+                "cron"
+              ]
+            }
+          },
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "type": {
+                    "const": "daily"
+                  }
+                }
+              },
+              "then": {
+                "$ref": "#/definitions/DailyBackupSchedule"
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "type": {
+                    "const": "weekly"
+                  }
+                }
+              },
+              "then": {
+                "$ref": "#/definitions/WeeklyBackupSchedule"
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "type": {
+                    "const": "cron"
+                  }
+                }
+              },
+              "then": {
+                "$ref": "#/definitions/CronBackupSchedule"
+              }
+            }
+          ],
+          "minProperties": 1
+        }
+      },
+      "required": [
+        "schedule"
+      ],
+      "additionalProperties": false,
+      "minProperties": 1,
+      "description": "Automatic backup configuration"
+    },
+    "buildCache": {
+      "type": "object",
+      "properties": {
+        "allowUntrustedNodeSsl": {
+          "type": "boolean",
+          "description": "Allow communication with nodes running over untrusted SSL"
+        }
+      },
+      "additionalProperties": false,
+      "minProperties": 1,
+      "description": "Configuration specific to the build cache app"
+    },
+    "buildScans": {
+      "type": "object",
+      "properties": {
+        "diskSpaceMonitoring": {
+          "type": "object",
+          "properties": {
+            "autoDeleteWhileFreeSpaceLessThanPercentage": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "description": "Threshold of free disk space before old scans will be automatically deleted",
+              "maximum": 100,
+              "minimum": 1
+            },
+            "rejectIncomingWhileFreeSpaceLessThanPercentage": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "description": "Threshold of free disk space before new scans will be rejected",
+              "maximum": 100,
+              "minimum": 1
+            },
+            "sendWarningEmailWhenFreeSpaceLessThanPercentage": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "description": "Threshold of free disk space before a warning is sent to users publishing a build scan",
+              "maximum": 100,
+              "minimum": 1
+            }
+          },
+          "additionalProperties": false,
+          "minProperties": 1
+        },
+        "keepDays": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "description": "How many days of scans should be retained",
+          "minimum": 2
+        }
+      },
+      "additionalProperties": false,
+      "minProperties": 1,
+      "description": "Configuration specific to the build scans app"
+    },
+    "dailyMaintenanceTime": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/TimeOfDay"
+        },
+        {
+          "description": "Which time (UTC) should retention-cleanup be performed"
+        }
+      ]
+    },
+    "email": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "administratorAddress": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/EmailAddress"
+            },
+            {
+              "description": "Email address notifications are sent to"
+            }
+          ]
+        },
+        "authentication": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "properties": {
+            "password": {
+              "$ref": "#/definitions/EncryptedSecret"
+            },
+            "type": {
+              "type": "string",
+              "enum": [
+                "login",
+                "cramMd5",
+                "plain"
+              ]
+            },
+            "username": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "password",
+            "type",
+            "username"
+          ],
+          "additionalProperties": false,
+          "minProperties": 1,
+          "description": "SMTP authentication method"
+        },
+        "fromAddress": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/EmailAddress"
+            },
+            {
+              "description": "Email address notifications are sent from"
+            }
+          ]
+        },
+        "smtpServer": {
+          "type": "string",
+          "pattern": "^(?:(?:(?:[0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}(?:[0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])|(?:(?:[a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\\-]*[a-zA-Z0-9])\\.)*(?:[A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\\-]*[A-Za-z0-9])):(?:[1-9][0-9]{0,3}|[1-6][0-5][0-5][0-3][0-5])$",
+          "description": "Address and port of the smtp server"
+        },
+        "sslProtocol": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "enum": [
+                null,
+                "startTls",
+                "implicitTls"
+              ],
+              "description": "SMTP protocol flavour"
+            }
+          ]
+        }
+      },
+      "required": [
+        "administratorAddress",
+        "fromAddress",
+        "smtpServer"
+      ],
+      "additionalProperties": false,
+      "minProperties": 1,
+      "description": "SMTP configuration for notifications"
+    },
+    "helpContact": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/definitions/EmailAddress"
+            }
+          ],
+          "description": "The email address users should contact"
+        },
+        "name": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "The name of the contact"
+        }
+      },
+      "additionalProperties": false,
+      "minProperties": 1,
+      "description": "Who users should contact if they have a problem"
+    },
+    "systemPassword": {
+      "type": "string",
+      "pattern": "^(?:\\s*[A-Za-z0-9+/]){43}(?:\\s*=):(?:(?:\\s*[A-Za-z0-9+/]){4})*(?:(?:\\s*[A-Za-z0-9+/]){2}(?:\\s*=){2}|(?:\\s*[A-Za-z0-9+/]){3}(?:\\s*=))?\\s*$",
+      "description": "The password for the system user"
+    }
+  }
+}
