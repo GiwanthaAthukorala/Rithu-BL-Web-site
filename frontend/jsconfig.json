@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json.schemastore.org/jsconfig",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "module": "esnext",
+    "moduleResolution": "bundler"
+  }
+}
