@@ -61,6 +61,58 @@ const extractTikTokId = (url) => {
 };
 
 const sampleVideos = [
+  {
+    title:
+      "ජපානයේ නිවාඩු දවසේ ක්‍රිකට්🏏 | A Cricket Day in Japan 🇯🇵 | Vlog #5",
+    description:
+      "ඔන්ලයින් දවසට විනාඩි 5ක් වැඩ කරලා රුපියල්   Watch for 0.50 minute to earn Rs 0.50.",
+    videoUrl: "https://youtu.be/z2OIwheKCeA?si=bxdQWeVdnwqhcHMp",
+    embedUrl: "https://youtube.com/shorts/rDp0tA2PCAc?si=t-bxdQWeVdnwqhcHMp",
+    thumbnailUrl: "https://img.youtube.com/vi/bxdQWeVdnwqhcHMp/hqdefault.jpg",
+    platform: "youtube",
+    duration: 60,
+    rewardAmount: 0.5,
+    isActive: true,
+  },
+  {
+    title:
+      "අපේ Entrance Ceremony එක 🇯🇵🎉 | Our Entrance Ceremony Day in Japan | VLOG #6",
+    description:
+      "ඔන්ලයින් දවසට විනාඩි 5ක් වැඩ කරලා රුපියල්   Watch for 0.50 minute to earn Rs 0.50.",
+    videoUrl: "https://youtu.be/UbxX-o7J9ds?si=xIY0SN6geEaobvo6",
+    embedUrl: "https://youtube.com/shorts/rDp0tA2PCAc?si=t-xIY0SN6geEaobvo6",
+    thumbnailUrl: "https://img.youtube.com/vi/xIY0SN6geEaobvo6/hqdefault.jpg",
+    platform: "youtube",
+    duration: 60,
+    rewardAmount: 0.5,
+    isActive: true,
+  },
+  {
+    title:
+      "සන්තොරි ඇප් එකෙන් Free බීම ගමු 😍 | Suntory App + PayPay = FREE Drinks 🧃🇯🇵 | Vlog #7",
+    description:
+      "ඔන්ලයින් දවසට විනාඩි 5ක් වැඩ කරලා රුපියල්   Watch for 0.50 minute to earn Rs 0.50.",
+    videoUrl: "https://youtu.be/PnpnjUX1TJ4?si=CyYhuuCNbm9DpTT5",
+    embedUrl: "https://youtube.com/shorts/rDp0tA2PCAc?si=t-CyYhuuCNbm9DpTT5",
+    thumbnailUrl: "https://img.youtube.com/vi/CyYhuuCNbm9DpTT5/hqdefault.jpg",
+    platform: "youtube",
+    duration: 60,
+    rewardAmount: 0.5,
+    isActive: true,
+  },
+  {
+    title:
+      "Japan Visa Ceremony Day 🇯🇵🎓 | මගේ Dream එක Start උන දවස 😍 | Vlog #1",
+    description:
+      "ඔන්ලයින් දවසට විනාඩි 5ක් වැඩ කරලා රුපියල්   Watch for 0.50 minute to earn Rs 0.50.",
+    videoUrl: "https://youtu.be/H4b8x1g4ZuE?si=jWy0m9KcUy8oFGaG",
+    embedUrl: "https://youtube.com/shorts/rDp0tA2PCAc?si=t-jWy0m9KcUy8oFGaG",
+    thumbnailUrl: "https://img.youtube.com/vi/jWy0m9KcUy8oFGaG/hqdefault.jpg",
+    platform: "youtube",
+    duration: 60,
+    rewardAmount: 0.5,
+    isActive: true,
+  },
   /*{
     title: "❤️SAYASHOE❤️",
     description: "Daily dose of laughter with these funny TikTok videos",
