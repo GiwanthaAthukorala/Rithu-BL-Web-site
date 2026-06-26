@@ -23,22 +23,15 @@ const connectDB = async () => {
 
 const facebookLinks = [
   {
-    url: "https://www.facebook.com/smartrealtyinvestments1",
-    title:
-      "Smart Realty Investments - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
+    url: "https://m.facebook.com/story.php?story_fbid=pfbid0fsZTkgncuJgiqngVe4kVapGyNitTsMsxi51aVQUfnu3mZukHbZzvYxaAHogJ4xaMl&id=100065365262939&mibextid=Nif5oz",
+    title: "පොස්ට් ලයික් (Like) කරන්න.",
     platform: "facebook",
     earnings: 1.0,
   },
   {
-    url: "https://www.facebook.com/share/14gn3QEz8vN/?mibextid=wwXIfr",
+    url: "https://www.facebook.com/share/17nfmnnEkj",
     title:
-      "Sri Lanka web news - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
-    platform: "facebook",
-    earnings: 1.0,
-  },
-  {
-    url: "https://www.facebook.com/share/1HMLuN2WET",
-    title: "Kronos Pay - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
+      "Ʀᴇᴍᴇᴍʙᴇʀ - මතකයන් シ︎ - පෙජ් එක ලයික් (Like)/ෆලෝ (follwer) කරන්න කරන්න",
     platform: "facebook",
     earnings: 1.0,
   },
@@ -46,7 +39,7 @@ const facebookLinks = [
   // Removed duplicate URL that was causing the error
   /*
   {
-    url: "https://www.facebook.com/share/p/1LW74J2BXb/",
+    url: "https://m.facebook.com/story.php?story_fbid=pfbid0fsZTkgncuJgiqngVe4kVapGyNitTsMsxi51aVQUfnu3mZukHbZzvYxaAHogJ4xaMl&id=100065365262939&mibextid=Nif5oz",
     title: "පොස්ට් ලයික් (Like) කරන්න.",
     platform: "facebook",
     earnings: 1.0,

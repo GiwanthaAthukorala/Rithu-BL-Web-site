@@ -102,6 +102,19 @@ const sampleVideos = [
   },
   {
     title:
+      "ජපානයේ නිවාඩු දවසක් 🇯🇵 | Grocery Shopping & Daily Life in Japan 🛒✨ | Vlog #8",
+    description:
+      "ඔන්ලයින් දවසට විනාඩි 5ක් වැඩ කරලා රුපියල්   Watch for 0.50 minute to earn Rs 0.50.",
+    videoUrl: "https://youtu.be/Vet14od8R4M?si=V1ei4SCP9vXT1hof",
+    embedUrl: "https://youtube.com/shorts/rDp0tA2PCAc?si=t-V1ei4SCP9vXT1hof",
+    thumbnailUrl: "https://img.youtube.com/vi/V1ei4SCP9vXT1hof/hqdefault.jpg",
+    platform: "youtube",
+    duration: 60,
+    rewardAmount: 0.5,
+    isActive: true,
+  },
+  {
+    title:
       "Japan Visa Ceremony Day 🇯🇵🎓 | මගේ Dream එක Start උන දවස 😍 | Vlog #1",
     description:
       "ඔන්ලයින් දවසට විනාඩි 5ක් වැඩ කරලා රුපියල්   Watch for 0.50 minute to earn Rs 0.50.",
