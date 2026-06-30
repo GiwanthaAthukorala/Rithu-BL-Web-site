@@ -465,7 +465,8 @@ export default function Profile() {
                     style={{
                       fontSize: "20px",
                       fontWeight: 800,
-                      background: "linear-gradient(135deg, var(--color-primary-600), var(--color-brand-500))",
+                      background:
+                        "linear-gradient(135deg, var(--color-primary-600), var(--color-brand-500))",
                       WebkitBackgroundClip: "text",
                       WebkitTextFillColor: "transparent",
                       lineHeight: 1.1,
@@ -561,7 +562,8 @@ export default function Profile() {
                     display: "flex",
                     alignItems: "center",
                     gap: "10px",
-                    background: "linear-gradient(135deg, #f8fafc, var(--color-primary-50))",
+                    background:
+                      "linear-gradient(135deg, #f8fafc, var(--color-primary-50))",
                     border: "1px solid #e2e8f0",
                     borderRadius: "99px",
                     padding: "8px 16px 8px 8px",
@@ -990,7 +992,8 @@ export default function Profile() {
                     <div
                       style={{
                         padding: "14px",
-                        background: "linear-gradient(135deg, var(--color-accent-50), rgba(16, 185, 129, 0.05))",
+                        background:
+                          "linear-gradient(135deg, var(--color-accent-50), rgba(16, 185, 129, 0.05))",
                         borderRadius: "14px",
                         border: "1px solid var(--color-accent-100)",
                       }}
@@ -1643,7 +1646,8 @@ export default function Profile() {
             <div className="modal-box">
               <div
                 style={{
-                  background: "linear-gradient(135deg, var(--color-primary-600), var(--color-primary-500))",
+                  background:
+                    "linear-gradient(135deg, var(--color-primary-600), var(--color-primary-500))",
                   padding: "24px 28px",
                   position: "relative",
                   overflow: "hidden",
@@ -1745,7 +1749,8 @@ export default function Profile() {
 
                 <div
                   style={{
-                    background: "linear-gradient(135deg, #f8fafc, var(--color-primary-50))",
+                    background:
+                      "linear-gradient(135deg, #f8fafc, var(--color-primary-50))",
                     border: "1px solid #e2e8f0",
                     borderRadius: "14px",
                     padding: "16px",
