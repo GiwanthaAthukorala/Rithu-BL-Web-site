@@ -46,7 +46,7 @@ router.post(
   "/profile/upload-picture",
   protect,
   upload.single("profilePicture"),
-  uploadProfilePicture
+  uploadProfilePicture,
 );
 
 router.get("/admin", protect, admin, (req, res) => {
