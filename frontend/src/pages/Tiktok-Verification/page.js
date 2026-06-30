@@ -73,7 +73,7 @@ export default function TikTokVerificationTask() {
 
       const apiUrl =
         process.env.NEXT_PUBLIC_API_URL ||
-        "https://rithu-bl-web-site-i5o3.vercel.app";
+        "https://rithu-bl-web-site-iota.vercel.app";
       console.log("Submitting to:", `${apiUrl}/api/tiktok`);
       console.log("Token exists:", !!token);
       const response = await fetch(`${apiUrl}/api/tiktok`, {

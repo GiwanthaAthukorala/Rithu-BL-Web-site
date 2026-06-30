@@ -2,7 +2,7 @@ import axios from "axios";
 
 const API_URL =
   process.env.NEXT_PUBLIC_API_URL ||
-  "https://rithu-bl-web-site-i5o3.vercel.app/api";
+  "https://rithu-bl-web-site-iota.vercel.app/api";
 
 const adminApi = axios.create({
   baseURL: API_URL,
