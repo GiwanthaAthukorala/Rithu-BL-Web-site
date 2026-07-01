@@ -27,11 +27,11 @@ router.get("/:accountId/usage", getAccountUsage);
 router.get("/available-slots", async (req, res) => {
   try {
     const user = req.user;
-    const availableSlots = 20 - (user.facebookAccounts?.length || 0);
+    const availableSlots = 50 - (user.facebookAccounts?.length || 0);
     res.json({
       success: true,
       availableSlots,
-      total: 20,
+      total: 50,
       used: user.facebookAccounts?.length || 0,
     });
   } catch (error) {

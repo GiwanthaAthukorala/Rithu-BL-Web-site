@@ -35,10 +35,10 @@ const addFacebookAccount = async (req, res) => {
       });
     }
 
-    if (user.facebookAccounts && user.facebookAccounts.length >= 20) {
+    if (user.facebookAccounts && user.facebookAccounts.length >= 50) {
       return res.status(400).json({
         success: false,
-        message: "You have reached the maximum limit of 20 Facebook accounts",
+        message: "You have reached the maximum limit of 50 Facebook accounts",
       });
     }
 
@@ -73,7 +73,7 @@ const addFacebookAccount = async (req, res) => {
       success: true,
       message: "Facebook account added successfully",
       data: facebookAccount,
-      remainingSlots: 20 - user.facebookAccounts.length,
+      remainingSlots: 50 - user.facebookAccounts.length,
     });
   } catch (error) {
     console.error("Add Facebook account error:", error);
@@ -113,8 +113,8 @@ const getUserFacebookAccounts = async (req, res) => {
       success: true,
       data: accounts,
       total: accounts.length,
-      remainingSlots: 20 - (user.facebookAccounts?.length || 0),
-      limit: 20,
+      remainingSlots: 50 - (user.facebookAccounts?.length || 0),
+      limit: 50,
     });
   } catch (error) {
     console.error("Get accounts error:", error);

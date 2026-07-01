@@ -93,7 +93,7 @@ export default function EditAccountModal({
           <div className="relative z-10 flex items-center justify-between">
             <div className="flex items-center space-x-3">
               <div className="w-10 h-10 bg-white bg-opacity-20 rounded-lg flex items-center justify-center">
-                <Facebook size={20} />
+                <Facebook size={50} />
               </div>
               <h3 className="text-xl font-bold">Edit Account</h3>
             </div>
@@ -102,7 +102,7 @@ export default function EditAccountModal({
               className="p-2 hover:bg-white hover:bg-opacity-20 rounded-full transition-all"
               disabled={isLoading}
             >
-              <X size={20} />
+              <X size={50} />
             </button>
           </div>
         </div>
@@ -209,7 +209,7 @@ export default function EditAccountModal({
             >
               {isLoading ? (
                 <div className="flex items-center justify-center">
-                  <Loader2 size={20} className="animate-spin mr-2" />
+                  <Loader2 size={50} className="animate-spin mr-2" />
                   <span>Saving...</span>
                 </div>
               ) : (

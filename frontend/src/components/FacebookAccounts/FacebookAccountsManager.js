@@ -34,7 +34,7 @@ export default function FacebookAccountsManager() {
   const [stats, setStats] = useState({
     total: 0,
     active: 0,
-    remainingSlots: 20,
+    remainingSlots: 50,
   });
 
   const { user } = useAuth();
@@ -153,7 +153,7 @@ export default function FacebookAccountsManager() {
     );
   }
 
-  const slotPercentage = ((20 - stats.remainingSlots) / 20) * 100;
+  const slotPercentage = ((50 - stats.remainingSlots) / 50) * 100;
 
   return (
     <>
@@ -673,7 +673,7 @@ export default function FacebookAccountsManager() {
                       }}
                     >
                       <Facebook
-                        size={20}
+                        size={50}
                         color={account.isActive ? "#16a34a" : "#94a3b8"}
                       />
                     </div>

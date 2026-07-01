@@ -98,7 +98,7 @@ export default function AddAccountModal({
           <div className="relative z-10 flex items-center justify-between">
             <div className="flex items-center space-x-3">
               <div className="w-10 h-10 bg-white bg-opacity-20 rounded-lg flex items-center justify-center">
-                <Facebook size={20} />
+                <Facebook size={50} />
               </div>
               <h3 className="text-xl font-bold">Add Facebook Account</h3>
             </div>
@@ -107,7 +107,7 @@ export default function AddAccountModal({
               className="p-2 hover:bg-white hover:bg-opacity-20 rounded-full transition-all"
               disabled={isLoading}
             >
-              <X size={20} />
+              <X size={50} />
             </button>
           </div>
         </div>
@@ -116,10 +116,10 @@ export default function AddAccountModal({
           {/* Info */}
           <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
             <p className="text-blue-800 text-sm font-medium mb-2">
-              Available Slots: {remainingSlots}/20
+              Available Slots: {remainingSlots}/50
             </p>
             <p className="text-blue-600 text-xs">
-              You can add up to 20 different Facebook accounts to work on tasks.
+              You can add up to 50 different Facebook accounts to work on tasks.
               Each account must be unique.
             </p>
           </div>
@@ -220,7 +220,7 @@ export default function AddAccountModal({
             >
               {isLoading ? (
                 <div className="flex items-center justify-center">
-                  <Loader2 size={20} className="animate-spin mr-2" />
+                  <Loader2 size={50} className="animate-spin mr-2" />
                   <span>Adding...</span>
                 </div>
               ) : (
