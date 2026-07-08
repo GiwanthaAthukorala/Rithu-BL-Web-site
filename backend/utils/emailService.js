@@ -1,34 +1,41 @@
-// utils/emailService.js
 const nodemailer = require("nodemailer");
 
-const sendEmail = async (options) => {
-  try {
-    // Create transporter
-    const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST,
-      port: process.env.SMTP_PORT,
-      secure: false, // true for 465, false for other ports
-      auth: {
-        user: process.env.SMTP_EMAIL,
-        pass: process.env.SMTP_PASSWORD,
-      },
-    });
+const transporter = nodemailer.createTransport({
+  service: "gmail", // or your email service
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASSWORD, // Use app-specific password for Gmail
+  },
+});
 
-    // Email options
+const sendPasswordResetEmail = async (email, resetCode) => {
+  try {
     const mailOptions = {
-      from: `${process.env.FROM_NAME} <${process.env.FROM_EMAIL}>`,
-      to: options.email,
-      subject: options.subject,
-      html: options.html,
+      from: `"Rithu Business Lanka" <${process.env.EMAIL_USER}>`,
+      to: email,
+      subject: "Password Reset OTP",
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h2 style="color: #025beb;">Rithu Business Lanka</h2>
+          <h3>Password Reset Request</h3>
+          <p>You requested to reset your password. Use the following OTP code:</p>
+          <div style="background-color: #f4f4f4; padding: 20px; text-align: center; margin: 20px 0;">
+            <h1 style="color: #025beb; font-size: 32px; letter-spacing: 5px; margin: 0;">${resetCode}</h1>
+          </div>
+          <p>This code will expire in 10 minutes.</p>
+          <p>If you didn't request this password reset, please ignore this email.</p>
+          <hr />
+          <p style="color: #666; font-size: 12px;">This is an automated message, please do not reply.</p>
+        </div>
+      `,
     };
 
-    // Send email
     await transporter.sendMail(mailOptions);
-    console.log("Email sent successfully");
+    return true;
   } catch (error) {
     console.error("Email sending failed:", error);
-    throw new Error("Email could not be sent");
+    throw error;
   }
 };
 
-module.exports = sendEmail;
+module.exports = { sendPasswordResetEmail };

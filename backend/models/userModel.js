@@ -122,6 +122,15 @@ const userSchema = new mongoose.Schema(
           type: Boolean,
           default: false,
         },
+        resetPasswordOTP: {
+          code: String,
+          expiresAt: Date,
+        },
+        resetPasswordAttempts: {
+          type: Number,
+          default: 0,
+        },
+        resetPasswordLastAttempt: Date,
         submittedAt: Date,
       },
     ],

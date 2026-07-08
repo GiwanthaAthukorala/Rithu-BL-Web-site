@@ -1,8 +1,6 @@
 import axios from "axios";
 
-const API_URL =
-  process.env.NEXT_PUBLIC_API_URL ||
-  "https://rithu-bl-web-site-iota.vercel.app"; // Ensure this matches your backend URL
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"; // Ensure this matches your backend URL
 
 // Create axios instance
 const api = axios.create({
@@ -67,8 +65,9 @@ export const endpoints = {
   videoSessions: "/api/videos/session",
   // Password reset endpoints
   forgotPassword: "/api/auth/forgot-password",
+  verifyOTP: "/api/auth/verify-otp",
+  resendOTP: "/api/auth/resend-otp",
   resetPassword: (token) => `/api/auth/reset-password/${token}`,
-  verifyToken: (token) => `/api/auth/verify-token/${token}`,
 };
 
 // Or better yet, update all your API functions to use the endpoints object:
@@ -118,46 +117,40 @@ export const getProfile = async () => {
   }
 };
 
-// Password Reset Functions - Using axios instead of fetch for consistency
 export const forgotPassword = async (email) => {
   try {
     const response = await api.post(endpoints.forgotPassword, { email });
     return response.data;
   } catch (error) {
-    console.error("Forgot password error:", error);
-
-    // Extract error message from response
-    if (error.response?.data?.message) {
-      throw new Error(error.response.data.message);
-    }
     throw error;
   }
 };
 
-export const resetPassword = async (token, passwords) => {
+export const verifyOTP = async (email, otp) => {
   try {
-    const response = await api.put(endpoints.resetPassword(token), passwords);
+    const response = await api.post(endpoints.verifyOTP, { email, otp });
     return response.data;
   } catch (error) {
-    console.error("Reset password error:", error);
-
-    if (error.response?.data?.message) {
-      throw new Error(error.response.data.message);
-    }
     throw error;
   }
 };
 
-export const verifyResetToken = async (token) => {
+export const resendOTP = async (email) => {
   try {
-    const response = await api.get(endpoints.verifyToken(token));
+    const response = await api.post(endpoints.resendOTP, { email });
     return response.data;
   } catch (error) {
-    console.error("Verify token error:", error);
+    throw error;
+  }
+};
 
-    if (error.response?.data?.message) {
-      throw new Error(error.response.data.message);
-    }
+export const resetPassword = async (token, password) => {
+  try {
+    const response = await api.put(endpoints.resetPassword(token), {
+      password,
+    });
+    return response.data;
+  } catch (error) {
     throw error;
   }
 };

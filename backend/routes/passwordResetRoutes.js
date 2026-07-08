@@ -1,25 +1,32 @@
-// routes/passwordResetRoutes.js
 const express = require("express");
 const router = express.Router();
 const {
   forgotPassword,
+  verifyOTP,
   resetPassword,
-  verifyResetToken,
+  resendOTP,
 } = require("../controllers/passwordResetController");
 
-// @route   POST /api/auth/forgot-password
-// @desc    Send password reset email
-// @access  Public
+// Forgot password - Send OTP
 router.post("/forgot-password", forgotPassword);
 
-// @route   PUT /api/auth/reset-password/:token
-// @desc    Reset password with token
-// @access  Public
+// Verify OTP
+router.post("/verify-otp", verifyOTP);
+
+// Resend OTP
+router.post("/resend-otp", resendOTP);
+
+// Reset password with token
 router.put("/reset-password/:token", resetPassword);
 
-// @route   GET /api/auth/verify-token/:token
-// @desc    Verify reset token validity
-// @access  Public
-router.get("/verify-token/:token", verifyResetToken);
+// Keep old routes for backward compatibility if needed
+router.get("/verify-token/:token", (req, res) => {
+  res.json({
+    success: true,
+    message: "Token verification not required for OTP flow",
+  });
+});
+
+router.put("/reset-password/:token", resetPassword);
 
 module.exports = router;
