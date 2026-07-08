@@ -66,10 +66,10 @@ export const endpoints = {
   videos: "/api/videos",
   videoSessions: "/api/videos/session",
   // Password reset endpoints
-  forgotPassword: "/api/auth/forgot-password",
-  verifyOTP: "/api/auth/verify-otp",
-  resendOTP: "/api/auth/resend-otp",
-  resetPassword: (token) => `/api/auth/reset-password/${token}`,
+  //forgotPassword: "/api/auth/forgot-password",
+  //verifyOTP: "/api/auth/verify-otp",
+  //resendOTP: "/api/auth/resend-otp",
+  //resetPassword: (token) => `/api/auth/reset-password/${token}`,
 };
 
 // Or better yet, update all your API functions to use the endpoints object:
@@ -119,7 +119,7 @@ export const getProfile = async () => {
   }
 };
 
-export const forgotPassword = async (email) => {
+/*export const forgotPassword = async (email) => {
   try {
     const response = await api.post(endpoints.forgotPassword, { email });
     return response.data;
@@ -155,6 +155,6 @@ export const resetPassword = async (token, password) => {
   } catch (error) {
     throw error;
   }
-};
+};*/
 
 export default api;

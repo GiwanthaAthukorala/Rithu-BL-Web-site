@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import LSNavBar from "@/components/NavBar/NavBarLS";
 import Link from "next/link";
 import { Eye, EyeOff, ArrowLeft, CheckCircle } from "lucide-react";
-import { resetPassword, verifyResetToken } from "@/lib/api";
+//import { resetPassword, verifyResetToken } from "@/lib/api";
 
 export default function ResetPasswordPage() {
   const router = useRouter();
