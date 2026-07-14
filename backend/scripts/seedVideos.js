@@ -61,7 +61,7 @@ const extractTikTokId = (url) => {
 };
 
 const sampleVideos = [
-  {
+  /*{
     title:
       "ජපානයේ නිවාඩු දවසේ ක්‍රිකට්🏏 | A Cricket Day in Japan 🇯🇵 | Vlog #5",
     description:
@@ -126,7 +126,7 @@ const sampleVideos = [
     rewardAmount: 0.5,
     isActive: true,
   },
-  /*{
+  {
     title: "❤️SAYASHOE❤️",
     description: "Daily dose of laughter with these funny TikTok videos",
     videoUrl: "https://vt.tiktok.com/ZSQFgpmV2/",
