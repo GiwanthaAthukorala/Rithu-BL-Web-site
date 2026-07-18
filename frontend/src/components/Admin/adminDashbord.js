@@ -661,6 +661,13 @@ export default function AdminDashboard() {
                 {tab.label}
               </button>
             ))}
+            <button
+              onClick={() => router.push("/admin/facebook-link")}
+              className="flex items-center px-3 py-4 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-gray-700 transition-colors"
+            >
+              <Facebook className="w-4 h-4 mr-2 text-blue-600" />
+              Facebook Links
+            </button>
           </div>
         </div>
       </nav>

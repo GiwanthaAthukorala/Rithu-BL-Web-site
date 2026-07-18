@@ -90,6 +90,8 @@ router.get("/:platform", protect, async (req, res) => {
         remainingClicks: userLink
           ? userLink.maxClicks - userLink.clickCount
           : 20,
+        workLimit: link.workLimit || 0,
+        totalClicks: link.totalClicks || 0,
       };
     });
 
@@ -126,6 +128,17 @@ router.post("/:linkId/click", protect, async (req, res) => {
       return res
         .status(404)
         .json({ success: false, message: "Link not found or inactive" });
+    }
+
+    // Check if total work limit is already reached
+    if (link.workLimit > 0 && link.totalClicks >= link.workLimit) {
+      link.active = false;
+      await link.save();
+      return res.status(400).json({
+        success: false,
+        message: "This link has reached its work limit",
+        limitReached: true,
+      });
     }
 
     // Find or create user's clicked link record
@@ -174,6 +187,13 @@ router.post("/:linkId/click", protect, async (req, res) => {
     userLink.clickCount += 1;
     userLink.lastClickedAt = new Date();
 
+    // Increment total clicks
+    link.totalClicks = (link.totalClicks || 0) + 1;
+    if (link.workLimit > 0 && link.totalClicks >= link.workLimit) {
+      link.active = false;
+    }
+
+    await link.save();
     await user.save();
 
     res.json({
@@ -181,6 +201,8 @@ router.post("/:linkId/click", protect, async (req, res) => {
       clickCount: userLink.clickCount,
       maxClicks: userLink.maxClicks,
       remainingClicks: userLink.maxClicks - userLink.clickCount,
+      totalClicks: link.totalClicks,
+      workLimit: link.workLimit,
     });
   } catch (error) {
     console.error("Link click error:", error);
@@ -310,7 +332,7 @@ router.get("/", protect, admin, async (req, res) => {
 // Create new link (admin only)
 router.post("/", protect, admin, async (req, res) => {
   try {
-    const { url, title, platform, earnings } = req.body;
+    const { url, title, platform, earnings, workLimit } = req.body;
 
     // Validate required fields
     if (!url || !title || !platform) {
@@ -336,11 +358,26 @@ router.post("/", protect, admin, async (req, res) => {
       });
     }
 
+    // Validate work limit
+    let limit = 0;
+    if (workLimit !== undefined && workLimit !== null) {
+      limit = parseInt(workLimit, 10);
+      if (isNaN(limit) || limit < 0 || limit > 2000) {
+        return res.status(400).json({
+          success: false,
+          message: "Work limit must be a number between 0 and 2000",
+        });
+      }
+    }
+
     const link = await Link.create({
       url,
       title,
       platform,
       earnings: earnings || 1.0,
+      workLimit: limit,
+      totalClicks: 0,
+      active: true,
     });
 
     res.json({ success: true, data: link });
@@ -366,7 +403,7 @@ router.post("/", protect, admin, async (req, res) => {
 // Update link (admin only)
 router.put("/:id", protect, admin, async (req, res) => {
   try {
-    const { url, title, platform, earnings, active } = req.body;
+    const { url, title, platform, earnings, active, workLimit, totalClicks } = req.body;
 
     // Validate ID
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
@@ -376,9 +413,30 @@ router.put("/:id", protect, admin, async (req, res) => {
       });
     }
 
+    const updateData = { url, title, platform, earnings, active };
+
+    // Validate work limit if provided
+    if (workLimit !== undefined && workLimit !== null) {
+      const limit = parseInt(workLimit, 10);
+      if (isNaN(limit) || limit < 0 || limit > 2000) {
+        return res.status(400).json({
+          success: false,
+          message: "Work limit must be a number between 0 and 2000",
+        });
+      }
+      updateData.workLimit = limit;
+    }
+
+    if (totalClicks !== undefined && totalClicks !== null) {
+      const clicks = parseInt(totalClicks, 10);
+      if (!isNaN(clicks)) {
+        updateData.totalClicks = clicks;
+      }
+    }
+
     const link = await Link.findByIdAndUpdate(
       req.params.id,
-      { url, title, platform, earnings, active },
+      updateData,
       { new: true, runValidators: true },
     );
 
@@ -404,6 +462,37 @@ router.put("/:id", protect, admin, async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Failed to update link",
+      error: error.message,
+    });
+  }
+});
+
+// Delete link (admin only)
+router.delete("/:id", protect, admin, async (req, res) => {
+  try {
+    // Validate ID
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid link ID format",
+      });
+    }
+
+    const link = await Link.findByIdAndDelete(req.params.id);
+
+    if (!link) {
+      return res.status(404).json({
+        success: false,
+        message: "Link not found",
+      });
+    }
+
+    res.json({ success: true, message: "Link deleted successfully" });
+  } catch (error) {
+    console.error("Delete link error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to delete link",
       error: error.message,
     });
   }

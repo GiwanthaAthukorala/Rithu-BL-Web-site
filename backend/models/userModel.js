@@ -89,7 +89,7 @@ const userSchema = new mongoose.Schema(
       },
     ],
 
-    fbreviewclickedLinks: [
+    fbReviewClickedLinks: [
       {
         linkId: {
           type: mongoose.Schema.Types.ObjectId,

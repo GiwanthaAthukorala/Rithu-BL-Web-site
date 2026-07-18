@@ -24,6 +24,16 @@ const linkSchema = new mongoose.Schema(
       type: Number,
       default: 1.0,
     },
+    workLimit: {
+      type: Number,
+      default: 0,
+      min: 0,
+      max: 2000,
+    },
+    totalClicks: {
+      type: Number,
+      default: 0,
+    },
   },
   { timestamps: true }
 );
