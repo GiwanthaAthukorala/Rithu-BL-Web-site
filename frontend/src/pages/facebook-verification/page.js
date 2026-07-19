@@ -209,7 +209,7 @@ export default function FbVerificationTask() {
     // Validate link clicks if a link is selected
     if (selectedLinkId && linkClickCounts[selectedLinkId] < 2) {
       setError(
-        `You need to click the link at least 20 times before submitting (current: ${linkClickCounts[selectedLinkId] || 0})`,
+        `You need to click the link at least 50 times before submitting (current: ${linkClickCounts[selectedLinkId] || 0})`,
       );
       return;
     }
@@ -490,7 +490,7 @@ export default function FbVerificationTask() {
                     </div>
                   </div>
                   {selectedFacebookAccount?._id === account._id && (
-                    <CheckCircle className="text-purple-600" size={20} />
+                    <CheckCircle className="text-purple-600" size={45} />
                   )}
                 </div>
               ))}
@@ -542,7 +542,7 @@ export default function FbVerificationTask() {
                       3
                     </span>
                     <span>
-                      Click the link 20 times to track your engagement
+                      Click the link 45 times to track your engagement
                     </span>
                   </li>
                   <li className="flex items-start space-x-3">
@@ -550,13 +550,13 @@ export default function FbVerificationTask() {
                       4
                     </span>
                     <span>
-                      Take up to 20 different screenshots showing your
+                      Take up to 45 different screenshots showing your
                       likes/follows
                     </span>
                   </li>
                   <li className="flex items-start space-x-3">
                     <span className="flex-shrink-0 w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold">
-                      20
+                      45
                     </span>
                     <span>
                       Upload all screenshots at once to earn Rs 1.00 each
@@ -610,19 +610,19 @@ export default function FbVerificationTask() {
                   <div className="flex items-center justify-between">
                     <p className="text-blue-700 font-medium">
                       ✓ Link selected - Progress:{" "}
-                      {linkClickCounts[selectedLinkId]}/20 clicks
+                      {linkClickCounts[selectedLinkId]}/45 clicks
                     </p>
-                    {linkClickCounts[selectedLinkId] >= 20 && (
+                    {linkClickCounts[selectedLinkId] >= 45 && (
                       <CheckCircle className="w-5 h-5 text-green-600" />
                     )}
                   </div>
-                  {linkClickCounts[selectedLinkId] >= 2 ? (
+                  {linkClickCounts[selectedLinkId] >= 45 ? (
                     <p className="text-green-700 text-sm mt-1">
                       Ready to submit! Upload your screenshots below.
                     </p>
                   ) : (
                     <p className="text-blue-600 text-sm mt-1">
-                      Click {20 - linkClickCounts[selectedLinkId]} more times to
+                      Click {45 - linkClickCounts[selectedLinkId]} more times to
                       complete
                     </p>
                   )}
@@ -870,7 +870,7 @@ export default function FbVerificationTask() {
                     <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
                       <p className="text-yellow-800 font-medium">
                         ⚠️ Please complete{" "}
-                        {20 - linkClickCounts[selectedLinkId]} more clicks on
+                        {45 - linkClickCounts[selectedLinkId]} more clicks on
                         your selected link before submitting.
                       </p>
                     </div>
@@ -881,11 +881,11 @@ export default function FbVerificationTask() {
                   disabled={
                     !files.length ||
                     isSubmitting ||
-                    (selectedLinkId && linkClickCounts[selectedLinkId] < 20)
+                    (selectedLinkId && linkClickCounts[selectedLinkId] < 45)
                   }
                   className={`w-full py-4 rounded-xl font-bold text-lg transition-all duration-300 transform hover:scale-[1.02] ${
                     files.length > 0 &&
-                    (!selectedLinkId || linkClickCounts[selectedLinkId] >= 20)
+                    (!selectedLinkId || linkClickCounts[selectedLinkId] >= 45)
                       ? "bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white shadow-lg hover:shadow-xl"
                       : "bg-gray-300 text-gray-500 cursor-not-allowed"
                   }`}
