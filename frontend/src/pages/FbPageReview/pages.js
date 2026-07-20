@@ -114,7 +114,7 @@ export default function FacebookReview() {
 
       const apiUrl =
         process.env.NEXT_PUBLIC_API_URL ||
-        "https://rithu-bl-web-site-iota.vercel.app";
+        "https://rithu-bl-web-site.vercel.app";
       console.log("Submitting to:", `${apiUrl}/api/fb-reviews`);
       console.log("Token exists:", !!token);
       const response = await fetch(`${apiUrl}/api/fb-reviews`, {

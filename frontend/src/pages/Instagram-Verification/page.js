@@ -158,7 +158,7 @@ export default function InstagramVerificationTask() {
 
       const apiUrl =
         process.env.NEXT_PUBLIC_API_URL ||
-        "https://rithu-bl-web-site-iota.vercel.app";
+        "https://rithu-bl-web-site.vercel.app";
 
       const response = await fetch(`${apiUrl}/api/instagram`, {
         method: "POST",
