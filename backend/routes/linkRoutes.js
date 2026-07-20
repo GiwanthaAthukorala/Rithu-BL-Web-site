@@ -86,10 +86,10 @@ router.get("/:platform", protect, async (req, res) => {
         createdAt: link.createdAt,
         updatedAt: link.updatedAt,
         userClickCount: userLink ? userLink.clickCount : 0,
-        maxClicks: userLink ? userLink.maxClicks : 20,
+        maxClicks: userLink ? userLink.maxClicks : 45,
         remainingClicks: userLink
           ? userLink.maxClicks - userLink.clickCount
-          : 20,
+          : 45,
         workLimit: link.workLimit || 0,
         totalClicks: link.totalClicks || 0,
       };
@@ -160,7 +160,7 @@ router.post("/:linkId/click", protect, async (req, res) => {
         linkId: new mongoose.Types.ObjectId(linkId),
         platform: link.platform,
         clickCount: 0,
-        maxClicks: 20,
+        maxClicks: 45,
         submitted: false,
       });
 
@@ -403,7 +403,8 @@ router.post("/", protect, admin, async (req, res) => {
 // Update link (admin only)
 router.put("/:id", protect, admin, async (req, res) => {
   try {
-    const { url, title, platform, earnings, active, workLimit, totalClicks } = req.body;
+    const { url, title, platform, earnings, active, workLimit, totalClicks } =
+      req.body;
 
     // Validate ID
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
@@ -434,11 +435,10 @@ router.put("/:id", protect, admin, async (req, res) => {
       }
     }
 
-    const link = await Link.findByIdAndUpdate(
-      req.params.id,
-      updateData,
-      { new: true, runValidators: true },
-    );
+    const link = await Link.findByIdAndUpdate(req.params.id, updateData, {
+      new: true,
+      runValidators: true,
+    });
 
     if (!link) {
       return res.status(404).json({
