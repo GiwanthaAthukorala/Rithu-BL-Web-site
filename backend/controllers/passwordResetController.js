@@ -11,12 +11,19 @@ const generateOTP = () => {
 // @route   POST /api/auth/forgot-password
 const forgotPassword = async (req, res) => {
   try {
-    const { email } = req.body;
+    const { email, password } = req.body;
 
-    if (!email) {
+    if (!email || !password) {
       return res.status(400).json({
         success: false,
-        message: "Please provide an email address",
+        message: "Please provide email and new password",
+      });
+    }
+
+    if (password.length < 8) {
+      return res.status(400).json({
+        success: false,
+        message: "Password must be at least 8 characters",
       });
     }
 
@@ -30,44 +37,26 @@ const forgotPassword = async (req, res) => {
       });
     }
 
-    // Check rate limiting (max 3 attempts per hour)
-    const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
-    if (
-      user.resetPasswordLastAttempt &&
-      user.resetPasswordLastAttempt > oneHourAgo &&
-      user.resetPasswordAttempts >= 3
-    ) {
-      return res.status(429).json({
-        success: false,
-        message: "Too many reset attempts. Please try again after 1 hour.",
-      });
-    }
-
-    // Generate OTP
-    const otp = generateOTP();
-    const otpExpiry = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
-
-    // Update user with OTP
-    user.resetPasswordOTP = {
-      code: otp,
-      expiresAt: otpExpiry,
-    };
-    user.resetPasswordAttempts = (user.resetPasswordAttempts || 0) + 1;
-    user.resetPasswordLastAttempt = new Date();
+    // Directly set new password (pre-save hook hashes it)
+    user.password = password;
+    
+    // Clear any existing reset token/OTP fields
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpire = undefined;
+    user.resetPasswordOTP = undefined;
+    user.resetPasswordAttempts = 0;
+    
     await user.save();
-
-    // Send email
-    await sendPasswordResetEmail(user.email, otp);
 
     res.status(200).json({
       success: true,
-      message: "Password reset OTP has been sent to your email",
+      message: "Password has been successfully reset. You can now login.",
     });
   } catch (error) {
     console.error("Forgot password error:", error);
     res.status(500).json({
       success: false,
-      message: "Failed to send reset email. Please try again.",
+      message: "Failed to reset password. Please try again.",
     });
   }
 };
