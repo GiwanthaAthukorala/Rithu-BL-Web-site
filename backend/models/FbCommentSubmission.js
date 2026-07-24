@@ -50,6 +50,8 @@ const fbCommentSubmissionSchema = new mongoose.Schema(
 
 // Add index for better performance
 fbCommentSubmissionSchema.index({ user: 1, createdAt: -1 });
+// Index for fast duplicate image detection
+fbCommentSubmissionSchema.index({ user: 1, imageHash: 1 });
 
 module.exports = mongoose.model(
   "FbCommentSubmission",

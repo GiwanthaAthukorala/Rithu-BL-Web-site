@@ -34,23 +34,21 @@ const createFbCommentSubmission = async (req, res) => {
       });
     }
 
-    // Check for duplicates
-    const previousSubmissions = await FbCommentSubmission.find({
+    // Check for duplicate images — reject if this exact image was submitted before
+    const duplicateSubmission = await FbCommentSubmission.findOne({
       user: userId,
-      imageHash: { $ne: null },
-    }).limit(10);
+      imageHash: uploadedImageHash,
+    });
 
-    for (const submission of previousSubmissions) {
-      if (isSimilarHash(uploadedImageHash, submission.imageHash)) {
-        return res.status(400).json({
-          success: false,
-          message: `This screenshot is too similar to one you submitted on ${new Date(
-            submission.createdAt
-          ).toLocaleDateString()}. Please upload a different screenshot.`,
-          errorType: "DUPLICATE_IMAGE",
-          previousDate: new Date(submission.createdAt).toLocaleDateString(),
-        });
-      }
+    if (duplicateSubmission) {
+      return res.status(400).json({
+        success: false,
+        message: `This screenshot has already been submitted (originally submitted on ${new Date(
+          duplicateSubmission.createdAt
+        ).toLocaleDateString()}). Please upload a different screenshot.`,
+        errorType: "DUPLICATE_IMAGE",
+        previousDate: new Date(duplicateSubmission.createdAt).toLocaleDateString(),
+      });
     }
 
     console.log("Hashing took", Date.now() - startTime, "ms");

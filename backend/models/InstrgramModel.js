@@ -47,7 +47,8 @@ const InstrgramSubmissionSchema = new mongoose.Schema(
 
 // Add index for better query performance
 InstrgramSubmissionSchema.index({ user: 1, createdAt: -1 });
-InstrgramSubmissionSchema.index({ imageHash: 1 });
+// Index for fast duplicate image detection
+InstrgramSubmissionSchema.index({ user: 1, imageHash: 1 });
 
 module.exports = mongoose.model(
   "InstrgramSubmission",

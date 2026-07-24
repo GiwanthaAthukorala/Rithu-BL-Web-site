@@ -46,6 +46,7 @@ const submissionSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-//submissionSchema.index({ user: 1, createdAt: -1 });
+// Index for fast duplicate image detection
+submissionSchema.index({ user: 1, imageHash: 1 });
 
 module.exports = mongoose.model("Submission", submissionSchema);
