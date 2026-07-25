@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const API_URL =
-  process.env.NEXT_PUBLIC_API_URL || "https://rithu-bl-web-site.vercel.app/api";
+  process.env.NEXT_PUBLIC_API_URL ||
+  "https://rithu-bl-web-site.onrender.com/api";
 
 const adminApi = axios.create({
   baseURL: API_URL,
