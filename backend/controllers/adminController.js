@@ -676,10 +676,10 @@ const updateSubmissionStatus = async (req, res) => {
       case "facebook_comment":
         Model = FbCommentSubmission;
         break;
-      case "Instrgram":
+      case "instagram_page":
         Model = Instrgram;
         break;
-      case "Tiktok":
+      case "tiktok_page":
         Model = TiktokSubmission;
         break;
       case "google_review":
@@ -751,10 +751,10 @@ const deleteSubmission = async (req, res) => {
       case "facebook_comment":
         Model = FbCommentSubmission;
         break;
-      case "Instrgram": // ✅ Fixed
+      case "instagram_page":
         Model = Instrgram;
         break;
-      case "Tiktok": // ✅ Fixed
+      case "tiktok_page":
         Model = TiktokSubmission;
         break;
       case "google_review":
@@ -770,8 +770,8 @@ const deleteSubmission = async (req, res) => {
             "facebook_review",
             "facebook_comment",
             "google_review",
-            "Instrgram",
-            "Tiktok",
+            "instagram_page",
+            "tiktok_page",
           ],
           message: `Invalid platform type: ${platformType}`,
         });
