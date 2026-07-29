@@ -204,7 +204,7 @@ export default function FacebookComment() {
             </div>
             <h2 className="text-2xl font-bold mb-2">Submission Successful!</h2>
             <p className="text-gray-600 mb-6">
-              You've earned Rs 15.00! Your balance has been updated.
+              You've earned Rs 10.00! Your balance has been updated.
             </p>
             <button
               onClick={() => router.push("/Profile/page")}
@@ -246,7 +246,7 @@ export default function FacebookComment() {
                     Facebook Comments
                   </h1>
                   <div className="mt-2 sm:mt-0 px-3 py-1 bg-green-500 text-white text-sm font-semibold rounded-full shadow-md animate-bounce w-max mx-auto sm:mx-0">
-                    Rs 15.00/=
+                    Rs 10.00/=
                   </div>
                 </div>
 
@@ -305,7 +305,7 @@ export default function FacebookComment() {
                     <span className="flex-shrink-0 w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold">
                       4
                     </span>
-                    <span>Upload the screenshot to earn Rs 15.00/=</span>
+                    <span>Upload the screenshot to earn Rs 10.00/=</span>
                   </li>
                 </ol>
               </div>
@@ -443,7 +443,7 @@ export default function FacebookComment() {
                   ) : (
                     <div className="flex items-center justify-center space-x-2">
                       <Upload className="w-5 h-5" />
-                      <span>Submit Screenshot & Earn Rs 15.00/=</span>
+                      <span>Submit Screenshot & Earn Rs 10.00/=</span>
                     </div>
                   )}
                 </button>

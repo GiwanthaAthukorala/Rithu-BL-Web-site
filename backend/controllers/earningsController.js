@@ -41,7 +41,7 @@ exports.getUserEarnings = async (req, res) => {
         videoSubmissions,
       ] = await Promise.all([
         Submission.find({ user: req.user._id, status: "approved" }).catch(
-          () => []
+          () => [],
         ),
         YoutubeSubmission.find({
           user: req.user._id,
@@ -76,35 +76,35 @@ exports.getUserEarnings = async (req, res) => {
       // Calculate totals with fallbacks
       const fbTotal = (fbSubmissions || []).reduce(
         (sum, sub) => sum + (sub.amount || 1),
-        0
+        0,
       );
       const ytTotal = (ytSubmissions || []).reduce(
         (sum, sub) => sum + (sub.amount || 2),
-        0
+        0,
       );
       const reviewTotal = (reviewSubmissions || []).reduce(
         (sum, sub) => sum + (sub.amount || 30),
-        0
+        0,
       );
       const commentTotal = (commentSubmissions || []).reduce(
-        (sum, sub) => sum + (sub.amount || 15),
-        0
+        (sum, sub) => sum + (sub.amount || 10),
+        0,
       );
       const googleTotal = (googleReviewsSubmissions || []).reduce(
         (sum, sub) => sum + (sub.amount || 40),
-        0
+        0,
       );
       const instagramTotal = (instagramSubmissions || []).reduce(
         (sum, sub) => sum + (sub.amount || 1),
-        0
+        0,
       );
       const tiktokTotal = (tiktokSubmission || []).reduce(
         (sum, sub) => sum + (sub.amount || 1),
-        0
+        0,
       );
       const videoTotal = (videoSubmissions || []).reduce(
         (sum, sub) => sum + (sub.amountEarned || 0),
-        0
+        0,
       );
 
       const calculatedTotal =
@@ -124,7 +124,7 @@ exports.getUserEarnings = async (req, res) => {
           0,
           calculatedTotal -
             earnings.withdrawnAmount -
-            earnings.pendingWithdrawal
+            earnings.pendingWithdrawal,
         );
         await earnings.save();
       }

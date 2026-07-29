@@ -63,7 +63,9 @@ export default function LandingPage() {
               </span>
             </h1>
             <p className="text-base sm:text-lg text-slate-400 max-w-lg mx-auto lg:mx-0 px-2 lg:px-0 font-medium leading-relaxed">
-              Earn <span className="text-accent-400 font-bold">Rs 1/=</span> for every watch, click, like, or review across major platforms. Connect, engage, and withdraw instant earnings to your account.
+              Earn <span className="text-accent-400 font-bold">Rs 1/=</span> for
+              every watch, click, like, or review across major platforms.
+              Connect, engage, and withdraw instant earnings to your account.
             </p>
           </div>
 
@@ -113,15 +115,21 @@ export default function LandingPage() {
               <div className="h-6 flex justify-between items-center text-[10px] text-slate-500 px-3 pt-1 font-semibold">
                 <span>9:41</span>
                 <div className="flex items-center space-x-1">
-                  <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9-4.03-9-9-9zm0 15c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z"/></svg>
-                  <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                  <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+                    <path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9-4.03-9-9-9zm0 15c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z" />
+                  </svg>
+                  <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+                  </svg>
                 </div>
               </div>
 
               {/* Header */}
               <div className="flex justify-between items-center mt-3 mb-2 px-1">
                 <div className="space-y-0.5">
-                  <p className="text-[10px] uppercase font-bold tracking-widest text-slate-500">Live Earnings</p>
+                  <p className="text-[10px] uppercase font-bold tracking-widest text-slate-500">
+                    Live Earnings
+                  </p>
                   <h3 className="text-sm font-bold text-white">My Wallet</h3>
                 </div>
                 <span className="text-accent-400 font-extrabold text-lg tracking-tight bg-accent-950/40 border border-accent-900/30 px-3 py-1 rounded-full shadow-inner animate-pulse">
@@ -133,7 +141,9 @@ export default function LandingPage() {
               <div className="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-3 space-y-2.5">
                 <div className="flex justify-between items-center text-[11px] text-slate-400">
                   <span className="font-semibold">Today's Progress</span>
-                  <span className="text-white font-bold">{Math.round(progress)}%</span>
+                  <span className="text-white font-bold">
+                    {Math.round(progress)}%
+                  </span>
                 </div>
                 {/* Progress bar */}
                 <div className="bg-slate-950 rounded-full h-2.5 overflow-hidden">
@@ -150,21 +160,31 @@ export default function LandingPage() {
 
               {/* Platform Task Feeds */}
               <div className="space-y-2.5 flex-1 mt-4 overflow-y-auto">
-                <p className="text-[10px] uppercase font-bold tracking-wider text-slate-500 mb-1 px-1">Completed Tasks</p>
-                
+                <p className="text-[10px] uppercase font-bold tracking-wider text-slate-500 mb-1 px-1">
+                  Completed Tasks
+                </p>
+
                 {/* Facebook */}
                 <div className="flex items-center justify-between p-2.5 bg-slate-900/50 hover:bg-slate-900 border border-slate-850 rounded-xl transition-all duration-200">
                   <div className="flex items-center space-x-2.5">
                     <div className="w-8 h-8 bg-blue-600/10 border border-blue-500/20 rounded-lg flex items-center justify-center">
-                      <img src="/facebook.png" alt="FB" className="w-5 h-5 object-contain" />
+                      <img
+                        src="/facebook.png"
+                        alt="FB"
+                        className="w-5 h-5 object-contain"
+                      />
                     </div>
                     <div className="space-y-0.5">
-                      <p className="text-[11px] font-bold text-white leading-none">Facebook Share</p>
-                      <p className="text-[9px] text-slate-500 leading-none">1 min ago</p>
+                      <p className="text-[11px] font-bold text-white leading-none">
+                        Facebook Share
+                      </p>
+                      <p className="text-[9px] text-slate-500 leading-none">
+                        1 min ago
+                      </p>
                     </div>
                   </div>
                   <span className="text-accent-400 font-extrabold text-[11px] bg-accent-950/30 border border-accent-900/20 px-2 py-0.5 rounded-md">
-                    +Rs 15/=
+                    +Rs 10/=
                   </span>
                 </div>
 
@@ -172,11 +192,19 @@ export default function LandingPage() {
                 <div className="flex items-center justify-between p-2.5 bg-slate-900/50 hover:bg-slate-900 border border-slate-850 rounded-xl transition-all duration-200">
                   <div className="flex items-center space-x-2.5">
                     <div className="w-8 h-8 bg-pink-600/10 border border-pink-500/20 rounded-lg flex items-center justify-center">
-                      <img src="/Tiktok.png" alt="TikTok" className="w-5 h-5 object-contain" />
+                      <img
+                        src="/Tiktok.png"
+                        alt="TikTok"
+                        className="w-5 h-5 object-contain"
+                      />
                     </div>
                     <div className="space-y-0.5">
-                      <p className="text-[11px] font-bold text-white leading-none">TikTok Follow</p>
-                      <p className="text-[9px] text-slate-500 leading-none">5 mins ago</p>
+                      <p className="text-[11px] font-bold text-white leading-none">
+                        TikTok Follow
+                      </p>
+                      <p className="text-[9px] text-slate-500 leading-none">
+                        5 mins ago
+                      </p>
                     </div>
                   </div>
                   <span className="text-accent-400 font-extrabold text-[11px] bg-accent-950/30 border border-accent-900/20 px-2 py-0.5 rounded-md">
@@ -188,11 +216,19 @@ export default function LandingPage() {
                 <div className="flex items-center justify-between p-2.5 bg-slate-900/50 hover:bg-slate-900 border border-slate-850 rounded-xl transition-all duration-200">
                   <div className="flex items-center space-x-2.5">
                     <div className="w-8 h-8 bg-red-600/10 border border-red-500/20 rounded-lg flex items-center justify-center">
-                      <img src="/youtube.png" alt="YT" className="w-5 h-5 object-contain" />
+                      <img
+                        src="/youtube.png"
+                        alt="YT"
+                        className="w-5 h-5 object-contain"
+                      />
                     </div>
                     <div className="space-y-0.5">
-                      <p className="text-[11px] font-bold text-white leading-none">YouTube Watch</p>
-                      <p className="text-[9px] text-slate-500 leading-none">12 mins ago</p>
+                      <p className="text-[11px] font-bold text-white leading-none">
+                        YouTube Watch
+                      </p>
+                      <p className="text-[9px] text-slate-500 leading-none">
+                        12 mins ago
+                      </p>
                     </div>
                   </div>
                   <span className="text-accent-400 font-extrabold text-[11px] bg-accent-950/30 border border-accent-900/20 px-2 py-0.5 rounded-md">
@@ -207,9 +243,15 @@ export default function LandingPage() {
                   <span className="w-1.5 h-1.5 rounded-full bg-primary-400 mb-0.5"></span>
                   Home
                 </span>
-                <span className="hover:text-slate-300 cursor-pointer">Tasks</span>
-                <span className="hover:text-slate-300 cursor-pointer">Wallet</span>
-                <span className="hover:text-slate-300 cursor-pointer">Profile</span>
+                <span className="hover:text-slate-300 cursor-pointer">
+                  Tasks
+                </span>
+                <span className="hover:text-slate-300 cursor-pointer">
+                  Wallet
+                </span>
+                <span className="hover:text-slate-300 cursor-pointer">
+                  Profile
+                </span>
               </div>
             </div>
           </div>

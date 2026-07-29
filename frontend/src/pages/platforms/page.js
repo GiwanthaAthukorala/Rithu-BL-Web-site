@@ -73,7 +73,7 @@ export default function Platforms() {
     {
       name: "Comment Section",
       description: "Get paid for engaging comments on social media posts",
-      rate: "Rs 15/= per comment",
+      rate: "Rs 10/= per comment",
       icon: MessageCircle,
       color: "from-indigo-500 to-purple-600",
       tasks: ["Facebook Comments", "Post Comments"],

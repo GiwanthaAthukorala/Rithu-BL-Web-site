@@ -8,7 +8,7 @@ const SupportedPlatforms = () => {
 
   const platforms = [
     {
-      name: "Facebook Likes",
+      name: "Facebook Likes & Followers",
       description:
         "Connect your profile and pages to earn from likes on your posts.",
       rate: "Rs 1/= Per Like • Simple Proof",
@@ -18,7 +18,7 @@ const SupportedPlatforms = () => {
       shadow: "hover:shadow-blue-100",
     },
     {
-      name: "TikTok Hearts",
+      name: "TikTok Hearts & Followers",
       description: "Earn money from likes on your videos and trending content.",
       rate: "Rs 1/= Per Like • Instant Verification",
       icon: "/Tiktok.png",
@@ -27,7 +27,7 @@ const SupportedPlatforms = () => {
       shadow: "hover:shadow-pink-100",
     },
     {
-      name: "Instagram Engagement",
+      name: "Instagram Likes & Followers",
       description:
         "Link your account and monetize likes on your photos and reels.",
       rate: "Rs 1/= Per Like • Automated Tracking",
@@ -37,7 +37,7 @@ const SupportedPlatforms = () => {
       shadow: "hover:shadow-purple-100",
     },
     {
-      name: "YouTube Watching",
+      name: "YouTube Views & Subscribers",
       description: "Get paid for likes on your videos and subscribers.",
       rate: "Rs 2/= Per Subscriber/Like",
       icon: "/youtube.png",
@@ -56,9 +56,9 @@ const SupportedPlatforms = () => {
       shadow: "hover:shadow-emerald-100",
     },
     {
-      name: "Comment System",
+      name: "Comment Submissions",
       description: "Post meaningful comments under selected campaign posts.",
-      rate: "Rs 15/= Per Comment • Daily Payouts",
+      rate: "Rs 10/= Per Comment • Daily Payouts",
       icon: "/comment.png",
       link: "/FacebookCommentPage/page",
       gradient: "from-indigo-600 via-purple-600 to-brand-500",
@@ -103,14 +103,20 @@ const SupportedPlatforms = () => {
             Available Platforms & Tasks
           </h2>
           <p className="text-slate-500 text-base sm:text-lg max-w-2xl mx-auto font-medium">
-            Connect your accounts and multiply your income streams by performing simple, high-reward tasks across Sri Lanka's largest social gig network.
+            Connect your accounts and multiply your income streams by performing
+            simple, high-reward tasks across Sri Lanka's largest social gig
+            network.
           </p>
         </div>
 
         {/* Platform Cards Grid */}
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mb-20">
           {platforms.map((platform) => (
-            <Link href={platform.link} key={platform.name} className="block group">
+            <Link
+              href={platform.link}
+              key={platform.name}
+              className="block group"
+            >
               <div
                 className={`h-full bg-white/80 backdrop-blur-md rounded-2xl p-6 border border-slate-200/60 hover:border-primary-450/40 shadow-sm ${platform.shadow} hover:shadow-xl hover:shadow-primary-100/40 transition-all duration-350 transform hover:-translate-y-1.5 flex flex-col justify-between`}
               >
@@ -192,7 +198,8 @@ const SupportedPlatforms = () => {
             <div className="absolute inset-0 bg-gradient-to-r from-brand-600 to-primary-650 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
           </button>
           <p className="mt-4 text-xs text-slate-400 font-medium">
-            ✨ Standard verification • Instant payouts to local banks • Zero start cost
+            ✨ Standard verification • Instant payouts to local banks • Zero
+            start cost
           </p>
         </div>
       </div>

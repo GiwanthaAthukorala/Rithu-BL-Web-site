@@ -86,10 +86,10 @@ router.get("/:platform", protect, async (req, res) => {
         createdAt: link.createdAt,
         updatedAt: link.updatedAt,
         userClickCount: userLink ? userLink.clickCount : 0,
-        maxClicks: userLink ? userLink.maxClicks : 45,
+        maxClicks: userLink ? userLink.maxClicks : 50,
         remainingClicks: userLink
           ? userLink.maxClicks - userLink.clickCount
-          : 45,
+          : 50,
         workLimit: link.workLimit || 0,
         totalClicks: link.totalClicks || 0,
       };
@@ -160,7 +160,7 @@ router.post("/:linkId/click", protect, async (req, res) => {
         linkId: new mongoose.Types.ObjectId(linkId),
         platform: link.platform,
         clickCount: 0,
-        maxClicks: 45,
+        maxClicks: 50,
         submitted: false,
       });
 

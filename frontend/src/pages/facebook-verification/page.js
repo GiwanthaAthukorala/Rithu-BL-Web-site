@@ -490,7 +490,7 @@ export default function FbVerificationTask() {
                     </div>
                   </div>
                   {selectedFacebookAccount?._id === account._id && (
-                    <CheckCircle className="text-purple-600" size={45} />
+                    <CheckCircle className="text-purple-600" size={50} />
                   )}
                 </div>
               ))}
@@ -542,7 +542,7 @@ export default function FbVerificationTask() {
                       3
                     </span>
                     <span>
-                      Click the link 45 times to track your engagement
+                      Click the link 50 times to track your engagement
                     </span>
                   </li>
                   <li className="flex items-start space-x-3">
@@ -550,13 +550,13 @@ export default function FbVerificationTask() {
                       4
                     </span>
                     <span>
-                      Take up to 45 different screenshots showing your
+                      Take up to 50 different screenshots showing your
                       likes/follows
                     </span>
                   </li>
                   <li className="flex items-start space-x-3">
                     <span className="flex-shrink-0 w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold">
-                      45
+                      50
                     </span>
                     <span>
                       Upload all screenshots at once to earn Rs 1.00 each
@@ -610,19 +610,19 @@ export default function FbVerificationTask() {
                   <div className="flex items-center justify-between">
                     <p className="text-blue-700 font-medium">
                       ✓ Link selected - Progress:{" "}
-                      {linkClickCounts[selectedLinkId]}/45 clicks
+                      {linkClickCounts[selectedLinkId]}/50 clicks
                     </p>
-                    {linkClickCounts[selectedLinkId] >= 45 && (
+                    {linkClickCounts[selectedLinkId] >= 50 && (
                       <CheckCircle className="w-5 h-5 text-green-600" />
                     )}
                   </div>
-                  {linkClickCounts[selectedLinkId] >= 45 ? (
+                  {linkClickCounts[selectedLinkId] >= 50 ? (
                     <p className="text-green-700 text-sm mt-1">
                       Ready to submit! Upload your screenshots below.
                     </p>
                   ) : (
                     <p className="text-blue-600 text-sm mt-1">
-                      Click {45 - linkClickCounts[selectedLinkId]} more times to
+                      Click {50 - linkClickCounts[selectedLinkId]} more times to
                       complete
                     </p>
                   )}
@@ -870,7 +870,7 @@ export default function FbVerificationTask() {
                     <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
                       <p className="text-yellow-800 font-medium">
                         ⚠️ Please complete{" "}
-                        {45 - linkClickCounts[selectedLinkId]} more clicks on
+                        {50 - linkClickCounts[selectedLinkId]} more clicks on
                         your selected link before submitting.
                       </p>
                     </div>
@@ -881,11 +881,11 @@ export default function FbVerificationTask() {
                   disabled={
                     !files.length ||
                     isSubmitting ||
-                    (selectedLinkId && linkClickCounts[selectedLinkId] < 45)
+                    (selectedLinkId && linkClickCounts[selectedLinkId] < 50)
                   }
                   className={`w-full py-4 rounded-xl font-bold text-lg transition-all duration-300 transform hover:scale-[1.02] ${
                     files.length > 0 &&
-                    (!selectedLinkId || linkClickCounts[selectedLinkId] >= 45)
+                    (!selectedLinkId || linkClickCounts[selectedLinkId] >= 50)
                       ? "bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white shadow-lg hover:shadow-xl"
                       : "bg-gray-300 text-gray-500 cursor-not-allowed"
                   }`}

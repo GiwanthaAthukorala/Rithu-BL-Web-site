@@ -18,7 +18,7 @@ const createFbCommentSubmission = async (req, res) => {
         message: "File upload failed. No file received from client.",
       });
     }
- 
+
     const userId = req.user._id;
     const cloudinaryUrl = req.file.path;
 
@@ -44,10 +44,12 @@ const createFbCommentSubmission = async (req, res) => {
       return res.status(400).json({
         success: false,
         message: `This screenshot has already been submitted (originally submitted on ${new Date(
-          duplicateSubmission.createdAt
+          duplicateSubmission.createdAt,
         ).toLocaleDateString()}). Please upload a different screenshot.`,
         errorType: "DUPLICATE_IMAGE",
-        previousDate: new Date(duplicateSubmission.createdAt).toLocaleDateString(),
+        previousDate: new Date(
+          duplicateSubmission.createdAt,
+        ).toLocaleDateString(),
       });
     }
 
@@ -60,7 +62,7 @@ const createFbCommentSubmission = async (req, res) => {
       screenshot: cloudinaryUrl,
       imageHash: uploadedImageHash,
       status: "approved", // Auto-approve for now
-      amount: 15.0,
+      amount: 10.0,
     });
 
     // Update earnings
@@ -68,14 +70,14 @@ const createFbCommentSubmission = async (req, res) => {
     if (!earnings) {
       earnings = await Earnings.create({
         user: req.user._id,
-        totalEarned: 15.0,
-        availableBalance: 15.0,
+        totalEarned: 10.0,
+        availableBalance: 10.0,
         pendingWithdrawal: 0,
         withdrawnAmount: 0,
       });
     } else {
-      earnings.totalEarned += 15.0;
-      earnings.availableBalance += 15.0;
+      earnings.totalEarned += 10.0;
+      earnings.availableBalance += 10.0;
       await earnings.save();
     }
 
@@ -135,14 +137,14 @@ const approveCommentSubmission = async (req, res) => {
     if (!earnings) {
       earnings = await Earnings.create({
         user: submission.user,
-        totalEarned: 15.0,
-        availableBalance: 15.0,
+        totalEarned: 10.0,
+        availableBalance: 10.0,
         pendingWithdrawal: 0,
         withdrawnAmount: 0,
       });
     } else {
-      earnings.totalEarned += 15.0;
-      earnings.availableBalance += 15.0;
+      earnings.totalEarned += 10.0;
+      earnings.availableBalance += 10.0;
       await earnings.save();
     }
 

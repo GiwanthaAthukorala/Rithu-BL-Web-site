@@ -34,7 +34,7 @@ const fbCommentSubmissionSchema = new mongoose.Schema(
     },
     amount: {
       type: Number,
-      default: 15.0,
+      default: 10.0,
     },
     submissionCount: {
       type: Number,
@@ -45,7 +45,7 @@ const fbCommentSubmissionSchema = new mongoose.Schema(
       ref: "CommentsLink",
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 // Add index for better performance
@@ -55,5 +55,5 @@ fbCommentSubmissionSchema.index({ user: 1, imageHash: 1 });
 
 module.exports = mongoose.model(
   "FbCommentSubmission",
-  fbCommentSubmissionSchema
+  fbCommentSubmissionSchema,
 );
