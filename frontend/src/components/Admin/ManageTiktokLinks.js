@@ -48,7 +48,7 @@ export default function ManageTiktokLinks() {
       const response = await adminApi.get("/links");
       if (response.data.success) {
         const tiktokLinks = response.data.data.filter(
-          (link) => link.platform === "tiktok"
+          (link) => link.platform === "tiktok",
         );
         setLinks(tiktokLinks);
       } else {
@@ -57,7 +57,7 @@ export default function ManageTiktokLinks() {
     } catch (err) {
       console.error("Fetch links error:", err);
       setError(
-        err.response?.data?.message || err.message || "Failed to load links"
+        err.response?.data?.message || err.message || "Failed to load links",
       );
     } finally {
       setLoading(false);
@@ -122,7 +122,10 @@ export default function ManageTiktokLinks() {
     setLoading(true);
     try {
       if (editingLink) {
-        const response = await adminApi.put(`/links/${editingLink._id}`, payload);
+        const response = await adminApi.put(
+          `/links/${editingLink._id}`,
+          payload,
+        );
         if (response.data.success) {
           setSuccess("TikTok link updated successfully!");
           setShowForm(false);
@@ -143,7 +146,7 @@ export default function ManageTiktokLinks() {
     } catch (err) {
       console.error("Save link error:", err);
       setError(
-        err.response?.data?.message || err.message || "Failed to save link"
+        err.response?.data?.message || err.message || "Failed to save link",
       );
       setLoading(false);
     }
@@ -152,7 +155,7 @@ export default function ManageTiktokLinks() {
   const handleDelete = async (id) => {
     if (
       !confirm(
-        "Are you sure you want to delete this link? This action cannot be undone."
+        "Are you sure you want to delete this link? This action cannot be undone.",
       )
     ) {
       return;
@@ -172,7 +175,7 @@ export default function ManageTiktokLinks() {
     } catch (err) {
       console.error("Delete link error:", err);
       setError(
-        err.response?.data?.message || err.message || "Failed to delete link"
+        err.response?.data?.message || err.message || "Failed to delete link",
       );
     } finally {
       setActionLoading(null);
@@ -190,7 +193,7 @@ export default function ManageTiktokLinks() {
       });
       if (response.data.success) {
         setSuccess(
-          `Link status changed to ${!link.active ? "Active" : "Inactive"}`
+          `Link status changed to ${!link.active ? "Active" : "Inactive"}`,
         );
         fetchTiktokLinks();
       } else {
@@ -199,7 +202,7 @@ export default function ManageTiktokLinks() {
     } catch (err) {
       console.error("Toggle active error:", err);
       setError(
-        err.response?.data?.message || err.message || "Failed to update status"
+        err.response?.data?.message || err.message || "Failed to update status",
       );
     } finally {
       setActionLoading(null);
@@ -209,7 +212,7 @@ export default function ManageTiktokLinks() {
   const handleResetClicks = async (id) => {
     if (
       !confirm(
-        "Are you sure you want to reset the click count for this link? This will also reactivate the link if it was deactivated due to the work limit."
+        "Are you sure you want to reset the click count for this link? This will also reactivate the link if it was deactivated due to the work limit.",
       )
     ) {
       return;
@@ -226,7 +229,9 @@ export default function ManageTiktokLinks() {
       const response2 = await adminApi.post(`/links/${id}/reset-all`);
 
       if (response1.data.success && response2.data.success) {
-        setSuccess("Link click stats and all user click counts successfully reset!");
+        setSuccess(
+          "Link click stats and all user click counts successfully reset!",
+        );
         fetchTiktokLinks();
       } else {
         setError("Failed to fully reset clicks.");
@@ -234,7 +239,7 @@ export default function ManageTiktokLinks() {
     } catch (err) {
       console.error("Reset clicks error:", err);
       setError(
-        err.response?.data?.message || err.message || "Failed to reset clicks"
+        err.response?.data?.message || err.message || "Failed to reset clicks",
       );
     } finally {
       setActionLoading(null);
@@ -245,14 +250,13 @@ export default function ManageTiktokLinks() {
   const totalLinks = links.length;
   const activeLinks = links.filter((l) => l.active).length;
   const limitReachedLinks = links.filter(
-    (l) => l.workLimit > 0 && l.totalClicks >= l.workLimit
+    (l) => l.workLimit > 0 && l.totalClicks >= l.workLimit,
   ).length;
   const totalClicks = links.reduce((acc, l) => acc + (l.totalClicks || 0), 0);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-slate-900 py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto">
-
         {/* ── Top Header ── */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8 pb-5 border-b border-white/10">
           <div className="flex items-center space-x-4">
@@ -287,10 +291,30 @@ export default function ManageTiktokLinks() {
         {/* ── Summary Stats ── */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
           {[
-            { label: "Total Links", value: totalLinks, icon: LinkIcon, color: "from-blue-500 to-indigo-600" },
-            { label: "Active", value: activeLinks, icon: Activity, color: "from-green-500 to-emerald-600" },
-            { label: "Limit Reached", value: limitReachedLinks, icon: Zap, color: "from-amber-500 to-orange-600" },
-            { label: "Total Clicks", value: totalClicks, icon: TrendingUp, color: "from-pink-500 to-red-500" },
+            {
+              label: "Total Links",
+              value: totalLinks,
+              icon: LinkIcon,
+              color: "from-blue-500 to-indigo-600",
+            },
+            {
+              label: "Active",
+              value: activeLinks,
+              icon: Activity,
+              color: "from-green-500 to-emerald-600",
+            },
+            {
+              label: "Limit Reached",
+              value: limitReachedLinks,
+              icon: Zap,
+              color: "from-amber-500 to-orange-600",
+            },
+            {
+              label: "Total Clicks",
+              value: totalClicks,
+              icon: TrendingUp,
+              color: "from-pink-500 to-red-500",
+            },
           ].map((stat) => {
             const Icon = stat.icon;
             return (
@@ -298,11 +322,15 @@ export default function ManageTiktokLinks() {
                 key={stat.label}
                 className="bg-white/5 border border-white/10 rounded-2xl p-4 flex items-center space-x-3"
               >
-                <div className={`w-10 h-10 bg-gradient-to-br ${stat.color} rounded-xl flex items-center justify-center flex-shrink-0`}>
+                <div
+                  className={`w-10 h-10 bg-gradient-to-br ${stat.color} rounded-xl flex items-center justify-center flex-shrink-0`}
+                >
                   <Icon className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <p className="text-xs text-gray-400 font-medium">{stat.label}</p>
+                  <p className="text-xs text-gray-400 font-medium">
+                    {stat.label}
+                  </p>
                   <p className="text-2xl font-bold text-white">{stat.value}</p>
                 </div>
               </div>
@@ -373,7 +401,7 @@ export default function ManageTiktokLinks() {
 
                 {/* Work Limit */}
                 <div>
-                  <label className="block text-sm font-semibold text-gray-300 mb-1 flex items-center justify-between">
+                  <label className="block text-sm font-semibold text-gray-300 mb-1  items-center justify-between">
                     <span>Work Limit (Clicks)</span>
                     <span className="text-xs text-gray-500 font-normal">
                       0 = No limit | Max 2000
@@ -399,7 +427,9 @@ export default function ManageTiktokLinks() {
                   />
                   <div className="flex justify-between text-xs text-gray-500 mt-1">
                     <span>0 (No limit)</span>
-                    <span className="font-semibold text-pink-400">{workLimit} clicks</span>
+                    <span className="font-semibold text-pink-400">
+                      {workLimit} clicks
+                    </span>
                     <span>2000</span>
                   </div>
                 </div>
@@ -461,16 +491,21 @@ export default function ManageTiktokLinks() {
         {loading ? (
           <div className="flex flex-col items-center justify-center py-20 bg-white/5 border border-white/10 rounded-2xl">
             <Loader2 className="w-10 h-10 text-pink-400 animate-spin" />
-            <p className="text-gray-400 mt-3 font-medium">Loading TikTok links...</p>
+            <p className="text-gray-400 mt-3 font-medium">
+              Loading TikTok links...
+            </p>
           </div>
         ) : links.length === 0 ? (
           <div className="text-center py-20 bg-white/5 border border-white/10 rounded-2xl">
             <div className="w-20 h-20 bg-gradient-to-br from-pink-500/20 to-red-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
               <Music className="w-10 h-10 text-pink-400" />
             </div>
-            <p className="text-white text-lg font-semibold">No TikTok links yet</p>
+            <p className="text-white text-lg font-semibold">
+              No TikTok links yet
+            </p>
             <p className="text-gray-400 mt-1 text-sm">
-              Click &quot;Add New Link&quot; to create your first TikTok task link
+              Click &quot;Add New Link&quot; to create your first TikTok task
+              link
             </p>
           </div>
         ) : (
@@ -482,7 +517,7 @@ export default function ManageTiktokLinks() {
               const percent = hasLimit
                 ? Math.min(
                     100,
-                    Math.round((link.totalClicks / link.workLimit) * 100)
+                    Math.round((link.totalClicks / link.workLimit) * 100),
                   )
                 : 0;
               const isActioning = actionLoading === link._id;
@@ -494,8 +529,8 @@ export default function ManageTiktokLinks() {
                     !link.active
                       ? "border-white/10 opacity-70"
                       : limitReached
-                      ? "border-amber-500/40 ring-2 ring-amber-500/20"
-                      : "border-white/15 hover:border-pink-500/40 hover:shadow-xl hover:shadow-pink-500/10"
+                        ? "border-amber-500/40 ring-2 ring-amber-500/20"
+                        : "border-white/15 hover:border-pink-500/40 hover:shadow-xl hover:shadow-pink-500/10"
                   }`}
                 >
                   {/* Top badges */}
