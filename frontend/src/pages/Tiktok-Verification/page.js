@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import {
   Upload,
@@ -8,6 +8,8 @@ import {
   Star,
   TrendingUp,
   Users,
+  Loader2,
+  Music,
 } from "lucide-react";
 import Header from "@/components/Header/Header";
 import api from "@/lib/api";
@@ -24,6 +26,57 @@ export default function TikTokVerificationTask() {
   const { user, isLoading: isAuthLoading } = useAuth();
   const [showDuplicateModal, setShowDuplicateModal] = useState(false);
   const [previousSubmissionDate, setPreviousSubmissionDate] = useState("");
+
+  // Dynamic TikTok links from the admin
+  const [tiktokLinks, setTiktokLinks] = useState([]);
+  const [linksLoading, setLinksLoading] = useState(true);
+
+  const fetchTiktokLinks = useCallback(async () => {
+    if (!user) return;
+    setLinksLoading(true);
+    try {
+      const apiUrl =
+        process.env.NEXT_PUBLIC_API_URL ||
+        "https://rithu-bl-web-site.onrender.com";
+      const token = localStorage.getItem("token");
+      const response = await fetch(`${apiUrl}/api/links/tiktok`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        if (data.success) {
+          setTiktokLinks(data.data || []);
+        }
+      }
+    } catch (err) {
+      console.error("Failed to fetch TikTok links:", err);
+    } finally {
+      setLinksLoading(false);
+    }
+  }, [user]);
+
+  useEffect(() => {
+    fetchTiktokLinks();
+  }, [fetchTiktokLinks]);
+
+  const handleLinkClick = async (linkId) => {
+    try {
+      const apiUrl =
+        process.env.NEXT_PUBLIC_API_URL ||
+        "https://rithu-bl-web-site.onrender.com";
+      const token = localStorage.getItem("token");
+      await fetch(`${apiUrl}/api/links/${linkId}/click`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+    } catch (err) {
+      // Non-critical — don't block the user
+      console.error("Click tracking failed:", err);
+    }
+  };
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
@@ -314,217 +367,72 @@ export default function TikTokVerificationTask() {
             </div>
           </div>
 
-          {/* TikTok Links Section */}
+          {/* TikTok Links Section — Dynamically loaded from admin */}
           <div className="mb-6 sm:mb-8">
             <div className="flex items-center space-x-3 mb-3 sm:mb-4">
               <div className="w-6 h-6 sm:w-8 sm:h-8 bg-gradient-to-r from-pink-500 to-red-500 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-xs sm:text-sm">
-                  🔗
-                </span>
+                <span className="text-white font-bold text-xs sm:text-sm">🔗</span>
               </div>
               <h3 className="text-lg sm:text-xl font-bold text-gray-800">
                 TikTok Links
               </h3>
             </div>
-            <div className="space-y-3 sm:space-y-4">
-              {/** <div className="bg-gradient-to-r from-gray-800 to-black p-4 sm:p-6 rounded-lg sm:rounded-xl border border-gray-300 hover:shadow-lg transition-all duration-300 group">
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0">
-                  <div className="flex-1">
-                    <h4 className="font-semibold text-white mb-1 text-sm sm:text-base">
-                      Rithu Business Lanka Team - Follow Our Main Account - ටික්
-                      ටොක් එකව්න්ට් එක ෆලෝ කරන්න
-                    </h4>
-                    <p className="text-gray-300 text-xs sm:text-sm">
-                      Rithu Business Lanka Team
-                    </p>
-                  </div>
-                  <a
-                    href="https://www.tiktok.com/@rithubus?_r=1&_t=ZS-96gI4jYfiTd"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-center bg-gradient-to-r from-pink-500 to-red-500 text-white px-4 sm:px-6 py-2 rounded-lg hover:from-pink-600 hover:to-red-600 transition-all duration-200 font-medium group-hover:scale-105 text-xs sm:text-sm"
-                  >
-                    <span className="hidden sm:inline">
-                      Follow Now - ටික් ටොක් එකව්න්ට් එක ෆලෝ කරන්න
-                    </span>
-                    <span className="sm:hidden">Follow Now</span>
-                    <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4 ml-1 sm:ml-2" />
-                  </a>
-                </div>{" "}
-              </div>{" "}
-              
-              <div className="bg-gradient-to-r from-gray-800 to-black p-4 sm:p-6 rounded-lg sm:rounded-xl border border-gray-300 hover:shadow-lg transition-all duration-300 group">
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0">
-                  <div className="flex-1">
-                    <h4 className="font-semibold text-white mb-1 text-sm sm:text-base">
-                      Follow Our Main Account -ටික් ටොක් එකව්න්ට් එක ෆලෝ කරන්න
-                    </h4>
-                    <p className="text-gray-300 text-xs sm:text-sm">
-                      Zephora Clothing 🇱🇰 - Join our community
-                    </p>
-                  </div>
-                  <a
-                    href="https://www.tiktok.com/@zephorasrilanka?_r=1&_t=ZS-974IkAJVx6l"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-center bg-gradient-to-r from-pink-500 to-red-500 text-white px-4 sm:px-6 py-2 rounded-lg hover:from-pink-600 hover:to-red-600 transition-all duration-200 font-medium group-hover:scale-105 text-xs sm:text-sm"
-                  >
-                    <span className="hidden sm:inline">
-                      Follow Now - ටික් ටොක් එකව්න්ට් එක ෆලෝ කරන්න
-                    </span>
-                    <span className="sm:hidden">Follow Now</span>
-                    <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4 ml-1 sm:ml-2" />
-                  </a>
-                </div>
-              </div> */}
-              {/**   <div className="bg-gradient-to-r from-gray-800 to-black p-4 sm:p-6 rounded-lg sm:rounded-xl border border-gray-300 hover:shadow-lg transition-all duration-300 group">
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0">
-                  <div className="flex-1">
-                    <h4 className="font-semibold text-white mb-1 text-sm sm:text-base">
-                      Follow Our Main Account -ටික් ටොක් එකව්න්ට් එක ෆලෝ කරන්න
-                    </h4>
-                    <p className="text-gray-300 text-xs sm:text-sm">
-                      Premio Bridal Ride - ගුවන් සේයා - Join our community
-                    </p>
-                  </div>
-                  <a
-                    href="https://www.tiktok.com/@zephorasrilanka?_r=1&_t=ZS-974IkAJVx6l"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-center bg-gradient-to-r from-pink-500 to-red-500 text-white px-4 sm:px-6 py-2 rounded-lg hover:from-pink-600 hover:to-red-600 transition-all duration-200 font-medium group-hover:scale-105 text-xs sm:text-sm"
-                  >
-                    <span className="hidden sm:inline">
-                      Follow Now - ටික් ටොක් එකව්න්ට් එක ෆලෝ කරන්න
-                    </span>
-                    <span className="sm:hidden">Follow Now</span>
-                    <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4 ml-1 sm:ml-2" />
-                  </a>
-                </div>
+            {linksLoading ? (
+              <div className="flex items-center justify-center py-10">
+                <Loader2 className="w-7 h-7 text-pink-500 animate-spin" />
+                <span className="ml-3 text-gray-500 text-sm font-medium">Loading tasks...</span>
               </div>
-            <div className="bg-gradient-to-r from-gray-800 to-black p-4 sm:p-6 rounded-lg sm:rounded-xl border border-gray-300 hover:shadow-lg transition-all duration-300 group">
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0">
-                  <div className="flex-1">
-                    <h4 className="font-semibold text-white mb-1 text-sm sm:text-base">
-                      Follow Our Main Account -ටික් ටොක් එකව්න්ට් එක ෆලෝ කරන්න
-                    </h4>
-                    <p className="text-gray-300 text-xs sm:text-sm">
-                      සුභ නැකත - Suba Nekatha - Join our community
-                    </p>
-                  </div>
-                  <a
-                    href="https://www.tiktok.com/@isu__ruwa?_r=1&_t=ZS-96rk1Y5bQdJ"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-center bg-gradient-to-r from-pink-500 to-red-500 text-white px-4 sm:px-6 py-2 rounded-lg hover:from-pink-600 hover:to-red-600 transition-all duration-200 font-medium group-hover:scale-105 text-xs sm:text-sm"
-                  >
-                    <span className="hidden sm:inline">
-                      Follow Now - ටික් ටොක් එකව්න්ට් එක ෆලෝ කරන්න
-                    </span>
-                    <span className="sm:hidden">Follow Now</span>
-                    <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4 ml-1 sm:ml-2" />
-                  </a>
+            ) : tiktokLinks.length === 0 ? (
+              <div className="bg-gradient-to-br from-gray-50 to-pink-50 border border-pink-100 rounded-xl p-8 text-center">
+                <div className="w-14 h-14 bg-gradient-to-br from-pink-100 to-red-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                  <Music className="w-7 h-7 text-pink-400" />
                 </div>
+                <p className="text-gray-600 font-semibold">No TikTok tasks available right now</p>
+                <p className="text-gray-400 text-sm mt-1">Please check back later — new tasks are added regularly.</p>
               </div>
-            */}
-              {/* Video Links */}
-              {/*  <div className="grid gap-3 sm:gap-4">
-                <div className="bg-gradient-to-br from-purple-50 to-pink-50 p-3 sm:p-4 rounded-lg sm:rounded-xl border border-purple-200 hover:shadow-md transition-all duration-300 group">
-                  <h4 className="font-semibold text-gray-800 mb-2 text-sm sm:text-base">
-                    Like Video #1 - ටික් ටොක් විඩියෝ එකට ලයික් කරන්න
-                  </h4>
-                  <a
-                    href="https://www.tiktok.com/@nadee.dilshani331/video/7659634478314294548?_r=1"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium group-hover:underline text-xs sm:text-sm"
+            ) : (
+              <div className="space-y-3 sm:space-y-4">
+                {tiktokLinks.map((link) => (
+                  <div
+                    key={link._id}
+                    className="bg-gradient-to-r from-gray-800 to-black p-4 sm:p-6 rounded-lg sm:rounded-xl border border-gray-700 hover:shadow-lg hover:border-pink-500/40 transition-all duration-300 group"
                   >
-                    <span className="hidden sm:inline">
-                      Watch & Like - ටික් ටොක් විඩියෝ එකට ලයික් කරන්න
-                    </span>
-                    <span className="sm:hidden">Watch & Like</span>
-                    <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4 ml-1" />
-                  </a>
-                </div>
-              </div>{" "}
-             <div className="grid gap-3 sm:gap-4">
-                <div className="bg-gradient-to-br from-purple-50 to-pink-50 p-3 sm:p-4 rounded-lg sm:rounded-xl border border-purple-200 hover:shadow-md transition-all duration-300 group">
-                  <h4 className="font-semibold text-gray-800 mb-2 text-sm sm:text-base">
-                    Like Video #1 - ටික් ටොක් විඩියෝ එකට ලයික් කරන්න
-                  </h4>
-                  <a
-                    href="https://vt.tiktok.com/ZSQFgpmV2/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium group-hover:underline text-xs sm:text-sm"
-                  >
-                    <span className="hidden sm:inline">
-                      Watch & Like - ටික් ටොක් විඩියෝ එකට ලයික් කරන්න
-                    </span>
-                    <span className="sm:hidden">Watch & Like</span>
-                    <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4 ml-1" />
-                  </a>
-                </div>
-              </div>{" "}
-             <div className="grid gap-3 sm:gap-4">
-                <div className="bg-gradient-to-br from-purple-50 to-pink-50 p-3 sm:p-4 rounded-lg sm:rounded-xl border border-purple-200 hover:shadow-md transition-all duration-300 group">
-                  <h4 className="font-semibold text-gray-800 mb-2 text-sm sm:text-base">
-                    Like Video #1 - ටික් ටොක් විඩියෝ එකට ලයික් කරන්න
-                  </h4>
-                  <a
-                    href="https://vt.tiktok.com/ZSuYnB3Ks/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium group-hover:underline text-xs sm:text-sm"
-                  >
-                    <span className="hidden sm:inline">
-                      Watch & Like - ටික් ටොක් විඩියෝ එකට ලයික් කරන්න
-                    </span>
-                    <span className="sm:hidden">Watch & Like</span>
-                    <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4 ml-1" />
-                  </a>
-                </div>
-              </div>{" "}
-              <div className="grid gap-3 sm:gap-4">
-                <div className="bg-gradient-to-br from-purple-50 to-pink-50 p-3 sm:p-4 rounded-lg sm:rounded-xl border border-purple-200 hover:shadow-md transition-all duration-300 group">
-                  <h4 className="font-semibold text-gray-800 mb-2 text-sm sm:text-base">
-                    Like Video #1 - ටික් ටොක් විඩියෝ එකට ලයික් කරන්න
-                  </h4>
-                  <a
-                    href="https://vt.tiktok.com/ZSuYnJCqp/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium group-hover:underline text-xs sm:text-sm"
-                  >
-                    <span className="hidden sm:inline">
-                      Watch & Like - ටික් ටොක් විඩියෝ එකට ලයික් කරන්න
-                    </span>
-                    <span className="sm:hidden">Watch & Like</span>
-                    <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4 ml-1" />
-                  </a>
-                </div>
-              </div>{" "}
-              <div className="grid gap-3 sm:gap-4">
-                <div className="bg-gradient-to-br from-purple-50 to-pink-50 p-3 sm:p-4 rounded-lg sm:rounded-xl border border-purple-200 hover:shadow-md transition-all duration-300 group">
-                  <h4 className="font-semibold text-gray-800 mb-2 text-sm sm:text-base">
-                    Like Video #1 - ටික් ටොක් විඩියෝ එකට ලයික් කරන්න
-                  </h4>
-                  <a
-                    href="https://www.tiktok.com/@akashitharuu7?_r=1&_t=ZS-95122vCRnWy"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium group-hover:underline text-xs sm:text-sm"
-                  >
-                    <span className="hidden sm:inline">
-                      Watch & Like - ටික් ටොක් විඩියෝ එකට ලයික් කරන්න
-                    </span>
-                    <span className="sm:hidden">Watch & Like</span>
-                    <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4 ml-1" />
-                  </a>
-                </div>
-              </div>{" "}
-            </div>{" "}
-     */}
-            </div>
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0">
+                      <div className="flex-1 min-w-0">
+                        <h4 className="font-semibold text-white mb-1 text-sm sm:text-base line-clamp-2">
+                          {link.title}
+                        </h4>
+                        <div className="flex items-center space-x-3">
+                          <p className="text-gray-400 text-xs sm:text-sm">
+                            Earn{" "}
+                            <span className="text-green-400 font-bold">
+                              Rs {link.earnings?.toFixed(2) || "1.00"}
+                            </span>
+                          </p>
+                          {link.workLimit > 0 && (
+                            <span className="text-xs text-pink-400 bg-pink-500/10 border border-pink-500/20 px-2 py-0.5 rounded-full">
+                              {link.totalClicks}/{link.workLimit} slots used
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      <a
+                        href={link.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={() => handleLinkClick(link._id)}
+                        className="flex items-center justify-center bg-gradient-to-r from-pink-500 to-red-500 text-white px-4 sm:px-6 py-2 rounded-lg hover:from-pink-600 hover:to-red-600 transition-all duration-200 font-medium group-hover:scale-105 text-xs sm:text-sm flex-shrink-0"
+                      >
+                        <span className="hidden sm:inline">Open &amp; Follow</span>
+                        <span className="sm:hidden">Open</span>
+                        <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4 ml-1 sm:ml-2" />
+                      </a>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
 
             {/* Requirements Section */}
             <div className="mb-6 sm:mb-8">
