@@ -35,7 +35,9 @@ import {
   X,
   CheckSquare,
   Square,
-  Select,
+  Menu,
+  ChevronDown,
+  SlidersHorizontal,
 } from "lucide-react";
 
 export default function AdminDashboard() {
@@ -65,6 +67,10 @@ export default function AdminDashboard() {
   const [selectedSubmissions, setSelectedSubmissions] = useState(new Set());
   const [selectAll, setSelectAll] = useState(false);
   const [bulkActionLoading, setBulkActionLoading] = useState(false);
+
+  // Mobile-only UI state
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [filtersOpen, setFiltersOpen] = useState(false);
 
   useEffect(() => {
     if (!isAuthenticated()) {
@@ -333,7 +339,8 @@ export default function AdminDashboard() {
 
   // Get status badge (keep your existing function)
   const getStatusBadge = (status) => {
-    const baseClasses = "px-2 py-1 rounded-full text-xs font-medium";
+    const baseClasses =
+      "px-2 py-1 rounded-full text-xs font-medium whitespace-nowrap";
     switch (status) {
       case "approved":
         return `${baseClasses} bg-green-100 text-green-800`;
@@ -418,7 +425,7 @@ export default function AdminDashboard() {
     return (
       <div
         key={submission._id}
-        className={`bg-white rounded-lg shadow-sm border transition-all duration-200 ${isSelected ? "border-blue-500 ring-2 ring-blue-200" : "border-gray-200 hover:shadow-md"}`}
+        className={`relative bg-white rounded-lg shadow-sm border transition-all duration-200 ${isSelected ? "border-blue-500 ring-2 ring-blue-200" : "border-gray-200 hover:shadow-md"}`}
       >
         {/* Selection checkbox in top-right corner */}
         <div className="absolute top-2 right-2 z-10">
@@ -427,19 +434,19 @@ export default function AdminDashboard() {
               e.stopPropagation();
               toggleSelectSubmission(submissionId);
             }}
-            className={`p-1 rounded-full ${isSelected ? "bg-blue-500 text-white" : "bg-white text-gray-400 border border-gray-300"}`}
+            className={`p-1.5 sm:p-1 rounded-full ${isSelected ? "bg-blue-500 text-white" : "bg-white text-gray-400 border border-gray-300"}`}
           >
             {isSelected ? (
-              <Check className="w-3 h-3" />
+              <Check className="w-3.5 h-3.5 sm:w-3 sm:h-3" />
             ) : (
-              <Square className="w-3 h-3" />
+              <Square className="w-3.5 h-3.5 sm:w-3 sm:h-3" />
             )}
           </button>
         </div>
 
         {/* Screenshot */}
         <div
-          className="h-48 w-full cursor-pointer overflow-hidden rounded-t-lg relative"
+          className="h-40 sm:h-48 w-full cursor-pointer overflow-hidden rounded-t-lg relative"
           onClick={() => openImageModal(submission)}
         >
           {isSelected && (
@@ -459,14 +466,14 @@ export default function AdminDashboard() {
         </div>
 
         {/* Info */}
-        <div className="p-4">
-          <div className="flex justify-between items-start mb-2">
-            <div className="flex items-center space-x-2">
+        <div className="p-3 sm:p-4">
+          <div className="flex justify-between items-start mb-2 gap-2">
+            <div className="flex items-center space-x-2 min-w-0">
               {getPlatformIcon(
                 submission.platformType,
                 submission.submissionType,
               )}
-              <span className="text-sm font-medium capitalize">
+              <span className="text-sm font-medium capitalize truncate">
                 {submission.platformType} {submission.submissionType}
               </span>
             </div>
@@ -495,7 +502,7 @@ export default function AdminDashboard() {
           <div className="flex space-x-2 mt-3">
             <button
               onClick={() => openImageModal(submission)}
-              className="flex-1 bg-blue-600 text-white px-2 py-1 rounded text-xs hover:bg-blue-700 transition-colors"
+              className="flex-1 bg-blue-600 text-white px-2 py-1.5 sm:py-1 rounded text-xs hover:bg-blue-700 transition-colors"
             >
               <Eye className="w-3 h-3 inline mr-1" />
               View
@@ -505,7 +512,7 @@ export default function AdminDashboard() {
               <button
                 onClick={() => updateSubmissionStatus(submissionId, "approved")}
                 disabled={actionLoading === submissionId}
-                className="flex-1 bg-green-600 text-white px-2 py-1 rounded text-xs hover:bg-green-700 transition-colors disabled:opacity-50"
+                className="flex-1 bg-green-600 text-white px-2 py-1.5 sm:py-1 rounded text-xs hover:bg-green-700 transition-colors disabled:opacity-50"
               >
                 ✓
               </button>
@@ -514,7 +521,7 @@ export default function AdminDashboard() {
             <button
               onClick={() => deleteSubmission(submissionId)}
               disabled={actionLoading === submissionId}
-              className="flex-1 bg-red-600 text-white px-2 py-1 rounded text-xs hover:bg-red-700 transition-colors disabled:opacity-50"
+              className="flex-1 bg-red-600 text-white px-2 py-1.5 sm:py-1 rounded text-xs hover:bg-red-700 transition-colors disabled:opacity-50"
             >
               🗑
             </button>
@@ -524,7 +531,7 @@ export default function AdminDashboard() {
     );
   };
 
-  // Platform Statistics Component (keep your existing)
+  // Platform Statistics Component (keep your existing) - now horizontally scrollable on mobile
   const PlatformStats = () => {
     const platforms = [
       { name: "facebook", label: "Facebook", color: "blue", icon: Facebook },
@@ -535,7 +542,7 @@ export default function AdminDashboard() {
     ];
 
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
+      <div className="flex sm:grid sm:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4 mb-8 overflow-x-auto sm:overflow-visible -mx-4 px-4 sm:mx-0 sm:px-0 pb-2 sm:pb-0 snap-x snap-mandatory sm:snap-none scrollbar-hide">
         {platforms.map((platform) => {
           const platformSubmissions = submissions.submissions.filter(
             (sub) => sub.platformType === platform.name,
@@ -545,7 +552,7 @@ export default function AdminDashboard() {
           return (
             <div
               key={platform.name}
-              className={`bg-white rounded-lg shadow p-4 border-l-4 border-${platform.color}-500`}
+              className={`bg-white rounded-lg shadow p-4 border-l-4 border-${platform.color}-500 min-w-[220px] sm:min-w-0 flex-shrink-0 snap-start`}
               onClick={() =>
                 setFilter({ ...filter, platform: platform.name, page: 1 })
               }
@@ -593,7 +600,7 @@ export default function AdminDashboard() {
 
   if (!isAuthenticated()) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
         <div className="text-center">
           <AlertCircle className="w-16 h-16 text-red-500 mx-auto mb-4" />
           <h2 className="text-2xl font-bold text-gray-900 mb-2">
@@ -610,36 +617,83 @@ export default function AdminDashboard() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50">
+      <header className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-4">
-              <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+          <div className="flex justify-between items-center h-14 sm:h-16">
+            <div className="flex items-center space-x-2 sm:space-x-4">
+              <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center flex-shrink-0">
                 <BarChart3 className="w-5 h-5 text-white" />
               </div>
-              <h1 className="text-2xl font-bold text-gray-900">
-                Admin Dashboard
+              <h1 className="text-lg sm:text-2xl font-bold text-gray-900">
+                Admin<span className="hidden xs:inline"> Dashboard</span>
               </h1>
             </div>
-            <div className="flex items-center space-x-4">
-              <span className="text-sm text-gray-700">
+            <div className="flex items-center space-x-2 sm:space-x-4">
+              <span className="hidden md:inline text-sm text-gray-700">
                 Welcome, {adminUser?.firstName} ({adminUser?.role})
               </span>
               <button
                 onClick={adminLogout}
-                className="bg-red-600 text-white px-4 py-2 rounded-md text-sm hover:bg-red-700 transition-colors"
+                className="hidden sm:inline-flex bg-red-600 text-white px-4 py-2 rounded-md text-sm hover:bg-red-700 transition-colors"
               >
                 Logout
+              </button>
+              {/* Mobile hamburger */}
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="sm:hidden p-2 rounded-md text-gray-600 hover:bg-gray-100"
+                aria-label="Menu"
+              >
+                {mobileMenuOpen ? (
+                  <X className="w-5 h-5" />
+                ) : (
+                  <Menu className="w-5 h-5" />
+                )}
               </button>
             </div>
           </div>
         </div>
+
+        {/* Mobile dropdown menu */}
+        {mobileMenuOpen && (
+          <div className="sm:hidden border-t border-gray-200 bg-white px-4 py-3 space-y-1">
+            <div className="text-sm text-gray-700 px-1 pb-2 border-b border-gray-100 mb-2">
+              Welcome, {adminUser?.firstName} ({adminUser?.role})
+            </div>
+            <button
+              onClick={() => {
+                router.push("/admin/facebook-link");
+                setMobileMenuOpen(false);
+              }}
+              className="w-full flex items-center px-3 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-md"
+            >
+              <Facebook className="w-4 h-4 mr-2 text-blue-600" />
+              Facebook Links
+            </button>
+            <button
+              onClick={() => {
+                router.push("/admin/tiktok-link");
+                setMobileMenuOpen(false);
+              }}
+              className="w-full flex items-center px-3 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-md"
+            >
+              <MessageSquare className="w-4 h-4 mr-2 text-pink-600" />
+              TikTok Links
+            </button>
+            <button
+              onClick={adminLogout}
+              className="w-full bg-red-600 text-white px-3 py-2.5 rounded-md text-sm hover:bg-red-700 transition-colors mt-2"
+            >
+              Logout
+            </button>
+          </div>
+        )}
       </header>
 
       {/* Navigation */}
-      <nav className="bg-white shadow-sm">
+      <nav className="bg-white shadow-sm sticky top-14 sm:top-16 z-30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex space-x-8">
+          <div className="flex space-x-4 sm:space-x-8 overflow-x-auto scrollbar-hide">
             {[
               { id: "dashboard", label: "Dashboard", icon: BarChart3 },
               { id: "submissions", label: "Submissions", icon: FileImage },
@@ -651,7 +705,7 @@ export default function AdminDashboard() {
                   setFilter((prev) => ({ ...prev, page: 1 }));
                   clearSelection();
                 }}
-                className={`flex items-center px-3 py-4 text-sm font-medium border-b-2 transition-colors ${
+                className={`flex items-center px-1 sm:px-3 py-3 sm:py-4 text-sm font-medium border-b-2 transition-colors whitespace-nowrap flex-shrink-0 ${
                   activeTab === tab.id
                     ? "border-blue-500 text-blue-600"
                     : "border-transparent text-gray-500 hover:text-gray-700"
@@ -661,16 +715,17 @@ export default function AdminDashboard() {
                 {tab.label}
               </button>
             ))}
+            {/* Desktop-only quick links; on mobile these live in the hamburger menu */}
             <button
               onClick={() => router.push("/admin/facebook-link")}
-              className="flex items-center px-3 py-4 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-gray-700 transition-colors"
+              className="hidden sm:flex items-center px-3 py-4 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-gray-700 transition-colors whitespace-nowrap"
             >
               <Facebook className="w-4 h-4 mr-2 text-blue-600" />
               Facebook Links
             </button>
             <button
               onClick={() => router.push("/admin/tiktok-link")}
-              className="flex items-center px-3 py-4 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-gray-700 transition-colors"
+              className="hidden sm:flex items-center px-3 py-4 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-gray-700 transition-colors whitespace-nowrap"
             >
               <MessageSquare className="w-4 h-4 mr-2 text-pink-600" />
               TikTok Links
@@ -680,12 +735,14 @@ export default function AdminDashboard() {
       </nav>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 pb-24 sm:pb-8">
         {activeTab === "dashboard" && (
           <div>
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-bold text-gray-900">Overview</h2>
-              <div className="text-sm text-gray-500">
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-1">
+              <h2 className="text-xl sm:text-2xl font-bold text-gray-900">
+                Overview
+              </h2>
+              <div className="text-xs sm:text-sm text-gray-500">
                 Last updated: {new Date().toLocaleTimeString()}
               </div>
             </div>
@@ -696,65 +753,65 @@ export default function AdminDashboard() {
                 <PlatformStats />
 
                 {/* Overall Stats Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                  <div className="bg-white rounded-lg shadow p-6">
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-8">
+                  <div className="bg-white rounded-lg shadow p-3 sm:p-6">
                     <div className="flex items-center">
-                      <div className="p-3 bg-blue-100 rounded-lg">
-                        <Users className="w-6 h-6 text-blue-600" />
+                      <div className="p-2 sm:p-3 bg-blue-100 rounded-lg">
+                        <Users className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600" />
                       </div>
-                      <div className="ml-4">
-                        <p className="text-sm font-medium text-gray-600">
-                          Total Submissions
+                      <div className="ml-3 sm:ml-4 min-w-0">
+                        <p className="text-xs sm:text-sm font-medium text-gray-600 truncate">
+                          Total
                         </p>
-                        <p className="text-2xl font-bold text-gray-900">
+                        <p className="text-lg sm:text-2xl font-bold text-gray-900">
                           {statistics.totalSubmissions}
                         </p>
                       </div>
                     </div>
                   </div>
 
-                  <div className="bg-white rounded-lg shadow p-6">
+                  <div className="bg-white rounded-lg shadow p-3 sm:p-6">
                     <div className="flex items-center">
-                      <div className="p-3 bg-green-100 rounded-lg">
-                        <CheckCircle className="w-6 h-6 text-green-600" />
+                      <div className="p-2 sm:p-3 bg-green-100 rounded-lg">
+                        <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-green-600" />
                       </div>
-                      <div className="ml-4">
-                        <p className="text-sm font-medium text-gray-600">
+                      <div className="ml-3 sm:ml-4 min-w-0">
+                        <p className="text-xs sm:text-sm font-medium text-gray-600 truncate">
                           Approved
                         </p>
-                        <p className="text-2xl font-bold text-gray-900">
+                        <p className="text-lg sm:text-2xl font-bold text-gray-900">
                           {statistics.approvedSubmissions}
                         </p>
                       </div>
                     </div>
                   </div>
 
-                  <div className="bg-white rounded-lg shadow p-6">
+                  <div className="bg-white rounded-lg shadow p-3 sm:p-6">
                     <div className="flex items-center">
-                      <div className="p-3 bg-yellow-100 rounded-lg">
-                        <Clock className="w-6 h-6 text-yellow-600" />
+                      <div className="p-2 sm:p-3 bg-yellow-100 rounded-lg">
+                        <Clock className="w-5 h-5 sm:w-6 sm:h-6 text-yellow-600" />
                       </div>
-                      <div className="ml-4">
-                        <p className="text-sm font-medium text-gray-600">
+                      <div className="ml-3 sm:ml-4 min-w-0">
+                        <p className="text-xs sm:text-sm font-medium text-gray-600 truncate">
                           Pending
                         </p>
-                        <p className="text-2xl font-bold text-gray-900">
+                        <p className="text-lg sm:text-2xl font-bold text-gray-900">
                           {statistics.pendingSubmissions}
                         </p>
                       </div>
                     </div>
                   </div>
 
-                  <div className="bg-white rounded-lg shadow p-6">
+                  <div className="bg-white rounded-lg shadow p-3 sm:p-6">
                     <div className="flex items-center">
-                      <div className="p-3 bg-red-100 rounded-lg">
-                        <XCircle className="w-6 h-6 text-red-600" />
+                      <div className="p-2 sm:p-3 bg-red-100 rounded-lg">
+                        <XCircle className="w-5 h-5 sm:w-6 sm:h-6 text-red-600" />
                       </div>
-                      <div className="ml-4">
-                        <p className="text-sm font-medium text-gray-600">
+                      <div className="ml-3 sm:ml-4 min-w-0">
+                        <p className="text-xs sm:text-sm font-medium text-gray-600 truncate">
                           Rejected
                         </p>
-                        <p className="text-2xl font-bold text-gray-900">
+                        <p className="text-lg sm:text-2xl font-bold text-gray-900">
                           {statistics.rejectedSubmissions}
                         </p>
                       </div>
@@ -764,34 +821,34 @@ export default function AdminDashboard() {
 
                 {/* Top Users */}
                 {statistics.topUsers && statistics.topUsers.length > 0 && (
-                  <div className="bg-white rounded-lg shadow p-6">
-                    <h3 className="text-lg font-medium text-gray-900 mb-4">
+                  <div className="bg-white rounded-lg shadow p-4 sm:p-6">
+                    <h3 className="text-base sm:text-lg font-medium text-gray-900 mb-4">
                       Top Users
                     </h3>
                     <div className="space-y-3">
                       {statistics.topUsers.slice(0, 5).map((user, index) => (
                         <div
                           key={user._id}
-                          className="flex items-center justify-between p-3 bg-gray-50 rounded"
+                          className="flex items-center justify-between p-3 bg-gray-50 rounded gap-2"
                         >
-                          <div className="flex items-center space-x-3">
-                            <span className="w-6 h-6 bg-blue-100 text-blue-800 rounded-full flex items-center justify-center text-sm font-medium">
+                          <div className="flex items-center space-x-3 min-w-0">
+                            <span className="w-6 h-6 bg-blue-100 text-blue-800 rounded-full flex items-center justify-center text-sm font-medium flex-shrink-0">
                               {index + 1}
                             </span>
-                            <div>
-                              <p className="font-medium">
+                            <div className="min-w-0">
+                              <p className="font-medium truncate">
                                 {user.firstName} {user.lastName}
                               </p>
-                              <p className="text-sm text-gray-600">
+                              <p className="text-sm text-gray-600 truncate">
                                 {user.email}
                               </p>
                             </div>
                           </div>
-                          <div className="text-right">
-                            <p className="font-semibold">
+                          <div className="text-right flex-shrink-0">
+                            <p className="font-semibold text-sm sm:text-base">
                               {user.totalSubmissions} submissions
                             </p>
-                            <p className="text-sm text-green-600">
+                            <p className="text-xs sm:text-sm text-green-600">
                               {user.approvedSubmissions} approved
                             </p>
                           </div>
@@ -807,33 +864,48 @@ export default function AdminDashboard() {
 
         {activeTab === "submissions" && (
           <div>
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-bold text-gray-900">
-                All Submissions
-                {selectedSubmissions.size > 0 && (
-                  <span className="ml-2 text-sm font-normal text-blue-600">
-                    ({selectedSubmissions.size} selected)
-                  </span>
-                )}
-              </h2>
-              <div className="flex space-x-3">
+            <div className="flex flex-col gap-3 mb-6">
+              <div className="flex justify-between items-center">
+                <h2 className="text-xl sm:text-2xl font-bold text-gray-900">
+                  Submissions
+                  {selectedSubmissions.size > 0 && (
+                    <span className="ml-2 text-sm font-normal text-blue-600">
+                      ({selectedSubmissions.size})
+                    </span>
+                  )}
+                </h2>
                 <div className="flex space-x-2">
                   <button
                     onClick={() => setViewMode("list")}
                     className={`p-2 rounded ${viewMode === "list" ? "bg-blue-100 text-blue-600" : "bg-gray-100 text-gray-600"}`}
+                    aria-label="List view"
                   >
                     <List className="w-4 h-4" />
                   </button>
                   <button
                     onClick={() => setViewMode("grid")}
                     className={`p-2 rounded ${viewMode === "grid" ? "bg-blue-100 text-blue-600" : "bg-gray-100 text-gray-600"}`}
+                    aria-label="Grid view"
                   >
                     <Grid3x3 className="w-4 h-4" />
                   </button>
                 </div>
+              </div>
+
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setFiltersOpen(!filtersOpen)}
+                  className="sm:hidden flex-1 flex items-center justify-center space-x-2 bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-md text-sm"
+                >
+                  <SlidersHorizontal className="w-4 h-4" />
+                  <span>Filters</span>
+                  <ChevronDown
+                    className={`w-4 h-4 transition-transform ${filtersOpen ? "rotate-180" : ""}`}
+                  />
+                </button>
                 <button
                   onClick={exportSubmissions}
-                  className="flex items-center space-x-2 bg-green-600 text-white px-4 py-2 rounded-md text-sm hover:bg-green-700 transition-colors"
+                  className="flex-1 sm:flex-none flex items-center justify-center space-x-2 bg-green-600 text-white px-4 py-2 rounded-md text-sm hover:bg-green-700 transition-colors"
                 >
                   <Download className="w-4 h-4" />
                   <span>Export CSV</span>
@@ -841,9 +913,9 @@ export default function AdminDashboard() {
               </div>
             </div>
 
-            {/* Bulk Action Bar - Only show when items are selected */}
+            {/* Bulk Action Bar - desktop/tablet inline; mobile version is a fixed bottom bar rendered later */}
             {selectedSubmissions.size > 0 && (
-              <div className="mb-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
+              <div className="hidden sm:block mb-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
                 <div className="flex justify-between items-center">
                   <div className="flex items-center space-x-2">
                     <CheckSquare className="w-5 h-5 text-blue-600" />
@@ -891,9 +963,11 @@ export default function AdminDashboard() {
               </div>
             )}
 
-            {/* Filters */}
-            <div className="bg-white p-6 rounded-lg shadow-sm mb-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+            {/* Filters - collapsible on mobile, always open from sm up */}
+            <div
+              className={`bg-white p-4 sm:p-6 rounded-lg shadow-sm mb-6 ${filtersOpen ? "block" : "hidden"} sm:block`}
+            >
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Platform
@@ -908,7 +982,7 @@ export default function AdminDashboard() {
                       });
                       clearSelection();
                     }}
-                    className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm"
+                    className="w-full border border-gray-300 rounded-md px-3 py-2.5 sm:py-2 text-sm"
                   >
                     <option value="all">All Platforms</option>
                     <option value="facebook_page">Facebook Page</option>
@@ -931,7 +1005,7 @@ export default function AdminDashboard() {
                       setFilter({ ...filter, status: e.target.value, page: 1 });
                       clearSelection();
                     }}
-                    className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm"
+                    className="w-full border border-gray-300 rounded-md px-3 py-2.5 sm:py-2 text-sm"
                   >
                     <option value="all">All Status</option>
                     <option value="pending">Pending</option>
@@ -955,7 +1029,7 @@ export default function AdminDashboard() {
                       });
                       clearSelection();
                     }}
-                    className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm"
+                    className="w-full border border-gray-300 rounded-md px-3 py-2.5 sm:py-2 text-sm"
                   />
                 </div>
 
@@ -970,7 +1044,7 @@ export default function AdminDashboard() {
                       setFilter({ ...filter, dateTo: e.target.value, page: 1 });
                       clearSelection();
                     }}
-                    className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm"
+                    className="w-full border border-gray-300 rounded-md px-3 py-2.5 sm:py-2 text-sm"
                   />
                 </div>
               </div>
@@ -994,7 +1068,7 @@ export default function AdminDashboard() {
                         });
                         clearSelection();
                       }}
-                      className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md text-sm"
+                      className="w-full pl-10 pr-4 py-2.5 sm:py-2 border border-gray-300 rounded-md text-sm"
                     />
                   </div>
                 </div>
@@ -1003,33 +1077,33 @@ export default function AdminDashboard() {
 
             {/* Status Summary */}
             {submissions.statusCounts && (
-              <div className="grid grid-cols-3 gap-4 mb-6">
-                <div className="bg-white p-4 rounded-lg shadow-sm border-l-4 border-yellow-400">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm font-medium text-gray-600">
+              <div className="grid grid-cols-3 gap-2 sm:gap-4 mb-6">
+                <div className="bg-white p-3 sm:p-4 rounded-lg shadow-sm border-l-4 border-yellow-400">
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center">
+                    <span className="text-xs sm:text-sm font-medium text-gray-600">
                       Pending
                     </span>
-                    <span className="text-2xl font-bold text-yellow-600">
+                    <span className="text-lg sm:text-2xl font-bold text-yellow-600">
                       {submissions.statusCounts.pending}
                     </span>
                   </div>
                 </div>
-                <div className="bg-white p-4 rounded-lg shadow-sm border-l-4 border-green-400">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm font-medium text-gray-600">
+                <div className="bg-white p-3 sm:p-4 rounded-lg shadow-sm border-l-4 border-green-400">
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center">
+                    <span className="text-xs sm:text-sm font-medium text-gray-600">
                       Approved
                     </span>
-                    <span className="text-2xl font-bold text-green-600">
+                    <span className="text-lg sm:text-2xl font-bold text-green-600">
                       {submissions.statusCounts.approved}
                     </span>
                   </div>
                 </div>
-                <div className="bg-white p-4 rounded-lg shadow-sm border-l-4 border-red-400">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm font-medium text-gray-600">
+                <div className="bg-white p-3 sm:p-4 rounded-lg shadow-sm border-l-4 border-red-400">
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center">
+                    <span className="text-xs sm:text-sm font-medium text-gray-600">
                       Rejected
                     </span>
-                    <span className="text-2xl font-bold text-red-600">
+                    <span className="text-lg sm:text-2xl font-bold text-red-600">
                       {submissions.statusCounts.rejected}
                     </span>
                   </div>
@@ -1050,11 +1124,11 @@ export default function AdminDashboard() {
               </div>
             ) : viewMode === "grid" ? (
               // Grid View
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6">
                 {submissions.submissions.map(renderSubmissionItem)}
               </div>
             ) : (
-              // List View
+              // List View - card-stack on mobile, full row layout from sm up
               <div className="bg-white shadow overflow-hidden sm:rounded-md">
                 <ul className="divide-y divide-gray-200">
                   {/* Select All Header for List View */}
@@ -1071,7 +1145,7 @@ export default function AdminDashboard() {
                         )}
                       </button>
                       <span className="text-sm font-medium text-gray-700">
-                        {selectAll ? "Deselect all" : "Select all"} on this page
+                        {selectAll ? "Deselect all" : "Select all"}
                       </span>
                       {selectedSubmissions.size > 0 && (
                         <span className="ml-2 text-sm text-blue-600">
@@ -1091,15 +1165,15 @@ export default function AdminDashboard() {
                         key={submission._id}
                         className={`hover:bg-gray-50 transition-colors ${isSelected ? "bg-blue-50" : ""}`}
                       >
-                        <div className="px-4 py-4">
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center space-x-4 flex-1">
+                        <div className="px-3 sm:px-4 py-4">
+                          <div className="flex items-start sm:items-center justify-between gap-3">
+                            <div className="flex items-start sm:items-center space-x-3 sm:space-x-4 flex-1 min-w-0">
                               {/* Selection checkbox */}
                               <button
                                 onClick={() =>
                                   toggleSelectSubmission(submissionId)
                                 }
-                                className={`p-1 rounded ${isSelected ? "bg-blue-500 text-white" : "bg-white text-gray-400 border border-gray-300"}`}
+                                className={`p-1 rounded flex-shrink-0 mt-1 sm:mt-0 ${isSelected ? "bg-blue-500 text-white" : "bg-white text-gray-400 border border-gray-300"}`}
                               >
                                 {isSelected ? (
                                   <Check className="w-4 h-4" />
@@ -1110,11 +1184,11 @@ export default function AdminDashboard() {
 
                               {/* Screenshot Thumbnail */}
                               <div
-                                className="flex-shrink-0 h-16 w-16 cursor-pointer"
+                                className="flex-shrink-0 h-14 w-14 sm:h-16 sm:w-16 cursor-pointer"
                                 onClick={() => openImageModal(submission)}
                               >
                                 <img
-                                  className="h-16 w-16 object-cover rounded border shadow-sm"
+                                  className="h-14 w-14 sm:h-16 sm:w-16 object-cover rounded border shadow-sm"
                                   src={submission.screenshot}
                                   alt="Submission screenshot"
                                   onError={(e) => {
@@ -1125,7 +1199,7 @@ export default function AdminDashboard() {
                               </div>
 
                               <div className="flex-1 min-w-0">
-                                <div className="flex items-center space-x-2 mb-2">
+                                <div className="flex flex-wrap items-center gap-2 mb-2">
                                   {getPlatformIcon(
                                     submission.platformType,
                                     submission.submissionType,
@@ -1143,13 +1217,13 @@ export default function AdminDashboard() {
                                   </span>
                                 </div>
 
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-2 text-sm text-gray-600">
-                                  <div>
+                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-1 sm:gap-2 text-xs sm:text-sm text-gray-600">
+                                  <div className="truncate">
                                     <span className="font-medium">User:</span>{" "}
                                     {submission.user?.firstName}{" "}
                                     {submission.user?.lastName}
                                   </div>
-                                  <div>
+                                  <div className="truncate">
                                     <span className="font-medium">Email:</span>{" "}
                                     {submission.user?.email}
                                   </div>
@@ -1165,15 +1239,72 @@ export default function AdminDashboard() {
                                       submission.createdAt,
                                     ).toLocaleDateString()}
                                   </div>
-                                  <div>
+                                  <div className="hidden sm:block">
                                     <span className="font-medium">Phone:</span>{" "}
                                     {submission.user?.phoneNumber}
                                   </div>
                                 </div>
+
+                                {/* Action buttons - shown inline on mobile, under the info block */}
+                                <div className="flex flex-wrap items-center gap-2 mt-3 sm:hidden">
+                                  {submission.status === "pending" && (
+                                    <>
+                                      <button
+                                        onClick={() =>
+                                          updateSubmissionStatus(
+                                            submissionId,
+                                            "approved",
+                                          )
+                                        }
+                                        disabled={
+                                          actionLoading === submissionId
+                                        }
+                                        className="bg-green-600 text-white px-3 py-1.5 rounded text-xs hover:bg-green-700 transition-colors disabled:opacity-50"
+                                      >
+                                        Approve
+                                      </button>
+                                      <button
+                                        onClick={() => {
+                                          const reason =
+                                            prompt("Rejection reason:");
+                                          if (reason !== null) {
+                                            updateSubmissionStatus(
+                                              submissionId,
+                                              "rejected",
+                                              reason,
+                                            );
+                                          }
+                                        }}
+                                        disabled={
+                                          actionLoading === submissionId
+                                        }
+                                        className="bg-red-600 text-white px-3 py-1.5 rounded text-xs hover:bg-red-700 transition-colors disabled:opacity-50"
+                                      >
+                                        Reject
+                                      </button>
+                                    </>
+                                  )}
+                                  <button
+                                    onClick={() => openImageModal(submission)}
+                                    className="bg-blue-600 text-white px-3 py-1.5 rounded text-xs hover:bg-blue-700 transition-colors"
+                                  >
+                                    <Eye className="w-3.5 h-3.5" />
+                                  </button>
+                                  <button
+                                    onClick={() =>
+                                      deleteSubmission(submissionId)
+                                    }
+                                    disabled={actionLoading === submissionId}
+                                    className="bg-gray-600 text-white px-3 py-1.5 rounded text-xs hover:bg-gray-700 transition-colors disabled:opacity-50"
+                                  >
+                                    <Trash2 className="w-3.5 h-3.5" />
+                                  </button>
+                                </div>
                               </div>
                             </div>
 
-                            <div className="flex items-center space-x-2 ml-4">
+                            {/* Action buttons - desktop/tablet, aligned right */}
+                            <div className="hidden sm:flex items-center space-x-2 ml-4 flex-shrink-0">
                               {submission.status === "pending" && (
                                 <>
                                   <button
@@ -1234,14 +1365,14 @@ export default function AdminDashboard() {
 
             {/* Pagination */}
             {submissions.pagination && submissions.submissions?.length > 0 && (
-              <div className="mt-6 bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6 rounded-lg shadow">
-                <div className="flex justify-between items-center w-full">
+              <div className="mt-6 bg-white px-4 py-3 border-t border-gray-200 sm:px-6 rounded-lg shadow">
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 w-full">
                   <div>
-                    <p className="text-sm text-gray-700">
-                      Showing page {submissions.pagination.currentPage} of{" "}
+                    <p className="text-xs sm:text-sm text-gray-700">
+                      Page {submissions.pagination.currentPage} of{" "}
                       {submissions.pagination.totalPages} •{" "}
-                      {submissions.pagination.totalSubmissions} total
-                      submissions • {selectedSubmissions.size} selected
+                      {submissions.pagination.totalSubmissions} total •{" "}
+                      {selectedSubmissions.size} selected
                     </p>
                   </div>
                   <div className="flex space-x-2">
@@ -1253,7 +1384,7 @@ export default function AdminDashboard() {
                       disabled={
                         !submissions.pagination.hasPrev || filter.page === 1
                       }
-                      className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50"
+                      className="flex-1 sm:flex-none relative inline-flex items-center justify-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50"
                     >
                       Previous
                     </button>
@@ -1263,7 +1394,7 @@ export default function AdminDashboard() {
                         clearSelection();
                       }}
                       disabled={!submissions.pagination.hasNext}
-                      className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50"
+                      className="flex-1 sm:flex-none relative inline-flex items-center justify-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50"
                     >
                       Next
                     </button>
@@ -1275,12 +1406,46 @@ export default function AdminDashboard() {
         )}
       </main>
 
-      {/* Image Modal */}
+      {/* Mobile fixed bottom bulk-action bar */}
+      {selectedSubmissions.size > 0 && (
+        <div className="sm:hidden fixed bottom-0 inset-x-0 z-40 bg-white border-t border-gray-200 shadow-[0_-2px_10px_rgba(0,0,0,0.08)] px-3 py-2.5">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-sm font-medium text-blue-800 flex items-center gap-1.5">
+              <CheckSquare className="w-4 h-4 text-blue-600" />
+              {selectedSubmissions.size} selected
+            </span>
+            <button
+              onClick={clearSelection}
+              className="text-xs text-blue-600 hover:text-blue-800"
+            >
+              Clear
+            </button>
+          </div>
+          <div className="flex gap-2">
+            <button
+              onClick={bulkApproveSubmissions}
+              disabled={bulkActionLoading}
+              className="flex-1 px-3 py-2.5 bg-green-600 text-white rounded-md text-sm font-medium hover:bg-green-700 transition-colors disabled:opacity-50"
+            >
+              {bulkActionLoading ? "Working..." : "Approve"}
+            </button>
+            <button
+              onClick={bulkDeleteSubmissions}
+              disabled={bulkActionLoading}
+              className="flex-1 px-3 py-2.5 bg-red-600 text-white rounded-md text-sm font-medium hover:bg-red-700 transition-colors disabled:opacity-50"
+            >
+              {bulkActionLoading ? "Working..." : "Delete"}
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Image Modal - full screen on mobile, centered dialog from sm up */}
       {showImageModal && selectedSubmission && (
-        <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-hidden">
-            <div className="flex justify-between items-center p-4 border-b">
-              <h3 className="text-lg font-medium">
+        <div className="fixed inset-0 bg-black bg-opacity-75 flex items-end sm:items-center justify-center z-50 sm:p-4">
+          <div className="bg-white rounded-t-2xl sm:rounded-lg w-full sm:max-w-4xl h-[92vh] sm:h-auto sm:max-h-[90vh] overflow-hidden flex flex-col">
+            <div className="flex justify-between items-center p-4 border-b flex-shrink-0">
+              <h3 className="text-base sm:text-lg font-medium truncate pr-2">
                 {selectedSubmission.platformType}{" "}
                 {selectedSubmission.submissionType} -{" "}
                 {selectedSubmission.user?.firstName}{" "}
@@ -1288,12 +1453,12 @@ export default function AdminDashboard() {
               </h3>
               <button
                 onClick={() => setShowImageModal(false)}
-                className="text-gray-400 hover:text-gray-600"
+                className="text-gray-400 hover:text-gray-600 flex-shrink-0"
               >
                 <XCircle className="w-6 h-6" />
               </button>
             </div>
-            <div className="p-4 overflow-auto max-h-[calc(90vh-80px)]">
+            <div className="p-4 overflow-auto flex-1">
               <img
                 src={selectedSubmission.screenshot}
                 alt="Full size submission"
@@ -1303,12 +1468,12 @@ export default function AdminDashboard() {
                     "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='3' width='18' height='18' rx='2' ry='2'%3E%3C/rect%3E%3Ccircle cx='8.5' cy='8.5' r='1.5'%3E%3C/circle%3E%3Cpolyline points='21,15 16,10 5,21'%3E%3C/polyline%3E%3C/svg%3E";
                 }}
               />
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 text-sm">
                 <div>
                   <strong>User:</strong> {selectedSubmission.user?.firstName}{" "}
                   {selectedSubmission.user?.lastName}
                 </div>
-                <div>
+                <div className="break-all">
                   <strong>Email:</strong> {selectedSubmission.user?.email}
                 </div>
                 <div>
@@ -1334,7 +1499,7 @@ export default function AdminDashboard() {
                   <strong>Type:</strong> {selectedSubmission.submissionType}
                 </div>
                 {selectedSubmission.rejectionReason && (
-                  <div className="md:col-span-2">
+                  <div className="sm:col-span-2">
                     <strong>Rejection Reason:</strong>{" "}
                     <span className="text-red-600">
                       {selectedSubmission.rejectionReason}
@@ -1342,53 +1507,52 @@ export default function AdminDashboard() {
                   </div>
                 )}
               </div>
-              <div className="mt-4 flex space-x-2">
-                {selectedSubmission.status === "pending" && (
-                  <>
-                    <button
-                      onClick={() => {
+            </div>
+            <div className="flex flex-wrap gap-2 p-4 border-t flex-shrink-0">
+              {selectedSubmission.status === "pending" && (
+                <>
+                  <button
+                    onClick={() => {
+                      updateSubmissionStatus(
+                        selectedSubmission.combinedId || selectedSubmission._id,
+                        "approved",
+                      );
+                      setShowImageModal(false);
+                    }}
+                    className="flex-1 sm:flex-none bg-green-600 text-white px-4 py-2.5 sm:py-2 rounded hover:bg-green-700 transition-colors"
+                  >
+                    Approve
+                  </button>
+                  <button
+                    onClick={() => {
+                      const reason = prompt("Rejection reason:");
+                      if (reason !== null) {
                         updateSubmissionStatus(
                           selectedSubmission.combinedId ||
                             selectedSubmission._id,
-                          "approved",
+                          "rejected",
+                          reason,
                         );
                         setShowImageModal(false);
-                      }}
-                      className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition-colors"
-                    >
-                      Approve
-                    </button>
-                    <button
-                      onClick={() => {
-                        const reason = prompt("Rejection reason:");
-                        if (reason !== null) {
-                          updateSubmissionStatus(
-                            selectedSubmission.combinedId ||
-                              selectedSubmission._id,
-                            "rejected",
-                            reason,
-                          );
-                          setShowImageModal(false);
-                        }
-                      }}
-                      className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition-colors"
-                    >
-                      Reject
-                    </button>
-                  </>
-                )}
-                <button
-                  onClick={() => {
-                    deleteSubmission(
-                      selectedSubmission.combinedId || selectedSubmission._id,
-                    );
-                    setShowImageModal(false);
-                  }}
-                  className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700 transition-colors"
-                >
-                  Delete
-                </button>
-              </div>
+                      }
+                    }}
+                    className="flex-1 sm:flex-none bg-red-600 text-white px-4 py-2.5 sm:py-2 rounded hover:bg-red-700 transition-colors"
+                  >
+                    Reject
+                  </button>
+                </>
+              )}
+              <button
+                onClick={() => {
+                  deleteSubmission(
+                    selectedSubmission.combinedId || selectedSubmission._id,
+                  );
+                  setShowImageModal(false);
+                }}
+                className="flex-1 sm:flex-none bg-gray-600 text-white px-4 py-2.5 sm:py-2 rounded hover:bg-gray-700 transition-colors"
+              >
+                Delete
+              </button>
             </div>
           </div>
         </div>
