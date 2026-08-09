@@ -197,69 +197,72 @@ const createInstaSubmission = async (req, res) => {
 
 const createInstaMultipleSubmissions = async (req, res) => {
   try {
-    // Check if user has active Instagram accounts
-    const user = await User.findById(req.user._id).populate(
-      "instagramAccounts",
-    );
-
-    const activeAccounts = user.instagramAccounts.filter((acc) => acc.isActive);
-
-    if (activeAccounts.length === 0) {
-      return res.status(400).json({
-        success: false,
-        message:
-          "You need to add at least one active Instagram account before submitting tasks. Please add your Instagram account in your profile settings.",
-        errorType: "NO_INSTAGRAM_ACCOUNT",
-      });
-    }
-
-    // Get the selected Instagram account from request
     const { instagramAccountId } = req.body;
+    const files = req.files;
 
-    let selectedAccount = null;
-
-    if (instagramAccountId) {
-      selectedAccount = activeAccounts.find(
-        (acc) => acc._id.toString() === instagramAccountId,
-      );
-
-      if (!selectedAccount) {
-        return res.status(400).json({
-          success: false,
-          message: "Invalid or inactive Instagram account selected",
-        });
-      }
-    } else {
-      selectedAccount = activeAccounts.sort((a, b) => {
-        if (!a.lastUsed) return -1;
-        if (!b.lastUsed) return 1;
-        return b.lastUsed - a.lastUsed;
-      })[0];
+    if (!files || files.length === 0) {
+      return res.status(400).json({ success: false, message: "No files uploaded." });
     }
 
-    // Update account usage
-    selectedAccount.lastUsed = new Date();
-    selectedAccount.usageCount += 1;
-    await selectedAccount.save();
+    const user = await User.findById(req.user._id).populate("instagramAccounts");
+    const activeAccounts = user.instagramAccounts.filter((acc) => acc.isActive);
+    const selectedAccount = activeAccounts.find((acc) => acc._id.toString() === instagramAccountId) || activeAccounts[0];
 
-    // Add your multiple submission logic here
-    res.status(200).json({
+    if (!selectedAccount) {
+      return res.status(400).json({ success: false, message: "No active account found." });
+    }
+
+    let successfulSubmissions = [];
+    let duplicateCount = 0;
+
+    for (const file of files) {
+      const hash = await generateImageHash(file.path);
+      const duplicate = await Instrgram.findOne({ user: req.user._id, imageHash: hash });
+      
+      if (duplicate) {
+        duplicateCount++;
+        continue;
+      }
+
+      const sub = await Instrgram.create({
+        user: req.user._id,
+        platform: "instagram",
+        screenshot: file.path,
+        imageHash: hash,
+        status: "approved",
+        amount: 1.0,
+        instagramAccount: selectedAccount._id,
+        instagramAccountName: selectedAccount.accountName
+      });
+      successfulSubmissions.push(sub);
+    }
+
+    const totalAdded = successfulSubmissions.length;
+    if (totalAdded > 0) {
+      let earnings = await Earnings.findOne({ user: req.user._id });
+      if (!earnings) {
+        earnings = await Earnings.create({ user: req.user._id, totalEarned: totalAdded, availableBalance: totalAdded });
+      } else {
+        earnings.totalEarned += totalAdded;
+        earnings.availableBalance += totalAdded;
+        await earnings.save();
+      }
+      
+      const io = req.app.get("io");
+      if (io) io.to(req.user._id.toString()).emit("earningsUpdate", earnings);
+    }
+
+    res.status(201).json({
       success: true,
-      message: "Multiple submissions processed",
+      message: `Successfully processed ${totalAdded} submissions. ${duplicateCount} duplicates skipped.`,
       data: {
-        instagramAccount: {
-          name: selectedAccount.accountName,
-          url: selectedAccount.profileUrl,
-        },
-      },
+        processed: totalAdded,
+        duplicates: duplicateCount,
+        submissions: successfulSubmissions
+      }
     });
   } catch (error) {
-    console.error("Multiple submissions error:", error);
-    res.status(500).json({
-      success: false,
-      message: "Internal server error",
-      error: error.message,
-    });
+    res.status(500).json({ success: false, message: error.message });
   }
 };
 

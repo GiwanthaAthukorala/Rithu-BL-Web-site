@@ -17,18 +17,20 @@ import {
   Sparkles,
   AlertCircle,
   Plus,
-  Link as LinkIcon,
   User,
+  X,
 } from "lucide-react";
 import Header from "@/components/Header/Header";
 import api from "@/lib/api";
 import { useAuth } from "@/Context/AuthContext";
 import DuplicateWarningModal from "@/components/DuplicateWarningModal";
+import SubmissionSummaryModal from "@/components/SubmissionSummaryModal";
+import TaskLinks from "@/components/TaskLinks/TaskLinks";
 import Link from "next/link";
 
 export default function InstagramVerificationTask() {
-  const [file, setFile] = useState(null);
-  const [preview, setPreview] = useState(null);
+  const [files, setFiles] = useState([]);
+  const [previews, setPreviews] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [error, setError] = useState(null);
@@ -39,9 +41,11 @@ export default function InstagramVerificationTask() {
   const [previousSubmissionDate, setPreviousSubmissionDate] = useState("");
   const [submissionSummary, setSubmissionSummary] = useState(null);
   const [instagramAccounts, setInstagramAccounts] = useState([]);
-  const [selectedInstagramAccount, setSelectedInstagramAccount] =
-    useState(null);
+  const [selectedInstagramAccount, setSelectedInstagramAccount] = useState(null);
   const [loadingAccounts, setLoadingAccounts] = useState(true);
+  // Link tracking — user must click at least 1 link before upload is allowed
+  const [selectedLinkId, setSelectedLinkId] = useState(null);
+  const [linkClickCounts, setLinkClickCounts] = useState({});
 
   // Mobile detection
   const isMobile = () => {
@@ -82,6 +86,14 @@ export default function InstagramVerificationTask() {
     }
   }, [user]);
 
+  // Whether the user has clicked at least one link
+  const hasClickedLink = Object.values(linkClickCounts).some((c) => c >= 1);
+
+  const handleLinkClick = (linkId, clickCount) => {
+    setLinkClickCounts((prev) => ({ ...prev, [linkId]: clickCount }));
+    if (clickCount === 1) setSelectedLinkId(linkId);
+  };
+
   const handleDragOver = (e) => {
     e.preventDefault();
     setIsDragging(true);
@@ -95,121 +107,161 @@ export default function InstagramVerificationTask() {
   const handleDrop = (e) => {
     e.preventDefault();
     setIsDragging(false);
-
-    const droppedFile = e.dataTransfer.files[0];
-    if (droppedFile) {
-      handleFileValidation(droppedFile);
-    }
+    const droppedFiles = Array.from(e.dataTransfer.files);
+    processNewFiles(droppedFiles);
   };
 
-  const handleFileValidation = (selectedFile) => {
-    const validTypes = ["image/jpeg", "image/png", "image/jpg"];
-    if (!validTypes.includes(selectedFile.type)) {
-      setError("Only JPEG, JPG, and PNG images are allowed");
-      return;
-    }
-
-    if (selectedFile.size > 5 * 1024 * 1024) {
-      setError("Image size must be less than 5MB");
-      return;
-    }
-
-    setFile(selectedFile);
+  const processNewFiles = (selectedFiles) => {
     setError(null);
 
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setPreview(reader.result);
-    };
-    reader.readAsDataURL(selectedFile);
+    const validTypes = ["image/jpeg", "image/png", "image/jpg"];
+    const validFiles = [];
+    const errors = [];
+
+    selectedFiles.forEach((file, index) => {
+      if (!validTypes.includes(file.type)) {
+        errors.push(`File ${index + 1}: Only JPEG, JPG, PNG allowed`);
+        return;
+      }
+      if (file.size > 5 * 1024 * 1024) {
+        errors.push(`File ${index + 1}: Must be under 5MB`);
+        return;
+      }
+      validFiles.push(file);
+    });
+
+    if (errors.length > 0) {
+      setError(errors.join(". "));
+      return;
+    }
+
+    const combined = [...files, ...validFiles];
+    if (combined.length > 5) {
+      setError("Maximum 5 screenshots allowed. Remove some files first.");
+      return;
+    }
+
+    setFiles(combined);
+
+    const previewPromises = validFiles.map(
+      (file) =>
+        new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.onloadend = () =>
+            resolve({
+              id: Date.now() + Math.random(),
+              name: file.name,
+              url: reader.result,
+              size: file.size,
+              file,
+            });
+          reader.readAsDataURL(file);
+        }),
+    );
+
+    Promise.all(previewPromises).then((newPreviews) => {
+      setPreviews((prev) => [...prev, ...newPreviews]);
+    });
   };
 
   const handleFileChange = (e) => {
-    const selectedFile = e.target.files[0];
-    if (!selectedFile) return;
-    handleFileValidation(selectedFile);
+    const selectedFiles = Array.from(e.target.files);
+    if (!selectedFiles.length) return;
+    processNewFiles(selectedFiles);
+  };
+
+  const removeFile = (index) => {
+    const newFiles = [...files];
+    const newPreviews = [...previews];
+    newFiles.splice(index, 1);
+    newPreviews.splice(index, 1);
+    setFiles(newFiles);
+    setPreviews(newPreviews);
+  };
+
+  const clearAllFiles = () => {
+    setFiles([]);
+    setPreviews([]);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Check if Instagram account is selected
     if (!selectedInstagramAccount) {
       setError("Please select an Instagram account to use for this task");
       return;
     }
 
-    if (!file || !user) return;
+    if (!hasClickedLink) {
+      setError("Please click on a task link above to visit the Instagram page before submitting.");
+      return;
+    }
+
+    if (!files.length || !user) {
+      setError(files.length === 0 ? "Please select at least one screenshot" : "User not authenticated");
+      return;
+    }
 
     setIsSubmitting(true);
     setError(null);
 
     try {
       const formData = new FormData();
-      formData.append("screenshot", file);
+      files.forEach((file) => formData.append("screenshots", file));
       formData.append("platform", "instagram");
       formData.append("instagramAccountId", selectedInstagramAccount._id);
+      if (selectedLinkId) formData.append("linkId", selectedLinkId);
 
       const token = localStorage.getItem("token");
-
-      if (!token) {
-        throw new Error("No authentication token found. Please log in again.");
-      }
+      if (!token) throw new Error("No authentication token found. Please log in again.");
 
       const apiUrl =
-        process.env.NEXT_PUBLIC_API_URL ||
-        "https://rithu-bl-web-site.onrender.com";
+        process.env.NEXT_PUBLIC_API_URL || "https://rithu-bl-web-site.onrender.com";
 
-      const response = await fetch(`${apiUrl}/api/instagram`, {
+      const response = await fetch(`${apiUrl}/api/instagram/multiple`, {
         method: "POST",
         body: formData,
         credentials: "include",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
 
-      // Check if response is OK
+      if (!response.headers.get("content-type")?.includes("application/json")) {
+        const text = await response.text();
+        throw new Error(text || "Invalid server response");
+      }
+
       if (!response.ok) {
-        const contentType = response.headers.get("content-type");
-
-        if (contentType && contentType.includes("application/json")) {
-          const errorData = await response.json();
-
-          if (errorData.errorType === "NO_INSTAGRAM_ACCOUNT") {
-            setError(errorData.message);
-            return;
-          }
-
-          if (errorData.message && errorData.message.includes("too similar")) {
-            const dateMatch = errorData.message.match(
-              /\d{1,2}\/\d{1,2}\/\d{4}/,
-            );
-            setPreviousSubmissionDate(dateMatch ? dateMatch[0] : "previously");
-            setShowDuplicateModal(true);
-            return;
-          }
-
-          throw new Error(errorData.message || "Submission failed");
-        } else {
-          const text = await response.text();
-          console.error("Non-JSON response:", text);
-          throw new Error(
-            "Server returned an invalid response. Please try again.",
-          );
+        const errorData = await response.json();
+        if (errorData.errorType === "NO_INSTAGRAM_ACCOUNT") {
+          setError(errorData.message);
+          return;
         }
+        if (errorData.message?.includes("too similar")) {
+          const dateMatch = errorData.message.match(/\d{1,2}\/\d{1,2}\/\d{4}/);
+          setPreviousSubmissionDate(dateMatch ? dateMatch[0] : "previously");
+          setShowDuplicateModal(true);
+          return;
+        }
+        throw new Error(errorData.message || "Submission failed");
       }
 
       const result = await response.json();
+
       setIsSubmitted(true);
 
-      setTimeout(() => {
-        router.push("/Profile/page");
-      }, 3000);
-    } catch (error) {
-      console.error("Submission error:", error);
-      if (!error.message.includes("too similar")) {
-        setError(error.message || "Submission failed. Please try again.");
+      if (result.data) {
+        setSubmissionSummary({
+          successful: result.data.successful || 0,
+          duplicates: result.data.duplicates || 0,
+          failed: result.data.failed || 0,
+          totalEarned: result.data.totalEarned || 0,
+          details: result.data.details,
+        });
+      }
+    } catch (err) {
+      console.error("Submission error:", err);
+      if (!err.message?.includes("too similar")) {
+        setError(err.message || "Submission failed. Please try again.");
       }
     } finally {
       setIsSubmitting(false);
@@ -228,68 +280,28 @@ export default function InstagramVerificationTask() {
                 <Instagram className="w-8 h-8 text-purple-300" />
               </div>
             </div>
-            <p className="text-purple-100 text-lg font-medium">
-              Loading your rewards...
-            </p>
+            <p className="text-purple-100 text-lg font-medium">Loading your rewards...</p>
           </div>
         </div>
       </div>
     );
   }
 
-  if (isSubmitted) {
+  if (isSubmitted && submissionSummary) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-emerald-600 via-green-600 to-teal-500 relative overflow-hidden">
-        {/* Animated background elements */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute w-96 h-96 bg-white/20 rounded-full blur-3xl -top-48 -left-48 animate-pulse"></div>
-          <div className="absolute w-96 h-96 bg-white/20 rounded-full blur-3xl -bottom-48 -right-48 animate-pulse delay-1000"></div>
-          <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-yellow-300/30 rounded-full blur-2xl animate-bounce"></div>
-          <div className="absolute bottom-1/3 right-1/3 w-24 h-24 bg-pink-300/30 rounded-full blur-2xl animate-bounce delay-500"></div>
-        </div>
-
-        <div className="relative z-10 max-w-lg mx-auto p-6 flex items-center min-h-screen">
-          <div className="bg-white/95 backdrop-blur-xl p-12 rounded-3xl shadow-2xl text-center w-full border border-white/20 transform animate-scale-in">
-            <div className="relative mb-8">
-              <div className="w-32 h-32 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center mx-auto shadow-2xl animate-bounce-slow">
-                <CheckCircle className="w-16 h-16 text-white" />
-              </div>
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-40 h-40 bg-green-400/30 rounded-full blur-2xl animate-pulse"></div>
-              <Sparkles className="absolute top-4 right-1/3 w-6 h-6 text-yellow-400 animate-pulse" />
-              <Sparkles className="absolute bottom-4 left-1/3 w-5 h-5 text-pink-400 animate-pulse delay-300" />
-            </div>
-
-            <h2 className="text-4xl font-black mb-4 bg-gradient-to-r from-emerald-600 via-green-600 to-teal-500 bg-clip-text text-transparent">
-              Amazing! 🎉
-            </h2>
-            <p className="text-gray-700 mb-3 text-xl font-semibold">
-              You've earned{" "}
-              <span className="font-black text-green-600 text-2xl">
-                Rs 1.00
-              </span>
-            </p>
-            <p className="text-gray-500 text-sm mb-10">
-              Your balance has been updated successfully ✨
-            </p>
-
-            <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-2xl mb-8 border-2 border-green-200 shadow-lg">
-              <div className="flex items-center justify-center gap-3 mb-3">
-                <Award className="w-6 h-6 text-green-600" />
-                <span className="font-bold text-green-800">Keep Going!</span>
-              </div>
-              <p className="text-sm text-green-700">
-                Complete more tasks to increase your earnings
-              </p>
-            </div>
-
-            <button
-              onClick={() => router.push("/Profile/page")}
-              className="w-full bg-gradient-to-r from-emerald-600 via-green-600 to-teal-500 text-white px-8 py-4 rounded-2xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 font-bold text-lg shadow-lg"
-            >
-              View Your Earnings
-            </button>
-          </div>
-        </div>
+      <div className="min-h-screen bg-gray-50">
+        <Header />
+        <SubmissionSummaryModal
+          summary={submissionSummary}
+          onClose={() => {
+            setSubmissionSummary(null);
+            clearAllFiles();
+            setIsSubmitted(false);
+            setSelectedLinkId(null);
+            setLinkClickCounts({});
+            router.push("/Instagram-Verification/page");
+          }}
+        />
       </div>
     );
   }
@@ -333,7 +345,7 @@ export default function InstagramVerificationTask() {
               <div className="flex flex-wrap gap-3">
                 <div className="flex items-center gap-2 bg-gradient-to-r from-yellow-400 to-orange-400 text-white rounded-full px-5 py-2.5 shadow-lg">
                   <Star className="w-5 h-5 fill-white" />
-                  <span className="font-bold">Rs 1.00 per task</span>
+                  <span className="font-bold">Rs 1.00 per screenshot</span>
                 </div>
                 <div className="flex items-center gap-2 bg-gradient-to-r from-green-400 to-emerald-400 text-white rounded-full px-5 py-2.5 shadow-lg">
                   <Zap className="w-5 h-5" />
@@ -341,14 +353,14 @@ export default function InstagramVerificationTask() {
                 </div>
                 <div className="flex items-center gap-2 bg-gradient-to-r from-blue-400 to-indigo-400 text-white rounded-full px-5 py-2.5 shadow-lg">
                   <TrendingUp className="w-5 h-5" />
-                  <span className="font-bold">Unlimited tasks</span>
+                  <span className="font-bold">Up to 5 at once</span>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Instagram Account Selection Section */}
+        {/* Instagram Account Selection */}
         <div className="bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl mb-8 border border-white/20 overflow-hidden">
           <div className="p-6 border-b border-gray-100">
             <div className="flex items-center justify-between flex-wrap gap-4">
@@ -357,12 +369,8 @@ export default function InstagramVerificationTask() {
                   <User className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <h2 className="text-xl font-bold text-gray-800">
-                    Your Instagram Account
-                  </h2>
-                  <p className="text-sm text-gray-500">
-                    Select which account you're using for this task
-                  </p>
+                  <h2 className="text-xl font-bold text-gray-800">Your Instagram Account</h2>
+                  <p className="text-sm text-gray-500">Select which account you're using for this task</p>
                 </div>
               </div>
               <Link
@@ -383,9 +391,7 @@ export default function InstagramVerificationTask() {
             ) : instagramAccounts.length === 0 ? (
               <div className="text-center py-8">
                 <AlertCircle className="w-12 h-12 text-yellow-500 mx-auto mb-3" />
-                <p className="text-gray-600 mb-4">
-                  No active Instagram accounts found.
-                </p>
+                <p className="text-gray-600 mb-4">No active Instagram accounts found.</p>
                 <Link
                   href="/Profile/page?tab=instagram-accounts"
                   className="inline-flex items-center px-6 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl font-semibold hover:shadow-lg transition-all"
@@ -417,19 +423,12 @@ export default function InstagramVerificationTask() {
                         <Instagram size={18} />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="font-semibold text-gray-900">
-                          {account.accountName}
-                        </p>
-                        <p className="text-xs text-gray-500 truncate">
-                          {account.profileUrl}
-                        </p>
+                        <p className="font-semibold text-gray-900">{account.accountName}</p>
+                        <p className="text-xs text-gray-500 truncate">{account.profileUrl}</p>
                       </div>
                     </div>
                     {selectedInstagramAccount?._id === account._id && (
-                      <CheckCircle
-                        className="text-purple-600 flex-shrink-0"
-                        size={20}
-                      />
+                      <CheckCircle className="text-purple-600 flex-shrink-0" size={20} />
                     )}
                   </div>
                 ))}
@@ -442,13 +441,48 @@ export default function InstagramVerificationTask() {
               <p className="text-green-700 text-sm flex items-center">
                 <CheckCircle size={16} className="mr-2 flex-shrink-0" />
                 Using account:{" "}
-                <strong className="mx-1 truncate">
-                  {selectedInstagramAccount.accountName}
-                </strong>
+                <strong className="mx-1 truncate">{selectedInstagramAccount.accountName}</strong>
                 for this task
               </p>
             </div>
           )}
+        </div>
+
+        {/* Task Links — must click before upload */}
+        <div className="bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl mb-8 border border-white/20 overflow-hidden">
+          <div className="p-6 border-b border-gray-100">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-gradient-to-br from-pink-500 to-orange-500 rounded-xl flex items-center justify-center">
+                <ExternalLink className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <h2 className="text-xl font-bold text-gray-800">Step 1 — Visit Instagram Page</h2>
+                <p className="text-sm text-gray-500">
+                  Click on a link below to visit the Instagram page and like/follow it.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="p-6">
+            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 mb-4 border border-blue-200">
+              <p className="text-blue-800 text-sm font-medium flex items-center gap-2">
+                <Info className="w-4 h-4 flex-shrink-0" />
+                You must click a link below to open the Instagram page before you can upload your screenshot.
+              </p>
+            </div>
+
+            <TaskLinks platform="instagram" onLinkClick={handleLinkClick} />
+
+            {hasClickedLink && (
+              <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
+                <p className="text-green-700 text-sm flex items-center gap-2">
+                  <CheckCircle size={16} />
+                  ✓ Link visited! You can now upload your screenshots.
+                </p>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Main Content */}
@@ -462,40 +496,38 @@ export default function InstagramVerificationTask() {
                   <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center shadow-lg">
                     <Info className="w-7 h-7 text-white" />
                   </div>
-                  <h2 className="text-3xl font-black text-gray-800">
-                    Simple Steps to Earn
-                  </h2>
+                  <h2 className="text-3xl font-black text-gray-800">Simple Steps to Earn</h2>
                 </div>
 
                 <div className="grid md:grid-cols-2 gap-5 mb-10">
                   {[
                     {
                       num: "1",
-                      text: "Visit Instagram post",
+                      text: "Visit Instagram page",
                       icon: ExternalLink,
                       color: "from-blue-500 to-indigo-500",
-                      desc: "Click the link below to open the post",
+                      desc: "Click a link above to open the page",
                     },
                     {
                       num: "2",
-                      text: "Like the post",
+                      text: "Like / Follow",
                       icon: Heart,
                       color: "from-pink-500 to-rose-500",
-                      desc: "Tap the heart icon to like the post",
+                      desc: "Like or follow the Instagram page",
                     },
                     {
                       num: "3",
-                      text: "Take screenshot",
+                      text: "Take screenshots (up to 5)",
                       icon: ImageIcon,
                       color: "from-purple-500 to-violet-500",
-                      desc: "Capture your screen showing the liked post",
+                      desc: "Capture your screen showing engagement",
                     },
                     {
                       num: "4",
                       text: "Upload & earn",
                       icon: Upload,
                       color: "from-green-500 to-emerald-500",
-                      desc: "Submit screenshot and get rewarded",
+                      desc: "Submit up to 5 screenshots and get rewarded",
                     },
                   ].map((step, idx) => (
                     <div
@@ -521,6 +553,22 @@ export default function InstagramVerificationTask() {
                   ))}
                 </div>
 
+                {/* Multiple Upload Info */}
+                <div className="bg-gradient-to-r from-purple-50 to-pink-50 p-5 rounded-2xl border border-purple-200 mb-6">
+                  <div className="flex items-start gap-3">
+                    <div className="w-6 h-6 bg-purple-600 text-white rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">!</div>
+                    <div>
+                      <p className="text-purple-800 font-semibold">Multiple Upload Feature</p>
+                      <p className="text-purple-700 text-sm mt-1">
+                        • Upload 1–5 screenshots at once<br />
+                        • Earn Rs 1.00 for each unique screenshot<br />
+                        • Duplicate screenshots are automatically filtered out<br />
+                        • Save time by processing multiple submissions together
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
                 {/* Mobile-specific instructions */}
                 {isMobile() && (
                   <div className="mb-8 bg-gradient-to-r from-purple-50 to-pink-50 p-6 rounded-xl border border-purple-200">
@@ -531,82 +579,25 @@ export default function InstagramVerificationTask() {
                     <div className="space-y-3 text-purple-700">
                       <p className="flex items-start space-x-2">
                         <span className="text-purple-600 font-bold">•</span>
-                        <span>
-                          Link will open in a new tab or redirect you to
-                          Instagram
-                        </span>
+                        <span>Link will open in a new tab or redirect you to Instagram</span>
                       </p>
                       <p className="flex items-start space-x-2">
                         <span className="text-purple-600 font-bold">•</span>
-                        <span>
-                          Use your browser's back button to return here after
-                          liking
-                        </span>
+                        <span>Use your browser's back button to return here after liking</span>
                       </p>
                       <p className="flex items-start space-x-2">
                         <span className="text-purple-600 font-bold">•</span>
-                        <span>
-                          Take screenshot using your device's screenshot
-                          function (usually Power + Volume Down)
-                        </span>
+                        <span>Take screenshots using Power + Volume Down</span>
+                      </p>
+                      <p className="flex items-start space-x-2">
+                        <span className="text-purple-600 font-bold">•</span>
+                        <span>Select multiple screenshots from your gallery at once</span>
                       </p>
                     </div>
                   </div>
                 )}
+              </div>
 
-                {/* Task Links */}
-                <div className="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 p-8 rounded-3xl border-2 border-blue-200 shadow-lg">
-                  <h3 className="font-black text-gray-800 mb-6 text-xl flex items-center gap-2">
-                    <span className="text-3xl">📱</span>
-                    Complete This Task
-                  </h3>
-                  {/*  <div className="space-y-4">
-                    <a
-                      href="https://www.instagram.com/p/DX9gDE_EsIY/?igsh=bm9pN3NuNXNsODIw"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-4 bg-white p-5 rounded-2xl hover:shadow-xl transition-all duration-300 group border-2 border-transparent hover:border-pink-300 transform hover:-translate-y-1"
-                    >
-                      <div className="w-14 h-14 bg-gradient-to-br from-pink-500 via-rose-500 to-orange-500 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg group-hover:scale-110 transition-transform">
-                        <Heart className="w-7 h-7 text-white" />
-                         </div>
-                      <div className="flex-1">
-                        <span className="block text-gray-800 font-bold text-lg group-hover:text-pink-600 transition-colors">
-                          පොස්ට් ලයික් (Like) කරන්න
-                        </span>
-                        <span className="block text-gray-500 text-sm mt-1">
-                          Click to open post on Instagram
-                        </span>
-                      </div>
-                      <ExternalLink className="w-6 h-6 text-pink-400 group-hover:text-pink-600 transition-colors" />
-                    </a>
-                  </div>
-                 */}
-                  {/*<div className="mt-6 bg-gradient-to-r from-pink-500 via-rose-500 to-red-500 p-6 rounded-2xl shadow-xl">
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                      <div className="flex-1">
-                        <h4 className="font-black text-white mb-2 text-lg flex items-center gap-2">
-                          <Instagram className="w-6 h-6" />
-                          Follow Our Main Account
-                        </h4>
-                        <p className="text-white/90 text-sm">
-                          ඉන්ස්ට්‍රග්‍රෑම් එකවුන්ට් එක ෆලෝ කරන්න • Lynk IRL
-                        </p>
-                      </div>
-                      <a
-                        href="https://www.instagram.com/lynk_irl?igsh=MXZmY2Z6aXpidGp1Yw%3D%3D&utm_source=qr"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center justify-center bg-white text-pink-600 px-6 py-3 rounded-xl hover:bg-pink-50 transition-all duration-200 font-bold shadow-lg hover:shadow-xl transform hover:scale-105"
-                      >
-                        Follow Now
-                        <ExternalLink className="w-4 h-4 ml-2" />
-                      </a>
-                    </div>
-                  </div>{" "}
-                */}
-                </div>
-              </div>{" "}
               {/* Requirements */}
               <div className="p-8 lg:p-10 bg-gradient-to-br from-amber-50 to-yellow-50">
                 <h3 className="font-black text-gray-800 mb-6 flex items-center gap-3 text-2xl">
@@ -617,12 +608,12 @@ export default function InstagramVerificationTask() {
                 </h3>
                 <div className="grid md:grid-cols-2 gap-4">
                   {[
-                    "Must clearly show the liked post",
+                    "Must clearly show the liked/followed page",
                     "Show your profile or browser context",
                     "No edited or cropped images",
-                    "File size under 5MB",
+                    "File size under 5MB each",
                     "JPEG, PNG formats only",
-                    "Clear and readable content",
+                    "Each screenshot must be different",
                   ].map((req, idx) => (
                     <div
                       key={idx}
@@ -631,9 +622,7 @@ export default function InstagramVerificationTask() {
                       <div className="w-6 h-6 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 shadow-md">
                         <CheckCircle className="w-4 h-4 text-white" />
                       </div>
-                      <span className="text-sm font-semibold text-gray-700">
-                        {req}
-                      </span>
+                      <span className="text-sm font-semibold text-gray-700">{req}</span>
                     </div>
                   ))}
                 </div>
@@ -645,13 +634,24 @@ export default function InstagramVerificationTask() {
           <div className="lg:col-span-1">
             <div className="bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl overflow-hidden border border-white/20 sticky top-8">
               <div className="p-8 lg:p-10">
-                <div className="flex items-center gap-4 mb-8">
-                  <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-2xl flex items-center justify-center shadow-lg">
-                    <Upload className="w-7 h-7 text-white" />
+                <div className="flex items-center justify-between mb-6">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-2xl flex items-center justify-center shadow-lg">
+                      <Upload className="w-7 h-7 text-white" />
+                    </div>
+                    <h3 className="text-2xl font-black text-gray-800">
+                      Screenshots ({files.length}/5)
+                    </h3>
                   </div>
-                  <h3 className="text-3xl font-black text-gray-800">
-                    Upload Screenshot
-                  </h3>
+                  {files.length > 0 && (
+                    <button
+                      type="button"
+                      onClick={clearAllFiles}
+                      className="px-3 py-1 text-sm bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
+                    >
+                      Clear All
+                    </button>
+                  )}
                 </div>
 
                 {error && (
@@ -664,44 +664,91 @@ export default function InstagramVerificationTask() {
                 )}
 
                 <form onSubmit={handleSubmit}>
-                  <div className="mb-8">
-                    {preview ? (
-                      <div className="border-4 border-dashed border-green-400 rounded-3xl p-8 bg-gradient-to-br from-green-50 to-emerald-50 relative overflow-hidden">
-                        <div className="absolute top-0 right-0 w-64 h-64 bg-green-400/10 rounded-full -mr-32 -mt-32 blur-3xl"></div>
-                        <div className="relative">
-                          <img
-                            src={preview}
-                            alt="Screenshot preview"
-                            className="max-h-96 mx-auto rounded-2xl shadow-2xl border-4 border-white"
-                          />
-                          <div className="absolute top-4 right-4 bg-gradient-to-r from-green-500 to-emerald-500 text-white px-4 py-2 rounded-full text-sm font-bold flex items-center gap-2 shadow-xl">
-                            <CheckCircle className="w-5 h-5" />
-                            Ready to Submit
+                  <div className="mb-6">
+                    {previews.length > 0 ? (
+                      <div className="border-2 border-dashed border-green-400 rounded-2xl p-4 bg-green-50">
+                        {/* File counter */}
+                        <div className="mb-4 text-center">
+                          <div className="inline-flex items-center bg-white px-4 py-2 rounded-full shadow-sm">
+                            <div className="w-6 h-6 bg-purple-600 text-white rounded-full flex items-center justify-center text-xs font-bold mr-2">
+                              {files.length}
+                            </div>
+                            <span className="text-gray-700 font-medium">Screenshots selected</span>
+                            <div className="ml-4 px-2 py-1 bg-purple-100 text-purple-700 rounded-full text-xs font-bold">
+                              Rs {files.length}.00
+                            </div>
                           </div>
                         </div>
-                        <div className="mt-6 bg-white p-4 rounded-2xl shadow-md">
-                          <p className="text-green-700 font-bold text-center flex items-center justify-center gap-2">
-                            <FileImage className="w-5 h-5" />
-                            {file.name}
+
+                        {/* Preview grid */}
+                        <div className="space-y-2 mb-4">
+                          {previews.map((preview, index) => (
+                            <div
+                              key={preview.id}
+                              className="relative bg-white rounded-xl p-3 shadow-sm border border-gray-200 flex items-center gap-3"
+                            >
+                              <div className="absolute -top-2 -right-2">
+                                <button
+                                  type="button"
+                                  onClick={() => removeFile(index)}
+                                  className="w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition-colors"
+                                >
+                                  <X className="w-3 h-3" />
+                                </button>
+                              </div>
+                              <div className="w-6 h-6 bg-gray-200 text-gray-700 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">
+                                {index + 1}
+                              </div>
+                              <img
+                                src={preview.url}
+                                alt={`Screenshot ${index + 1}`}
+                                className="w-16 h-16 object-contain rounded-lg border border-gray-200"
+                              />
+                              <div className="flex-1 min-w-0">
+                                <p className="text-xs text-gray-700 truncate font-medium">{preview.name}</p>
+                                <p className="text-xs text-gray-500">
+                                  {(preview.size / (1024 * 1024)).toFixed(2)} MB
+                                </p>
+                              </div>
+                              <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+                            </div>
+                          ))}
+                        </div>
+
+                        {/* Add more files */}
+                        {files.length < 5 && (
+                          <div className="text-center">
+                            <label className="inline-flex items-center px-4 py-2 bg-purple-100 text-purple-700 rounded-lg hover:bg-purple-200 transition-colors cursor-pointer font-semibold text-sm">
+                              <Upload className="w-4 h-4 mr-2" />
+                              Add More ({5 - files.length} remaining)
+                              <input
+                                type="file"
+                                accept=".png,.jpg,.jpeg"
+                                onChange={handleFileChange}
+                                className="hidden"
+                                multiple
+                              />
+                            </label>
+                          </div>
+                        )}
+
+                        {/* Earnings estimate */}
+                        <div className="mt-4 p-3 bg-white border border-green-200 rounded-xl">
+                          <div className="flex items-center justify-between">
+                            <p className="text-green-800 font-medium text-sm">Potential Earnings:</p>
+                            <p className="text-green-700 font-black text-lg">Rs {files.length}.00</p>
+                          </div>
+                          <p className="text-green-600 text-xs mt-1">
+                            {files.length} screenshot{files.length !== 1 ? "s" : ""} × Rs 1.00
                           </p>
                         </div>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setFile(null);
-                            setPreview(null);
-                          }}
-                          className="mt-4 mx-auto block text-sm text-red-600 hover:text-red-800 font-bold hover:underline"
-                        >
-                          Remove and choose different file
-                        </button>
                       </div>
                     ) : (
                       <div
                         onDragOver={handleDragOver}
                         onDragLeave={handleDragLeave}
                         onDrop={handleDrop}
-                        className={`border-4 border-dashed rounded-3xl p-16 text-center bg-gradient-to-br from-gray-50 to-slate-50 transition-all duration-300 ${
+                        className={`border-4 border-dashed rounded-3xl p-12 text-center bg-gradient-to-br from-gray-50 to-slate-50 transition-all duration-300 ${
                           isDragging
                             ? "border-purple-500 bg-purple-50 scale-105 shadow-2xl"
                             : "border-gray-300 hover:border-purple-400 hover:shadow-xl"
@@ -709,64 +756,71 @@ export default function InstagramVerificationTask() {
                       >
                         <div className="relative inline-block mb-6">
                           <div className="absolute inset-0 bg-gradient-to-br from-purple-500 to-pink-500 rounded-3xl blur-xl opacity-50 animate-pulse"></div>
-                          <div className="relative w-24 h-24 bg-gradient-to-br from-purple-500 via-pink-500 to-orange-500 rounded-3xl flex items-center justify-center shadow-2xl">
-                            <Upload className="w-12 h-12 text-white" />
+                          <div className="relative w-20 h-20 bg-gradient-to-br from-purple-500 via-pink-500 to-orange-500 rounded-3xl flex items-center justify-center shadow-2xl mx-auto">
+                            <Upload className="w-10 h-10 text-white" />
                           </div>
                         </div>
-                        <p className="text-gray-800 mb-3 font-black text-2xl">
-                          Drop your screenshot here
-                        </p>
-                        <p className="text-gray-600 mb-4 text-lg font-medium">
-                          or click the button below to browse
-                        </p>
-                        <p className="text-sm text-gray-400 mb-8">
-                          Supported: PNG, JPG, JPEG • Max 5MB
-                        </p>
-                        <label className="inline-block bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 text-white px-10 py-4 rounded-2xl cursor-pointer hover:shadow-2xl transform hover:scale-105 transition-all duration-300 font-bold text-lg shadow-lg">
-                          Choose File
+                        <p className="text-gray-800 mb-2 font-black text-xl">Drop screenshots here</p>
+                        <p className="text-gray-500 mb-2 text-sm">or click to browse</p>
+                        <p className="text-xs text-gray-400 mb-6">PNG, JPG, JPEG • Max 5MB each • Up to 5 files</p>
+                        <label className="inline-block bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 text-white px-8 py-3 rounded-2xl cursor-pointer hover:shadow-2xl transform hover:scale-105 transition-all duration-300 font-bold shadow-lg">
+                          Choose Files
                           <input
                             type="file"
                             accept=".png,.jpg,.jpeg"
                             onChange={handleFileChange}
                             className="hidden"
+                            multiple
                           />
                         </label>
                       </div>
                     )}
                   </div>
 
+                  {/* Link not clicked warning */}
+                  {!hasClickedLink && (
+                    <div className="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-xl">
+                      <p className="text-yellow-800 text-sm font-medium flex items-center gap-2">
+                        <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                        Please click a task link above to visit the Instagram page first.
+                      </p>
+                    </div>
+                  )}
+
                   <button
                     type="submit"
                     disabled={
-                      !file ||
+                      !files.length ||
                       isSubmitting ||
                       instagramAccounts.length === 0 ||
-                      !selectedInstagramAccount
+                      !selectedInstagramAccount ||
+                      !hasClickedLink
                     }
-                    className={`w-full py-5 rounded-2xl font-black text-xl transition-all duration-300 shadow-xl ${
-                      file &&
+                    className={`w-full py-4 rounded-2xl font-black text-lg transition-all duration-300 shadow-xl ${
+                      files.length > 0 &&
                       instagramAccounts.length > 0 &&
-                      selectedInstagramAccount
+                      selectedInstagramAccount &&
+                      hasClickedLink
                         ? "bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 hover:from-green-600 hover:via-emerald-600 hover:to-teal-600 text-white hover:shadow-2xl transform hover:scale-105"
                         : "bg-gray-200 text-gray-400 cursor-not-allowed"
                     }`}
                   >
                     {isSubmitting ? (
                       <span className="flex items-center justify-center gap-3">
-                        <div className="w-6 h-6 border-3 border-white border-t-transparent rounded-full animate-spin"></div>
-                        Submitting...
+                        <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                        Submitting {files.length} screenshot{files.length !== 1 ? "s" : ""}...
                       </span>
                     ) : (
                       <span className="flex items-center justify-center gap-3">
-                        <Upload className="w-6 h-6" />
-                        Submit Screenshot & Earn Rs 1.00
-                        <Sparkles className="w-6 h-6" />
+                        <Upload className="w-5 h-5" />
+                        Submit {files.length || ""} Screenshot{files.length !== 1 ? "s" : ""} &amp; Earn Rs{" "}
+                        {files.length}.00
+                        <Sparkles className="w-5 h-5" />
                       </span>
                     )}
                   </button>
 
-                  {(instagramAccounts.length === 0 ||
-                    !selectedInstagramAccount) && (
+                  {(instagramAccounts.length === 0 || !selectedInstagramAccount) && (
                     <p className="text-center text-sm text-red-500 mt-4">
                       Please add and select an Instagram account above
                     </p>
@@ -793,8 +847,7 @@ export default function InstagramVerificationTask() {
         <DuplicateWarningModal
           onClose={() => {
             setShowDuplicateModal(false);
-            setFile(null);
-            setPreview(null);
+            clearAllFiles();
           }}
           previousDate={previousSubmissionDate}
         />
@@ -802,60 +855,16 @@ export default function InstagramVerificationTask() {
 
       <style jsx>{`
         @keyframes float {
-          0%,
-          100% {
-            transform: translateY(0px);
-          }
-          50% {
-            transform: translateY(-20px);
-          }
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-20px); }
         }
         @keyframes float-delayed {
-          0%,
-          100% {
-            transform: translateY(0px);
-          }
-          50% {
-            transform: translateY(20px);
-          }
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(20px); }
         }
-        @keyframes scale-in {
-          0% {
-            transform: scale(0.9);
-            opacity: 0;
-          }
-          100% {
-            transform: scale(1);
-            opacity: 1;
-          }
-        }
-        @keyframes bounce-slow {
-          0%,
-          100% {
-            transform: translateY(0);
-          }
-          50% {
-            transform: translateY(-10px);
-          }
-        }
-        .animate-float {
-          animation: float 6s ease-in-out infinite;
-        }
-        .animate-float-delayed {
-          animation: float-delayed 8s ease-in-out infinite;
-        }
-        .animate-scale-in {
-          animation: scale-in 0.5s ease-out;
-        }
-        .animate-bounce-slow {
-          animation: bounce-slow 2s ease-in-out infinite;
-        }
-        .delay-300 {
-          animation-delay: 300ms;
-        }
-        .delay-700 {
-          animation-delay: 700ms;
-        }
+        .animate-float { animation: float 6s ease-in-out infinite; }
+        .animate-float-delayed { animation: float-delayed 8s ease-in-out infinite; }
+        .delay-700 { animation-delay: 700ms; }
       `}</style>
     </div>
   );

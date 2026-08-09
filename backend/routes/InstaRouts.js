@@ -3,12 +3,12 @@ const router = express.Router();
 const { protect, admin } = require("../middleware/authMiddleware");
 const {
   createInstaSubmission,
+  createInstaMultipleSubmissions,
   getUserInstaSubmissions,
   approveInstaSubmission,
   rejectInstaSubmission,
 } = require("../controllers/instrgramController");
 const uploadFile = require("../middleware/uploadMiddleware");
-//const submissionRateLimiter = require("../middleware/rateLimiter");
 
 // User routes
 router.post(
@@ -17,6 +17,15 @@ router.post(
   uploadFile.single("screenshot"),
   createInstaSubmission
 );
+
+// Multiple upload route (up to 5 screenshots)
+router.post(
+  "/multiple",
+  protect,
+  uploadFile.array("screenshots", 5),
+  createInstaMultipleSubmissions
+);
+
 router.get("/my-submissions", protect, getUserInstaSubmissions);
 
 // Admin routes

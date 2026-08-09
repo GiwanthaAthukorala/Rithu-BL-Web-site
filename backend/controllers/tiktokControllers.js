@@ -187,6 +187,136 @@ const createTiktokSubmission = async (req, res) => {
   }
 };
 
+const createTiktokMultipleSubmissions = async (req, res) => {
+  console.log("==== TIKTOK MULTIPLE SUBMISSIONS REQUEST ====");
+  console.log("User ID:", req.user?._id);
+  console.log("Number of files:", req.files?.length);
+
+  try {
+    const files = req.files;
+
+    if (!files || files.length === 0) {
+      return res.status(400).json({ success: false, message: "No files uploaded." });
+    }
+
+    if (files.length > 5) {
+      return res.status(400).json({ success: false, message: "Maximum 5 screenshots allowed per submission." });
+    }
+
+    const userId = req.user._id;
+
+    // Get previous TikTok submissions for duplicate checking
+    const previousSubmissions = await TiktokSubmission.find({
+      user: userId,
+      imageHash: { $ne: null },
+    }).sort({ createdAt: -1 }).limit(100);
+
+    const successfulSubmissions = [];
+    const duplicateImages = [];
+    const failedImages = [];
+
+    for (const file of files) {
+      try {
+        let hash;
+        try {
+          hash = await generateImageHash(file.path);
+        } catch (hashErr) {
+          failedImages.push({ filename: file.originalname, reason: "Could not process image." });
+          continue;
+        }
+
+        // Check for duplicates against previous submissions
+        let isDuplicate = false;
+        for (const prev of previousSubmissions) {
+          if (isSimilarHash(hash, prev.imageHash)) {
+            isDuplicate = true;
+            duplicateImages.push({
+              filename: file.originalname,
+              reason: `Duplicate of submission from ${new Date(prev.createdAt).toLocaleDateString()}`,
+            });
+            break;
+          }
+        }
+
+        // Check within current batch
+        if (!isDuplicate) {
+          for (const s of successfulSubmissions) {
+            if (isSimilarHash(hash, s.imageHash)) {
+              isDuplicate = true;
+              duplicateImages.push({ filename: file.originalname, reason: "Duplicate within current batch" });
+              break;
+            }
+          }
+        }
+
+        if (!isDuplicate) {
+          const sub = await TiktokSubmission.create({
+            user: userId,
+            platform: "Tiktok",
+            screenshot: file.path,
+            imageHash: hash,
+            status: "approved",
+            amount: 1.0,
+          });
+          successfulSubmissions.push(sub);
+          previousSubmissions.push(sub);
+        }
+      } catch (err) {
+        console.error(`Error processing file ${file.originalname}:`, err);
+        failedImages.push({ filename: file.originalname, reason: err.message });
+      }
+    }
+
+    const totalEarned = successfulSubmissions.length * 1.0;
+
+    if (successfulSubmissions.length > 0) {
+      let earnings = await Earnings.findOne({ user: userId });
+      if (!earnings) {
+        earnings = await Earnings.create({
+          user: userId,
+          totalEarned,
+          availableBalance: totalEarned,
+          pendingWithdrawal: 0,
+          withdrawnAmount: 0,
+        });
+      } else {
+        earnings.totalEarned += totalEarned;
+        earnings.availableBalance += totalEarned;
+        await earnings.save();
+      }
+
+      const io = req.app.get("io");
+      if (io) {
+        io.to(userId.toString()).emit("earningsUpdate", {
+          totalEarned: earnings.totalEarned,
+          availableBalance: earnings.availableBalance,
+          pendingWithdrawal: earnings.pendingWithdrawal,
+          withdrawnAmount: earnings.withdrawnAmount,
+        });
+      }
+    }
+
+    res.status(201).json({
+      success: true,
+      message: `Processed ${files.length} images`,
+      data: {
+        successful: successfulSubmissions.length,
+        duplicates: duplicateImages.length,
+        failed: failedImages.length,
+        details: {
+          successful: successfulSubmissions.map((s) => ({ id: s._id, amount: s.amount })),
+          duplicates: duplicateImages,
+          failed: failedImages,
+        },
+        totalEarned,
+      },
+    });
+  } catch (error) {
+    console.error("TikTok multiple submission error:", error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
 const getUserTiktokSubmissions = async (req, res) => {
   try {
     const submissions = await TiktokSubmission.find({ user: req.user._id });
@@ -282,6 +412,7 @@ const rejectTiktokSubmission = async (req, res) => {
 // Export as separate named exports
 //module.exports.uploadFile = upload.single("screenshot");
 module.exports.createTiktokSubmission = createTiktokSubmission;
+module.exports.createTiktokMultipleSubmissions = createTiktokMultipleSubmissions;
 module.exports.getUserTiktokSubmissions = getUserTiktokSubmissions;
 module.exports.approveTitokSubmission = approveTitokSubmission;
 module.exports.rejectTiktokSubmission = rejectTiktokSubmission;
