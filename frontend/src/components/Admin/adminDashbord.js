@@ -681,6 +681,16 @@ export default function AdminDashboard() {
               TikTok Links
             </button>
             <button
+              onClick={() => {
+                router.push("/admin/instagram-link");
+                setMobileMenuOpen(false);
+              }}
+              className="w-full flex items-center px-3 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-md"
+            >
+              <Instagram className="w-4 h-4 mr-2 text-pink-500" />
+              Instagram Links
+            </button>
+            <button
               onClick={adminLogout}
               className="w-full bg-red-600 text-white px-3 py-2.5 rounded-md text-sm hover:bg-red-700 transition-colors mt-2"
             >
@@ -729,6 +739,13 @@ export default function AdminDashboard() {
             >
               <MessageSquare className="w-4 h-4 mr-2 text-pink-600" />
               TikTok Links
+            </button>
+            <button
+              onClick={() => router.push("/admin/instagram-link")}
+              className="hidden sm:flex items-center px-3 py-4 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-gray-700 transition-colors whitespace-nowrap"
+            >
+              <Instagram className="w-4 h-4 mr-2 text-pink-500" />
+              Instagram Links
             </button>
           </div>
         </div>
