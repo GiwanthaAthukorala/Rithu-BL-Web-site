@@ -61,20 +61,20 @@ const extractTikTokId = (url) => {
 };
 
 const sampleVideos = [
-  /*{
+  {
     title:
       "ජපානයේ නිවාඩු දවසේ ක්‍රිකට්🏏 | A Cricket Day in Japan 🇯🇵 | Vlog #5",
     description:
       "ඔන්ලයින් දවසට විනාඩි 5ක් වැඩ කරලා රුපියල්   Watch for 0.50 minute to earn Rs 0.50.",
-    videoUrl: "https://youtu.be/z2OIwheKCeA?si=bxdQWeVdnwqhcHMp",
-    embedUrl: "https://youtube.com/shorts/rDp0tA2PCAc?si=t-bxdQWeVdnwqhcHMp",
-    thumbnailUrl: "https://img.youtube.com/vi/bxdQWeVdnwqhcHMp/hqdefault.jpg",
+    videoUrl: "https://youtube.com/watch?v=XzOsyXmEKYs&si=dCDNZ5HhgoNTJmi_",
+    embedUrl: "https://youtube.com/shorts/rDp0tA2PCAc?si=t-dCDNZ5HhgoNTJmi_",
+    thumbnailUrl: "https://img.youtube.com/vi/dCDNZ5HhgoNTJmi_/hqdefault.jpg",
     platform: "youtube",
     duration: 60,
     rewardAmount: 0.5,
     isActive: true,
   },
-  {
+  /* {
     title:
       "අපේ Entrance Ceremony එක 🇯🇵🎉 | Our Entrance Ceremony Day in Japan | VLOG #6",
     description:

@@ -193,37 +193,38 @@ export default function YouTubeVerificationTask() {
               Please visit this link and take a screenshot as proof:
             </p>
             <a
-              href="https://youtube.com/@i.de.afilms?si=zyOXDZ0NteiEuMpJ"
+              href="https://youtube.com/@janakavidyarathna?si=9KUyoD_t1FcYfiM4"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-between p-4 bg-white rounded-lg hover:bg-blue-50 transition-colors duration-200 border border-gray-200 hover:border-blue-300 group"
             >
               <span className="text-gray-700 group-hover:text-blue-700">
-                I.dE.Afilms - යූ ටියුබ් චැනල් එක සබ්ක්‍රයිබ් කරන්න (ඔයාලාගේ
-                youtube වල main account වලින් විතරක් subcribe කරන්න 100
-                Subscribe වෙනකම් 1 screenshot එකක් upload කරන්න)
+                Janaka Vidyarathna - යූ ටියුබ් චැනල් එක සබ්ක්‍රයිබ් කරන්න
+                (ඔයාලාගේ youtube වල main account වලින් විතරක් subcribe කරන්න 200
+                Subscribe  screenshots upload කරන්න)
               </span>
               <ExternalLink className="w-4 h-4 text-blue-600 group-hover:scale-110 transition-transform" />
             </a>
           </div>
-          {/**  <div className="mb-8 bg-blue-50 p-4 rounded-lg">
+          <div className="mb-8 bg-blue-50 p-4 rounded-lg">
             <p className="text-gray-700 mb-3">
               Please visit this link and take a screenshot as proof:
             </p>
             <a
-              href="https://youtu.be/_TBh5qGQdrk?si=gvpG5fOHGwE45nNE"
+              href="https://youtube.com/watch?v=XzOsyXmEKYs&si=dCDNZ5HhgoNTJmi_"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-between p-4 bg-white rounded-lg hover:bg-blue-50 transition-colors duration-200 border border-gray-200 hover:border-blue-300 group"
             >
               <span className="text-gray-700 group-hover:text-blue-700">
-                Muditha Rodrigo - යූ ටියුබ් චැනල් එක සබ්ක්‍රයිබ් කරන්න
+                Colomthota natha mahalu wee (කොළොම්තොට නැත මහළු වී.. ) - යූ
+                ටියුබ් video එක Like කරන්න
               </span>
               <ExternalLink className="w-4 h-4 text-blue-600 group-hover:scale-110 transition-transform" />
             </a>
           </div>
 
-          <div className="mb-8 bg-blue-50 p-4 rounded-lg">
+          {/**<div className="mb-8 bg-blue-50 p-4 rounded-lg">
             <p className="text-gray-700 mb-3">
               Please visit this link and take a screenshot as proof:
             </p>
