@@ -860,7 +860,10 @@ export default function Profile() {
                         position: "relative",
                         display: "inline-block",
                         marginBottom: "16px",
+                        cursor: "pointer",
                       }}
+                      onClick={() => setIsEditModalOpen(true)}
+                      title="Change profile picture"
                     >
                       <div
                         style={{
@@ -883,8 +886,25 @@ export default function Profile() {
                           }}
                         />
                       </div>
-                      <button
-                        onClick={() => setIsEditModalOpen(true)}
+                      {/* Hover overlay */}
+                      <div
+                        style={{
+                          position: "absolute",
+                          inset: 0,
+                          borderRadius: "50%",
+                          background: "rgba(0,0,0,0.4)",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          opacity: 0,
+                          transition: "opacity 0.2s",
+                        }}
+                        onMouseEnter={(e) => e.currentTarget.style.opacity = 1}
+                        onMouseLeave={(e) => e.currentTarget.style.opacity = 0}
+                      >
+                        <Camera size={22} color="white" />
+                      </div>
+                      <div
                         style={{
                           position: "absolute",
                           bottom: 0,
@@ -898,13 +918,11 @@ export default function Profile() {
                           alignItems: "center",
                           justifyContent: "center",
                           color: "var(--color-primary-500)",
-                          cursor: "pointer",
                           boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
-                          transition: "transform 0.2s",
                         }}
                       >
                         <Camera size={14} />
-                      </button>
+                      </div>
                     </div>
                     <h2
                       style={{
@@ -925,6 +943,32 @@ export default function Profile() {
                     >
                       {user?.email}
                     </p>
+                    {/* Edit Profile CTA */}
+                    <button
+                      onClick={() => setIsEditModalOpen(true)}
+                      style={{
+                        marginTop: "14px",
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: "7px",
+                        background: "rgba(255,255,255,0.15)",
+                        border: "1.5px solid rgba(255,255,255,0.35)",
+                        borderRadius: "20px",
+                        padding: "7px 18px",
+                        color: "white",
+                        fontSize: "13px",
+                        fontWeight: 600,
+                        cursor: "pointer",
+                        backdropFilter: "blur(8px)",
+                        transition: "background 0.2s",
+                        fontFamily: "var(--font-sans), sans-serif",
+                      }}
+                      onMouseEnter={(e) => e.currentTarget.style.background = "rgba(255,255,255,0.25)"}
+                      onMouseLeave={(e) => e.currentTarget.style.background = "rgba(255,255,255,0.15)"}
+                    >
+                      <Edit3 size={13} />
+                      Edit Profile &amp; Picture
+                    </button>
                   </div>
                 </div>
 
