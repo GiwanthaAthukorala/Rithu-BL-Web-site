@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
+const BACKEND_URL =
+  process.env.NEXT_PUBLIC_API_URL || "https://rithu-bl-web-site.onrender.com";
 import {
   X,
   Camera,
@@ -24,7 +26,7 @@ const ProfileEditModal = ({
   onClose,
   user,
   onUpdateSuccess,
-  apiBaseUrl = "/api",
+  apiBaseUrl = BACKEND_URL + "/api",
 }) => {
   const [formData, setFormData] = useState({
     firstName: "",
@@ -323,7 +325,7 @@ const ProfileEditModal = ({
           {/* Profile Picture Section */}
           <div className="p-6 border-b border-gray-200">
             <div className="flex items-center space-x-6">
-              <div className="relative">
+              <div className="relative group">
                 <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-gray-200 shadow-lg">
                   <img
                     src={imagePreview}
@@ -331,10 +333,18 @@ const ProfileEditModal = ({
                     className="w-full h-full object-cover"
                   />
                 </div>
+                {/* Overlay on hover */}
+                <div
+                  onClick={() => fileInputRef.current?.click()}
+                  className="absolute inset-0 rounded-full bg-black bg-opacity-0 group-hover:bg-opacity-40 flex items-center justify-center cursor-pointer transition-all duration-200"
+                >
+                  <Camera size={22} className="text-white opacity-0 group-hover:opacity-100 transition-opacity" />
+                </div>
                 <button
                   onClick={() => fileInputRef.current?.click()}
                   className="absolute -bottom-2 -right-2 w-8 h-8 bg-blue-600 hover:bg-blue-700 rounded-full flex items-center justify-center text-white shadow-lg transition-all duration-200 transform hover:scale-110"
                   disabled={isUploadingImage}
+                  title="Change profile picture"
                 >
                   {isUploadingImage ? (
                     <Loader2 size={16} className="animate-spin" />
@@ -343,23 +353,42 @@ const ProfileEditModal = ({
                   )}
                 </button>
               </div>
-              <div>
+              <div style={{ flex: 1 }}>
                 <h3 className="text-lg font-semibold text-gray-900">
                   Profile Picture
                 </h3>
-                <p className="text-sm text-gray-500 mb-2">
-                  Upload a new profile picture. Max size 5MB.
+                <p className="text-sm text-gray-500 mb-3">
+                  Click the photo or the button below. Max size 5MB (JPG, PNG, GIF).
                 </p>
-                <button
+                {/* Drag-and-drop zone */}
+                <div
                   onClick={() => fileInputRef.current?.click()}
-                  className="text-blue-600 hover:text-blue-700 text-sm font-medium flex items-center space-x-1"
-                  disabled={isUploadingImage}
+                  onDragOver={(e) => { e.preventDefault(); }}
+                  onDrop={(e) => {
+                    e.preventDefault();
+                    const file = e.dataTransfer.files[0];
+                    if (file) {
+                      const fakeEvent = { target: { files: [file] } };
+                      handleImageSelect(fakeEvent);
+                    }
+                  }}
+                  style={{
+                    border: "2px dashed #93c5fd",
+                    borderRadius: 12,
+                    padding: "12px 16px",
+                    cursor: "pointer",
+                    background: "#eff6ff",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 10,
+                    transition: "background 0.15s",
+                  }}
                 >
-                  <Upload size={16} />
-                  <span>
-                    {isUploadingImage ? "Uploading..." : "Choose Image"}
+                  <Upload size={18} style={{ color: "#3b82f6", flexShrink: 0 }} />
+                  <span style={{ fontSize: 13, color: "#2563eb", fontWeight: 600 }}>
+                    {profileImage ? profileImage.name : "Click or drag & drop an image here"}
                   </span>
-                </button>
+                </div>
               </div>
             </div>
             {errors.profilePicture && (
