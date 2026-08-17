@@ -28,6 +28,8 @@ import ProfileEditModal from "@/components/Profile/profileModel";
 import FacebookAccountsManager from "@/components/FacebookAccounts/FacebookAccountsManager";
 import InstagramAccountsManager from "@/components/InstagramAccounts/InstrgramAccountsManager";
 import { Instagram } from "@/components/Icons";
+import ReferralCenter from "@/components/Referral/ReferralCenter";
+import ReferralNotifications from "@/components/Referral/ReferralNotifications";
 
 export default function Profile() {
   const [earnings, setEarnings] = useState({
@@ -45,6 +47,7 @@ export default function Profile() {
   const [success, setSuccess] = useState(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("personal");
+  const [referralUnreadCount, setReferralUnreadCount] = useState(0);
 
   const { user, isAuthLoading, setUser, logout } = useAuth();
   const socket = useSocket();
@@ -93,9 +96,15 @@ export default function Profile() {
     socket.emit("register", user._id);
     const handleEarningsUpdate = (updated) =>
       setEarnings((prev) => ({ ...prev, ...updated }));
+    const handleReferralNotification = (data) => {
+      // Increment unread badge when any referral notification arrives
+      setReferralUnreadCount((prev) => prev + 1);
+    };
     socket.on("earningsUpdate", handleEarningsUpdate);
+    socket.on("referralNotification", handleReferralNotification);
     return () => {
       socket.off("earningsUpdate", handleEarningsUpdate);
+      socket.off("referralNotification", handleReferralNotification);
     };
   }, [socket, user?._id]);
 
@@ -213,6 +222,11 @@ export default function Profile() {
       icon: <Instagram size={14} />,
     },
     { key: "earnings", label: "Earnings", icon: null },
+    {
+      key: "referral-center",
+      label: referralUnreadCount > 0 ? `Referral Center (${referralUnreadCount})` : "Referral Center",
+      icon: null,
+    },
   ];
 
   return (
@@ -535,25 +549,29 @@ export default function Profile() {
                   }}
                 >
                   <Bell size={18} />
-                  <span
-                    style={{
-                      position: "absolute",
-                      top: "-2px",
-                      right: "-2px",
-                      width: "18px",
-                      height: "18px",
-                      background: "#ef4444",
-                      borderRadius: "50%",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      fontSize: "10px",
-                      color: "white",
-                      fontWeight: 700,
-                    }}
-                  >
-                    3
-                  </span>
+                  {referralUnreadCount > 0 && (
+                    <span
+                      onClick={() => setActiveTab("referral-center")}
+                      style={{
+                        position: "absolute",
+                        top: "-2px",
+                        right: "-2px",
+                        width: "18px",
+                        height: "18px",
+                        background: "#ef4444",
+                        borderRadius: "50%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        fontSize: "10px",
+                        color: "white",
+                        fontWeight: 700,
+                        cursor: "pointer",
+                      }}
+                    >
+                      {referralUnreadCount}
+                    </span>
+                  )}
                 </button>
 
                 <div
@@ -1188,6 +1206,15 @@ export default function Profile() {
                               border: "rgba(168, 85, 247, 0.15)",
                               labelColor: "#7e22ce",
                               valueColor: "#581c87",
+                            },
+                            {
+                              label: "Referral Commission",
+                              value: `Rs ${formatCurrency(earnings.referralEarnings)}`,
+                              sub: "5% from referral withdrawals",
+                              bg: "linear-gradient(135deg, #fff7ed, #fed7aa)",
+                              border: "rgba(234, 88, 12, 0.15)",
+                              labelColor: "#c2410c",
+                              valueColor: "#7c2d12",
                             },
                           ].map((stat, i) => (
                             <div
@@ -1843,6 +1870,31 @@ export default function Profile() {
                   </button>
                 </div>
               </div>
+            </div>
+          </div>
+        )}
+
+        {/* ── REFERRAL CENTER TAB ── */}
+        {activeTab === "referral-center" && (
+          <div
+            className="lg-grid"
+            style={{
+              display: "grid",
+              gridTemplateColumns: "2fr 1fr",
+              gap: "24px",
+              alignItems: "flex-start",
+            }}
+          >
+            {/* Left: Referral Center */}
+            <div className="profile-card" style={{ padding: "28px" }}>
+              <ReferralCenter user={user} />
+            </div>
+
+            {/* Right: Referral Notifications */}
+            <div className="profile-card" style={{ padding: "24px" }}>
+              <ReferralNotifications
+                onUnreadCountChange={(count) => setReferralUnreadCount(count)}
+              />
             </div>
           </div>
         )}

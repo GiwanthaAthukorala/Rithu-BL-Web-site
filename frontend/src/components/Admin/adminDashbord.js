@@ -691,6 +691,16 @@ export default function AdminDashboard() {
               Instagram Links
             </button>
             <button
+              onClick={() => {
+                router.push("/admin/referrals");
+                setMobileMenuOpen(false);
+              }}
+              className="w-full flex items-center px-3 py-2.5 text-sm font-medium text-indigo-700 hover:bg-indigo-50 rounded-md"
+            >
+              <Users className="w-4 h-4 mr-2 text-indigo-600" />
+              Referral Management
+            </button>
+            <button
               onClick={adminLogout}
               className="w-full bg-red-600 text-white px-3 py-2.5 rounded-md text-sm hover:bg-red-700 transition-colors mt-2"
             >
@@ -746,6 +756,13 @@ export default function AdminDashboard() {
             >
               <Instagram className="w-4 h-4 mr-2 text-pink-500" />
               Instagram Links
+            </button>
+            <button
+              onClick={() => router.push("/admin/referrals")}
+              className="hidden sm:flex items-center px-3 py-4 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-indigo-700 transition-colors whitespace-nowrap"
+            >
+              <Users className="w-4 h-4 mr-2 text-indigo-600" />
+              Referrals
             </button>
           </div>
         </div>

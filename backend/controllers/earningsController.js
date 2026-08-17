@@ -8,6 +8,8 @@ const GoogleReviewModel = require("../models/GoogleReviewModel");
 const VideoWatchSession = require("../models/VideoWatchSession");
 const Instrgram = require("../models/InstrgramModel");
 const TiktokSubmission = require("../models/TiktokModel");
+const Referral = require("../models/Referral");
+const ReferralNotification = require("../models/ReferralNotification");
 
 exports.getUserEarnings = async (req, res) => {
   try {
@@ -189,7 +191,73 @@ exports.withdrawEarnings = async (req, res) => {
     earnings.withdrawnAmount += amount;
     await earnings.save();
 
-    // Emit socket event if needed
+    // ── Referral Commission: 5% to referrer ──────────────────────────────
+    try {
+      const referralRecord = await Referral.findOne({
+        referee: req.user._id,
+        status: "accepted",
+      }).populate("referrer", "firstName lastName");
+
+      if (referralRecord) {
+        const commission = parseFloat((amount * 0.05).toFixed(2));
+
+        // Credit referrer's earnings
+        let referrerEarnings = await Earnings.findOne({ user: referralRecord.referrer._id });
+        if (!referrerEarnings) {
+          referrerEarnings = await Earnings.create({
+            user: referralRecord.referrer._id,
+            totalEarned: 0,
+            availableBalance: 0,
+            pendingWithdrawal: 0,
+            withdrawnAmount: 0,
+            referralEarnings: 0,
+          });
+        }
+
+        referrerEarnings.referralEarnings += commission;
+        referrerEarnings.totalEarned += commission;
+        referrerEarnings.availableBalance += commission;
+        await referrerEarnings.save();
+
+        // Update commission history on the referral record
+        referralRecord.totalCommissionEarned += commission;
+        referralRecord.commissionHistory.push({
+          withdrawalAmount: amount,
+          commissionAmount: commission,
+          date: new Date(),
+        });
+        await referralRecord.save();
+
+        // In-app notification for referrer
+        const refereeName = `${req.user.firstName} ${req.user.lastName}`;
+        const notif = await ReferralNotification.create({
+          recipient: referralRecord.referrer._id,
+          sender: req.user._id,
+          referral: referralRecord._id,
+          type: "referral_commission",
+          message: `You earned Rs ${commission.toFixed(2)} (5%) referral commission from ${refereeName}'s withdrawal of Rs ${amount}.`,
+          meta: { commission, withdrawalAmount: amount },
+        });
+
+        // Emit socket events
+        const io = req.app.get("io");
+        if (io) {
+          io.to(referralRecord.referrer._id.toString()).emit("earningsUpdate", referrerEarnings);
+          io.to(referralRecord.referrer._id.toString()).emit("referralNotification", {
+            type: "referral_commission",
+            notification: notif,
+            commission,
+            from: refereeName,
+          });
+        }
+      }
+    } catch (commissionError) {
+      // Don't fail the withdrawal if commission processing fails
+      console.error("Referral commission error:", commissionError);
+    }
+    // ─────────────────────────────────────────────────────────────────────
+
+    // Emit socket event to withdrawer
     const io = req.app.get("io");
     if (io) {
       io.to(req.user._id.toString()).emit("earningsUpdate", earnings);
