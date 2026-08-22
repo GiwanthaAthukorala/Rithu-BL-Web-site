@@ -188,25 +188,25 @@ export default function YouTubeVerificationTask() {
           </div>
 
           {/* Admin Message */}
-          {/**  <div className="mb-8 bg-blue-50 p-4 rounded-lg">
+          <div className="mb-8 bg-blue-50 p-4 rounded-lg">
             <p className="text-gray-700 mb-3">
               Please visit this link and take a screenshot as proof:
             </p>
             <a
-              href="https://youtube.com/@janakavidyarathna?si=9KUyoD_t1FcYfiM4"
+              href="https://youtube.com/@mr_dila_gaming?si=aAudXkDaDw3oR0zy"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-between p-4 bg-white rounded-lg hover:bg-blue-50 transition-colors duration-200 border border-gray-200 hover:border-blue-300 group"
             >
               <span className="text-gray-700 group-hover:text-blue-700">
-                Janaka Vidyarathna - යූ ටියුබ් චැනල් එක සබ්ක්‍රයිබ් කරන්න
-                (ඔයාලාගේ youtube වල main account වලින් විතරක් subcribe කරන්න 200
-                Subscribe  screenshots upload කරන්න)
+                Mr Dila Gaming - යූ ටියුබ් චැනල් එක සබ්ක්‍රයිබ් කරන්න (ඔයාලාගේ
+                youtube වල main account වලින් විතරක් subcribe කරන්න Subscribe 
+                screenshots upload කරන්න)
               </span>
               <ExternalLink className="w-4 h-4 text-blue-600 group-hover:scale-110 transition-transform" />
             </a>
           </div>
-          <div className="mb-8 bg-blue-50 p-4 rounded-lg">
+          {/** <div className="mb-8 bg-blue-50 p-4 rounded-lg">
             <p className="text-gray-700 mb-3">
               Please visit this link and take a screenshot as proof:
             </p>

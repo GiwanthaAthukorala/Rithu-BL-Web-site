@@ -62,12 +62,21 @@ const extractTikTokId = (url) => {
 
 const sampleVideos = [
   {
+    title: "සමුගන්නේ නෑ...🎤මුල් ගායනය නාමල් උඩුගම මහතා ",
+    description: "Daily dose of laughter with these funny Facebook videos",
+    videoUrl: "https://www.facebook.com/share/v/19AvzTG9SW/",
+    platform: "Facebook",
+    duration: 60,
+    rewardAmount: 0.5,
+    isActive: true,
+  },
+  {
     title:
       "ජපානයේ නිවාඩු දවසේ ක්‍රිකට්🏏 | A Cricket Day in Japan 🇯🇵 | Vlog #5",
     description:
       "ඔන්ලයින් දවසට විනාඩි 5ක් වැඩ කරලා රුපියල්   Watch for 0.50 minute to earn Rs 0.50.",
     videoUrl: "https://youtube.com/watch?v=XzOsyXmEKYs&si=dCDNZ5HhgoNTJmi_",
-    embedUrl: "https://youtube.com/shorts/rDp0tA2PCAc?si=t-dCDNZ5HhgoNTJmi_",
+    embedUrl: "https://youtube.com/shorts/rDp0tA2PCAc?si=dCDNZ5HhgoNTJmi_",
     thumbnailUrl: "https://img.youtube.com/vi/dCDNZ5HhgoNTJmi_/hqdefault.jpg",
     platform: "youtube",
     duration: 60,
@@ -79,7 +88,7 @@ const sampleVideos = [
       "අපේ Entrance Ceremony එක 🇯🇵🎉 | Our Entrance Ceremony Day in Japan | VLOG #6",
     description:
       "ඔන්ලයින් දවසට විනාඩි 5ක් වැඩ කරලා රුපියල්   Watch for 0.50 minute to earn Rs 0.50.",
-    videoUrl: "https://youtu.be/UbxX-o7J9ds?si=xIY0SN6geEaobvo6",
+    videoUrl: "https://youtube.com/watch?v=XzOsyXmEKYs&si=dCDNZ5HhgoNTJmi_",
     embedUrl: "https://youtube.com/shorts/rDp0tA2PCAc?si=t-xIY0SN6geEaobvo6",
     thumbnailUrl: "https://img.youtube.com/vi/xIY0SN6geEaobvo6/hqdefault.jpg",
     platform: "youtube",
@@ -87,7 +96,7 @@ const sampleVideos = [
     rewardAmount: 0.5,
     isActive: true,
   },
-  {
+{
     title:
       "සන්තොරි ඇප් එකෙන් Free බීම ගමු 😍 | Suntory App + PayPay = FREE Drinks 🧃🇯🇵 | Vlog #7",
     description:
@@ -129,7 +138,7 @@ const sampleVideos = [
   {
     title: "❤️SAYASHOE❤️",
     description: "Daily dose of laughter with these funny TikTok videos",
-    videoUrl: "https://vt.tiktok.com/ZSQFgpmV2/",
+    videoUrl: "https://www.facebook.com/share/v/19AvzTG9SW/",
     platform: "tiktok",
     duration: 60,
     rewardAmount: 0.5,
