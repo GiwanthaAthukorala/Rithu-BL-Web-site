@@ -62,17 +62,26 @@ const extractTikTokId = (url) => {
 
 const sampleVideos = [
   {
-    title: "සමුගන්නේ නෑ...🎤මුල් ගායනය නාමල් උඩුගම මහතා ",
-    description: "Daily dose of laughter with these funny Facebook videos",
-    videoUrl: "https://www.facebook.com/share/v/19AvzTG9SW/",
-    platform: "Facebook",
+    title: "Yakkuth Asa ewa..",
+    description: "Daily dose of laughter with these funny TikTok videos",
+    videoUrl: "https://vt.tiktok.com/ZSV5SBSsE/",
+    platform: "tiktok",
+    duration: 60,
+    rewardAmount: 0.5,
+    isActive: true,
+  },
+  {
+    title: "Ahinskawi ❤️😍",
+    description: "Daily dose of laughter with these funny TikTok videos",
+    videoUrl: "https://vt.tiktok.com/ZSVukKGCk/",
+    platform: "tiktok",
     duration: 60,
     rewardAmount: 0.5,
     isActive: true,
   },
   {
     title:
-      "ජපානයේ නිවාඩු දවසේ ක්‍රිකට්🏏 | A Cricket Day in Japan 🇯🇵 | Vlog #5",
+      "Kolomthota natha mahalu wee (කොළොම්තොට නැත මහළු වී..Coverd by Janaka Vidyarathna)",
     description:
       "ඔන්ලයින් දවසට විනාඩි 5ක් වැඩ කරලා රුපියල්   Watch for 0.50 minute to earn Rs 0.50.",
     videoUrl: "https://youtube.com/watch?v=XzOsyXmEKYs&si=dCDNZ5HhgoNTJmi_",
@@ -83,7 +92,20 @@ const sampleVideos = [
     rewardAmount: 0.5,
     isActive: true,
   },
-  /* {
+
+  {
+    title: "සමුගන්නේ නෑ...🎤මුල් ගායනය නාමල් උඩුගම මහතා",
+    description: "සමුගන්නේ නෑ...🎤මුල් ගායනය නාමල් උඩුගම මහතා",
+    videoUrl: "https://www.facebook.com/share/v/19AvzTG9SW/",
+    embedUrl: "https://www.facebook.com/share/v/19AvzTG9SW/", // Add this
+    thumbnailUrl:
+      "https://placehold.co/400x225/1877F2/FFFFFF?text=Facebook+Video", // Add this
+    platform: "facebook", // Use lowercase
+    duration: 60,
+    rewardAmount: 0.5,
+    isActive: true,
+  },
+  /*{
     title:
       "අපේ Entrance Ceremony එක 🇯🇵🎉 | Our Entrance Ceremony Day in Japan | VLOG #6",
     description:
