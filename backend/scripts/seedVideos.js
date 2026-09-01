@@ -61,6 +61,30 @@ const extractTikTokId = (url) => {
 };
 
 const sampleVideos = [
+ /* {
+    title: "නොසලන්න කඳුළක් ...❤",
+    description: "නොසලන්න කඳුළක් ...❤ යොහාන් අර්ජුන මහතාගේ ගීතයක්.🙏❤",
+    videoUrl: "https://www.facebook.com/share/v/1DZqbJziAP/",
+    embedUrl: "https://www.facebook.com/share/v/1DZqbJziAP/", // Add this
+    thumbnailUrl:
+      "https://placehold.co/400x225/1877F2/FFFFFF?text=Facebook+1DZqbJziAP", // Add this
+    platform: "facebook", // Use lowercase
+    duration: 60,
+    rewardAmount: 0.5,
+    isActive: true,
+  },
+  {
+    title: "Janaka Vidyarathna",
+    description: "Janaka Vidyarathna",
+    videoUrl: "https://www.facebook.com/share/r/18tk9Ag3ic/",
+    embedUrl: "https://www.facebook.com/share/r/18tk9Ag3ic/", // Add this
+    thumbnailUrl:
+      "https://placehold.co/400x225/1877F2/FFFFFF?text=Facebook+18tk9Ag3ic", // Add this
+    platform: "facebook", // Use lowercase
+    duration: 60,
+    rewardAmount: 0.5,
+    isActive: true,
+  },
   {
     title: "Yakkuth Asa ewa..",
     description: "Daily dose of laughter with these funny TikTok videos",
@@ -105,7 +129,7 @@ const sampleVideos = [
     rewardAmount: 0.5,
     isActive: true,
   },
-  /*{
+{
     title:
       "අපේ Entrance Ceremony එක 🇯🇵🎉 | Our Entrance Ceremony Day in Japan | VLOG #6",
     description:
