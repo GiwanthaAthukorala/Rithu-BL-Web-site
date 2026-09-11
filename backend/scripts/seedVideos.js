@@ -61,19 +61,56 @@ const extractTikTokId = (url) => {
 };
 
 const sampleVideos = [
- /* {
-    title: "නොසලන්න කඳුළක් ...❤",
-    description: "නොසලන්න කඳුළක් ...❤ යොහාන් අර්ජුන මහතාගේ ගීතයක්.🙏❤",
-    videoUrl: "https://www.facebook.com/share/v/1DZqbJziAP/",
-    embedUrl: "https://www.facebook.com/share/v/1DZqbJziAP/", // Add this
-    thumbnailUrl:
-      "https://placehold.co/400x225/1877F2/FFFFFF?text=Facebook+1DZqbJziAP", // Add this
-    platform: "facebook", // Use lowercase
+  {
+    title: "Janaka Vidyarathna",
+    description:
+      "ඔන්ලයින් දවසට විනාඩි 1ක් වැඩ කරලා රුපියල් Watch for 0.50 minute to earn Rs 0.50.",
+    videoUrl: "https://youtube.com/shorts/d2yBkYeba-s?si=_Je_DrvUgMyg3A4I",
+    embedUrl: "https://youtube.com/shorts/rDp0tA2PCAc?si=_Je_DrvUgMyg3A4I",
+    thumbnailUrl: "https://img.youtube.com/vi/_Je_DrvUgMyg3A4I/hqdefault.jpg",
+    platform: "youtube",
     duration: 60,
     rewardAmount: 0.5,
     isActive: true,
   },
   {
+    title: "Janaka Vidyarathna",
+    description:
+      "ඔන්ලයින් දවසට විනාඩි 1ක් වැඩ කරලා රුපියල් Watch for 0.50 minute to earn Rs 0.50.",
+    videoUrl: "https://youtube.com/shorts/_IrqscOanJw?si=UIW5jnwdAxQUiWtc",
+    embedUrl: "https://youtube.com/shorts/rDp0tA2PCAc?si=UIW5jnwdAxQUiWtc",
+    thumbnailUrl: "https://img.youtube.com/vi/UIW5jnwdAxQUiWtc/hqdefault.jpg",
+    platform: "youtube",
+    duration: 60,
+    rewardAmount: 0.5,
+    isActive: true,
+  },
+  {
+    title: "Janaka Vidyarathna",
+    description:
+      "ඔන්ලයින් දවසට විනාඩි 1ක් වැඩ කරලා රුපියල් Watch for 0.50 minute to earn Rs 0.50.",
+    videoUrl: "https://youtube.com/shorts/mSoPhP1ktQ4?si=u30hjVmuFTxNsx95",
+    embedUrl: "https://youtube.com/shorts/rDp0tA2PCAc?si=u30hjVmuFTxNsx95",
+    thumbnailUrl: "https://img.youtube.com/vi/u30hjVmuFTxNsx95/hqdefault.jpg",
+    platform: "youtube",
+    duration: 60,
+    rewardAmount: 0.5,
+    isActive: true,
+  },
+  {
+    title: "Pakkiyarajah Pushparajan",
+    description:
+      "ඔන්ලයින් දවසට විනාඩි 1ක් වැඩ කරලා රුපියල් Watch for 0.50 minute to earn Rs 0.50.",
+    videoUrl: "https://www.facebook.com/share/v/1Bs34UCUHy/",
+    embedUrl: "https://www.facebook.com/share/v/1Bs34UCUHy/", // Add this
+    thumbnailUrl:
+      "https://placehold.co/400x225/1877F2/FFFFFF?text=Facebook+1Bs34UCUHy", // Add this
+    platform: "facebook", // Use lowercase
+    duration: 60,
+    rewardAmount: 0.5,
+    isActive: true,
+  },
+  /* {
     title: "Janaka Vidyarathna",
     description: "Janaka Vidyarathna",
     videoUrl: "https://www.facebook.com/share/r/18tk9Ag3ic/",
@@ -108,7 +145,7 @@ const sampleVideos = [
       "Kolomthota natha mahalu wee (කොළොම්තොට නැත මහළු වී..Coverd by Janaka Vidyarathna)",
     description:
       "ඔන්ලයින් දවසට විනාඩි 5ක් වැඩ කරලා රුපියල්   Watch for 0.50 minute to earn Rs 0.50.",
-    videoUrl: "https://youtube.com/watch?v=XzOsyXmEKYs&si=dCDNZ5HhgoNTJmi_",
+    videoUrl: "https://youtube.com/shorts/mSoPhP1ktQ4?si=u30hjVmuFTxNsx95",
     embedUrl: "https://youtube.com/shorts/rDp0tA2PCAc?si=dCDNZ5HhgoNTJmi_",
     thumbnailUrl: "https://img.youtube.com/vi/dCDNZ5HhgoNTJmi_/hqdefault.jpg",
     platform: "youtube",
