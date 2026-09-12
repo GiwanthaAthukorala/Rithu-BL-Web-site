@@ -174,10 +174,15 @@ exports.withdrawEarnings = async (req, res) => {
       });
     }
 
+    // ── Include accumulated referral earnings in this withdrawal ─────────
+    const referralBonus = parseFloat((earnings.referralEarnings || 0).toFixed(2));
+    const totalWithdrawalAmount = parseFloat((amount + referralBonus).toFixed(2));
+    // ─────────────────────────────────────────────────────────────────────
+
     const transaction = await Transaction.create({
       user: req.user._id,
       type: "withdrawal",
-      amount,
+      amount: totalWithdrawalAmount,
       status: "pending",
       reference: `WD-${Date.now()}`,
       bankDetails: {
@@ -185,10 +190,20 @@ exports.withdrawEarnings = async (req, res) => {
         branch: req.user.bankBranch,
         account: req.user.bankAccountNo,
       },
+      referralBonus,
     });
 
     earnings.availableBalance -= amount;
-    earnings.withdrawnAmount += amount;
+    earnings.withdrawnAmount += totalWithdrawalAmount;
+    // Zero out referral earnings since they are now included in the withdrawal
+    if (referralBonus > 0) {
+      earnings.referralEarnings = 0;
+      // Reduce totalEarned by referralBonus to avoid double-counting
+      // (referralBonus was already added to totalEarned when it was credited)
+      // availableBalance was already reduced by `amount`; referralBonus portion
+      // was sitting in availableBalance as part of totalEarned, so deduct it too
+      earnings.availableBalance = Math.max(0, earnings.availableBalance - referralBonus);
+    }
     await earnings.save();
 
     // ── Referral Commission: 5% to referrer ──────────────────────────────
@@ -263,7 +278,8 @@ exports.withdrawEarnings = async (req, res) => {
       io.to(req.user._id.toString()).emit("earningsUpdate", earnings);
       io.to(req.user._id.toString()).emit("withdrawalSuccess", {
         message: "Withdrawal processed successfully!",
-        amount: amount,
+        amount: totalWithdrawalAmount,
+        referralBonus,
         transaction: transaction,
       });
     }
@@ -273,6 +289,8 @@ exports.withdrawEarnings = async (req, res) => {
       message: "Withdrawal request submitted successfully",
       earnings: earnings,
       transaction: transaction,
+      referralBonus,
+      totalWithdrawalAmount,
     });
   } catch (error) {
     console.error("Withdrawal error:", error);

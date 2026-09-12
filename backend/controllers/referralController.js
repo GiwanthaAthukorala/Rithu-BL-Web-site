@@ -2,6 +2,7 @@ const User = require("../models/userModel");
 const Referral = require("../models/Referral");
 const ReferralNotification = require("../models/ReferralNotification");
 const Earnings = require("../models/Earnings");
+const Transaction = require("../models/Transaction");
 
 // ─────────────────────────────────────────────────────────────────────────────
 // POST /api/referrals/send
@@ -402,6 +403,37 @@ exports.getAllReferralsAdmin = async (req, res) => {
     });
   } catch (error) {
     console.error("getAllReferralsAdmin error:", error);
+    res.status(500).json({ success: false, message: "Server error", error: error.message });
+  }
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
+// GET /api/referrals/admin/withdrawal-bonus-events   (admin only)
+// Returns recent withdrawal transactions that included a referral bonus payout
+// ─────────────────────────────────────────────────────────────────────────────
+exports.getWithdrawalBonusEvents = async (req, res) => {
+  try {
+    const limit = parseInt(req.query.limit) || 50;
+
+    const events = await Transaction.find({ referralBonus: { $gt: 0 } })
+      .sort({ createdAt: -1 })
+      .limit(limit)
+      .populate("user", "firstName lastName email")
+      .lean();
+
+    // Compute totals
+    const totalBonusPaid = events.reduce((sum, e) => sum + (e.referralBonus || 0), 0);
+
+    res.json({
+      success: true,
+      data: {
+        events,
+        totalBonusPaid: parseFloat(totalBonusPaid.toFixed(2)),
+        count: events.length,
+      },
+    });
+  } catch (error) {
+    console.error("getWithdrawalBonusEvents error:", error);
     res.status(500).json({ success: false, message: "Server error", error: error.message });
   }
 };

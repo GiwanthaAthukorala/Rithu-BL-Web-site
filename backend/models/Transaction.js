@@ -32,6 +32,12 @@ const transactionSchema = new mongoose.Schema(
       branch: String,
       account: String,
     },
+    // Amount from referral earnings included in this withdrawal (0 if none)
+    referralBonus: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
   },
   {
     timestamps: true,

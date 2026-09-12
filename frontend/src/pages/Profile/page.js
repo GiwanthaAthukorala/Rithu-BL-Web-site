@@ -126,8 +126,13 @@ export default function Profile() {
         setEarnings(response.data.earnings);
         setIsWithdrawModalOpen(false);
         setWithdrawAmount("500");
+        const referralBonus = response.data.referralBonus || 0;
+        const totalAmount = response.data.totalWithdrawalAmount || amount;
+        const bonusNote = referralBonus > 0
+          ? ` (includes Rs ${referralBonus.toFixed(2)} referral bonus)`
+          : "";
         setSuccess(
-          `Withdrawal of Rs ${amount} processed successfully! Funds will be transferred to your bank account.`,
+          `Withdrawal of Rs ${totalAmount.toFixed(2)} processed successfully${bonusNote}! Funds will be transferred to your bank account.`,
         );
         setTimeout(() => setSuccess(null), 8000);
       }
@@ -1818,6 +1823,34 @@ export default function Profile() {
                   />
                 </div>
 
+                {/* Referral bonus banner — only shown when user has referral earnings */}
+                {earnings.referralEarnings > 0 && (
+                  <div
+                    style={{
+                      background: "linear-gradient(135deg, #f0fdf4, #dcfce7)",
+                      border: "1.5px solid #86efac",
+                      borderRadius: "14px",
+                      padding: "14px 16px",
+                      marginBottom: "16px",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "12px",
+                    }}
+                  >
+                    <span style={{ fontSize: "22px", lineHeight: 1 }}>🎁</span>
+                    <div>
+                      <p style={{ fontSize: "13px", fontWeight: 700, color: "#15803d", margin: "0 0 2px" }}>
+                        Referral Bonus Included
+                      </p>
+                      <p style={{ fontSize: "12px", color: "#166534", margin: 0 }}>
+                        Your referral balance of{" "}
+                        <strong>Rs {formatCurrency(earnings.referralEarnings)}</strong>{" "}
+                        will be automatically added to this withdrawal.
+                      </p>
+                    </div>
+                  </div>
+                )}
+
                 <div
                   style={{
                     background:
@@ -1825,7 +1858,7 @@ export default function Profile() {
                     border: "1px solid #e2e8f0",
                     borderRadius: "14px",
                     padding: "16px",
-                    marginBottom: "24px",
+                    marginBottom: earnings.referralEarnings > 0 ? "12px" : "24px",
                     display: "flex",
                     justifyContent: "space-between",
                     alignItems: "center",
@@ -1844,6 +1877,37 @@ export default function Profile() {
                     Rs {formatCurrency(earnings.availableBalance)}
                   </span>
                 </div>
+
+                {/* Total to be received — shown when referral bonus is present */}
+                {earnings.referralEarnings > 0 && (
+                  <div
+                    style={{
+                      background: "linear-gradient(135deg, #eff6ff, #dbeafe)",
+                      border: "1px solid #93c5fd",
+                      borderRadius: "14px",
+                      padding: "14px 16px",
+                      marginBottom: "24px",
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                    }}
+                  >
+                    <span style={{ fontSize: "13px", color: "#1d4ed8", fontWeight: 600 }}>
+                      Total you will receive
+                    </span>
+                    <span
+                      style={{
+                        fontSize: "20px",
+                        fontWeight: 800,
+                        color: "#1e3a8a",
+                      }}
+                    >
+                      Rs {formatCurrency(
+                        (parseFloat(withdrawAmount) || 0) + (earnings.referralEarnings || 0)
+                      )}
+                    </span>
+                  </div>
+                )}
 
                 <div style={{ display: "flex", gap: "12px" }}>
                   <button
