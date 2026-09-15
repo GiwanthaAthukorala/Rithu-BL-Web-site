@@ -310,6 +310,7 @@ export default function YouTubeVerificationTask() {
               </span>
               <ExternalLink className="w-4 h-4 text-blue-600 group-hover:scale-110 transition-transform" />
             </a>
+            
           </div>*/}
 
           <div className="mb-8 bg-yellow-50 p-4 rounded-lg border border-yellow-200">
