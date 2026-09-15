@@ -248,9 +248,9 @@ export default function YouTubeVerificationTask() {
               className="flex items-center justify-between p-4 bg-white rounded-lg hover:bg-blue-50 transition-colors duration-200 border border-gray-200 hover:border-blue-300 group"
             >
               <span className="text-gray-700 group-hover:text-blue-700">
-                Elephant Vibes - යූ ටියුබ් චැනල් එක සබ්ක්‍රයිබ් කරන්න (ඔයාලාගේ
-                youtube වල main account වලින් විතරක් subcribe කරන්න Subscribe 
-                screenshots upload කරන්න)
+                Elephant Vibes - යූ ටියුබ් චැනල් එක සබ්ක්‍රයිබ් කරන්න (ඔයාලාගේ
+                youtube වල main account වලින් විතරක් subcribe කරන්න Subscribe 
+                screenshots upload කරන්න)
               </span>
               <ExternalLink className="w-4 h-4 text-blue-600 group-hover:scale-110 transition-transform" />
             </a>
@@ -285,8 +285,8 @@ export default function YouTubeVerificationTask() {
             >
               <span className="text-gray-700 group-hover:text-blue-700">
                 Staight Line educational Academy - යූ ටියුබ් චැනල් එක
-                සබ්ක්‍රයිබ් කරන්න (ඔයාලාගේ youtube වල main account වලින් විතරක්
-                subcribe කරන්න Subscribe  screenshots upload කරන්න)
+                සබ්ක්‍රයිබ් කරන්න (ඔයාලාගේ youtube වල main account වලින් විතරක්
+                subcribe කරන්න Subscribe  screenshots upload කරන්න)
               </span>
               <ExternalLink className="w-4 h-4 text-blue-600 group-hover:scale-110 transition-transform" />
             </a>
@@ -302,9 +302,9 @@ export default function YouTubeVerificationTask() {
               className="flex items-center justify-between p-4 bg-white rounded-lg hover:bg-blue-50 transition-colors duration-200 border border-gray-200 hover:border-blue-300 group"
             >
               <span className="text-gray-700 group-hover:text-blue-700">
-                BuildNova - යූ ටියුබ් චැනල් එක සබ්ක්‍රයිබ් කරන්න (ඔයාලාගේ
-                youtube වල main account වලින් විතරක් subcribe කරන්න Subscribe 
-                screenshots upload කරන්න)
+                BuildNova - යූ ටියුබ් චැනල් එක සබ්ක්‍රයිබ් කරන්න (ඔයාලාගේ
+                youtube වල main account වලින් විතරක් subcribe කරන්න Subscribe 
+                screenshots upload කරන්න)
               </span>
               <ExternalLink className="w-4 h-4 text-blue-600 group-hover:scale-110 transition-transform" />
             </a>
@@ -338,7 +338,7 @@ export default function YouTubeVerificationTask() {
               className="flex items-center justify-between p-4 bg-white rounded-lg hover:bg-blue-50 transition-colors duration-200 border border-gray-200 hover:border-blue-300 group"
             >
               <span className="text-gray-700 group-hover:text-blue-700">
-                T.G.D.S You Tube - යූ ටියුබ් චැනල් එක සබ්ක්‍රයිබ් කරන්න
+                T.G.D.S You Tube - යූ ටියුබ් චැනල් එක සබ්ක්‍රයිබ් කරන්න
               </span>
               <ExternalLink className="w-4 h-4 text-blue-600 group-hover:scale-110 transition-transform" />
             </a>
@@ -354,7 +354,7 @@ export default function YouTubeVerificationTask() {
               className="flex items-center justify-between p-4 bg-white rounded-lg hover:bg-blue-50 transition-colors duration-200 border border-gray-200 hover:border-blue-300 group"
             >
               <span className="text-gray-700 group-hover:text-blue-700">
-                Sadu you tube chennel - යූ ටියුබ් චැනල් එක සබ්ක්‍රයිබ් කරන්න
+                Sadu you tube chennel - යූ ටියුබ් චැනල් එක සබ්ක්‍රයිබ් කරන්න
               </span>
               <ExternalLink className="w-4 h-4 text-blue-600 group-hover:scale-110 transition-transform" />
             </a>
