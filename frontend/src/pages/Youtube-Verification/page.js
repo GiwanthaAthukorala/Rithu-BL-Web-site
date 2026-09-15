@@ -236,8 +236,7 @@ export default function YouTubeVerificationTask() {
               <ExternalLink className="w-4 h-4 text-blue-600 group-hover:scale-110 transition-transform" />
             </a>
           </div>
-
-          {/**<div className="mb-8 bg-blue-50 p-4 rounded-lg">
+          {/**   <div className="mb-8 bg-blue-50 p-4 rounded-lg">
             <p className="text-gray-700 mb-3">
               Please visit this link and take a screenshot as proof:
             </p>
@@ -256,6 +255,7 @@ export default function YouTubeVerificationTask() {
             </a>
           </div>
 
+        
            <div className="mb-8 bg-blue-50 p-4 rounded-lg">
             <p className="text-gray-700 mb-3">
               Please visit this link and take a screenshot as proof:
@@ -358,7 +358,6 @@ export default function YouTubeVerificationTask() {
               </span>
               <ExternalLink className="w-4 h-4 text-blue-600 group-hover:scale-110 transition-transform" />
             </a>
-
           </div>*/}
 
           <div className="mb-8 bg-yellow-50 p-4 rounded-lg border border-yellow-200">
