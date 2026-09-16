@@ -119,9 +119,12 @@ exports.getUserEarnings = async (req, res) => {
         tiktokTotal +
         videoTotal;
 
-      // Update earnings if needed
+      // Update earnings if calculated work total has changed.
+      // totalEarned and availableBalance track ONLY work-submission earnings.
+      // referralBalance is a completely separate pool and is never mixed in here.
       if (earnings.totalEarned !== calculatedTotal) {
         earnings.totalEarned = calculatedTotal;
+        // availableBalance = work earnings - amounts already withdrawn (work only) - pending
         earnings.availableBalance = Math.max(
           0,
           calculatedTotal -
@@ -174,15 +177,12 @@ exports.withdrawEarnings = async (req, res) => {
       });
     }
 
-    // ── Include accumulated referral earnings in this withdrawal ─────────
-    const referralBonus = parseFloat((earnings.referralEarnings || 0).toFixed(2));
-    const totalWithdrawalAmount = parseFloat((amount + referralBonus).toFixed(2));
-    // ─────────────────────────────────────────────────────────────────────
-
+    // Withdrawal only draws from the work-earnings availableBalance.
+    // referralBalance is a completely separate pool and is NOT mixed in here.
     const transaction = await Transaction.create({
       user: req.user._id,
       type: "withdrawal",
-      amount: totalWithdrawalAmount,
+      amount: amount,
       status: "pending",
       reference: `WD-${Date.now()}`,
       bankDetails: {
@@ -190,20 +190,11 @@ exports.withdrawEarnings = async (req, res) => {
         branch: req.user.bankBranch,
         account: req.user.bankAccountNo,
       },
-      referralBonus,
     });
 
+    // Deduct from work-earnings balance only
     earnings.availableBalance -= amount;
-    earnings.withdrawnAmount += totalWithdrawalAmount;
-    // Zero out referral earnings since they are now included in the withdrawal
-    if (referralBonus > 0) {
-      earnings.referralEarnings = 0;
-      // Reduce totalEarned by referralBonus to avoid double-counting
-      // (referralBonus was already added to totalEarned when it was credited)
-      // availableBalance was already reduced by `amount`; referralBonus portion
-      // was sitting in availableBalance as part of totalEarned, so deduct it too
-      earnings.availableBalance = Math.max(0, earnings.availableBalance - referralBonus);
-    }
+    earnings.withdrawnAmount += amount;
     await earnings.save();
 
     // ── Referral Commission: 5% to referrer ──────────────────────────────
@@ -216,55 +207,56 @@ exports.withdrawEarnings = async (req, res) => {
       if (referralRecord) {
         const commission = parseFloat((amount * 0.05).toFixed(2));
 
-        // Credit referrer's earnings
-        let referrerEarnings = await Earnings.findOne({ user: referralRecord.referrer._id });
-        if (!referrerEarnings) {
-          referrerEarnings = await Earnings.create({
-            user: referralRecord.referrer._id,
-            totalEarned: 0,
-            availableBalance: 0,
-            pendingWithdrawal: 0,
-            withdrawnAmount: 0,
-            referralEarnings: 0,
+        // Only credit the referral commission if it exceeds Rs 100
+        if (commission > 100) {
+          // Credit referrer's referralBalance ONLY — never mix into totalEarned or availableBalance
+          let referrerEarnings = await Earnings.findOne({ user: referralRecord.referrer._id });
+          if (!referrerEarnings) {
+            referrerEarnings = await Earnings.create({
+              user: referralRecord.referrer._id,
+              totalEarned: 0,
+              availableBalance: 0,
+              pendingWithdrawal: 0,
+              withdrawnAmount: 0,
+              referralBalance: 0,
+            });
+          }
+
+          referrerEarnings.referralBalance += commission;
+          await referrerEarnings.save();
+
+          // Update commission history on the referral record
+          referralRecord.totalCommissionEarned += commission;
+          referralRecord.commissionHistory.push({
+            withdrawalAmount: amount,
+            commissionAmount: commission,
+            date: new Date(),
           });
-        }
+          await referralRecord.save();
 
-        referrerEarnings.referralEarnings += commission;
-        referrerEarnings.totalEarned += commission;
-        referrerEarnings.availableBalance += commission;
-        await referrerEarnings.save();
-
-        // Update commission history on the referral record
-        referralRecord.totalCommissionEarned += commission;
-        referralRecord.commissionHistory.push({
-          withdrawalAmount: amount,
-          commissionAmount: commission,
-          date: new Date(),
-        });
-        await referralRecord.save();
-
-        // In-app notification for referrer
-        const refereeName = `${req.user.firstName} ${req.user.lastName}`;
-        const notif = await ReferralNotification.create({
-          recipient: referralRecord.referrer._id,
-          sender: req.user._id,
-          referral: referralRecord._id,
-          type: "referral_commission",
-          message: `You earned Rs ${commission.toFixed(2)} (5%) referral commission from ${refereeName}'s withdrawal of Rs ${amount}.`,
-          meta: { commission, withdrawalAmount: amount },
-        });
-
-        // Emit socket events
-        const io = req.app.get("io");
-        if (io) {
-          io.to(referralRecord.referrer._id.toString()).emit("earningsUpdate", referrerEarnings);
-          io.to(referralRecord.referrer._id.toString()).emit("referralNotification", {
+          // In-app notification for referrer
+          const refereeName = `${req.user.firstName} ${req.user.lastName}`;
+          const notif = await ReferralNotification.create({
+            recipient: referralRecord.referrer._id,
+            sender: req.user._id,
+            referral: referralRecord._id,
             type: "referral_commission",
-            notification: notif,
-            commission,
-            from: refereeName,
+            message: `You earned Rs ${commission.toFixed(2)} (5%) referral commission from ${refereeName}'s withdrawal of Rs ${amount}. Added to your Referral Balance.`,
+            meta: { commission, withdrawalAmount: amount },
           });
-        }
+
+          // Emit socket events
+          const io = req.app.get("io");
+          if (io) {
+            io.to(referralRecord.referrer._id.toString()).emit("earningsUpdate", referrerEarnings);
+            io.to(referralRecord.referrer._id.toString()).emit("referralNotification", {
+              type: "referral_commission",
+              notification: notif,
+              commission,
+              from: refereeName,
+            });
+          }
+        } // end if (commission > 100)
       }
     } catch (commissionError) {
       // Don't fail the withdrawal if commission processing fails
@@ -278,8 +270,7 @@ exports.withdrawEarnings = async (req, res) => {
       io.to(req.user._id.toString()).emit("earningsUpdate", earnings);
       io.to(req.user._id.toString()).emit("withdrawalSuccess", {
         message: "Withdrawal processed successfully!",
-        amount: totalWithdrawalAmount,
-        referralBonus,
+        amount: amount,
         transaction: transaction,
       });
     }
@@ -289,8 +280,7 @@ exports.withdrawEarnings = async (req, res) => {
       message: "Withdrawal request submitted successfully",
       earnings: earnings,
       transaction: transaction,
-      referralBonus,
-      totalWithdrawalAmount,
+      amount,
     });
   } catch (error) {
     console.error("Withdrawal error:", error);

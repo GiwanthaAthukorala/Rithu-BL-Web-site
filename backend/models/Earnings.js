@@ -28,7 +28,7 @@ const earningsSchema = new mongoose.Schema(
       default: 0,
       min: 0,
     },
-    referralEarnings: {
+    referralBalance: {
       type: Number,
       default: 0,
       min: 0,

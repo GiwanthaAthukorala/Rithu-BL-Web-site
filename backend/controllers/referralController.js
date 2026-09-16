@@ -255,7 +255,7 @@ exports.getMyReferrals = async (req, res) => {
 
     // Get the user's referral earnings record
     const earningsRecord = await Earnings.findOne({ user: userId });
-    const referralEarnings = earningsRecord?.referralEarnings || 0;
+    const referralBalance = earningsRecord?.referralBalance || 0;
 
     res.json({
       success: true,
@@ -267,7 +267,7 @@ exports.getMyReferrals = async (req, res) => {
           pending: referrals.filter((r) => r.status === "pending").length,
           rejected: referrals.filter((r) => r.status === "rejected").length,
           totalCommissionEarned: totalCommission,
-          referralEarningsBalance: referralEarnings,
+          referralBalance: referralBalance,
           remainingSlots: 20 - accepted.length,
         },
       },
