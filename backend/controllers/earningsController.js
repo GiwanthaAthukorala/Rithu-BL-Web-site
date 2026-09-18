@@ -235,6 +235,12 @@ exports.withdrawEarnings = async (req, res) => {
         });
         await referralRecord.save();
 
+        // Record the referral bonus on the transaction so the admin panel
+        // query (referralBonus > 0) correctly surfaces this event
+        await Transaction.findByIdAndUpdate(transaction._id, {
+          referralBonus: commission,
+        });
+
         // In-app notification for referrer
         const refereeName = `${req.user.firstName} ${req.user.lastName}`;
         const notif = await ReferralNotification.create({

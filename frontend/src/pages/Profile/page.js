@@ -1255,7 +1255,7 @@ export default function Profile() {
                             {
                               label: "Referral Balance",
                               value: `Rs ${formatCurrency(earnings.referralBalance)}`,
-                              sub: "Commissions > Rs 100",
+                              sub: "Your referral earnings",
                               bg: "linear-gradient(135deg, #fff7ed, #fed7aa)",
                               border: "rgba(234, 88, 12, 0.15)",
                               labelColor: "#c2410c",
