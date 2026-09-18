@@ -4,6 +4,7 @@ const ReferralNotification = require("../models/ReferralNotification");
 const Earnings = require("../models/Earnings");
 const Transaction = require("../models/Transaction");
 
+
 // ─────────────────────────────────────────────────────────────────────────────
 // POST /api/referrals/send
 // Logged-in user sends a referral invite using a name + email
@@ -437,3 +438,76 @@ exports.getWithdrawalBonusEvents = async (req, res) => {
     res.status(500).json({ success: false, message: "Server error", error: error.message });
   }
 };
+
+// ─────────────────────────────────────────────────────────────────────────────
+// GET /api/referrals/admin/by-email?email=xxx   (admin only)
+// Look up a referrer by email and return their full Referral Center list
+// plus total commission earnings received from those referrals
+// ─────────────────────────────────────────────────────────────────────────────
+exports.getReferralsByEmail = async (req, res) => {
+  try {
+    const { email } = req.query;
+
+    if (!email) {
+      return res.status(400).json({
+        success: false,
+        message: "Please provide an email address to search.",
+      });
+    }
+
+    // Find the referrer user by email
+    const referrer = await User.findOne({ email: email.toLowerCase() }).select(
+      "firstName lastName email role createdAt profilePicture"
+    );
+
+    if (!referrer) {
+      return res.status(404).json({
+        success: false,
+        message: "No registered user found with that email address.",
+      });
+    }
+
+    // Fetch all referrals where this person is the referrer
+    const referrals = await Referral.find({ referrer: referrer._id })
+      .populate("referee", "firstName lastName email profilePicture role createdAt")
+      .sort({ createdAt: -1 });
+
+    // Compute totals
+    const accepted = referrals.filter((r) => r.status === "accepted");
+    const totalCommissionEarned = accepted.reduce(
+      (sum, r) => sum + (r.totalCommissionEarned || 0),
+      0
+    );
+
+    // Also fetch the referrer's referralBalance from Earnings
+    const earningsRecord = await Earnings.findOne({ user: referrer._id });
+    const referralBalance = earningsRecord?.referralBalance || 0;
+
+    res.json({
+      success: true,
+      data: {
+        referrer: {
+          _id: referrer._id,
+          firstName: referrer.firstName,
+          lastName: referrer.lastName,
+          email: referrer.email,
+          role: referrer.role,
+          createdAt: referrer.createdAt,
+        },
+        referrals,
+        stats: {
+          total: referrals.length,
+          accepted: accepted.length,
+          pending: referrals.filter((r) => r.status === "pending").length,
+          rejected: referrals.filter((r) => r.status === "rejected").length,
+          totalCommissionEarned: parseFloat(totalCommissionEarned.toFixed(2)),
+          referralBalance: parseFloat(referralBalance.toFixed(2)),
+        },
+      },
+    });
+  } catch (error) {
+    console.error("getReferralsByEmail error:", error);
+    res.status(500).json({ success: false, message: "Server error", error: error.message });
+  }
+};
+

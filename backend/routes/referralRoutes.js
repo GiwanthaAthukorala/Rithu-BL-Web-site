@@ -10,6 +10,7 @@ const {
   markAllNotificationsRead,
   getAllReferralsAdmin,
   getWithdrawalBonusEvents,
+  getReferralsByEmail,
 } = require("../controllers/referralController");
 
 // User routes (authenticated)
@@ -23,5 +24,7 @@ router.put("/notifications/:id/read", protect, markNotificationRead);
 // Admin routes
 router.get("/admin/all", protect, admin, getAllReferralsAdmin);
 router.get("/admin/withdrawal-bonus-events", protect, admin, getWithdrawalBonusEvents);
+router.get("/admin/by-email", protect, admin, getReferralsByEmail);
 
 module.exports = router;
+

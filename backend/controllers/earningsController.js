@@ -207,56 +207,56 @@ exports.withdrawEarnings = async (req, res) => {
       if (referralRecord) {
         const commission = parseFloat((amount * 0.05).toFixed(2));
 
-        // Only credit the referral commission if it exceeds Rs 100
-        if (commission > 100) {
-          // Credit referrer's referralBalance ONLY — never mix into totalEarned or availableBalance
-          let referrerEarnings = await Earnings.findOne({ user: referralRecord.referrer._id });
-          if (!referrerEarnings) {
-            referrerEarnings = await Earnings.create({
-              user: referralRecord.referrer._id,
-              totalEarned: 0,
-              availableBalance: 0,
-              pendingWithdrawal: 0,
-              withdrawnAmount: 0,
-              referralBalance: 0,
-            });
-          }
-
-          referrerEarnings.referralBalance += commission;
-          await referrerEarnings.save();
-
-          // Update commission history on the referral record
-          referralRecord.totalCommissionEarned += commission;
-          referralRecord.commissionHistory.push({
-            withdrawalAmount: amount,
-            commissionAmount: commission,
-            date: new Date(),
+        // Credit referrer's referralBalance AND also add to totalEarned/availableBalance
+        let referrerEarnings = await Earnings.findOne({ user: referralRecord.referrer._id });
+        if (!referrerEarnings) {
+          referrerEarnings = await Earnings.create({
+            user: referralRecord.referrer._id,
+            totalEarned: 0,
+            availableBalance: 0,
+            pendingWithdrawal: 0,
+            withdrawnAmount: 0,
+            referralBalance: 0,
           });
-          await referralRecord.save();
+        }
 
-          // In-app notification for referrer
-          const refereeName = `${req.user.firstName} ${req.user.lastName}`;
-          const notif = await ReferralNotification.create({
-            recipient: referralRecord.referrer._id,
-            sender: req.user._id,
-            referral: referralRecord._id,
+        // Add commission to referralBalance (separate display) AND to overall earnings
+        referrerEarnings.referralBalance += commission;
+        referrerEarnings.totalEarned += commission;
+        referrerEarnings.availableBalance += commission;
+        await referrerEarnings.save();
+
+        // Update commission history on the referral record
+        referralRecord.totalCommissionEarned += commission;
+        referralRecord.commissionHistory.push({
+          withdrawalAmount: amount,
+          commissionAmount: commission,
+          date: new Date(),
+        });
+        await referralRecord.save();
+
+        // In-app notification for referrer
+        const refereeName = `${req.user.firstName} ${req.user.lastName}`;
+        const notif = await ReferralNotification.create({
+          recipient: referralRecord.referrer._id,
+          sender: req.user._id,
+          referral: referralRecord._id,
+          type: "referral_commission",
+          message: `You earned Rs ${commission.toFixed(2)} (5%) referral commission from ${refereeName}'s withdrawal of Rs ${amount}. Added to your Referral Balance and Total Earnings.`,
+          meta: { commission, withdrawalAmount: amount },
+        });
+
+        // Emit socket events
+        const io = req.app.get("io");
+        if (io) {
+          io.to(referralRecord.referrer._id.toString()).emit("earningsUpdate", referrerEarnings);
+          io.to(referralRecord.referrer._id.toString()).emit("referralNotification", {
             type: "referral_commission",
-            message: `You earned Rs ${commission.toFixed(2)} (5%) referral commission from ${refereeName}'s withdrawal of Rs ${amount}. Added to your Referral Balance.`,
-            meta: { commission, withdrawalAmount: amount },
+            notification: notif,
+            commission,
+            from: refereeName,
           });
-
-          // Emit socket events
-          const io = req.app.get("io");
-          if (io) {
-            io.to(referralRecord.referrer._id.toString()).emit("earningsUpdate", referrerEarnings);
-            io.to(referralRecord.referrer._id.toString()).emit("referralNotification", {
-              type: "referral_commission",
-              notification: notif,
-              commission,
-              from: refereeName,
-            });
-          }
-        } // end if (commission > 100)
+        }
       }
     } catch (commissionError) {
       // Don't fail the withdrawal if commission processing fails
