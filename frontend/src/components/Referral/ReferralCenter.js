@@ -121,7 +121,9 @@ export default function ReferralCenter({ user }) {
         setTimeout(() => setSuccess(null), 7000);
       }
     } catch (err) {
-      setFormError(err.response?.data?.message || "Failed to send referral invite.");
+      setFormError(
+        err.response?.data?.message || "Failed to send referral invite.",
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -135,7 +137,8 @@ export default function ReferralCenter({ user }) {
     },
     // ── Header banner ──
     banner: {
-      background: "linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a78bfa 100%)",
+      background:
+        "linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a78bfa 100%)",
       borderRadius: 16,
       padding: "28px 32px",
       marginBottom: 24,
@@ -396,7 +399,8 @@ export default function ReferralCenter({ user }) {
         <div style={styles.bannerLeft}>
           <h2 style={styles.bannerTitle}>🤝 Referral Center</h2>
           <p style={styles.bannerSub}>
-            Invite members to your network and earn 5% commission on every withdrawal they make.
+            Invite members to your network and earn 5% commission on every
+            withdrawal they make.
           </p>
         </div>
         {stats && (
@@ -457,7 +461,11 @@ export default function ReferralCenter({ user }) {
           { key: "add", label: "Add Referral" },
           { key: "list", label: `My Referrals (${referrals.length})` },
         ].map(({ key, label }) => (
-          <button key={key} style={styles.tabBtn(tab === key)} onClick={() => setTab(key)}>
+          <button
+            key={key}
+            style={styles.tabBtn(tab === key)}
+            onClick={() => setTab(key)}
+          >
             {label}
           </button>
         ))}
@@ -473,9 +481,15 @@ export default function ReferralCenter({ user }) {
                 <Gift size={24} />
               </div>
               <div>
-                <div style={styles.earningsTitle}>Referral Commission Balance</div>
-                <div style={styles.earningsAmount}>Rs {fmt(stats.referralEarningsBalance)}</div>
-                <div style={styles.earningsSub}>5% of your referrals' withdrawals</div>
+                <div style={styles.earningsTitle}>
+                  Referral Commission Balance
+                </div>
+                <div style={styles.earningsAmount}>
+                  Rs {fmt(stats.referralEarningsBalance)}
+                </div>
+                <div style={styles.earningsSub}>
+                  5% of your referrals' withdrawals
+                </div>
               </div>
             </div>
           )}
@@ -485,7 +499,14 @@ export default function ReferralCenter({ user }) {
             <div style={styles.formTitle}>
               <Star size={18} color="#f59e0b" /> How the Referral Program Works
             </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 16, marginTop: 16 }}>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: 16,
+                marginTop: 16,
+              }}
+            >
               {[
                 {
                   step: "1",
@@ -540,8 +561,20 @@ export default function ReferralCenter({ user }) {
                     {icon}
                   </div>
                   <div>
-                    <div style={{ fontWeight: 700, fontSize: 14, color: "#1e293b" }}>{title}</div>
-                    <div style={{ fontSize: 13, color: "#64748b", marginTop: 3 }}>{desc}</div>
+                    <div
+                      style={{
+                        fontWeight: 700,
+                        fontSize: 14,
+                        color: "#1e293b",
+                      }}
+                    >
+                      {title}
+                    </div>
+                    <div
+                      style={{ fontSize: 13, color: "#64748b", marginTop: 3 }}
+                    >
+                      {desc}
+                    </div>
                   </div>
                 </div>
               ))}
@@ -557,8 +590,8 @@ export default function ReferralCenter({ user }) {
             <UserPlus size={18} color="#6366f1" /> Add a Referral
           </div>
           <p style={styles.formDesc}>
-            Enter the name and registered email of the member you want to add. They will receive an
-            invitation and must accept it.
+            Enter the name and registered email of the member you want to add.
+            They will receive an invitation and must accept it.
           </p>
 
           {formError && (
@@ -582,7 +615,9 @@ export default function ReferralCenter({ user }) {
                 type="text"
                 placeholder="Enter the member's name"
                 value={form.name}
-                onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))}
+                onChange={(e) =>
+                  setForm((p) => ({ ...p, name: e.target.value }))
+                }
                 disabled={isSubmitting || (stats && stats.remainingSlots === 0)}
               />
             </div>
@@ -593,7 +628,9 @@ export default function ReferralCenter({ user }) {
                 type="email"
                 placeholder="Enter their registered email"
                 value={form.email}
-                onChange={(e) => setForm((p) => ({ ...p, email: e.target.value }))}
+                onChange={(e) =>
+                  setForm((p) => ({ ...p, email: e.target.value }))
+                }
                 disabled={isSubmitting || (stats && stats.remainingSlots === 0)}
               />
             </div>
@@ -601,12 +638,21 @@ export default function ReferralCenter({ user }) {
               type="submit"
               style={{
                 ...styles.submitBtn,
-                opacity: isSubmitting || (stats && stats.remainingSlots === 0) ? 0.6 : 1,
+                opacity:
+                  isSubmitting || (stats && stats.remainingSlots === 0)
+                    ? 0.6
+                    : 1,
               }}
               disabled={isSubmitting || (stats && stats.remainingSlots === 0)}
             >
-              {isSubmitting ? <Loader2 size={18} className="animate-spin" /> : <UserPlus size={18} />}
-              {isSubmitting ? "Sending Invitation…" : "Send Referral Invitation"}
+              {isSubmitting ? (
+                <Loader2 size={18} className="animate-spin" />
+              ) : (
+                <UserPlus size={18} />
+              )}
+              {isSubmitting
+                ? "Sending Invitation…"
+                : "Send Referral Invitation"}
             </button>
           </form>
         </div>
@@ -617,14 +663,25 @@ export default function ReferralCenter({ user }) {
         <div>
           {isFetching ? (
             <div style={{ textAlign: "center", padding: 40 }}>
-              <Loader2 size={32} color="#6366f1" style={{ animation: "spin 0.8s linear infinite" }} />
+              <Loader2
+                size={32}
+                color="#6366f1"
+                style={{ animation: "spin 0.8s linear infinite" }}
+              />
             </div>
           ) : referrals.length === 0 ? (
             <div style={styles.emptyState}>
               <div style={styles.emptyIcon}>
                 <Users size={28} color="#94a3b8" />
               </div>
-              <div style={{ fontSize: 16, fontWeight: 600, color: "#374151", marginBottom: 6 }}>
+              <div
+                style={{
+                  fontSize: 16,
+                  fontWeight: 600,
+                  color: "#374151",
+                  marginBottom: 6,
+                }}
+              >
                 No referrals yet
               </div>
               <div style={{ fontSize: 13, color: "#94a3b8" }}>
@@ -643,7 +700,7 @@ export default function ReferralCenter({ user }) {
                         style={styles.avatar}
                         onError={(e) => {
                           e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(
-                            r.referee?.firstName || "?"
+                            r.referee?.firstName || "?",
                           )}&background=6366f1&color=ffffff&size=80`;
                         }}
                       />
@@ -652,7 +709,13 @@ export default function ReferralCenter({ user }) {
                           {r.referee?.firstName} {r.referee?.lastName}
                         </div>
                         <div style={styles.cardEmail}>{r.referee?.email}</div>
-                        <div style={{ fontSize: 11, color: "#94a3b8", marginTop: 2 }}>
+                        <div
+                          style={{
+                            fontSize: 11,
+                            color: "#94a3b8",
+                            marginTop: 2,
+                          }}
+                        >
                           Added {new Date(r.createdAt).toLocaleDateString()}
                         </div>
                       </div>
@@ -662,9 +725,15 @@ export default function ReferralCenter({ user }) {
                       {r.status === "accepted" && (
                         <button
                           style={styles.expandBtn}
-                          onClick={() => setExpandedId(expandedId === r._id ? null : r._id)}
+                          onClick={() =>
+                            setExpandedId(expandedId === r._id ? null : r._id)
+                          }
                         >
-                          {expandedId === r._id ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+                          {expandedId === r._id ? (
+                            <ChevronUp size={18} />
+                          ) : (
+                            <ChevronDown size={18} />
+                          )}
                         </button>
                       )}
                     </div>
@@ -679,22 +748,27 @@ export default function ReferralCenter({ user }) {
                           Rs {fmt(r.totalCommissionEarned)}
                         </span>
                       </div>
-                      {r.commissionHistory && r.commissionHistory.length > 0 && (
-                        <div style={styles.commissionHistory}>
-                          <div style={styles.historyTitle}>Commission History</div>
-                          {r.commissionHistory.map((h, i) => (
-                            <div key={i} style={styles.historyRow}>
-                              <span>
-                                Withdrawal: Rs {fmt(h.withdrawalAmount)} •{" "}
-                                {new Date(h.date).toLocaleDateString()}
-                              </span>
-                              <span style={{ color: "#059669", fontWeight: 600 }}>
-                                +Rs {fmt(h.commissionAmount)}
-                              </span>
+                      {r.commissionHistory &&
+                        r.commissionHistory.length > 0 && (
+                          <div style={styles.commissionHistory}>
+                            <div style={styles.historyTitle}>
+                              Commission History
                             </div>
-                          ))}
-                        </div>
-                      )}
+                            {r.commissionHistory.map((h, i) => (
+                              <div key={i} style={styles.historyRow}>
+                                <span>
+                                  Withdrawal: Rs {fmt(h.withdrawalAmount)} •{" "}
+                                  {new Date(h.date).toLocaleDateString()}
+                                </span>
+                                <span
+                                  style={{ color: "#059669", fontWeight: 600 }}
+                                >
+                                  +Rs {fmt(h.commissionAmount)}
+                                </span>
+                              </div>
+                            ))}
+                          </div>
+                        )}
                     </div>
                   )}
                 </div>

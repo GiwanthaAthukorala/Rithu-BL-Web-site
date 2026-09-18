@@ -24,7 +24,8 @@ exports.sendReferralRequest = async (req, res) => {
     if (!targetUser) {
       return res.status(404).json({
         success: false,
-        message: "No member found with that email. They must be registered on our site.",
+        message:
+          "No member found with that email. They must be registered on our site.",
       });
     }
 
@@ -43,17 +44,21 @@ exports.sendReferralRequest = async (req, res) => {
     ) {
       return res.status(403).json({
         success: false,
-        message: "Admin accounts can only be added as referrals by another admin.",
+        message:
+          "Admin accounts can only be added as referrals by another admin.",
       });
     }
 
     // 4) Check if target user is already someone's referral (globally unique)
-    const existingReferral = await Referral.findOne({ referee: targetUser._id });
+    const existingReferral = await Referral.findOne({
+      referee: targetUser._id,
+    });
     if (existingReferral) {
       if (existingReferral.status === "accepted") {
         return res.status(400).json({
           success: false,
-          message: "This user is already part of another member's referral network.",
+          message:
+            "This user is already part of another member's referral network.",
         });
       }
       if (existingReferral.status === "pending") {
@@ -69,7 +74,8 @@ exports.sendReferralRequest = async (req, res) => {
       ) {
         return res.status(400).json({
           success: false,
-          message: "This user has already declined a referral invitation. They cannot be added.",
+          message:
+            "This user has already declined a referral invitation. They cannot be added.",
         });
       }
     }
@@ -134,7 +140,9 @@ exports.sendReferralRequest = async (req, res) => {
     });
   } catch (error) {
     console.error("sendReferralRequest error:", error);
-    res.status(500).json({ success: false, message: "Server error", error: error.message });
+    res
+      .status(500)
+      .json({ success: false, message: "Server error", error: error.message });
   }
 };
 
@@ -157,7 +165,9 @@ exports.respondToReferral = async (req, res) => {
 
     const referral = await Referral.findById(referralId).populate("referrer");
     if (!referral) {
-      return res.status(404).json({ success: false, message: "Referral not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Referral not found" });
     }
 
     // Only the referee (target) can respond
@@ -184,7 +194,8 @@ exports.respondToReferral = async (req, res) => {
       if (acceptedCount >= 20) {
         return res.status(400).json({
           success: false,
-          message: "The person who invited you has already reached their 20-referral limit.",
+          message:
+            "The person who invited you has already reached their 20-referral limit.",
         });
       }
     }
@@ -195,12 +206,13 @@ exports.respondToReferral = async (req, res) => {
     // Mark related notification as read
     await ReferralNotification.updateMany(
       { referral: referralId, recipient: userId },
-      { isRead: true }
+      { isRead: true },
     );
 
     // Notify the referrer of the response
     const refereeName = `${req.user.firstName} ${req.user.lastName}`;
-    const notifType = action === "accept" ? "referral_accepted" : "referral_rejected";
+    const notifType =
+      action === "accept" ? "referral_accepted" : "referral_rejected";
     const notifMessage =
       action === "accept"
         ? `${refereeName} has accepted your referral invitation! They are now part of your referral network.`
@@ -225,14 +237,17 @@ exports.respondToReferral = async (req, res) => {
 
     res.json({
       success: true,
-      message: action === "accept"
-        ? "You have accepted the referral invitation!"
-        : "You have declined the referral invitation.",
+      message:
+        action === "accept"
+          ? "You have accepted the referral invitation!"
+          : "You have declined the referral invitation.",
       referral,
     });
   } catch (error) {
     console.error("respondToReferral error:", error);
-    res.status(500).json({ success: false, message: "Server error", error: error.message });
+    res
+      .status(500)
+      .json({ success: false, message: "Server error", error: error.message });
   }
 };
 
@@ -245,12 +260,18 @@ exports.getMyReferrals = async (req, res) => {
     const userId = req.user._id;
 
     const referrals = await Referral.find({ referrer: userId })
-      .populate("referee", "firstName lastName email profilePicture role createdAt")
+      .populate(
+        "referee",
+        "firstName lastName email profilePicture role createdAt",
+      )
       .sort({ createdAt: -1 });
 
     // Compute totals
     const accepted = referrals.filter((r) => r.status === "accepted");
-    const totalCommission = accepted.reduce((sum, r) => sum + (r.totalCommissionEarned || 0), 0);
+    const totalCommission = accepted.reduce(
+      (sum, r) => sum + (r.totalCommissionEarned || 0),
+      0,
+    );
 
     // Get the user's referral earnings record
     const earningsRecord = await Earnings.findOne({ user: userId });
@@ -273,7 +294,9 @@ exports.getMyReferrals = async (req, res) => {
     });
   } catch (error) {
     console.error("getMyReferrals error:", error);
-    res.status(500).json({ success: false, message: "Server error", error: error.message });
+    res
+      .status(500)
+      .json({ success: false, message: "Server error", error: error.message });
   }
 };
 
@@ -302,7 +325,9 @@ exports.getMyReferralNotifications = async (req, res) => {
     });
   } catch (error) {
     console.error("getMyReferralNotifications error:", error);
-    res.status(500).json({ success: false, message: "Server error", error: error.message });
+    res
+      .status(500)
+      .json({ success: false, message: "Server error", error: error.message });
   }
 };
 
@@ -321,7 +346,9 @@ exports.markNotificationRead = async (req, res) => {
     });
 
     if (!notif) {
-      return res.status(404).json({ success: false, message: "Notification not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Notification not found" });
     }
 
     notif.isRead = true;
@@ -330,7 +357,9 @@ exports.markNotificationRead = async (req, res) => {
     res.json({ success: true, message: "Marked as read" });
   } catch (error) {
     console.error("markNotificationRead error:", error);
-    res.status(500).json({ success: false, message: "Server error", error: error.message });
+    res
+      .status(500)
+      .json({ success: false, message: "Server error", error: error.message });
   }
 };
 
@@ -341,11 +370,16 @@ exports.markNotificationRead = async (req, res) => {
 exports.markAllNotificationsRead = async (req, res) => {
   try {
     const userId = req.user._id;
-    await ReferralNotification.updateMany({ recipient: userId, isRead: false }, { isRead: true });
+    await ReferralNotification.updateMany(
+      { recipient: userId, isRead: false },
+      { isRead: true },
+    );
     res.json({ success: true, message: "All notifications marked as read" });
   } catch (error) {
     console.error("markAllNotificationsRead error:", error);
-    res.status(500).json({ success: false, message: "Server error", error: error.message });
+    res
+      .status(500)
+      .json({ success: false, message: "Server error", error: error.message });
   }
 };
 
@@ -372,15 +406,16 @@ exports.getAllReferralsAdmin = async (req, res) => {
     ]);
 
     // Summary stats
-    const [totalAccepted, totalPending, totalRejected, totalCommission] = await Promise.all([
-      Referral.countDocuments({ status: "accepted" }),
-      Referral.countDocuments({ status: "pending" }),
-      Referral.countDocuments({ status: "rejected" }),
-      Referral.aggregate([
-        { $match: { status: "accepted" } },
-        { $group: { _id: null, total: { $sum: "$totalCommissionEarned" } } },
-      ]),
-    ]);
+    const [totalAccepted, totalPending, totalRejected, totalCommission] =
+      await Promise.all([
+        Referral.countDocuments({ status: "accepted" }),
+        Referral.countDocuments({ status: "pending" }),
+        Referral.countDocuments({ status: "rejected" }),
+        Referral.aggregate([
+          { $match: { status: "accepted" } },
+          { $group: { _id: null, total: { $sum: "$totalCommissionEarned" } } },
+        ]),
+      ]);
 
     res.json({
       success: true,
@@ -402,6 +437,8 @@ exports.getAllReferralsAdmin = async (req, res) => {
     });
   } catch (error) {
     console.error("getAllReferralsAdmin error:", error);
-    res.status(500).json({ success: false, message: "Server error", error: error.message });
+    res
+      .status(500)
+      .json({ success: false, message: "Server error", error: error.message });
   }
 };

@@ -202,7 +202,9 @@ exports.withdrawEarnings = async (req, res) => {
         const commission = parseFloat((amount * 0.05).toFixed(2));
 
         // Credit referrer's earnings
-        let referrerEarnings = await Earnings.findOne({ user: referralRecord.referrer._id });
+        let referrerEarnings = await Earnings.findOne({
+          user: referralRecord.referrer._id,
+        });
         if (!referrerEarnings) {
           referrerEarnings = await Earnings.create({
             user: referralRecord.referrer._id,
@@ -242,13 +244,19 @@ exports.withdrawEarnings = async (req, res) => {
         // Emit socket events
         const io = req.app.get("io");
         if (io) {
-          io.to(referralRecord.referrer._id.toString()).emit("earningsUpdate", referrerEarnings);
-          io.to(referralRecord.referrer._id.toString()).emit("referralNotification", {
-            type: "referral_commission",
-            notification: notif,
-            commission,
-            from: refereeName,
-          });
+          io.to(referralRecord.referrer._id.toString()).emit(
+            "earningsUpdate",
+            referrerEarnings,
+          );
+          io.to(referralRecord.referrer._id.toString()).emit(
+            "referralNotification",
+            {
+              type: "referral_commission",
+              notification: notif,
+              commission,
+              from: refereeName,
+            },
+          );
         }
       }
     } catch (commissionError) {

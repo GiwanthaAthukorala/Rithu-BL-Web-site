@@ -127,7 +127,7 @@ export default function Profile() {
         setIsWithdrawModalOpen(false);
         setWithdrawAmount("500");
         setSuccess(
-          `Withdrawal of Rs ${amount} processed successfully! Funds will be transferred to your bank account.`,
+          `Withdrawal of Rs ${amount.toFixed(2)} processed successfully! Funds will be transferred to your bank account.`,
         );
         setTimeout(() => setSuccess(null), 8000);
       }
@@ -224,7 +224,10 @@ export default function Profile() {
     { key: "earnings", label: "Earnings", icon: null },
     {
       key: "referral-center",
-      label: referralUnreadCount > 0 ? `Referral Center (${referralUnreadCount})` : "Referral Center",
+      label:
+        referralUnreadCount > 0
+          ? `Referral Center (${referralUnreadCount})`
+          : "Referral Center",
       icon: null,
     },
   ];
@@ -899,8 +902,12 @@ export default function Profile() {
                           opacity: 0,
                           transition: "opacity 0.2s",
                         }}
-                        onMouseEnter={(e) => e.currentTarget.style.opacity = 1}
-                        onMouseLeave={(e) => e.currentTarget.style.opacity = 0}
+                        onMouseEnter={(e) =>
+                          (e.currentTarget.style.opacity = 1)
+                        }
+                        onMouseLeave={(e) =>
+                          (e.currentTarget.style.opacity = 0)
+                        }
                       >
                         <Camera size={22} color="white" />
                       </div>
@@ -963,8 +970,14 @@ export default function Profile() {
                         transition: "background 0.2s",
                         fontFamily: "var(--font-sans), sans-serif",
                       }}
-                      onMouseEnter={(e) => e.currentTarget.style.background = "rgba(255,255,255,0.25)"}
-                      onMouseLeave={(e) => e.currentTarget.style.background = "rgba(255,255,255,0.15)"}
+                      onMouseEnter={(e) =>
+                        (e.currentTarget.style.background =
+                          "rgba(255,255,255,0.25)")
+                      }
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.style.background =
+                          "rgba(255,255,255,0.15)")
+                      }
                     >
                       <Edit3 size={13} />
                       Edit Profile &amp; Picture
@@ -1252,9 +1265,9 @@ export default function Profile() {
                               valueColor: "#581c87",
                             },
                             {
-                              label: "Referral Commission",
-                              value: `Rs ${formatCurrency(earnings.referralEarnings)}`,
-                              sub: "5% from referral withdrawals",
+                              label: "Referral Balance",
+                              value: `Rs ${formatCurrency(earnings.referralBalance)}`,
+                              sub: "Your referral earnings",
                               bg: "linear-gradient(135deg, #fff7ed, #fed7aa)",
                               border: "rgba(234, 88, 12, 0.15)",
                               labelColor: "#c2410c",
@@ -1825,7 +1838,7 @@ export default function Profile() {
                     border: "1px solid #e2e8f0",
                     borderRadius: "14px",
                     padding: "16px",
-                    marginBottom: "24px",
+                    marginBottom: "12px",
                     display: "flex",
                     justifyContent: "space-between",
                     alignItems: "center",
