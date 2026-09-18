@@ -1832,7 +1832,7 @@ export default function Profile() {
                     border: "1px solid #e2e8f0",
                     borderRadius: "14px",
                     padding: "16px",
-                    marginBottom: "24px",
+                    marginBottom: "12px",
                     display: "flex",
                     justifyContent: "space-between",
                     alignItems: "center",
@@ -1851,6 +1851,39 @@ export default function Profile() {
                     Rs {formatCurrency(earnings.availableBalance)}
                   </span>
                 </div>
+
+                {/* Referral Balance row */}
+                <div
+                  style={{
+                    background: "linear-gradient(135deg, #fff7ed, #fed7aa)",
+                    border: "1.5px solid rgba(234,88,12,0.2)",
+                    borderRadius: "14px",
+                    padding: "14px 16px",
+                    marginBottom: "24px",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                    <span style={{ fontSize: "13px", color: "#c2410c", fontWeight: 600 }}>
+                      🎁 Referral Balance
+                    </span>
+                    <span style={{ fontSize: "11px", color: "#ea580c", opacity: 0.8 }}>
+                      Already included in your available balance
+                    </span>
+                  </div>
+                  <span
+                    style={{
+                      fontSize: "18px",
+                      fontWeight: 800,
+                      color: "#9a3412",
+                    }}
+                  >
+                    Rs {formatCurrency(earnings.referralBalance)}
+                  </span>
+                </div>
+
 
 
                 <div style={{ display: "flex", gap: "12px" }}>
