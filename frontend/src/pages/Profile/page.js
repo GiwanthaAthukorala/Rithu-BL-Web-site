@@ -68,6 +68,7 @@ export default function Profile() {
             availableBalance: 0,
             pendingWithdrawal: 0,
             withdrawnAmount: 0,
+            referralBalance: 0,
           },
         );
       } else {
@@ -79,6 +80,7 @@ export default function Profile() {
         availableBalance: 0,
         pendingWithdrawal: 0,
         withdrawnAmount: 0,
+        referralBalance: 0,
       });
       if (err.response?.status !== 500) {
         setError(err.response?.data?.message || "Failed to load earnings");

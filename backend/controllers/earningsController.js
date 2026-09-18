@@ -27,6 +27,7 @@ exports.getUserEarnings = async (req, res) => {
         availableBalance: 0,
         pendingWithdrawal: 0,
         withdrawnAmount: 0,
+        referralBalance: 0,
       });
     }
 
@@ -120,16 +121,18 @@ exports.getUserEarnings = async (req, res) => {
         videoTotal;
 
       // Update earnings if calculated work total has changed.
-      // totalEarned and availableBalance track ONLY work-submission earnings.
-      // referralBalance is a completely separate pool and is never mixed in here.
+      // referralBalance is credited separately (on referee withdrawals) and must
+      // always be preserved in availableBalance — never overwritten by this recalc.
       if (earnings.totalEarned !== calculatedTotal) {
         earnings.totalEarned = calculatedTotal;
-        // availableBalance = work earnings - amounts already withdrawn (work only) - pending
+        // availableBalance = (work earnings - withdrawn - pending) + referral commissions already credited
+        const referralCredit = earnings.referralBalance || 0;
         earnings.availableBalance = Math.max(
           0,
           calculatedTotal -
             earnings.withdrawnAmount -
-            earnings.pendingWithdrawal,
+            earnings.pendingWithdrawal +
+            referralCredit,
         );
         await earnings.save();
       }
