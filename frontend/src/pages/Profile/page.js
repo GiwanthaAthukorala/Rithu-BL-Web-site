@@ -37,6 +37,7 @@ export default function Profile() {
     availableBalance: 0,
     pendingWithdrawal: 0,
     withdrawnAmount: 0,
+    referralEarnings: 0,
   });
   const [withdrawAmount, setWithdrawAmount] = useState("500");
   const [isWithdrawModalOpen, setIsWithdrawModalOpen] = useState(false);
@@ -67,6 +68,7 @@ export default function Profile() {
             availableBalance: 0,
             pendingWithdrawal: 0,
             withdrawnAmount: 0,
+            referralEarnings: 0,
           },
         );
       } else {
@@ -78,6 +80,7 @@ export default function Profile() {
         availableBalance: 0,
         pendingWithdrawal: 0,
         withdrawnAmount: 0,
+        referralEarnings: 0,
       });
       if (err.response?.status !== 500) {
         setError(err.response?.data?.message || "Failed to load earnings");
@@ -1265,9 +1268,9 @@ export default function Profile() {
                               valueColor: "#581c87",
                             },
                             {
-                              label: "Referral Balance",
-                              value: `Rs ${formatCurrency(earnings.referralBalance)}`,
-                              sub: "Your referral earnings",
+                              label: "Referral Earnings",
+                              value: `Rs ${formatCurrency(earnings.referralEarnings)}`,
+                              sub: "5% commission from referrals",
                               bg: "linear-gradient(135deg, #fff7ed, #fed7aa)",
                               border: "rgba(234, 88, 12, 0.15)",
                               labelColor: "#c2410c",

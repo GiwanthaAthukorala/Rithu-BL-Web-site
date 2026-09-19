@@ -119,12 +119,19 @@ exports.getUserEarnings = async (req, res) => {
         tiktokTotal +
         videoTotal;
 
-      // Update earnings if needed
-      if (earnings.totalEarned !== calculatedTotal) {
-        earnings.totalEarned = calculatedTotal;
+      // The submission-based total (does NOT include referral commissions)
+      const submissionTotal = calculatedTotal;
+      // Referral earnings are credited separately and must be preserved
+      const referralEarnings = earnings.referralEarnings || 0;
+      // Full total = submission earnings + referral commissions
+      const fullTotal = submissionTotal + referralEarnings;
+
+      // Update earnings if the submission-based portion has changed
+      if (earnings.totalEarned !== fullTotal) {
+        earnings.totalEarned = fullTotal;
         earnings.availableBalance = Math.max(
           0,
-          calculatedTotal -
+          fullTotal -
             earnings.withdrawnAmount -
             earnings.pendingWithdrawal,
         );

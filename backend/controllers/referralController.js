@@ -384,6 +384,89 @@ exports.markAllNotificationsRead = async (req, res) => {
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
+// GET /api/referrals/admin/user-lookup?email=...   (admin only)
+// Admin: look up a specific user by email and see their full Referral Center
+// ─────────────────────────────────────────────────────────────────────────────
+exports.getUserReferralsByEmail = async (req, res) => {
+  try {
+    const { email } = req.query;
+
+    if (!email || !email.trim()) {
+      return res.status(400).json({
+        success: false,
+        message: "Please provide an email address to search.",
+      });
+    }
+
+    // 1) Find the user
+    const targetUser = await User.findOne({
+      email: email.trim().toLowerCase(),
+    }).select("firstName lastName email role profilePicture createdAt isActive");
+
+    if (!targetUser) {
+      return res.status(404).json({
+        success: false,
+        message: "No registered user found with that email address.",
+      });
+    }
+
+    // 2) Fetch all referrals where this user is the referrer
+    const referrals = await Referral.find({ referrer: targetUser._id })
+      .populate("referee", "firstName lastName email profilePicture role createdAt")
+      .sort({ createdAt: -1 });
+
+    // 3) Compute summary stats
+    const accepted = referrals.filter((r) => r.status === "accepted");
+    const pending  = referrals.filter((r) => r.status === "pending");
+    const rejected = referrals.filter((r) => r.status === "rejected");
+
+    const totalCommissionFromReferrals = accepted.reduce(
+      (sum, r) => sum + (r.totalCommissionEarned || 0),
+      0,
+    );
+
+    // 4) Fetch the user's Earnings record for the stored referralEarnings balance
+    const earningsRecord = await Earnings.findOne({ user: targetUser._id });
+    const referralEarningsBalance = earningsRecord?.referralEarnings || 0;
+    const totalEarned             = earningsRecord?.totalEarned       || 0;
+    const availableBalance        = earningsRecord?.availableBalance  || 0;
+
+    res.json({
+      success: true,
+      data: {
+        user: {
+          _id:            targetUser._id,
+          firstName:      targetUser.firstName,
+          lastName:       targetUser.lastName,
+          email:          targetUser.email,
+          role:           targetUser.role,
+          profilePicture: targetUser.profilePicture,
+          createdAt:      targetUser.createdAt,
+          isActive:       targetUser.isActive,
+        },
+        referrals,
+        stats: {
+          total:                      referrals.length,
+          accepted:                   accepted.length,
+          pending:                    pending.length,
+          rejected:                   rejected.length,
+          remainingSlots:             Math.max(0, 20 - accepted.length),
+          totalCommissionFromReferrals,
+          referralEarningsBalance,
+          totalEarned,
+          availableBalance,
+        },
+      },
+    });
+  } catch (error) {
+    console.error("getUserReferralsByEmail error:", error);
+    res
+      .status(500)
+      .json({ success: false, message: "Server error", error: error.message });
+  }
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
 // GET /api/referrals/admin/all   (admin only)
 // Admin view of all referral relationships
 // ─────────────────────────────────────────────────────────────────────────────
