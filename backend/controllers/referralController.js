@@ -2,6 +2,8 @@ const User = require("../models/userModel");
 const Referral = require("../models/Referral");
 const ReferralNotification = require("../models/ReferralNotification");
 const Earnings = require("../models/Earnings");
+const Transaction = require("../models/Transaction");
+
 
 // ─────────────────────────────────────────────────────────────────────────────
 // POST /api/referrals/send
@@ -275,7 +277,7 @@ exports.getMyReferrals = async (req, res) => {
 
     // Get the user's referral earnings record
     const earningsRecord = await Earnings.findOne({ user: userId });
-    const referralEarnings = earningsRecord?.referralEarnings || 0;
+    const referralBalance = earningsRecord?.referralBalance || 0;
 
     res.json({
       success: true,
@@ -287,7 +289,7 @@ exports.getMyReferrals = async (req, res) => {
           pending: referrals.filter((r) => r.status === "pending").length,
           rejected: referrals.filter((r) => r.status === "rejected").length,
           totalCommissionEarned: totalCommission,
-          referralEarningsBalance: referralEarnings,
+          referralBalance: referralBalance,
           remainingSlots: 20 - accepted.length,
         },
       },
@@ -525,3 +527,107 @@ exports.getAllReferralsAdmin = async (req, res) => {
       .json({ success: false, message: "Server error", error: error.message });
   }
 };
+
+// ─────────────────────────────────────────────────────────────────────────────
+// GET /api/referrals/admin/withdrawal-bonus-events   (admin only)
+// Returns recent withdrawal transactions that included a referral bonus payout
+// ─────────────────────────────────────────────────────────────────────────────
+exports.getWithdrawalBonusEvents = async (req, res) => {
+  try {
+    const limit = parseInt(req.query.limit) || 50;
+
+    const events = await Transaction.find({ referralBonus: { $gt: 0 } })
+      .sort({ createdAt: -1 })
+      .limit(limit)
+      .populate("user", "firstName lastName email")
+      .lean();
+
+    // Compute totals
+    const totalBonusPaid = events.reduce((sum, e) => sum + (e.referralBonus || 0), 0);
+
+    res.json({
+      success: true,
+      data: {
+        events,
+        totalBonusPaid: parseFloat(totalBonusPaid.toFixed(2)),
+        count: events.length,
+      },
+    });
+  } catch (error) {
+    console.error("getWithdrawalBonusEvents error:", error);
+    res.status(500).json({ success: false, message: "Server error", error: error.message });
+  }
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
+// GET /api/referrals/admin/by-email?email=xxx   (admin only)
+// Look up a referrer by email and return their full Referral Center list
+// plus total commission earnings received from those referrals
+// ─────────────────────────────────────────────────────────────────────────────
+exports.getReferralsByEmail = async (req, res) => {
+  try {
+    const { email } = req.query;
+
+    if (!email) {
+      return res.status(400).json({
+        success: false,
+        message: "Please provide an email address to search.",
+      });
+    }
+
+    // Find the referrer user by email
+    const referrer = await User.findOne({ email: email.toLowerCase() }).select(
+      "firstName lastName email role createdAt profilePicture"
+    );
+
+    if (!referrer) {
+      return res.status(404).json({
+        success: false,
+        message: "No registered user found with that email address.",
+      });
+    }
+
+    // Fetch all referrals where this person is the referrer
+    const referrals = await Referral.find({ referrer: referrer._id })
+      .populate("referee", "firstName lastName email profilePicture role createdAt")
+      .sort({ createdAt: -1 });
+
+    // Compute totals
+    const accepted = referrals.filter((r) => r.status === "accepted");
+    const totalCommissionEarned = accepted.reduce(
+      (sum, r) => sum + (r.totalCommissionEarned || 0),
+      0
+    );
+
+    // Also fetch the referrer's referralBalance from Earnings
+    const earningsRecord = await Earnings.findOne({ user: referrer._id });
+    const referralBalance = earningsRecord?.referralBalance || 0;
+
+    res.json({
+      success: true,
+      data: {
+        referrer: {
+          _id: referrer._id,
+          firstName: referrer.firstName,
+          lastName: referrer.lastName,
+          email: referrer.email,
+          role: referrer.role,
+          createdAt: referrer.createdAt,
+        },
+        referrals,
+        stats: {
+          total: referrals.length,
+          accepted: accepted.length,
+          pending: referrals.filter((r) => r.status === "pending").length,
+          rejected: referrals.filter((r) => r.status === "rejected").length,
+          totalCommissionEarned: parseFloat(totalCommissionEarned.toFixed(2)),
+          referralBalance: parseFloat(referralBalance.toFixed(2)),
+        },
+      },
+    });
+  } catch (error) {
+    console.error("getReferralsByEmail error:", error);
+    res.status(500).json({ success: false, message: "Server error", error: error.message });
+  }
+};
+

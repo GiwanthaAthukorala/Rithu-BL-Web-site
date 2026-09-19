@@ -193,6 +193,74 @@ export default function YouTubeVerificationTask() {
               Please visit this link and take a screenshot as proof:
             </p>
             <a
+              href="https://youtube.com/shorts/d2yBkYeba-s?si=_Je_DrvUgMyg3A4I"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-between p-4 bg-white rounded-lg hover:bg-blue-50 transition-colors duration-200 border border-gray-200 hover:border-blue-300 group"
+            >
+              <span className="text-gray-700 group-hover:text-blue-700">
+                YouTube (යූ ටියුබ්) Short Video එක Like කරන්න
+              </span>
+              <ExternalLink className="w-4 h-4 text-blue-600 group-hover:scale-110 transition-transform" />
+            </a>
+          </div>
+          <div className="mb-8 bg-blue-50 p-4 rounded-lg">
+            <p className="text-gray-700 mb-3">
+              Please visit this link and take a screenshot as proof:
+            </p>
+            <a
+              href="https://youtube.com/shorts/_IrqscOanJw?si=UIW5jnwdAxQUiWtc"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-between p-4 bg-white rounded-lg hover:bg-blue-50 transition-colors duration-200 border border-gray-200 hover:border-blue-300 group"
+            >
+              <span className="text-gray-700 group-hover:text-blue-700">
+                YouTube (යූ ටියුබ්) Short Video එක Like කරන්න
+              </span>
+              <ExternalLink className="w-4 h-4 text-blue-600 group-hover:scale-110 transition-transform" />
+            </a>
+          </div>
+          <div className="mb-8 bg-blue-50 p-4 rounded-lg">
+            <p className="text-gray-700 mb-3">
+              Please visit this link and take a screenshot as proof:
+            </p>
+            <a
+              href="https://youtube.com/shorts/mSoPhP1ktQ4?si=u30hjVmuFTxNsx95"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-between p-4 bg-white rounded-lg hover:bg-blue-50 transition-colors duration-200 border border-gray-200 hover:border-blue-300 group"
+            >
+              <span className="text-gray-700 group-hover:text-blue-700">
+                YouTube (යූ ටියුබ්) Short video එක Like කරන්න
+              </span>
+              <ExternalLink className="w-4 h-4 text-blue-600 group-hover:scale-110 transition-transform" />
+            </a>
+          </div>
+          {/**   <div className="mb-8 bg-blue-50 p-4 rounded-lg">
+            <p className="text-gray-700 mb-3">
+              Please visit this link and take a screenshot as proof:
+            </p>
+            <a
+              href="https://youtube.com/@sj-p8u?si=370X_R0UPG3QdPb2"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-between p-4 bg-white rounded-lg hover:bg-blue-50 transition-colors duration-200 border border-gray-200 hover:border-blue-300 group"
+            >
+              <span className="text-gray-700 group-hover:text-blue-700">
+                Elephant Vibes - යූ ටියුබ් චැනල් එක සබ්ක්‍රයිබ් කරන්න (ඔයාලාගේ
+                youtube වල main account වලින් විතරක් subcribe කරන්න Subscribe 
+                screenshots upload කරන්න)
+              </span>
+              <ExternalLink className="w-4 h-4 text-blue-600 group-hover:scale-110 transition-transform" />
+            </a>
+          </div>
+
+        
+           <div className="mb-8 bg-blue-50 p-4 rounded-lg">
+            <p className="text-gray-700 mb-3">
+              Please visit this link and take a screenshot as proof:
+            </p>
+            <a
               href="https://youtu.be/WtiD6W6odLY?si=sdSvCv9WE42fiRgf"
               target="_blank"
               rel="noopener noreferrer"
@@ -205,7 +273,11 @@ export default function YouTubeVerificationTask() {
               <ExternalLink className="w-4 h-4 text-blue-600 group-hover:scale-110 transition-transform" />
             </a>
           </div>
+<<<<<<< HEAD
           <div className="mb-8 bg-blue-50 p-4 rounded-lg">
+=======
+       <div className="mb-8 bg-blue-50 p-4 rounded-lg">
+>>>>>>> 4dd9af675a54d7afc8484c7c7e9943e2bfa70913
             <p className="text-gray-700 mb-3">
               Please visit this link and take a screenshot as proof:
             </p>

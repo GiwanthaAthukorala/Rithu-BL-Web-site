@@ -37,7 +37,11 @@ export default function Profile() {
     availableBalance: 0,
     pendingWithdrawal: 0,
     withdrawnAmount: 0,
+<<<<<<< HEAD
     referralEarnings: 0,
+=======
+    referralBalance: 0,
+>>>>>>> 4dd9af675a54d7afc8484c7c7e9943e2bfa70913
   });
   const [withdrawAmount, setWithdrawAmount] = useState("500");
   const [isWithdrawModalOpen, setIsWithdrawModalOpen] = useState(false);
@@ -68,7 +72,11 @@ export default function Profile() {
             availableBalance: 0,
             pendingWithdrawal: 0,
             withdrawnAmount: 0,
+<<<<<<< HEAD
             referralEarnings: 0,
+=======
+            referralBalance: 0,
+>>>>>>> 4dd9af675a54d7afc8484c7c7e9943e2bfa70913
           },
         );
       } else {
@@ -80,7 +88,11 @@ export default function Profile() {
         availableBalance: 0,
         pendingWithdrawal: 0,
         withdrawnAmount: 0,
+<<<<<<< HEAD
         referralEarnings: 0,
+=======
+        referralBalance: 0,
+>>>>>>> 4dd9af675a54d7afc8484c7c7e9943e2bfa70913
       });
       if (err.response?.status !== 500) {
         setError(err.response?.data?.message || "Failed to load earnings");
@@ -1268,9 +1280,15 @@ export default function Profile() {
                               valueColor: "#581c87",
                             },
                             {
+<<<<<<< HEAD
                               label: "Referral Earnings",
                               value: `Rs ${formatCurrency(earnings.referralEarnings)}`,
                               sub: "5% commission from referrals",
+=======
+                              label: "Referral Balance",
+                              value: `Rs ${formatCurrency(earnings.referralBalance)}`,
+                              sub: "Your referral earnings",
+>>>>>>> 4dd9af675a54d7afc8484c7c7e9943e2bfa70913
                               bg: "linear-gradient(135deg, #fff7ed, #fed7aa)",
                               border: "rgba(234, 88, 12, 0.15)",
                               labelColor: "#c2410c",
@@ -1633,6 +1651,12 @@ export default function Profile() {
                           bg: "#faf5ff",
                           color: "#7e22ce",
                         },
+                        {
+                          label: "Referral Balance",
+                          value: `Rs ${formatCurrency(earnings.referralBalance)}`,
+                          bg: "#fff7ed",
+                          color: "#c2410c",
+                        },
                       ].map((item, i) => (
                         <div
                           key={i}
@@ -1860,6 +1884,40 @@ export default function Profile() {
                     Rs {formatCurrency(earnings.availableBalance)}
                   </span>
                 </div>
+
+                {/* Referral Balance row */}
+                <div
+                  style={{
+                    background: "linear-gradient(135deg, #fff7ed, #fed7aa)",
+                    border: "1.5px solid rgba(234,88,12,0.2)",
+                    borderRadius: "14px",
+                    padding: "14px 16px",
+                    marginBottom: "24px",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                    <span style={{ fontSize: "13px", color: "#c2410c", fontWeight: 600 }}>
+                      🎁 Referral Balance
+                    </span>
+                    <span style={{ fontSize: "11px", color: "#ea580c", opacity: 0.8 }}>
+                      Already included in your available balance
+                    </span>
+                  </div>
+                  <span
+                    style={{
+                      fontSize: "18px",
+                      fontWeight: 800,
+                      color: "#9a3412",
+                    }}
+                  >
+                    Rs {formatCurrency(earnings.referralBalance)}
+                  </span>
+                </div>
+
+
 
                 <div style={{ display: "flex", gap: "12px" }}>
                   <button

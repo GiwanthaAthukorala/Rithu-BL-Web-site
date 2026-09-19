@@ -445,11 +445,11 @@ export default function ReferralCenter({ user }) {
             <span style={styles.statSub}>from referral activity</span>
           </div>
           <div style={styles.statCard}>
-            <span style={styles.statLabel}>Available Balance</span>
+            <span style={styles.statLabel}>Referral Balance</span>
             <span style={{ ...styles.statValue, color: "#6366f1" }}>
-              Rs {fmt(stats.referralEarningsBalance)}
+              Rs {fmt(stats.referralBalance)}
             </span>
-            <span style={styles.statSub}>referral earnings</span>
+            <span style={styles.statSub}>your referral earnings</span>
           </div>
         </div>
       )}
@@ -475,12 +475,13 @@ export default function ReferralCenter({ user }) {
       {tab === "overview" && (
         <div>
           {/* Commission banner */}
-          {stats && stats.referralEarningsBalance > 0 && (
+          {stats && (
             <div style={styles.earningsBanner}>
               <div style={styles.earningsIcon}>
                 <Gift size={24} />
               </div>
               <div>
+<<<<<<< HEAD
                 <div style={styles.earningsTitle}>
                   Referral Commission Balance
                 </div>
@@ -490,6 +491,11 @@ export default function ReferralCenter({ user }) {
                 <div style={styles.earningsSub}>
                   5% of your referrals' withdrawals
                 </div>
+=======
+                <div style={styles.earningsTitle}>Referral Balance</div>
+                <div style={styles.earningsAmount}>Rs {fmt(stats.referralBalance)}</div>
+                <div style={styles.earningsSub}>5% commission on your referrals' withdrawals</div>
+>>>>>>> 4dd9af675a54d7afc8484c7c7e9943e2bfa70913
               </div>
             </div>
           )}
