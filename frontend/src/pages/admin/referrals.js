@@ -729,6 +729,7 @@ export default function AdminReferrals() {
   const [currentPage, setCurrentPage] = useState(1);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   const fetchReferrals = useCallback(
     async (page = 1) => {
       setIsFetching(true);
@@ -742,6 +743,8 @@ export default function AdminReferrals() {
         );
         const data = res.data;
 =======
+=======
+>>>>>>> temp-fix
   // Withdrawal bonus events state
   const [bonusEvents, setBonusEvents] = useState([]);
   const [bonusSummary, setBonusSummary] = useState({ count: 0, totalBonusPaid: 0 });
@@ -762,11 +765,32 @@ export default function AdminReferrals() {
 
       const res = await adminApi.get(`/referrals/admin/all?${params.toString()}`);
       const data = res.data;
+<<<<<<< HEAD
 >>>>>>> 4dd9af675a54d7afc8484c7c7e9943e2bfa70913
 
         if (!data.success)
           throw new Error(data.message || "Failed to load referrals");
 
+=======
+=======
+  const fetchReferrals = useCallback(
+    async (page = 1) => {
+      setIsFetching(true);
+      setError(null);
+      try {
+        const params = new URLSearchParams({ page, limit: 20 });
+        if (statusFilter) params.set("status", statusFilter);
+
+        const res = await adminApi.get(
+          `/referrals/admin/all?${params.toString()}`,
+        );
+        const data = res.data;
+>>>>>>> aca866e9 (Youtube link update)
+
+        if (!data.success)
+          throw new Error(data.message || "Failed to load referrals");
+
+>>>>>>> temp-fix
         setReferrals(data.data.referrals || []);
         setPagination(data.data.pagination || { page, pages: 1, total: 0 });
         setSummary(data.data.summary || null);
@@ -910,6 +934,7 @@ export default function AdminReferrals() {
       boxShadow: "0 1px 4px rgba(0,0,0,0.04)",
     }),
 <<<<<<< HEAD
+<<<<<<< HEAD
     summaryLabel: {
       fontSize: 12,
       color: "#64748b",
@@ -928,6 +953,8 @@ export default function AdminReferrals() {
       color: "#374151",
       marginBottom: 14,
 =======
+=======
+>>>>>>> temp-fix
     summaryLabel: { fontSize: 12, color: "#64748b", fontWeight: 500, marginBottom: 6 },
     summaryValue: (color) => ({ fontSize: 26, fontWeight: 800, color, lineHeight: 1 }),
     // ─── Email Lookup Panel ───────────────────────────────────────────────────
@@ -1153,7 +1180,24 @@ export default function AdminReferrals() {
       fontSize: 14,
     },
     // ─── Main table ───────────────────────────────────────────────────────
+<<<<<<< HEAD
 >>>>>>> 4dd9af675a54d7afc8484c7c7e9943e2bfa70913
+=======
+=======
+    summaryLabel: {
+      fontSize: 12,
+      color: "#64748b",
+      fontWeight: 500,
+      marginBottom: 6,
+    },
+    summaryValue: (color) => ({
+      fontSize: 26,
+      fontWeight: 800,
+      color,
+      lineHeight: 1,
+    }),
+>>>>>>> aca866e9 (Youtube link update)
+>>>>>>> temp-fix
     toolbar: {
       display: "flex",
       gap: 12,
@@ -1324,6 +1368,7 @@ export default function AdminReferrals() {
           <div style={S.summaryGrid}>
             {[
 <<<<<<< HEAD
+<<<<<<< HEAD
               {
                 label: "Accepted Referrals",
                 value: summary.totalAccepted,
@@ -1349,12 +1394,43 @@ export default function AdminReferrals() {
                 accent: "#4f46e5",
               },
 =======
+=======
+>>>>>>> temp-fix
               { label: "Accepted Referrals", value: summary.totalAccepted, color: "#059669", accent: "#059669" },
               { label: "Pending Invitations", value: summary.totalPending, color: "#d97706", accent: "#d97706" },
               { label: "Rejected", value: summary.totalRejected, color: "#dc2626", accent: "#dc2626" },
               { label: "Total Commission Paid", value: `Rs ${fmt(summary.totalCommissionPaid)}`, color: "#4f46e5", accent: "#4f46e5" },
               { label: "Referral Bonus Payouts", value: `Rs ${fmt(bonusSummary.totalBonusPaid)}`, color: "#059669", accent: "#059669" },
+<<<<<<< HEAD
 >>>>>>> 4dd9af675a54d7afc8484c7c7e9943e2bfa70913
+=======
+=======
+              {
+                label: "Accepted Referrals",
+                value: summary.totalAccepted,
+                color: "#059669",
+                accent: "#059669",
+              },
+              {
+                label: "Pending Invitations",
+                value: summary.totalPending,
+                color: "#d97706",
+                accent: "#d97706",
+              },
+              {
+                label: "Rejected",
+                value: summary.totalRejected,
+                color: "#dc2626",
+                accent: "#dc2626",
+              },
+              {
+                label: "Total Commission Paid",
+                value: `Rs ${fmt(summary.totalCommissionPaid)}`,
+                color: "#4f46e5",
+                accent: "#4f46e5",
+              },
+>>>>>>> aca866e9 (Youtube link update)
+>>>>>>> temp-fix
             ].map(({ label, value, color, accent }) => (
               <div key={label} style={S.summaryCard(accent)}>
                 <div style={S.summaryLabel}>{label}</div>

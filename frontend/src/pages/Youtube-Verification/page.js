@@ -274,10 +274,17 @@ export default function YouTubeVerificationTask() {
             </a>
           </div>
 <<<<<<< HEAD
+<<<<<<< HEAD
           <div className="mb-8 bg-blue-50 p-4 rounded-lg">
 =======
        <div className="mb-8 bg-blue-50 p-4 rounded-lg">
 >>>>>>> 4dd9af675a54d7afc8484c7c7e9943e2bfa70913
+=======
+       <div className="mb-8 bg-blue-50 p-4 rounded-lg">
+=======
+          <div className="mb-8 bg-blue-50 p-4 rounded-lg">
+>>>>>>> aca866e9 (Youtube link update)
+>>>>>>> temp-fix
             <p className="text-gray-700 mb-3">
               Please visit this link and take a screenshot as proof:
             </p>

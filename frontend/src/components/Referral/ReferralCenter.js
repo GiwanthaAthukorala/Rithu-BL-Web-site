@@ -482,6 +482,7 @@ export default function ReferralCenter({ user }) {
               </div>
               <div>
 <<<<<<< HEAD
+<<<<<<< HEAD
                 <div style={styles.earningsTitle}>
                   Referral Commission Balance
                 </div>
@@ -496,6 +497,22 @@ export default function ReferralCenter({ user }) {
                 <div style={styles.earningsAmount}>Rs {fmt(stats.referralBalance)}</div>
                 <div style={styles.earningsSub}>5% commission on your referrals' withdrawals</div>
 >>>>>>> 4dd9af675a54d7afc8484c7c7e9943e2bfa70913
+=======
+                <div style={styles.earningsTitle}>Referral Balance</div>
+                <div style={styles.earningsAmount}>Rs {fmt(stats.referralBalance)}</div>
+                <div style={styles.earningsSub}>5% commission on your referrals' withdrawals</div>
+=======
+                <div style={styles.earningsTitle}>
+                  Referral Commission Balance
+                </div>
+                <div style={styles.earningsAmount}>
+                  Rs {fmt(stats.referralEarningsBalance)}
+                </div>
+                <div style={styles.earningsSub}>
+                  5% of your referrals' withdrawals
+                </div>
+>>>>>>> aca866e9 (Youtube link update)
+>>>>>>> temp-fix
               </div>
             </div>
           )}

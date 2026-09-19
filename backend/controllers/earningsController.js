@@ -224,6 +224,7 @@ exports.withdrawEarnings = async (req, res) => {
         const commission = parseFloat((amount * 0.05).toFixed(2));
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         // Credit referrer's earnings
         let referrerEarnings = await Earnings.findOne({
           user: referralRecord.referrer._id,
@@ -232,6 +233,16 @@ exports.withdrawEarnings = async (req, res) => {
         // Credit referrer's referralBalance AND also add to totalEarned/availableBalance
         let referrerEarnings = await Earnings.findOne({ user: referralRecord.referrer._id });
 >>>>>>> 4dd9af675a54d7afc8484c7c7e9943e2bfa70913
+=======
+        // Credit referrer's referralBalance AND also add to totalEarned/availableBalance
+        let referrerEarnings = await Earnings.findOne({ user: referralRecord.referrer._id });
+=======
+        // Credit referrer's earnings
+        let referrerEarnings = await Earnings.findOne({
+          user: referralRecord.referrer._id,
+        });
+>>>>>>> aca866e9 (Youtube link update)
+>>>>>>> temp-fix
         if (!referrerEarnings) {
           referrerEarnings = await Earnings.create({
             user: referralRecord.referrer._id,

@@ -62,6 +62,7 @@ const extractTikTokId = (url) => {
 
 const sampleVideos = [
 <<<<<<< HEAD
+<<<<<<< HEAD
   /* {
     title: "නොසලන්න කඳුළක් ...❤",
     description: "නොසලන්න කඳුළක් ...❤ යොහාන් අර්ජුන මහතාගේ ගීතයක්.🙏❤",
@@ -71,6 +72,8 @@ const sampleVideos = [
       "https://placehold.co/400x225/1877F2/FFFFFF?text=Facebook+1Bs34UCUHy", // Add this
     platform: "facebook", // Use lowercase
 =======
+=======
+>>>>>>> temp-fix
   {
     title: "Janaka Vidyarathna",
     description:
@@ -79,7 +82,20 @@ const sampleVideos = [
     embedUrl: "https://youtube.com/shorts/rDp0tA2PCAc?si=_Je_DrvUgMyg3A4I",
     thumbnailUrl: "https://img.youtube.com/vi/_Je_DrvUgMyg3A4I/hqdefault.jpg",
     platform: "youtube",
+<<<<<<< HEAD
 >>>>>>> 4dd9af675a54d7afc8484c7c7e9943e2bfa70913
+=======
+=======
+  /* {
+    title: "නොසලන්න කඳුළක් ...❤",
+    description: "නොසලන්න කඳුළක් ...❤ යොහාන් අර්ජුන මහතාගේ ගීතයක්.🙏❤",
+    videoUrl: "https://www.facebook.com/share/v/1DZqbJziAP/",
+    embedUrl: "https://www.facebook.com/share/v/1DZqbJziAP/", // Add this
+    thumbnailUrl:
+      "https://placehold.co/400x225/1877F2/FFFFFF?text=Facebook+1Bs34UCUHy", // Add this
+    platform: "facebook", // Use lowercase
+>>>>>>> aca866e9 (Youtube link update)
+>>>>>>> temp-fix
     duration: 60,
     rewardAmount: 0.5,
     isActive: true,
