@@ -24,17 +24,40 @@ const fmt = (v) => (v || 0).toFixed(2);
 
 const StatusBadge = ({ status }) => {
   const map = {
-    accepted: { bg: "#d1fae5", color: "#065f46", icon: <CheckCircle size={11} />, label: "Accepted" },
-    pending:  { bg: "#fef3c7", color: "#92400e", icon: <Clock size={11} />,        label: "Pending"  },
-    rejected: { bg: "#fee2e2", color: "#991b1b", icon: <XCircle size={11} />,      label: "Rejected" },
+    accepted: {
+      bg: "#d1fae5",
+      color: "#065f46",
+      icon: <CheckCircle size={11} />,
+      label: "Accepted",
+    },
+    pending: {
+      bg: "#fef3c7",
+      color: "#92400e",
+      icon: <Clock size={11} />,
+      label: "Pending",
+    },
+    rejected: {
+      bg: "#fee2e2",
+      color: "#991b1b",
+      icon: <XCircle size={11} />,
+      label: "Rejected",
+    },
   };
   const s = map[status] || map.pending;
   return (
-    <span style={{
-      display: "inline-flex", alignItems: "center", gap: 4,
-      padding: "3px 10px", borderRadius: 20,
-      background: s.bg, color: s.color, fontSize: 12, fontWeight: 600,
-    }}>
+    <span
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        gap: 4,
+        padding: "3px 10px",
+        borderRadius: 20,
+        background: s.bg,
+        color: s.color,
+        fontSize: 12,
+        fontWeight: 600,
+      }}
+    >
       {s.icon} {s.label}
     </span>
   );
@@ -52,6 +75,7 @@ export default function AdminReferrals() {
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
 
+<<<<<<< HEAD
   // Withdrawal bonus events state
   const [bonusEvents, setBonusEvents] = useState([]);
   const [bonusSummary, setBonusSummary] = useState({ count: 0, totalBonusPaid: 0 });
@@ -72,24 +96,41 @@ export default function AdminReferrals() {
 
       const res = await adminApi.get(`/referrals/admin/all?${params.toString()}`);
       const data = res.data;
+=======
+  const fetchReferrals = useCallback(
+    async (page = 1) => {
+      setIsFetching(true);
+      setError(null);
+      try {
+        const params = new URLSearchParams({ page, limit: 20 });
+        if (statusFilter) params.set("status", statusFilter);
 
-      if (!data.success) throw new Error(data.message || "Failed to load referrals");
+        const res = await adminApi.get(
+          `/referrals/admin/all?${params.toString()}`,
+        );
+        const data = res.data;
+>>>>>>> aca866e9 (Youtube link update)
 
-      setReferrals(data.data.referrals || []);
-      setPagination(data.data.pagination || { page, pages: 1, total: 0 });
-      setSummary(data.data.summary || null);
-      setCurrentPage(page);
-    } catch (err) {
-      console.error("Referrals fetch error:", err);
-      setError(
-        err.response?.data?.message ||
-        err.message ||
-        "Failed to load referrals. Check your connection and admin permissions."
-      );
-    } finally {
-      setIsFetching(false);
-    }
-  }, [statusFilter]);
+        if (!data.success)
+          throw new Error(data.message || "Failed to load referrals");
+
+        setReferrals(data.data.referrals || []);
+        setPagination(data.data.pagination || { page, pages: 1, total: 0 });
+        setSummary(data.data.summary || null);
+        setCurrentPage(page);
+      } catch (err) {
+        console.error("Referrals fetch error:", err);
+        setError(
+          err.response?.data?.message ||
+            err.message ||
+            "Failed to load referrals. Check your connection and admin permissions.",
+        );
+      } finally {
+        setIsFetching(false);
+      }
+    },
+    [statusFilter],
+  );
 
   const fetchBonusEvents = useCallback(async () => {
     setIsFetchingBonus(true);
@@ -181,7 +222,12 @@ export default function AdminReferrals() {
       flexWrap: "wrap",
     },
     headerLeft: {},
-    headerTitle: { fontSize: 24, fontWeight: 800, margin: 0, letterSpacing: "-0.3px" },
+    headerTitle: {
+      fontSize: 24,
+      fontWeight: 800,
+      margin: 0,
+      letterSpacing: "-0.3px",
+    },
     headerSub: { fontSize: 14, opacity: 0.8, marginTop: 4, margin: "4px 0 0" },
     backBtn: {
       background: "rgba(255,255,255,0.15)",
@@ -210,6 +256,7 @@ export default function AdminReferrals() {
       padding: "18px 20px",
       boxShadow: "0 1px 4px rgba(0,0,0,0.04)",
     }),
+<<<<<<< HEAD
     summaryLabel: { fontSize: 12, color: "#64748b", fontWeight: 500, marginBottom: 6 },
     summaryValue: (color) => ({ fontSize: 26, fontWeight: 800, color, lineHeight: 1 }),
     // ─── Email Lookup Panel ───────────────────────────────────────────────────
@@ -432,6 +479,20 @@ export default function AdminReferrals() {
       fontSize: 14,
     },
     // ─── Main table ───────────────────────────────────────────────────────
+=======
+    summaryLabel: {
+      fontSize: 12,
+      color: "#64748b",
+      fontWeight: 500,
+      marginBottom: 6,
+    },
+    summaryValue: (color) => ({
+      fontSize: 26,
+      fontWeight: 800,
+      color,
+      lineHeight: 1,
+    }),
+>>>>>>> aca866e9 (Youtube link update)
     toolbar: {
       display: "flex",
       gap: 12,
@@ -513,9 +574,13 @@ export default function AdminReferrals() {
     name: { fontWeight: 600, color: "#1e293b", fontSize: 14 },
     email: { color: "#94a3b8", fontSize: 12 },
     adminBadge: {
-      marginLeft: 6, fontSize: 10,
-      background: "#ede9fe", color: "#7c3aed",
-      padding: "2px 6px", borderRadius: 4, fontWeight: 700,
+      marginLeft: 6,
+      fontSize: 10,
+      background: "#ede9fe",
+      color: "#7c3aed",
+      padding: "2px 6px",
+      borderRadius: 4,
+      fontWeight: 700,
     },
     pagination: {
       display: "flex",
@@ -526,23 +591,35 @@ export default function AdminReferrals() {
       borderTop: "1px solid #f1f5f9",
     },
     pageBtn: (active, disabled) => ({
-      width: 36, height: 36, borderRadius: 8,
+      width: 36,
+      height: 36,
+      borderRadius: 8,
       border: active ? "none" : "1px solid #e2e8f0",
       background: active ? "#4f46e5" : disabled ? "#f8fafc" : "#fff",
       color: active ? "#fff" : disabled ? "#cbd5e1" : "#374151",
       cursor: disabled ? "default" : "pointer",
-      fontWeight: 600, fontSize: 14,
-      display: "flex", alignItems: "center", justifyContent: "center",
+      fontWeight: 600,
+      fontSize: 14,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
     }),
     emptyState: {
-      textAlign: "center", padding: "64px 24px", color: "#94a3b8",
+      textAlign: "center",
+      padding: "64px 24px",
+      color: "#94a3b8",
     },
     errorBox: {
-      background: "#fef2f2", color: "#dc2626",
+      background: "#fef2f2",
+      color: "#dc2626",
       border: "1px solid #fecaca",
-      borderRadius: 12, padding: "14px 18px",
-      marginBottom: 20, fontSize: 14,
-      display: "flex", alignItems: "flex-start", gap: 10,
+      borderRadius: 12,
+      padding: "14px 18px",
+      marginBottom: 20,
+      fontSize: 14,
+      display: "flex",
+      alignItems: "flex-start",
+      gap: 10,
     },
   };
 
@@ -552,7 +629,9 @@ export default function AdminReferrals() {
       <div style={S.header}>
         <div style={S.headerLeft}>
           <h1 style={S.headerTitle}>🤝 Referral Management</h1>
-          <p style={S.headerSub}>View all referral relationships on the platform</p>
+          <p style={S.headerSub}>
+            View all referral relationships on the platform
+          </p>
         </div>
         <button style={S.backBtn} onClick={() => router.back()}>
           <ChevronLeft size={16} /> Back
@@ -574,11 +653,38 @@ export default function AdminReferrals() {
         {summary && (
           <div style={S.summaryGrid}>
             {[
+<<<<<<< HEAD
               { label: "Accepted Referrals", value: summary.totalAccepted, color: "#059669", accent: "#059669" },
               { label: "Pending Invitations", value: summary.totalPending, color: "#d97706", accent: "#d97706" },
               { label: "Rejected", value: summary.totalRejected, color: "#dc2626", accent: "#dc2626" },
               { label: "Total Commission Paid", value: `Rs ${fmt(summary.totalCommissionPaid)}`, color: "#4f46e5", accent: "#4f46e5" },
               { label: "Referral Bonus Payouts", value: `Rs ${fmt(bonusSummary.totalBonusPaid)}`, color: "#059669", accent: "#059669" },
+=======
+              {
+                label: "Accepted Referrals",
+                value: summary.totalAccepted,
+                color: "#059669",
+                accent: "#059669",
+              },
+              {
+                label: "Pending Invitations",
+                value: summary.totalPending,
+                color: "#d97706",
+                accent: "#d97706",
+              },
+              {
+                label: "Rejected",
+                value: summary.totalRejected,
+                color: "#dc2626",
+                accent: "#dc2626",
+              },
+              {
+                label: "Total Commission Paid",
+                value: `Rs ${fmt(summary.totalCommissionPaid)}`,
+                color: "#4f46e5",
+                accent: "#4f46e5",
+              },
+>>>>>>> aca866e9 (Youtube link update)
             ].map(({ label, value, color, accent }) => (
               <div key={label} style={S.summaryCard(accent)}>
                 <div style={S.summaryLabel}>{label}</div>
@@ -887,7 +993,12 @@ export default function AdminReferrals() {
             onClick={() => fetchReferrals(currentPage)}
             disabled={isFetching}
           >
-            <RefreshCcw size={14} style={{ animation: isFetching ? "spin 0.8s linear infinite" : "none" }} />
+            <RefreshCcw
+              size={14}
+              style={{
+                animation: isFetching ? "spin 0.8s linear infinite" : "none",
+              }}
+            />
             {isFetching ? "Loading…" : "Refresh"}
           </button>
         </div>
@@ -904,22 +1015,38 @@ export default function AdminReferrals() {
 
           {isFetching ? (
             <div style={S.emptyState}>
-              <div style={{
-                width: 40, height: 40, borderRadius: "50%",
-                border: "3px solid #e2e8f0", borderTopColor: "#4f46e5",
-                animation: "spin 0.8s linear infinite",
-                margin: "0 auto 16px",
-              }} />
-              <div style={{ color: "#64748b", fontSize: 14 }}>Loading referrals…</div>
+              <div
+                style={{
+                  width: 40,
+                  height: 40,
+                  borderRadius: "50%",
+                  border: "3px solid #e2e8f0",
+                  borderTopColor: "#4f46e5",
+                  animation: "spin 0.8s linear infinite",
+                  margin: "0 auto 16px",
+                }}
+              />
+              <div style={{ color: "#64748b", fontSize: 14 }}>
+                Loading referrals…
+              </div>
             </div>
           ) : filtered.length === 0 ? (
             <div style={S.emptyState}>
               <Users size={48} style={{ marginBottom: 14, opacity: 0.3 }} />
-              <div style={{ fontSize: 16, fontWeight: 600, color: "#374151", marginBottom: 6 }}>
+              <div
+                style={{
+                  fontSize: 16,
+                  fontWeight: 600,
+                  color: "#374151",
+                  marginBottom: 6,
+                }}
+              >
                 No referrals found
               </div>
               <div style={{ fontSize: 13 }}>
-                {statusFilter ? `No ${statusFilter} referrals.` : "No referral data yet."}
+                {statusFilter
+                  ? `No ${statusFilter} referrals.`
+                  : "No referral data yet."}
               </div>
             </div>
           ) : (
@@ -929,7 +1056,8 @@ export default function AdminReferrals() {
                 <div style={S.nameCell}>
                   <span style={S.name}>
                     {r.referrer?.firstName} {r.referrer?.lastName}
-                    {(r.referrer?.role === "admin" || r.referrer?.role === "superadmin") && (
+                    {(r.referrer?.role === "admin" ||
+                      r.referrer?.role === "superadmin") && (
                       <span style={S.adminBadge}>ADMIN</span>
                     )}
                   </span>
@@ -940,7 +1068,8 @@ export default function AdminReferrals() {
                 <div style={S.nameCell}>
                   <span style={S.name}>
                     {r.referee?.firstName} {r.referee?.lastName}
-                    {(r.referee?.role === "admin" || r.referee?.role === "superadmin") && (
+                    {(r.referee?.role === "admin" ||
+                      r.referee?.role === "superadmin") && (
                       <span style={S.adminBadge}>ADMIN</span>
                     )}
                   </span>
@@ -948,17 +1077,23 @@ export default function AdminReferrals() {
                 </div>
 
                 {/* Status */}
-                <div><StatusBadge status={r.status} /></div>
+                <div>
+                  <StatusBadge status={r.status} />
+                </div>
 
                 {/* Commission */}
-                <div style={{ fontWeight: 700, color: "#059669", fontSize: 14 }}>
+                <div
+                  style={{ fontWeight: 700, color: "#059669", fontSize: 14 }}
+                >
                   Rs {fmt(r.totalCommissionEarned)}
                 </div>
 
                 {/* Date */}
                 <div style={{ color: "#94a3b8", fontSize: 12 }}>
                   {new Date(r.createdAt).toLocaleDateString("en-GB", {
-                    day: "2-digit", month: "short", year: "numeric"
+                    day: "2-digit",
+                    month: "short",
+                    year: "numeric",
                   })}
                 </div>
               </div>
@@ -976,7 +1111,10 @@ export default function AdminReferrals() {
                 <ChevronLeft size={16} />
               </button>
 
-              {Array.from({ length: Math.min(pagination.pages, 7) }, (_, i) => i + 1).map((p) => (
+              {Array.from(
+                { length: Math.min(pagination.pages, 7) },
+                (_, i) => i + 1,
+              ).map((p) => (
                 <button
                   key={p}
                   style={S.pageBtn(p === currentPage, false)}

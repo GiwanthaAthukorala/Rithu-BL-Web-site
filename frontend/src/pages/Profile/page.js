@@ -227,7 +227,10 @@ export default function Profile() {
     { key: "earnings", label: "Earnings", icon: null },
     {
       key: "referral-center",
-      label: referralUnreadCount > 0 ? `Referral Center (${referralUnreadCount})` : "Referral Center",
+      label:
+        referralUnreadCount > 0
+          ? `Referral Center (${referralUnreadCount})`
+          : "Referral Center",
       icon: null,
     },
   ];
@@ -902,8 +905,12 @@ export default function Profile() {
                           opacity: 0,
                           transition: "opacity 0.2s",
                         }}
-                        onMouseEnter={(e) => e.currentTarget.style.opacity = 1}
-                        onMouseLeave={(e) => e.currentTarget.style.opacity = 0}
+                        onMouseEnter={(e) =>
+                          (e.currentTarget.style.opacity = 1)
+                        }
+                        onMouseLeave={(e) =>
+                          (e.currentTarget.style.opacity = 0)
+                        }
                       >
                         <Camera size={22} color="white" />
                       </div>
@@ -966,8 +973,14 @@ export default function Profile() {
                         transition: "background 0.2s",
                         fontFamily: "var(--font-sans), sans-serif",
                       }}
-                      onMouseEnter={(e) => e.currentTarget.style.background = "rgba(255,255,255,0.25)"}
-                      onMouseLeave={(e) => e.currentTarget.style.background = "rgba(255,255,255,0.15)"}
+                      onMouseEnter={(e) =>
+                        (e.currentTarget.style.background =
+                          "rgba(255,255,255,0.25)")
+                      }
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.style.background =
+                          "rgba(255,255,255,0.15)")
+                      }
                     >
                       <Edit3 size={13} />
                       Edit Profile &amp; Picture

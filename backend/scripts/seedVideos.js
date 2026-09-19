@@ -61,6 +61,7 @@ const extractTikTokId = (url) => {
 };
 
 const sampleVideos = [
+<<<<<<< HEAD
   {
     title: "Janaka Vidyarathna",
     description:
@@ -69,11 +70,21 @@ const sampleVideos = [
     embedUrl: "https://youtube.com/shorts/rDp0tA2PCAc?si=_Je_DrvUgMyg3A4I",
     thumbnailUrl: "https://img.youtube.com/vi/_Je_DrvUgMyg3A4I/hqdefault.jpg",
     platform: "youtube",
+=======
+  /* {
+    title: "නොසලන්න කඳුළක් ...❤",
+    description: "නොසලන්න කඳුළක් ...❤ යොහාන් අර්ජුන මහතාගේ ගීතයක්.🙏❤",
+    videoUrl: "https://www.facebook.com/share/v/1DZqbJziAP/",
+    embedUrl: "https://www.facebook.com/share/v/1DZqbJziAP/", // Add this
+    thumbnailUrl:
+      "https://placehold.co/400x225/1877F2/FFFFFF?text=Facebook+1Bs34UCUHy", // Add this
+    platform: "facebook", // Use lowercase
+>>>>>>> aca866e9 (Youtube link update)
     duration: 60,
     rewardAmount: 0.5,
     isActive: true,
   },
-  {
+  /* {
     title: "Janaka Vidyarathna",
     description:
       "ඔන්ලයින් දවසට විනාඩි 1ක් වැඩ කරලා රුපියල් Watch for 0.50 minute to earn Rs 0.50.",

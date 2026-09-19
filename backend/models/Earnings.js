@@ -36,7 +36,7 @@ const earningsSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 // Add index for better performance
