@@ -61,8 +61,32 @@ const extractTikTokId = (url) => {
 };
 
 const sampleVideos = [
-<<<<<<< HEAD
-<<<<<<< HEAD
+  {
+    title:
+      "Janaka Vidyarathna Adaren hitha hinahe...Original Artist HR jothipala 🙏❤ Cover by Janaka vidyarathna",
+    description:
+      "ඔන්ලයින් දවසට විනාඩි 1ක් වැඩ කරලා රුපියල් Watch for 0.50 minute to earn Rs 0.50.",
+    videoUrl: "https://youtu.be/IeN6umgZjDk?si=oxRBm0BnK3iokHFW",
+    embedUrl: "https://youtube.com/shorts/rDp0tA2PCAc?si=oxRBm0BnK3iokHFW",
+    thumbnailUrl: "https://img.youtube.com/vi/oxRBm0BnK3iokHFWc/hqdefault.jpg",
+    platform: "youtube",
+    duration: 60,
+    rewardAmount: 0.5,
+    isActive: true,
+  },
+  {
+    title:
+      "Janaka Vidyarathna Natuwen gilihuna pinna malak (නටුවෙන් ගිලිහුණ පින්න මලක් ) Coverd by Janaka Vidyarathna ❤️",
+    description:
+      "ඔන්ලයින් දවසට විනාඩි 1ක් වැඩ කරලා රුපියල් Watch for 0.50 minute to earn Rs 0.50.",
+    videoUrl: "https://youtu.be/WtiD6W6odLY?si=uK2ZitUKO-TohgQs",
+    embedUrl: "https://youtube.com/shorts/rDp0tA2PCAc?si=uK2ZitUKO-TohgQs",
+    thumbnailUrl: "https://img.youtube.com/vi/uK2ZitUKO-TohgQs/hqdefault.jpg",
+    platform: "youtube",
+    duration: 60,
+    rewardAmount: 0.5,
+    isActive: true,
+  },
   /* {
     title: "නොසලන්න කඳුළක් ...❤",
     description: "නොසලන්න කඳුළක් ...❤ යොහාන් අර්ජුන මහතාගේ ගීතයක්.🙏❤",
