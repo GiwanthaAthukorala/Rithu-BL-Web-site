@@ -120,26 +120,17 @@ exports.getUserEarnings = async (req, res) => {
         tiktokTotal +
         videoTotal;
 
-<<<<<<< HEAD
       // The submission-based total (does NOT include referral commissions)
       const submissionTotal = calculatedTotal;
       // Referral earnings are credited separately and must be preserved
       const referralEarnings = earnings.referralEarnings || 0;
       // Full total = submission earnings + referral commissions
       const fullTotal = submissionTotal + referralEarnings;
+      const referralCredit = earnings.referralBalance || 0;
 
       // Update earnings if the submission-based portion has changed
       if (earnings.totalEarned !== fullTotal) {
         earnings.totalEarned = fullTotal;
-=======
-      // Update earnings if calculated work total has changed.
-      // referralBalance is credited separately (on referee withdrawals) and must
-      // always be preserved in availableBalance — never overwritten by this recalc.
-      if (earnings.totalEarned !== calculatedTotal) {
-        earnings.totalEarned = calculatedTotal;
-        // availableBalance = (work earnings - withdrawn - pending) + referral commissions already credited
-        const referralCredit = earnings.referralBalance || 0;
->>>>>>> 4dd9af675a54d7afc8484c7c7e9943e2bfa70913
         earnings.availableBalance = Math.max(
           0,
           fullTotal -
@@ -223,26 +214,10 @@ exports.withdrawEarnings = async (req, res) => {
       if (referralRecord) {
         const commission = parseFloat((amount * 0.05).toFixed(2));
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-        // Credit referrer's earnings
+        // Credit referrer's referralBalance AND also add to totalEarned/availableBalance
         let referrerEarnings = await Earnings.findOne({
           user: referralRecord.referrer._id,
         });
-=======
-        // Credit referrer's referralBalance AND also add to totalEarned/availableBalance
-        let referrerEarnings = await Earnings.findOne({ user: referralRecord.referrer._id });
->>>>>>> 4dd9af675a54d7afc8484c7c7e9943e2bfa70913
-=======
-        // Credit referrer's referralBalance AND also add to totalEarned/availableBalance
-        let referrerEarnings = await Earnings.findOne({ user: referralRecord.referrer._id });
-=======
-        // Credit referrer's earnings
-        let referrerEarnings = await Earnings.findOne({
-          user: referralRecord.referrer._id,
-        });
->>>>>>> aca866e9 (Youtube link update)
->>>>>>> temp-fix
         if (!referrerEarnings) {
           referrerEarnings = await Earnings.create({
             user: referralRecord.referrer._id,

@@ -382,7 +382,6 @@ exports.markAllNotificationsRead = async (req, res) => {
     res
       .status(500)
       .json({ success: false, message: "Server error", error: error.message });
-<<<<<<< HEAD
   }
 };
 
@@ -466,8 +465,6 @@ exports.getUserReferralsByEmail = async (req, res) => {
     res
       .status(500)
       .json({ success: false, message: "Server error", error: error.message });
-=======
->>>>>>> temp-fix
   }
 };
 
