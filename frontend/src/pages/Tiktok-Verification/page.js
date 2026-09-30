@@ -72,7 +72,7 @@ export default function TikTokVerificationTask() {
     try {
       const apiUrl =
         process.env.NEXT_PUBLIC_API_URL ||
-        "https://rithu-bl-web-site.onrender.com";
+        "https://rithu-bl-web-site-nhev.onrender.com";
       const token = localStorage.getItem("token");
       await fetch(`${apiUrl}/api/links/${linkId}/click`, {
         method: "POST",
