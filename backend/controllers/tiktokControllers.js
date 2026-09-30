@@ -86,10 +86,12 @@ const createTiktokSubmission = async (req, res) => {
       return res.status(400).json({
         success: false,
         message: `This screenshot has already been submitted (originally submitted on ${new Date(
-          duplicateSubmission.createdAt
+          duplicateSubmission.createdAt,
         ).toLocaleDateString()}). Please upload a different screenshot.`,
         errorType: "DUPLICATE_IMAGE",
-        previousDate: new Date(duplicateSubmission.createdAt).toLocaleDateString(),
+        previousDate: new Date(
+          duplicateSubmission.createdAt,
+        ).toLocaleDateString(),
       });
     }
 
@@ -137,7 +139,7 @@ const createTiktokSubmission = async (req, res) => {
       try {
         const apiUrl =
           process.env.NEXT_PUBLIC_API_URL ||
-          "https://rithu-bl-web-side.vercel.app";
+          "https://rithu-bl-web-site-nhev.onrender.com";
         await fetch(`${apiUrl}/api/links/${linkId}/submit`, {
           method: "POST",
           headers: {
@@ -196,11 +198,18 @@ const createTiktokMultipleSubmissions = async (req, res) => {
     const files = req.files;
 
     if (!files || files.length === 0) {
-      return res.status(400).json({ success: false, message: "No files uploaded." });
+      return res
+        .status(400)
+        .json({ success: false, message: "No files uploaded." });
     }
 
     if (files.length > 5) {
-      return res.status(400).json({ success: false, message: "Maximum 5 screenshots allowed per submission." });
+      return res
+        .status(400)
+        .json({
+          success: false,
+          message: "Maximum 5 screenshots allowed per submission.",
+        });
     }
 
     const userId = req.user._id;
@@ -209,7 +218,9 @@ const createTiktokMultipleSubmissions = async (req, res) => {
     const previousSubmissions = await TiktokSubmission.find({
       user: userId,
       imageHash: { $ne: null },
-    }).sort({ createdAt: -1 }).limit(100);
+    })
+      .sort({ createdAt: -1 })
+      .limit(100);
 
     const successfulSubmissions = [];
     const duplicateImages = [];
@@ -221,7 +232,10 @@ const createTiktokMultipleSubmissions = async (req, res) => {
         try {
           hash = await generateImageHash(file.path);
         } catch (hashErr) {
-          failedImages.push({ filename: file.originalname, reason: "Could not process image." });
+          failedImages.push({
+            filename: file.originalname,
+            reason: "Could not process image.",
+          });
           continue;
         }
 
@@ -243,7 +257,10 @@ const createTiktokMultipleSubmissions = async (req, res) => {
           for (const s of successfulSubmissions) {
             if (isSimilarHash(hash, s.imageHash)) {
               isDuplicate = true;
-              duplicateImages.push({ filename: file.originalname, reason: "Duplicate within current batch" });
+              duplicateImages.push({
+                filename: file.originalname,
+                reason: "Duplicate within current batch",
+              });
               break;
             }
           }
@@ -304,7 +321,10 @@ const createTiktokMultipleSubmissions = async (req, res) => {
         duplicates: duplicateImages.length,
         failed: failedImages.length,
         details: {
-          successful: successfulSubmissions.map((s) => ({ id: s._id, amount: s.amount })),
+          successful: successfulSubmissions.map((s) => ({
+            id: s._id,
+            amount: s.amount,
+          })),
           duplicates: duplicateImages,
           failed: failedImages,
         },
@@ -412,7 +432,8 @@ const rejectTiktokSubmission = async (req, res) => {
 // Export as separate named exports
 //module.exports.uploadFile = upload.single("screenshot");
 module.exports.createTiktokSubmission = createTiktokSubmission;
-module.exports.createTiktokMultipleSubmissions = createTiktokMultipleSubmissions;
+module.exports.createTiktokMultipleSubmissions =
+  createTiktokMultipleSubmissions;
 module.exports.getUserTiktokSubmissions = getUserTiktokSubmissions;
 module.exports.approveTitokSubmission = approveTitokSubmission;
 module.exports.rejectTiktokSubmission = rejectTiktokSubmission;
