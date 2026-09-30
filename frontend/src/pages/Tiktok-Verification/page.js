@@ -46,7 +46,7 @@ export default function TikTokVerificationTask() {
     try {
       const apiUrl =
         process.env.NEXT_PUBLIC_API_URL ||
-        "https://rithu-bl-web-site.onrender.com";
+        "https://rithu-bl-web-site-nhev.onrender.com";
       const token = localStorage.getItem("token");
       const response = await fetch(`${apiUrl}/api/links/tiktok`, {
         headers: { Authorization: `Bearer ${token}` },
