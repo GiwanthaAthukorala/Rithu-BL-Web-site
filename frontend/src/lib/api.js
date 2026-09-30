@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const API_URL =
-  process.env.NEXT_PUBLIC_API_URL || "https://rithu-bl-web-site.onrender.com"; // Ensure this matches your backend URL
+  process.env.NEXT_PUBLIC_API_URL ||
+  "https://rithu-bl-web-site-nhev.onrender.com"; // Ensure this matches your backend URL
 
 // Create axios instance
 const api = axios.create({

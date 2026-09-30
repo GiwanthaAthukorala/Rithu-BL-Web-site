@@ -114,7 +114,7 @@ export default function FacebookReview() {
 
       const apiUrl =
         process.env.NEXT_PUBLIC_API_URL ||
-        "https://rithu-bl-web-site.onrender.com";
+        "https://rithu-bl-web-site-nhev.onrender.com";
       console.log("Submitting to:", `${apiUrl}/api/fb-reviews`);
       console.log("Token exists:", !!token);
       const response = await fetch(`${apiUrl}/api/fb-reviews`, {

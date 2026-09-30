@@ -41,7 +41,8 @@ export default function InstagramVerificationTask() {
   const [previousSubmissionDate, setPreviousSubmissionDate] = useState("");
   const [submissionSummary, setSubmissionSummary] = useState(null);
   const [instagramAccounts, setInstagramAccounts] = useState([]);
-  const [selectedInstagramAccount, setSelectedInstagramAccount] = useState(null);
+  const [selectedInstagramAccount, setSelectedInstagramAccount] =
+    useState(null);
   const [loadingAccounts, setLoadingAccounts] = useState(true);
   // Link tracking — user must click at least 1 link before upload is allowed
   const [selectedLinkId, setSelectedLinkId] = useState(null);
@@ -193,12 +194,18 @@ export default function InstagramVerificationTask() {
     }
 
     if (!hasClickedLink) {
-      setError("Please click on a task link above to visit the Instagram page before submitting.");
+      setError(
+        "Please click on a task link above to visit the Instagram page before submitting.",
+      );
       return;
     }
 
     if (!files.length || !user) {
-      setError(files.length === 0 ? "Please select at least one screenshot" : "User not authenticated");
+      setError(
+        files.length === 0
+          ? "Please select at least one screenshot"
+          : "User not authenticated",
+      );
       return;
     }
 
@@ -213,10 +220,12 @@ export default function InstagramVerificationTask() {
       if (selectedLinkId) formData.append("linkId", selectedLinkId);
 
       const token = localStorage.getItem("token");
-      if (!token) throw new Error("No authentication token found. Please log in again.");
+      if (!token)
+        throw new Error("No authentication token found. Please log in again.");
 
       const apiUrl =
-        process.env.NEXT_PUBLIC_API_URL || "https://rithu-bl-web-site.onrender.com";
+        process.env.NEXT_PUBLIC_API_URL ||
+        "https://rithu-bl-web-site-nhev.onrender.com";
 
       const response = await fetch(`${apiUrl}/api/instagram/multiple`, {
         method: "POST",
@@ -280,7 +289,9 @@ export default function InstagramVerificationTask() {
                 <Instagram className="w-8 h-8 text-purple-300" />
               </div>
             </div>
-            <p className="text-purple-100 text-lg font-medium">Loading your rewards...</p>
+            <p className="text-purple-100 text-lg font-medium">
+              Loading your rewards...
+            </p>
           </div>
         </div>
       </div>
@@ -369,8 +380,12 @@ export default function InstagramVerificationTask() {
                   <User className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <h2 className="text-xl font-bold text-gray-800">Your Instagram Account</h2>
-                  <p className="text-sm text-gray-500">Select which account you're using for this task</p>
+                  <h2 className="text-xl font-bold text-gray-800">
+                    Your Instagram Account
+                  </h2>
+                  <p className="text-sm text-gray-500">
+                    Select which account you're using for this task
+                  </p>
                 </div>
               </div>
               <Link
@@ -391,7 +406,9 @@ export default function InstagramVerificationTask() {
             ) : instagramAccounts.length === 0 ? (
               <div className="text-center py-8">
                 <AlertCircle className="w-12 h-12 text-yellow-500 mx-auto mb-3" />
-                <p className="text-gray-600 mb-4">No active Instagram accounts found.</p>
+                <p className="text-gray-600 mb-4">
+                  No active Instagram accounts found.
+                </p>
                 <Link
                   href="/Profile/page?tab=instagram-accounts"
                   className="inline-flex items-center px-6 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl font-semibold hover:shadow-lg transition-all"
@@ -423,12 +440,19 @@ export default function InstagramVerificationTask() {
                         <Instagram size={18} />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="font-semibold text-gray-900">{account.accountName}</p>
-                        <p className="text-xs text-gray-500 truncate">{account.profileUrl}</p>
+                        <p className="font-semibold text-gray-900">
+                          {account.accountName}
+                        </p>
+                        <p className="text-xs text-gray-500 truncate">
+                          {account.profileUrl}
+                        </p>
                       </div>
                     </div>
                     {selectedInstagramAccount?._id === account._id && (
-                      <CheckCircle className="text-purple-600 flex-shrink-0" size={20} />
+                      <CheckCircle
+                        className="text-purple-600 flex-shrink-0"
+                        size={20}
+                      />
                     )}
                   </div>
                 ))}
@@ -441,7 +465,9 @@ export default function InstagramVerificationTask() {
               <p className="text-green-700 text-sm flex items-center">
                 <CheckCircle size={16} className="mr-2 flex-shrink-0" />
                 Using account:{" "}
-                <strong className="mx-1 truncate">{selectedInstagramAccount.accountName}</strong>
+                <strong className="mx-1 truncate">
+                  {selectedInstagramAccount.accountName}
+                </strong>
                 for this task
               </p>
             </div>
@@ -456,9 +482,12 @@ export default function InstagramVerificationTask() {
                 <ExternalLink className="w-5 h-5 text-white" />
               </div>
               <div>
-                <h2 className="text-xl font-bold text-gray-800">Step 1 — Visit Instagram Page</h2>
+                <h2 className="text-xl font-bold text-gray-800">
+                  Step 1 — Visit Instagram Page
+                </h2>
                 <p className="text-sm text-gray-500">
-                  Click on a link below to visit the Instagram page and like/follow it.
+                  Click on a link below to visit the Instagram page and
+                  like/follow it.
                 </p>
               </div>
             </div>
@@ -468,7 +497,8 @@ export default function InstagramVerificationTask() {
             <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 mb-4 border border-blue-200">
               <p className="text-blue-800 text-sm font-medium flex items-center gap-2">
                 <Info className="w-4 h-4 flex-shrink-0" />
-                You must click a link below to open the Instagram page before you can upload your screenshot.
+                You must click a link below to open the Instagram page before
+                you can upload your screenshot.
               </p>
             </div>
 
@@ -477,8 +507,8 @@ export default function InstagramVerificationTask() {
             {hasClickedLink && (
               <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
                 <p className="text-green-700 text-sm flex items-center gap-2">
-                  <CheckCircle size={16} />
-                  ✓ Link visited! You can now upload your screenshots.
+                  <CheckCircle size={16} />✓ Link visited! You can now upload
+                  your screenshots.
                 </p>
               </div>
             )}
@@ -496,7 +526,9 @@ export default function InstagramVerificationTask() {
                   <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center shadow-lg">
                     <Info className="w-7 h-7 text-white" />
                   </div>
-                  <h2 className="text-3xl font-black text-gray-800">Simple Steps to Earn</h2>
+                  <h2 className="text-3xl font-black text-gray-800">
+                    Simple Steps to Earn
+                  </h2>
                 </div>
 
                 <div className="grid md:grid-cols-2 gap-5 mb-10">
@@ -556,14 +588,21 @@ export default function InstagramVerificationTask() {
                 {/* Multiple Upload Info */}
                 <div className="bg-gradient-to-r from-purple-50 to-pink-50 p-5 rounded-2xl border border-purple-200 mb-6">
                   <div className="flex items-start gap-3">
-                    <div className="w-6 h-6 bg-purple-600 text-white rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">!</div>
+                    <div className="w-6 h-6 bg-purple-600 text-white rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">
+                      !
+                    </div>
                     <div>
-                      <p className="text-purple-800 font-semibold">Multiple Upload Feature</p>
+                      <p className="text-purple-800 font-semibold">
+                        Multiple Upload Feature
+                      </p>
                       <p className="text-purple-700 text-sm mt-1">
-                        • Upload 1–5 screenshots at once<br />
-                        • Earn Rs 1.00 for each unique screenshot<br />
-                        • Duplicate screenshots are automatically filtered out<br />
-                        • Save time by processing multiple submissions together
+                        • Upload 1–5 screenshots at once
+                        <br />
+                        • Earn Rs 1.00 for each unique screenshot
+                        <br />
+                        • Duplicate screenshots are automatically filtered out
+                        <br />• Save time by processing multiple submissions
+                        together
                       </p>
                     </div>
                   </div>
@@ -579,11 +618,17 @@ export default function InstagramVerificationTask() {
                     <div className="space-y-3 text-purple-700">
                       <p className="flex items-start space-x-2">
                         <span className="text-purple-600 font-bold">•</span>
-                        <span>Link will open in a new tab or redirect you to Instagram</span>
+                        <span>
+                          Link will open in a new tab or redirect you to
+                          Instagram
+                        </span>
                       </p>
                       <p className="flex items-start space-x-2">
                         <span className="text-purple-600 font-bold">•</span>
-                        <span>Use your browser's back button to return here after liking</span>
+                        <span>
+                          Use your browser's back button to return here after
+                          liking
+                        </span>
                       </p>
                       <p className="flex items-start space-x-2">
                         <span className="text-purple-600 font-bold">•</span>
@@ -591,7 +636,9 @@ export default function InstagramVerificationTask() {
                       </p>
                       <p className="flex items-start space-x-2">
                         <span className="text-purple-600 font-bold">•</span>
-                        <span>Select multiple screenshots from your gallery at once</span>
+                        <span>
+                          Select multiple screenshots from your gallery at once
+                        </span>
                       </p>
                     </div>
                   </div>
@@ -622,7 +669,9 @@ export default function InstagramVerificationTask() {
                       <div className="w-6 h-6 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 shadow-md">
                         <CheckCircle className="w-4 h-4 text-white" />
                       </div>
-                      <span className="text-sm font-semibold text-gray-700">{req}</span>
+                      <span className="text-sm font-semibold text-gray-700">
+                        {req}
+                      </span>
                     </div>
                   ))}
                 </div>
@@ -673,7 +722,9 @@ export default function InstagramVerificationTask() {
                             <div className="w-6 h-6 bg-purple-600 text-white rounded-full flex items-center justify-center text-xs font-bold mr-2">
                               {files.length}
                             </div>
-                            <span className="text-gray-700 font-medium">Screenshots selected</span>
+                            <span className="text-gray-700 font-medium">
+                              Screenshots selected
+                            </span>
                             <div className="ml-4 px-2 py-1 bg-purple-100 text-purple-700 rounded-full text-xs font-bold">
                               Rs {files.length}.00
                             </div>
@@ -705,7 +756,9 @@ export default function InstagramVerificationTask() {
                                 className="w-16 h-16 object-contain rounded-lg border border-gray-200"
                               />
                               <div className="flex-1 min-w-0">
-                                <p className="text-xs text-gray-700 truncate font-medium">{preview.name}</p>
+                                <p className="text-xs text-gray-700 truncate font-medium">
+                                  {preview.name}
+                                </p>
                                 <p className="text-xs text-gray-500">
                                   {(preview.size / (1024 * 1024)).toFixed(2)} MB
                                 </p>
@@ -735,11 +788,16 @@ export default function InstagramVerificationTask() {
                         {/* Earnings estimate */}
                         <div className="mt-4 p-3 bg-white border border-green-200 rounded-xl">
                           <div className="flex items-center justify-between">
-                            <p className="text-green-800 font-medium text-sm">Potential Earnings:</p>
-                            <p className="text-green-700 font-black text-lg">Rs {files.length}.00</p>
+                            <p className="text-green-800 font-medium text-sm">
+                              Potential Earnings:
+                            </p>
+                            <p className="text-green-700 font-black text-lg">
+                              Rs {files.length}.00
+                            </p>
                           </div>
                           <p className="text-green-600 text-xs mt-1">
-                            {files.length} screenshot{files.length !== 1 ? "s" : ""} × Rs 1.00
+                            {files.length} screenshot
+                            {files.length !== 1 ? "s" : ""} × Rs 1.00
                           </p>
                         </div>
                       </div>
@@ -760,9 +818,15 @@ export default function InstagramVerificationTask() {
                             <Upload className="w-10 h-10 text-white" />
                           </div>
                         </div>
-                        <p className="text-gray-800 mb-2 font-black text-xl">Drop screenshots here</p>
-                        <p className="text-gray-500 mb-2 text-sm">or click to browse</p>
-                        <p className="text-xs text-gray-400 mb-6">PNG, JPG, JPEG • Max 5MB each • Up to 5 files</p>
+                        <p className="text-gray-800 mb-2 font-black text-xl">
+                          Drop screenshots here
+                        </p>
+                        <p className="text-gray-500 mb-2 text-sm">
+                          or click to browse
+                        </p>
+                        <p className="text-xs text-gray-400 mb-6">
+                          PNG, JPG, JPEG • Max 5MB each • Up to 5 files
+                        </p>
                         <label className="inline-block bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 text-white px-8 py-3 rounded-2xl cursor-pointer hover:shadow-2xl transform hover:scale-105 transition-all duration-300 font-bold shadow-lg">
                           Choose Files
                           <input
@@ -782,7 +846,8 @@ export default function InstagramVerificationTask() {
                     <div className="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-xl">
                       <p className="text-yellow-800 text-sm font-medium flex items-center gap-2">
                         <AlertCircle className="w-4 h-4 flex-shrink-0" />
-                        Please click a task link above to visit the Instagram page first.
+                        Please click a task link above to visit the Instagram
+                        page first.
                       </p>
                     </div>
                   )}
@@ -808,19 +873,22 @@ export default function InstagramVerificationTask() {
                     {isSubmitting ? (
                       <span className="flex items-center justify-center gap-3">
                         <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                        Submitting {files.length} screenshot{files.length !== 1 ? "s" : ""}...
+                        Submitting {files.length} screenshot
+                        {files.length !== 1 ? "s" : ""}...
                       </span>
                     ) : (
                       <span className="flex items-center justify-center gap-3">
                         <Upload className="w-5 h-5" />
-                        Submit {files.length || ""} Screenshot{files.length !== 1 ? "s" : ""} &amp; Earn Rs{" "}
+                        Submit {files.length || ""} Screenshot
+                        {files.length !== 1 ? "s" : ""} &amp; Earn Rs{" "}
                         {files.length}.00
                         <Sparkles className="w-5 h-5" />
                       </span>
                     )}
                   </button>
 
-                  {(instagramAccounts.length === 0 || !selectedInstagramAccount) && (
+                  {(instagramAccounts.length === 0 ||
+                    !selectedInstagramAccount) && (
                     <p className="text-center text-sm text-red-500 mt-4">
                       Please add and select an Instagram account above
                     </p>
@@ -855,16 +923,32 @@ export default function InstagramVerificationTask() {
 
       <style jsx>{`
         @keyframes float {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-20px); }
+          0%,
+          100% {
+            transform: translateY(0px);
+          }
+          50% {
+            transform: translateY(-20px);
+          }
         }
         @keyframes float-delayed {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(20px); }
+          0%,
+          100% {
+            transform: translateY(0px);
+          }
+          50% {
+            transform: translateY(20px);
+          }
         }
-        .animate-float { animation: float 6s ease-in-out infinite; }
-        .animate-float-delayed { animation: float-delayed 8s ease-in-out infinite; }
-        .delay-700 { animation-delay: 700ms; }
+        .animate-float {
+          animation: float 6s ease-in-out infinite;
+        }
+        .animate-float-delayed {
+          animation: float-delayed 8s ease-in-out infinite;
+        }
+        .delay-700 {
+          animation-delay: 700ms;
+        }
       `}</style>
     </div>
   );

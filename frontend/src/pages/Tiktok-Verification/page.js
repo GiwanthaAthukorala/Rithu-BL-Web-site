@@ -45,7 +45,8 @@ export default function TikTokVerificationTask() {
     setLinksLoading(true);
     try {
       const apiUrl =
-        process.env.NEXT_PUBLIC_API_URL || "https://rithu-bl-web-site.onrender.com";
+        process.env.NEXT_PUBLIC_API_URL ||
+        "https://rithu-bl-web-site.onrender.com";
       const token = localStorage.getItem("token");
       const response = await fetch(`${apiUrl}/api/links/tiktok`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -70,7 +71,8 @@ export default function TikTokVerificationTask() {
   const handleLinkClick = async (linkId) => {
     try {
       const apiUrl =
-        process.env.NEXT_PUBLIC_API_URL || "https://rithu-bl-web-site.onrender.com";
+        process.env.NEXT_PUBLIC_API_URL ||
+        "https://rithu-bl-web-site.onrender.com";
       const token = localStorage.getItem("token");
       await fetch(`${apiUrl}/api/links/${linkId}/click`, {
         method: "POST",
@@ -80,16 +82,26 @@ export default function TikTokVerificationTask() {
         },
       });
       // Track click locally
-      setClickedLinks((prev) => ({ ...prev, [linkId]: (prev[linkId] || 0) + 1 }));
+      setClickedLinks((prev) => ({
+        ...prev,
+        [linkId]: (prev[linkId] || 0) + 1,
+      }));
       // Update tiktokLinks click count visually
       setTiktokLinks((prev) =>
-        prev.map((l) => l._id === linkId ? { ...l, totalClicks: (l.totalClicks || 0) + 1 } : l)
+        prev.map((l) =>
+          l._id === linkId
+            ? { ...l, totalClicks: (l.totalClicks || 0) + 1 }
+            : l,
+        ),
       );
     } catch (err) {
       // Non-critical — don't block the user
       console.error("Click tracking failed:", err);
       // Still count the click locally
-      setClickedLinks((prev) => ({ ...prev, [linkId]: (prev[linkId] || 0) + 1 }));
+      setClickedLinks((prev) => ({
+        ...prev,
+        [linkId]: (prev[linkId] || 0) + 1,
+      }));
     }
   };
 
@@ -169,12 +181,18 @@ export default function TikTokVerificationTask() {
     e.preventDefault();
 
     if (!hasClickedLink) {
-      setError("Please click on a TikTok link above to visit the page before submitting.");
+      setError(
+        "Please click on a TikTok link above to visit the page before submitting.",
+      );
       return;
     }
 
     if (!files.length || !user) {
-      setError(files.length === 0 ? "Please select at least one screenshot" : "User not authenticated");
+      setError(
+        files.length === 0
+          ? "Please select at least one screenshot"
+          : "User not authenticated",
+      );
       return;
     }
 
@@ -187,10 +205,12 @@ export default function TikTokVerificationTask() {
       formData.append("platform", "Tiktok");
 
       const token = localStorage.getItem("token");
-      if (!token) throw new Error("No authentication token found. Please log in again.");
+      if (!token)
+        throw new Error("No authentication token found. Please log in again.");
 
       const apiUrl =
-        process.env.NEXT_PUBLIC_API_URL || "https://rithu-bl-web-site.onrender.com";
+        process.env.NEXT_PUBLIC_API_URL ||
+        "https://rithu-bl-web-site-nhev.onrender.com";
 
       const response = await fetch(`${apiUrl}/api/tiktok/multiple`, {
         method: "POST",
@@ -316,9 +336,13 @@ export default function TikTokVerificationTask() {
                 <div className="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg sm:rounded-xl shadow-lg">
                   <div className="flex items-center space-x-2">
                     <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5" />
-                    <span className="font-bold text-lg sm:text-xl">Rs 1.00/=</span>
+                    <span className="font-bold text-lg sm:text-xl">
+                      Rs 1.00/=
+                    </span>
                   </div>
-                  <p className="text-green-100 text-xs sm:text-sm">per screenshot</p>
+                  <p className="text-green-100 text-xs sm:text-sm">
+                    per screenshot
+                  </p>
                 </div>
               </div>
             </div>
@@ -327,18 +351,30 @@ export default function TikTokVerificationTask() {
             <div className="grid grid-cols-3 gap-2 sm:gap-4 mt-4 sm:mt-8">
               <div className="bg-white/10 backdrop-blur-sm rounded-lg sm:rounded-xl p-2 sm:p-4 text-center border border-white/20">
                 <Star className="w-4 h-4 sm:w-6 sm:h-6 text-yellow-400 mx-auto mb-1 sm:mb-2" />
-                <div className="text-white font-semibold text-xs sm:text-sm">Easy Tasks</div>
-                <div className="text-gray-300 text-xs sm:text-sm">Simple &amp; Quick</div>
+                <div className="text-white font-semibold text-xs sm:text-sm">
+                  Easy Tasks
+                </div>
+                <div className="text-gray-300 text-xs sm:text-sm">
+                  Simple &amp; Quick
+                </div>
               </div>
               <div className="bg-white/10 backdrop-blur-sm rounded-lg sm:rounded-xl p-2 sm:p-4 text-center border border-white/20">
                 <Users className="w-4 h-4 sm:w-6 sm:h-6 text-blue-400 mx-auto mb-1 sm:mb-2" />
-                <div className="text-white font-semibold text-xs sm:text-sm">5 at Once</div>
-                <div className="text-gray-300 text-xs sm:text-sm">Multi-Upload</div>
+                <div className="text-white font-semibold text-xs sm:text-sm">
+                  5 at Once
+                </div>
+                <div className="text-gray-300 text-xs sm:text-sm">
+                  Multi-Upload
+                </div>
               </div>
               <div className="bg-white/10 backdrop-blur-sm rounded-lg sm:rounded-xl p-2 sm:p-4 text-center border border-white/20">
                 <CheckCircle className="w-4 h-4 sm:w-6 sm:h-6 text-green-400 mx-auto mb-1 sm:mb-2" />
-                <div className="text-white font-semibold text-xs sm:text-sm">Instant Rewards</div>
-                <div className="text-gray-300 text-xs sm:text-sm">Fast Payments</div>
+                <div className="text-white font-semibold text-xs sm:text-sm">
+                  Instant Rewards
+                </div>
+                <div className="text-gray-300 text-xs sm:text-sm">
+                  Fast Payments
+                </div>
               </div>
             </div>
           </div>
@@ -350,7 +386,9 @@ export default function TikTokVerificationTask() {
           <div className="mb-6 sm:mb-8">
             <div className="flex items-center space-x-3 mb-4 sm:mb-6">
               <div className="w-6 h-6 sm:w-8 sm:h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-xs sm:text-sm">📋</span>
+                <span className="text-white font-bold text-xs sm:text-sm">
+                  📋
+                </span>
               </div>
               <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-800">
                 How to Complete This Task
@@ -365,11 +403,16 @@ export default function TikTokVerificationTask() {
                   "Take clear screenshots (up to 5) showing your engagement",
                   "Upload all screenshots below to earn Rs 1/= each",
                 ].map((step, i) => (
-                  <li key={i} className="flex items-start space-x-2 sm:space-x-3">
+                  <li
+                    key={i}
+                    className="flex items-start space-x-2 sm:space-x-3"
+                  >
                     <div className="w-5 h-5 sm:w-6 sm:h-6 bg-blue-500 text-white rounded-full flex items-center justify-center text-xs sm:text-sm font-bold mt-0.5 flex-shrink-0">
                       {i + 1}
                     </div>
-                    <span className="text-gray-700 font-medium text-sm sm:text-base">{step}</span>
+                    <span className="text-gray-700 font-medium text-sm sm:text-base">
+                      {step}
+                    </span>
                   </li>
                 ))}
               </ol>
@@ -378,13 +421,18 @@ export default function TikTokVerificationTask() {
             {/* Multiple upload info */}
             <div className="mt-4 p-4 bg-purple-50 border border-purple-200 rounded-xl">
               <div className="flex items-start gap-3">
-                <div className="w-5 h-5 bg-purple-600 text-white rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">!</div>
+                <div className="w-5 h-5 bg-purple-600 text-white rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">
+                  !
+                </div>
                 <div>
-                  <p className="text-purple-800 font-semibold text-sm">Multiple Upload Feature</p>
+                  <p className="text-purple-800 font-semibold text-sm">
+                    Multiple Upload Feature
+                  </p>
                   <p className="text-purple-700 text-xs sm:text-sm mt-1">
-                    • Upload 1–5 screenshots at once<br />
-                    • Earn Rs 1.00 for each unique screenshot<br />
-                    • Duplicate screenshots are automatically filtered out
+                    • Upload 1–5 screenshots at once
+                    <br />
+                    • Earn Rs 1.00 for each unique screenshot
+                    <br />• Duplicate screenshots are automatically filtered out
                   </p>
                 </div>
               </div>
@@ -395,7 +443,9 @@ export default function TikTokVerificationTask() {
           <div className="mb-6 sm:mb-8">
             <div className="flex items-center space-x-3 mb-3 sm:mb-4">
               <div className="w-6 h-6 sm:w-8 sm:h-8 bg-gradient-to-r from-pink-500 to-red-500 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-xs sm:text-sm">🔗</span>
+                <span className="text-white font-bold text-xs sm:text-sm">
+                  🔗
+                </span>
               </div>
               <h3 className="text-lg sm:text-xl font-bold text-gray-800">
                 Step 1 — Visit TikTok Page (Required)
@@ -405,22 +455,29 @@ export default function TikTokVerificationTask() {
             <div className="bg-gradient-to-r from-yellow-50 to-amber-50 border border-yellow-200 rounded-xl p-4 mb-4">
               <p className="text-yellow-800 text-sm font-medium flex items-center gap-2">
                 <AlertCircle className="w-4 h-4 flex-shrink-0" />
-                You must click a link below to visit the TikTok page before you can upload screenshots.
+                You must click a link below to visit the TikTok page before you
+                can upload screenshots.
               </p>
             </div>
 
             {linksLoading ? (
               <div className="flex items-center justify-center py-10">
                 <Loader2 className="w-7 h-7 text-pink-500 animate-spin" />
-                <span className="ml-3 text-gray-500 text-sm font-medium">Loading tasks...</span>
+                <span className="ml-3 text-gray-500 text-sm font-medium">
+                  Loading tasks...
+                </span>
               </div>
             ) : tiktokLinks.length === 0 ? (
               <div className="bg-gradient-to-br from-gray-50 to-pink-50 border border-pink-100 rounded-xl p-8 text-center">
                 <div className="w-14 h-14 bg-gradient-to-br from-pink-100 to-red-100 rounded-full flex items-center justify-center mx-auto mb-3">
                   <Music className="w-7 h-7 text-pink-400" />
                 </div>
-                <p className="text-gray-600 font-semibold">No TikTok tasks available right now</p>
-                <p className="text-gray-400 text-sm mt-1">Please check back later — new tasks are added regularly.</p>
+                <p className="text-gray-600 font-semibold">
+                  No TikTok tasks available right now
+                </p>
+                <p className="text-gray-400 text-sm mt-1">
+                  Please check back later — new tasks are added regularly.
+                </p>
               </div>
             ) : (
               <div className="space-y-3 sm:space-y-4">
@@ -437,11 +494,15 @@ export default function TikTokVerificationTask() {
                     >
                       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0">
                         <div className="flex-1 min-w-0">
-                          <h4 className={`font-semibold mb-1 text-sm sm:text-base line-clamp-2 ${clicked > 0 ? "text-green-800" : "text-white"}`}>
+                          <h4
+                            className={`font-semibold mb-1 text-sm sm:text-base line-clamp-2 ${clicked > 0 ? "text-green-800" : "text-white"}`}
+                          >
                             {link.title}
                           </h4>
                           <div className="flex items-center space-x-3">
-                            <p className={`text-xs sm:text-sm ${clicked > 0 ? "text-green-700" : "text-gray-400"}`}>
+                            <p
+                              className={`text-xs sm:text-sm ${clicked > 0 ? "text-green-700" : "text-gray-400"}`}
+                            >
                               Earn{" "}
                               <span className="text-green-500 font-bold">
                                 Rs {link.earnings?.toFixed(2) || "1.00"}
@@ -478,7 +539,9 @@ export default function TikTokVerificationTask() {
                             </>
                           ) : (
                             <>
-                              <span className="hidden sm:inline">Open &amp; Follow</span>
+                              <span className="hidden sm:inline">
+                                Open &amp; Follow
+                              </span>
                               <span className="sm:hidden">Open</span>
                               <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4 ml-1 sm:ml-2" />
                             </>
@@ -494,8 +557,8 @@ export default function TikTokVerificationTask() {
             {hasClickedLink && (
               <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-xl">
                 <p className="text-green-700 text-sm font-medium flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4" />
-                  ✓ TikTok page visited! You can now upload your screenshots below.
+                  <CheckCircle className="w-4 h-4" />✓ TikTok page visited! You
+                  can now upload your screenshots below.
                 </p>
               </div>
             )}
@@ -506,23 +569,31 @@ export default function TikTokVerificationTask() {
             <div className="bg-gradient-to-r from-yellow-50 to-amber-50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-yellow-300 shadow-sm">
               <div className="flex items-center space-x-3 mb-3 sm:mb-4">
                 <div className="w-6 h-6 sm:w-8 sm:h-8 bg-yellow-500 rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold text-xs sm:text-sm">⚠️</span>
+                  <span className="text-white font-bold text-xs sm:text-sm">
+                    ⚠️
+                  </span>
                 </div>
-                <h3 className="text-base sm:text-lg font-bold text-yellow-800">Screenshot Requirements</h3>
+                <h3 className="text-base sm:text-lg font-bold text-yellow-800">
+                  Screenshot Requirements
+                </h3>
               </div>
               <div className="grid sm:grid-cols-2 gap-3 sm:gap-4">
                 <ul className="space-y-2 text-yellow-700">
-                  {["Must clearly show the liked/followed page", "Must show your profile or browser context"].map(
-                    (r, i) => (
-                      <li key={i} className="flex items-start space-x-2">
-                        <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4 text-green-600 mt-0.5 flex-shrink-0" />
-                        <span className="text-xs sm:text-sm">{r}</span>
-                      </li>
-                    ),
-                  )}
+                  {[
+                    "Must clearly show the liked/followed page",
+                    "Must show your profile or browser context",
+                  ].map((r, i) => (
+                    <li key={i} className="flex items-start space-x-2">
+                      <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4 text-green-600 mt-0.5 flex-shrink-0" />
+                      <span className="text-xs sm:text-sm">{r}</span>
+                    </li>
+                  ))}
                 </ul>
                 <ul className="space-y-2 text-yellow-700">
-                  {["No edited or cropped images", "File size under 5MB • PNG, JPG, JPEG"].map((r, i) => (
+                  {[
+                    "No edited or cropped images",
+                    "File size under 5MB • PNG, JPG, JPEG",
+                  ].map((r, i) => (
                     <li key={i} className="flex items-start space-x-2">
                       <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4 text-green-600 mt-0.5 flex-shrink-0" />
                       <span className="text-xs sm:text-sm">{r}</span>
@@ -565,7 +636,9 @@ export default function TikTokVerificationTask() {
                         <div className="w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-xs font-bold mr-2">
                           {files.length}
                         </div>
-                        <span className="text-gray-700 font-medium">Screenshots selected</span>
+                        <span className="text-gray-700 font-medium">
+                          Screenshots selected
+                        </span>
                         <div className="ml-4 px-2 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-bold">
                           Rs {files.length}.00
                         </div>
@@ -597,7 +670,9 @@ export default function TikTokVerificationTask() {
                             className="w-16 h-16 object-contain rounded-lg border border-gray-200"
                           />
                           <div className="flex-1 min-w-0">
-                            <p className="text-xs text-gray-700 truncate font-medium">{preview.name}</p>
+                            <p className="text-xs text-gray-700 truncate font-medium">
+                              {preview.name}
+                            </p>
                             <p className="text-xs text-gray-500">
                               {(preview.size / (1024 * 1024)).toFixed(2)} MB
                             </p>
@@ -627,11 +702,16 @@ export default function TikTokVerificationTask() {
                     {/* Earnings estimate */}
                     <div className="mt-4 p-3 bg-white border border-green-200 rounded-xl">
                       <div className="flex items-center justify-between">
-                        <p className="text-green-800 font-medium text-sm">Potential Earnings:</p>
-                        <p className="text-green-700 font-black text-lg">Rs {files.length}.00</p>
+                        <p className="text-green-800 font-medium text-sm">
+                          Potential Earnings:
+                        </p>
+                        <p className="text-green-700 font-black text-lg">
+                          Rs {files.length}.00
+                        </p>
                       </div>
                       <p className="text-green-600 text-xs mt-1">
-                        {files.length} screenshot{files.length !== 1 ? "s" : ""} × Rs 1.00
+                        {files.length} screenshot{files.length !== 1 ? "s" : ""}{" "}
+                        × Rs 1.00
                       </p>
                     </div>
                   </div>
@@ -642,7 +722,9 @@ export default function TikTokVerificationTask() {
                       <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl sm:rounded-2xl flex items-center justify-center mx-auto mb-3 sm:mb-4 group-hover:scale-110 transition-transform duration-300">
                         <Upload className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
                       </div>
-                      <h4 className="text-lg sm:text-xl font-bold text-gray-800 mb-2">Drop Your Screenshots Here</h4>
+                      <h4 className="text-lg sm:text-xl font-bold text-gray-800 mb-2">
+                        Drop Your Screenshots Here
+                      </h4>
                       <p className="text-gray-600 mb-2 text-sm sm:text-base">
                         Drag and drop or click to browse (up to 5 files)
                       </p>
@@ -680,7 +762,8 @@ export default function TikTokVerificationTask() {
                 <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-xl">
                   <p className="text-yellow-800 text-sm font-medium flex items-center gap-2">
                     <AlertCircle className="w-4 h-4 flex-shrink-0" />
-                    Please click a TikTok link above to visit the page first before submitting.
+                    Please click a TikTok link above to visit the page first
+                    before submitting.
                   </p>
                 </div>
               )}
@@ -698,13 +781,17 @@ export default function TikTokVerificationTask() {
                   {isSubmitting ? (
                     <div className="flex items-center justify-center space-x-2">
                       <div className="animate-spin rounded-full h-4 w-4 sm:h-5 sm:w-5 border-2 border-white border-t-transparent"></div>
-                      <span>Submitting {files.length} screenshot{files.length !== 1 ? "s" : ""}...</span>
+                      <span>
+                        Submitting {files.length} screenshot
+                        {files.length !== 1 ? "s" : ""}...
+                      </span>
                     </div>
                   ) : (
                     <div className="flex items-center justify-center space-x-2">
                       <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5" />
                       <span>
-                        Submit {files.length} Screenshot{files.length !== 1 ? "s" : ""} &amp; Earn Rs{" "}
+                        Submit {files.length} Screenshot
+                        {files.length !== 1 ? "s" : ""} &amp; Earn Rs{" "}
                         {files.length}.00
                       </span>
                     </div>
