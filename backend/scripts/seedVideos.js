@@ -63,6 +63,28 @@ const extractTikTokId = (url) => {
 const sampleVideos = [
   {
     title:
+      "Be water, my friend.🌊 Thank you for the pain. It woke up a monster you can never handle. ⚔️",
+    description: "Daily dose of laughter with these funny TikTok videos",
+    videoUrl: "https://vt.tiktok.com/ZSbaqK9AU/",
+    platform: "tiktok",
+    duration: 60,
+    rewardAmount: 0.5,
+    isActive: true,
+  },
+  {
+    title: "උන් තුන්දෙනාට නොදැනිම… කෙනෙක් උන්ව බලාගෙන හිටියා! 👀🖤",
+    description: "Janaka Vidyarathna",
+    videoUrl: "https://www.facebook.com/share/v/18QX1XuFEe/?mibextid=wwXIfr",
+    embedUrl: "https://www.facebook.com/share/v/18QX1XuFEe/?mibextid=wwXIfr", // Add this
+    thumbnailUrl:
+      "https://placehold.co/400x225/1877F2/FFFFFF?text=Facebook+18tk9Ag3ic", // Add this
+    platform: "facebook", // Use lowercase
+    duration: 60,
+    rewardAmount: 0.5,
+    isActive: true,
+  },
+  /*{
+    title:
       "Janaka Vidyarathna Adaren hitha hinahe...Original Artist HR jothipala 🙏❤ Cover by Janaka vidyarathna",
     description:
       "ඔන්ලයින් දවසට විනාඩි 1ක් වැඩ කරලා රුපියල් Watch for 0.50 minute to earn Rs 0.50.",
@@ -87,7 +109,7 @@ const sampleVideos = [
     rewardAmount: 0.5,
     isActive: true,
   },
-  /* {
+   {
     title: "Janaka Vidyarathna",
     description:
       "ඔන්ලයින් දවසට විනාඩි 1ක් වැඩ කරලා රුපියල් Watch for 0.50 minute to earn Rs 0.50.",
