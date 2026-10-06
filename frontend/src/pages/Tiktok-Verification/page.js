@@ -46,7 +46,7 @@ export default function TikTokVerificationTask() {
     try {
       const apiUrl =
         process.env.NEXT_PUBLIC_API_URL ||
-        "https://rithu-bl-web-site-nhev.onrender.com";
+        "https://rithu-bl-web-site-4z6f.onrender.com";
       const token = localStorage.getItem("token");
       const response = await fetch(`${apiUrl}/api/links/tiktok`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -72,7 +72,7 @@ export default function TikTokVerificationTask() {
     try {
       const apiUrl =
         process.env.NEXT_PUBLIC_API_URL ||
-        "https://rithu-bl-web-site-nhev.onrender.com";
+        "https://rithu-bl-web-site-4z6f.onrender.com";
       const token = localStorage.getItem("token");
       await fetch(`${apiUrl}/api/links/${linkId}/click`, {
         method: "POST",
@@ -210,7 +210,7 @@ export default function TikTokVerificationTask() {
 
       const apiUrl =
         process.env.NEXT_PUBLIC_API_URL ||
-        "https://rithu-bl-web-site-nhev.onrender.com";
+        "https://rithu-bl-web-site-4z6f.onrender.com";
 
       const response = await fetch(`${apiUrl}/api/tiktok/multiple`, {
         method: "POST",

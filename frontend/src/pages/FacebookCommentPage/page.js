@@ -113,7 +113,7 @@ export default function FacebookComment() {
 
       const apiUrl =
         process.env.NEXT_PUBLIC_API_URL ||
-        "https://rithu-bl-web-site-nhev.onrender.com";
+        "https://rithu-bl-web-site-4z6f.onrender.com";
       console.log("Submitting to:", `${apiUrl}/api/fb-comments`);
       console.log("Token exists:", !!token);
       const response = await fetch(`${apiUrl}/api/fb-comments`, {

@@ -139,7 +139,7 @@ const createTiktokSubmission = async (req, res) => {
       try {
         const apiUrl =
           process.env.NEXT_PUBLIC_API_URL ||
-          "https://rithu-bl-web-site-nhev.onrender.com";
+          "https://rithu-bl-web-site-4z6f.onrender.com";
         await fetch(`${apiUrl}/api/links/${linkId}/submit`, {
           method: "POST",
           headers: {
@@ -204,12 +204,10 @@ const createTiktokMultipleSubmissions = async (req, res) => {
     }
 
     if (files.length > 5) {
-      return res
-        .status(400)
-        .json({
-          success: false,
-          message: "Maximum 5 screenshots allowed per submission.",
-        });
+      return res.status(400).json({
+        success: false,
+        message: "Maximum 5 screenshots allowed per submission.",
+      });
     }
 
     const userId = req.user._id;

@@ -1,4 +1,6 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+const API_URL =
+  process.env.NEXT_PUBLIC_API_URL ||
+  "https://rithu-bl-web-site-4z6f.onrender.com/api";
 
 export const signup = async (data) => {
   const res = await fetch(`${API_URL}/users/signup`, {

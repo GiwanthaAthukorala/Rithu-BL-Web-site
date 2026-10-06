@@ -225,7 +225,7 @@ export default function InstagramVerificationTask() {
 
       const apiUrl =
         process.env.NEXT_PUBLIC_API_URL ||
-        "https://rithu-bl-web-site-nhev.onrender.com";
+        "https://rithu-bl-web-site-4z6f.onrender.com";
 
       const response = await fetch(`${apiUrl}/api/instagram/multiple`, {
         method: "POST",
