@@ -15,9 +15,9 @@ const createSuperAdmin = async () => {
     const superAdminData = {
       firstName: "Super",
       lastName: "Admin",
-      email: "superadmin@rithu.com",
+      email: "giwantha.admin@rithu.com",
       phoneNumber: "0000000000",
-      password: "superadmin123",
+      password: "Giw@1234562000",
       role: "superadmin",
       isActive: true,
     };
@@ -77,7 +77,7 @@ const createSuperAdmin = async () => {
     console.log("Disconnected from MongoDB");
     console.log("\n📋 Login Credentials:");
     console.log(
-      "Super Admin - Email: superadmin@rithu.com, Password: superadmin123"
+      "Super Admin - Email: superadmin@rithu.com, Password: superadmin123",
     );
     console.log("Admin - Email: admin@rithu.com, Password: admin123");
     console.log("\n⚠️  Change these passwords after first login!");

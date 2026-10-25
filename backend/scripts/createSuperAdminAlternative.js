@@ -16,9 +16,9 @@ const createSuperAdmin = async () => {
     const superAdminData = {
       firstName: "Super",
       lastName: "Admin",
-      email: "superadmin@rithu.com",
+      email: "giwantha.admin@rithu.com",
       phoneNumber: "0000000000",
-      password: "superadmin123",
+      password: "Giw@1234562000",
       bankName: "Admin Bank",
       bankBranch: "Admin Branch",
       bankAccountNo: "0000000000000000",
